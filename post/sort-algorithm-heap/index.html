@@ -1,0 +1,843 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>常用内部排序算法之三：堆排序 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+堆排序是以堆为原型的排序。堆首先是一棵二叉树，具有以下两个性质：每个节点的值大于或者等于其左右孩子结点的值，称为大顶堆；或者每个节点的值都小于或者等于其左右孩子结点的值，称为小顶堆。从这个定义中可以发现，堆得根节点要么是最大值要么是最小值。实现堆排序的基本思想是：将待排序的序列构造成一个大顶堆或者小顶堆。此时整个堆满足根节点是最大值或者最小值。将根节点移走，并与堆数组的最后一个值进行交换，这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用内部排序算法之三：堆排序">
+<meta property="og:url" content="http://rhwayfun.com/post/sort-algorithm-heap/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+堆排序是以堆为原型的排序。堆首先是一棵二叉树，具有以下两个性质：每个节点的值大于或者等于其左右孩子结点的值，称为大顶堆；或者每个节点的值都小于或者等于其左右孩子结点的值，称为小顶堆。从这个定义中可以发现，堆得根节点要么是最大值要么是最小值。实现堆排序的基本思想是：将待排序的序列构造成一个大顶堆或者小顶堆。此时整个堆满足根节点是最大值或者最小值。将根节点移走，并与堆数组的最后一个值进行交换，这">
+<meta property="og:image" content="http://img.blog.csdn.net/20151202182743016">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.766Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用内部排序算法之三：堆排序">
+<meta name="twitter:description" content="前言
+堆排序是以堆为原型的排序。堆首先是一棵二叉树，具有以下两个性质：每个节点的值大于或者等于其左右孩子结点的值，称为大顶堆；或者每个节点的值都小于或者等于其左右孩子结点的值，称为小顶堆。从这个定义中可以发现，堆得根节点要么是最大值要么是最小值。实现堆排序的基本思想是：将待排序的序列构造成一个大顶堆或者小顶堆。此时整个堆满足根节点是最大值或者最小值。将根节点移走，并与堆数组的最后一个值进行交换，这">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/sort-algorithm-heap/" title="常用内部排序算法之三：堆排序" itemprop="url">常用内部排序算法之三：堆排序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-02T15:39:31.000Z" itemprop="datePublished"> 发表于 2015-12-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>堆排序是以堆为原型的排序。堆首先是一棵二叉树，具有以下两个性质：<strong>每个节点的值大于或者等于其左右孩子结点的值，称为大顶堆；或者每个节点的值都小于或者等于其左右孩子结点的值，称为小顶堆</strong>。从这个定义中可以发现，堆得根节点要么是最大值要么是最小值。实现堆排序的基本思想是：<strong>将待排序的序列构造成一个大顶堆或者小顶堆。此时整个堆满足根节点是最大值或者最小值。将根节点移走，并与堆数组的最后一个值进行交换，这样的话最后一个值就是最大值或者最小值了。然后将剩余n-1（假设原来总共有n个元素）未排序的序列重新构造成一个最大堆或者最小堆，再与除原来最大值之外的最后一个元素进行交换，得到次小值。如此反复进行，就得到一个排序的序列。</strong><br><a id="more"></a></p>
+<p><strong>堆排序算法的Java实现</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;&#10;&#10;public class HeapSort2 &#123;&#10;&#10;    public void heapSort(int[] a)&#123;&#10;        for(int i = a.length/2-1; i &#62;= 0; i--)&#123;&#10;            //&#24314;&#31435;&#19968;&#20010;&#26368;&#22823;&#22534;&#10;            heapAdjust(a,i,a.length - 1);&#10;        &#125;&#10;        for (int i = a.length - 1; i &#62; 0; i--) &#123;&#10;            //&#23558;&#22534;&#39030;&#20803;&#32032;&#19982;&#24403;&#21069;&#26410;&#32463;&#25490;&#24207;&#30340;&#26368;&#21518;&#19968;&#20010;&#35760;&#24405;&#20132;&#25442;&#10;            swap(a,0,i);&#10;            //&#23558;&#25968;&#32452;a&#20013;&#19979;&#26631;&#20174;0&#21040;i-1&#30340;&#23376;&#24207;&#21015;&#37325;&#26032;&#35843;&#25972;&#20026;&#26368;&#22823;&#22534;&#10;            heapAdjust(a, 0, i - 1);&#10;        &#125;&#10;        &#10;        for (int i = 0; i &#60; a.length; i++) &#123;&#10;            System.out.println(a[i]);&#10;        &#125;&#10;    &#125;&#10;&#10;    private void swap(int[] a, int i, int j) &#123;&#10;        int temp = a[i];&#10;        a[i] = a[j];&#10;        a[j] = temp;&#10;    &#125;&#10;&#10;    private void heapAdjust(int[] a, int s, int m) &#123;&#10;        int temp = 0,j=0;&#10;        //&#25226;&#22534;&#39030;&#20803;&#32032;&#20445;&#23384;&#22312;&#20020;&#26102;&#21464;&#37327;&#20013;&#10;        temp = a[s];&#10;        //&#30001;&#20110;s&#21487;&#33021;&#26159;0&#65292;&#25152;&#20197;&#38656;&#35201;+1&#12290;&#27492;&#22806;&#65292;&#22914;&#26524;&#24403;&#21069;&#32467;&#28857;&#30340;&#24207;&#21495;&#26159;s&#65292;&#37027;&#20040;&#20854;&#24038;&#23401;&#23376;&#26159;2*s+1(+1&#26159;&#22240;&#20026;s&#21487;&#33021;&#26159;0)&#10;        for(j = 2*s+1; j &#60;= m; j = 2*j+1)&#123;&#10;            //&#25214;&#20986;&#24038;&#21491;&#23401;&#23376;&#36739;&#22823;&#30340;&#32467;&#28857;&#30340;&#19979;&#26631;&#10;            if(j &#60; m &#38;&#38; a[j] &#60; a[j+1])&#123;&#10;                ++j;&#10;            &#125;&#10;            if(temp &#62;= a[j])&#123;&#10;                break;&#10;            &#125;&#10;            //&#25226;&#36739;&#22823;&#30340;&#23401;&#23376;&#32467;&#28857;&#30340;&#36171;&#32473;&#24403;&#21069;&#32467;&#28857;&#10;            a[s] = a[j];&#10;            //&#25226;&#26356;&#22823;&#23401;&#23376;&#32467;&#28857;&#30340;&#19979;&#26631;&#36171;&#32473;s&#10;            s = j;&#10;        &#125;&#10;        //&#25226;&#21407;&#26469;s&#19979;&#26631;&#20301;&#32622;&#30340;&#20540;&#36171;&#32473;&#26032;&#30340;&#19979;&#26631;&#20026;s&#30340;&#20540;&#65292;&#36825;&#26679;&#23601;&#23436;&#25104;&#20102;&#24403;&#21069;&#32467;&#28857;&#19982;&#26356;&#22823;&#23401;&#23376;&#32467;&#28857;&#20540;&#30340;&#20132;&#25442;&#10;        a[s] = temp;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        new HeapSort2().heapSort(new int[]&#123;90,70,80,60,10,40,50,30,20&#125;);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>可以发现在建立最大堆的时候，$i$是从$a.length/2$开始的，为什么要从这个位置开始呢？比如有一个数组${90,70,80,60,10,40,50,30,20}$，初始情况是这样的：</p>
+<p><img src="http://img.blog.csdn.net/20151202182743016" alt=""></p>
+<p>一共有9个元素，那么$a.length/2-1$的值是3，也就是第4个元素，执行for循环，i的值从3-&gt;2-&gt;1-&gt;0变化,可以发现这几个下标的结点都是有孩子结点的元素，所以第一个for循环就很好理解了：其实就是从下往上、从右到左，将每个非终端结点当做根节点，将其和子树调整成最大堆，所以下标3-&gt;2-&gt;1-&gt;0的变化，也就是60，80，70，90结点的调整过程。</p>
+<p><strong>堆排序算法的时间复杂度</strong></p>
+<p>可以发现堆排序的主要时间主要花在建堆和重建堆时的反复筛选上。在初始建堆的时候，由于只涉及两个节点的交换操作，所以建堆的时间复杂度是$O(n)$。在正式排序的时候，第i次取堆顶的元素并重建堆需要花去$O(logi)$的时间，需要n-1次取堆顶记录，所以排序的过程的时间复杂度是$O(nlogn)$。而且这是最好、最坏和平均的时间复杂度，但是由于记录的交换与比较是跳跃式的，所以与归并排序不同，堆排序是一种不稳定的排序算法。</p>
+<p>由于初始建堆的比较次数比较多，所以堆排序不适合记录数较少的情况（使用简单排序算法是一种不错的选择，没必要大材小用了）。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/算法与数据结构/">算法与数据结构</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/algorithm/">algorithm</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/sort-algorithm-heap/" data-title="常用内部排序算法之三：堆排序 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/concurrent-mechanism-of-java/" title="Java并发机制的底层原理">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java并发机制的底层原理</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/sort-algorithm-quick/"  title="常用内部排序算法之二：快速排序">
+ <strong>下一篇：</strong><br/> 
+ <span>常用内部排序算法之二：快速排序
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/sort-algorithm-heap/" data-title="常用内部排序算法之三：堆排序" data-url="http://rhwayfun.com/post/sort-algorithm-heap/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,1203 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Struts2框架学习之四：感受Struts 1 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="还记得在大学期间，老师讲完JSP后，由于时间关系把javaweb的所有主流框架都介绍了一遍，那会看到学java web还要去学那么多框架，瞬间感觉不爱了。那会还刚开始接触编程，对很多编程的概念都不是很熟悉，就直接让我们整这些高深的框架的知识，着实是对我学习编程的积极性的打击啊。学完jsp+servlet，已经能够做一些简单的系统了，感觉java web无非如此（呵呵，那会简直太天真了）。读研之后，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Struts2框架学习之四：感受Struts 1">
+<meta property="og:url" content="http://rhwayfun.com/post/struts2-learning-4/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="还记得在大学期间，老师讲完JSP后，由于时间关系把javaweb的所有主流框架都介绍了一遍，那会看到学java web还要去学那么多框架，瞬间感觉不爱了。那会还刚开始接触编程，对很多编程的概念都不是很熟悉，就直接让我们整这些高深的框架的知识，着实是对我学习编程的积极性的打击啊。学完jsp+servlet，已经能够做一些简单的系统了，感觉java web无非如此（呵呵，那会简直太天真了）。读研之后，">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Model1.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Model2.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Struts1.x框架图.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/测试表单.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/测试表单结果.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Struts%20Tiles布局思路1.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Sitemesh布局思路.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.776Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Struts2框架学习之四：感受Struts 1">
+<meta name="twitter:description" content="还记得在大学期间，老师讲完JSP后，由于时间关系把javaweb的所有主流框架都介绍了一遍，那会看到学java web还要去学那么多框架，瞬间感觉不爱了。那会还刚开始接触编程，对很多编程的概念都不是很熟悉，就直接让我们整这些高深的框架的知识，着实是对我学习编程的积极性的打击啊。学完jsp+servlet，已经能够做一些简单的系统了，感觉java web无非如此（呵呵，那会简直太天真了）。读研之后，">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/struts2-learning-4/" title="Struts2框架学习之四：感受Struts 1" itemprop="url">Struts2框架学习之四：感受Struts 1</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-08-25T08:08:24.000Z" itemprop="datePublished"> 发表于 2015-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MVC模式"><span class="toc-number">2.</span> <span class="toc-text">MVC模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Model_1"><span class="toc-number">2.1.</span> <span class="toc-text">Model 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Model_2"><span class="toc-number">2.2.</span> <span class="toc-text">Model 2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Struts开发————入门篇"><span class="toc-number">3.</span> <span class="toc-text">Struts开发————入门篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts框架原理"><span class="toc-number">3.1.</span> <span class="toc-text">Struts框架原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发流程"><span class="toc-number">3.2.</span> <span class="toc-text">开发流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编写测试页面：input-jsp"><span class="toc-number">3.2.1.</span> <span class="toc-text">编写测试页面：input.jsp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置表单和Action"><span class="toc-number">3.2.2.</span> <span class="toc-text">配置表单和Action</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编写ActionForm"><span class="toc-number">3.2.3.</span> <span class="toc-text">编写ActionForm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编写Action"><span class="toc-number">3.2.4.</span> <span class="toc-text">编写Action</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署并运行"><span class="toc-number">3.2.5.</span> <span class="toc-text">部署并运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用DBCP数据库连接池"><span class="toc-number">3.3.</span> <span class="toc-text">使用DBCP数据库连接池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是数据库连接池"><span class="toc-number">3.3.1.</span> <span class="toc-text">什么是数据库连接池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加DBCP连接池"><span class="toc-number">3.3.2.</span> <span class="toc-text">添加DBCP连接池</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Struts开发————进阶篇"><span class="toc-number">4.</span> <span class="toc-text">Struts开发————进阶篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用Log4j"><span class="toc-number">4.1.</span> <span class="toc-text">使用Log4j</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Logger日志记录器"><span class="toc-number">4.1.1.</span> <span class="toc-text">Logger日志记录器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Appender输出源"><span class="toc-number">4.1.2.</span> <span class="toc-text">Appender输出源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layout布局器"><span class="toc-number">4.1.3.</span> <span class="toc-text">Layout布局器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置Log4j"><span class="toc-number">4.2.</span> <span class="toc-text">配置Log4j</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts国际化"><span class="toc-number">4.3.</span> <span class="toc-text">Struts国际化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建资源文件"><span class="toc-number">4.3.1.</span> <span class="toc-text">创建资源文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义JSP页面字符集合"><span class="toc-number">4.3.2.</span> <span class="toc-text">定义JSP页面字符集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在JSP页面中使用资源文件的内容"><span class="toc-number">4.3.3.</span> <span class="toc-text">在JSP页面中使用资源文件的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加校验器组件"><span class="toc-number">4.4.</span> <span class="toc-text">添加校验器组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用Sitemesh框架进行站点布局"><span class="toc-number">4.5.</span> <span class="toc-text">利用Sitemesh框架进行站点布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Struts_Tiles"><span class="toc-number">4.5.1.</span> <span class="toc-text">Struts Tiles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么使用Sitemesh"><span class="toc-number">4.5.2.</span> <span class="toc-text">为什么使用Sitemesh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何使用Sitemesh框架"><span class="toc-number">4.5.3.</span> <span class="toc-text">如何使用Sitemesh框架</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Struts框架小结"><span class="toc-number">5.</span> <span class="toc-text">Struts框架小结</span></a></li></ol>
+		
+		</div>
+		
+		<p>还记得在大学期间，老师讲完JSP后，由于时间关系把javaweb的所有主流框架都介绍了一遍，那会看到学java web还要去学那么多框架，瞬间感觉不爱了。那会还刚开始接触编程，对很多编程的概念都不是很熟悉，就直接让我们整这些高深的框架的知识，着实是对我学习编程的积极性的打击啊。学完jsp+servlet，已经能够做一些简单的系统了，感觉java web无非如此（呵呵，那会简直太天真了）。读研之后，在积累了一些代码量后，重新学习这些高大上的框架，才发现学习框架的价值。学习SSH（是Struts、Spring和Hibernate的简称）之余，写写博客，对一些Struts的知识做一些小结。<br><a id="more"></a></p>
+<h1 id="前言">前言</h1><hr>
+<p>Web框架都是由业务逻辑与数据展示之间的耦合度而来，在早期的Web开发中，JSP（Java Serve Page）既负责页面数据的展示，又负责实际业务逻辑的处理，一个JSP页面既有html元素，又有js代码还有java处理业务逻辑的代码，一旦业务逻辑变更，那修改一个JSP页面简直就是一个噩梦，程序的耦合性很大，为了降低程序的耦合，出现了JavaBean技术，在JavaBean中封装了业务处理的逻辑，JSP页面只负责数据的展示。这样就使得程序更好维护，实现了页面数据展示与业务逻辑处理的分离。</p>
+<p>虽然JavaBean技术的出现让程序的耦合程度降低了，但是还不能展示动态网页，最早解决该问题的技术是CGI（Common Gateway Interface），该技术原理是服务器将客户端的每次请求都交给一个程式，由该程式将执行的结果返回给客户端。该技术现在早已经被淘汰了，因为该技术的最大缺点就是太耗费资源，服务端不管客户端的请求是否相同都会产生一个新的process来响应客户端的请求。</p>
+<p>Servlet克服了CGI的缺点，并增加很多Java本身的优良特性，如跨平台。</p>
+<h1 id="MVC模式">MVC模式</h1><hr>
+<p>MVC模式，也叫模型-视图-控制器，Model层封装系统的业务处理逻辑，视图层负责数据的展示，控制层负责分发客户端的请求，把具体的处理任务交给相应的Model层处理，Model层处理完后将处理交给指定的视图，视图对处理结果展示在浏览器上。</p>
+<h2 id="Model_1">Model 1</h2><p>Model1是MVC思想的早期版本，该版本没有控制层，Model层既要处理业务逻辑，又负责请求的接收和响应，大概的执行流程如下：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Model1.jpg" alt="Model 1"></p>
+<h2 id="Model_2">Model 2</h2><p>Model 2在Model 1的基础上增加了控制层，这使得Model可以专心处理处理业务逻辑而不用管其他的事，控制层负责接收客户端的请求，并进行响应，Model 2使得程序之间的耦合度进一步降低。<br>Model 2的大致流程如下：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Model2.jpg" alt="Model 2"></p>
+<p>下面是一段引自Struts<a href="http://struts.apache.org/primer.html" target="_blank" rel="external">官方</a>的原话：</p>
+<blockquote>
+<p>In the MVC/Model 2 design pattern, application flow is mediated by a central Controller. The Controller delegates requests - in our case, HTTP requests - to an appropriate handler. The handlers are tied to a Model, and each handler acts as an adapter between the request and the Model. The Model represents, or encapsulates, an application’s business logic or state. Control is usually then forwarded back through the Controller to the appropriate View. The forwarding can be determined by consulting a set of mappings, usually loaded from a database or configuration file. This provides a loose coupling between the View and Model, which can make applications significantly easier to create and maintain.</p>
+</blockquote>
+<h1 id="Struts开发————入门篇">Struts开发————入门篇</h1><hr>
+<p>进行Struts开发需要搭建开发环境，主要就是一些jar包和一些配置文件，如果你使用MyEclipse开发，那么可以直接在项目添加Struts依赖包和需要的配置文件，这里不展开讲。</p>
+<h2 id="Struts框架原理">Struts框架原理</h2><hr>
+<p>为了理解方便，我自己画了一张图说明Struts的具体执行过程，请看下图：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Struts1.x框架图.jpg" alt="Struts1.x框架图"></p>
+<p>可以看到整个框架中，有5个核心类：ActionServlet、ActionMapping、Action、ActionForm和ActionForward，在实际的开发中也是围绕这5个类进行开发的，下面说明这5个类具体的作用：</p>
+<ul>
+<li>ActionServlet:<br>是Struts的核心类，相当于总控制器，一个系统只需要一个ActionServlet对象。主要作用是接收用户请求，所有的处理都需要经由该对象。</li>
+<li>ActionMapping:<br>映射器，根据请求的URL通过ActionMapping获得Action和ActionForm，然后将request的参数对应到ActionForm中，进行Form验证，如果验证通过会继续执行Action中的execute方法，最终返回ActionForward对象。</li>
+<li>Action:<br>可以把Action看作是客户请求、用户界面和逻辑处理的桥梁，一个Action处理一个操作，但是在一个Action中不要处理任何业务逻辑，把业务逻辑都交给一个JavaBean去处理</li>
+<li>ActionForm:<br>用于保存用户表单信息，实际上是对HTML表单的一个封装，ActionForm实际上一个JavaBean，表单中有多少个参数，ActionForm中就有多少个属性，每个属性都有setter和getter方法，是一个符合JavaBean规范的类。</li>
+<li>ActionForward:<br>由Action执行execute方法后返回，是对Struts-config.xml配置中mappng元素forward属性的封装，对应一个具体的URL路径地址，使用ActionForward可以减小应用程序和物理资源的耦合</li>
+</ul>
+<h2 id="开发流程">开发流程</h2><hr>
+<p>为了简明，编写一个简单的测试页面来说明Struts的实际开发流程：<br>需求：用户在一个表单中输入对应的信息后，点击提交，可以在另一个页面看到刚才输入的信息</p>
+<h3 id="编写测试页面：input-jsp">编写测试页面：input.jsp</h3><pre><code>&lt;form action=<span class="string">"test.do"</span> <span class="keyword">method</span>=<span class="string">"post"</span>&gt;
+    &lt;input <span class="keyword">type</span>=<span class="string">"text"</span> name=<span class="string">"str1"</span>/&gt;&lt;br&gt;
+    &lt;input <span class="keyword">type</span>=<span class="string">"text"</span> name=<span class="string">"str2"</span>/&gt;&lt;br&gt;
+    &lt;input <span class="keyword">type</span>=<span class="string">"submit"</span>/&gt;
+&lt;/form&gt;
+</code></pre><h3 id="配置表单和Action">配置表单和Action</h3><pre><code><span class="tag">&lt;<span class="title">form-beans</span>&gt;</span>
+    <span class="comment">&lt;!-- 测试表单组件 --&gt;</span>
+    <span class="tag">&lt;<span class="title">form-bean</span> <span class="attribute">name</span>=<span class="value">"testForm"</span> <span class="attribute">type</span>=<span class="value">"com.rhwayfun.ssh.struts.forms.TestForm"</span>&gt;</span><span class="tag">&lt;/<span class="title">form-bean</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form-beans</span>&gt;</span>
+<span class="tag">&lt;<span class="title">action-mappings</span>&gt;</span>
+    <span class="comment">&lt;!-- 配置test表单的action --&gt;</span>
+    <span class="tag">&lt;<span class="title">action</span> <span class="attribute">path</span>=<span class="value">"/test"</span> <span class="attribute">name</span>=<span class="value">"testForm"</span> <span class="attribute">scope</span>=<span class="value">"request"</span>
+        <span class="attribute">type</span>=<span class="value">"com.rhwayfun.ssh.struts.actions.TestFormAction"</span> <span class="attribute">input</span>=<span class="value">"/input.jsp"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">forward</span> <span class="attribute">name</span>=<span class="value">"success"</span> <span class="attribute">path</span>=<span class="value">"/success.jsp"</span>&gt;</span><span class="tag">&lt;/<span class="title">forward</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">forward</span> <span class="attribute">name</span>=<span class="value">"error"</span> <span class="attribute">path</span>=<span class="value">"/error.jsp"</span>&gt;</span><span class="tag">&lt;/<span class="title">forward</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">action</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">action-mappings</span>&gt;</span>
+</code></pre><h3 id="编写ActionForm">编写ActionForm</h3><pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestForm</span> <span class="keyword">extends</span> <span class="title">ActionForm</span> </span>{
+<span class="comment">//页面映射的表单组件有多少个表单参数，就有多少个属性</span>
+<span class="keyword">protected</span> String str1 = <span class="keyword">null</span>;
+<span class="keyword">protected</span> String str2 = <span class="keyword">null</span>;
+<span class="comment">/**
+ * <span class="doctag">@return</span> the str1
+ */</span>
+<span class="function"><span class="keyword">public</span> String <span class="title">getStr1</span><span class="params">()</span> </span>{
+    <span class="keyword">return</span> str1;
+}
+<span class="comment">/**
+ * <span class="doctag">@param</span> str1 the str1 to set
+ */</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStr1</span><span class="params">(String str1)</span> </span>{
+    <span class="keyword">this</span>.str1 = str1;
+}
+<span class="comment">/**
+ * <span class="doctag">@return</span> the str2
+ */</span>
+<span class="function"><span class="keyword">public</span> String <span class="title">getStr2</span><span class="params">()</span> </span>{
+    <span class="keyword">return</span> str2;
+}
+<span class="comment">/**
+ * <span class="doctag">@param</span> str2 the str2 to set
+ */</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStr2</span><span class="params">(String str2)</span> </span>{
+    <span class="keyword">this</span>.str2 = str2;
+}
+}
+</code></pre><h3 id="编写Action">编写Action</h3><pre><code>public <span class="class"><span class="keyword">class</span> <span class="title">TestFormAction</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">DispatchAction</span> {</span>
+    <span class="comment">//重写execute方法</span>
+public <span class="type">ActionForward</span> execute(<span class="type">ActionMapping</span> actionMapping,<span class="type">ActionForm</span> actionForm,
+        <span class="type">HttpServletRequest</span> request,<span class="type">HttpServletResponse</span> response) <span class="keyword">throws</span> <span class="type">Exception</span>{
+
+    <span class="type">ActionErrors</span> actionErrors = <span class="keyword">new</span> <span class="type">ActionErrors</span>();
+    <span class="type">ActionForward</span> actionForward = <span class="keyword">new</span> <span class="type">ActionForward</span>();
+    <span class="type">TestForm</span> testForm = (<span class="type">TestForm</span>) actionForm;
+
+    <span class="keyword">try</span> {
+        <span class="comment">//取得表单参数</span>
+        <span class="type">String</span> str1 = testForm.getStr1();
+        <span class="type">String</span> str2 = testForm.getStr2();
+
+        <span class="comment">//获取session对象</span>
+        <span class="type">HttpSession</span> session = request.getSession(<span class="literal">false</span>);
+        <span class="keyword">if</span>(session!=<span class="literal">null</span>){
+            <span class="comment">//清空session的消息</span>
+            session.invalidate();
+        }
+        <span class="comment">//创建一个新的session</span>
+        session = request.getSession(<span class="literal">true</span>);
+        <span class="comment">//把input.jsp页面的两个信息返回到success页面中</span>
+        session.setAttribute(<span class="type">Constants</span>.<span class="type">STR1_key</span>, str1);
+        session.setAttribute(<span class="type">Constants</span>.<span class="type">STR2_key</span>, str2);
+        <span class="comment">//调用业务逻辑处理</span>
+        <span class="comment">//...</span>
+    } <span class="keyword">catch</span> (<span class="type">Exception</span> e) {
+        e.printStackTrace();
+    }
+    <span class="comment">//判断是否有错误信息，有则保存错误信息，并跳转到错误页面，没有则跳转到成功页面</span>
+    <span class="keyword">if</span>(!actionErrors.isEmpty()){
+        saveErrors(request, actionErrors);
+        actionForward = actionMapping.findForward(<span class="string">"error"</span>);
+    }<span class="keyword">else</span>{
+        actionForward = actionMapping.findForward(<span class="string">"success"</span>);
+    }
+    <span class="keyword">return</span> actionForward;
+}
+}
+</code></pre><h3 id="部署并运行">部署并运行</h3><p>启动web服务器，把项目部署到服务器，启动服务器，如果能出现下面的结果，说明这个Struts程序开发顺利。</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/测试表单.jpg" alt="测试表单"><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/测试表单结果.jpg" alt="测试表单结果"></p>
+<h2 id="使用DBCP数据库连接池">使用DBCP数据库连接池</h2><hr>
+<h3 id="什么是数据库连接池">什么是数据库连接池</h3><p>我们知道数据库连接是一种有限、关键的资源，当有高并发的情况发生时，如果每个请求都去创建一个新的数据库连接，代价是相当昂贵的。为了解决高并发的情况，数据库连接池便出现了，数据库连接池就是时刻都放着一定数量数据库连接对象的连接池，对于池中的每一个数据库连接允许被重复使用，而不是重新建立一个数据库连接；同时，当有空闲的数据库连接的时候，能够释放该空闲的数据库连接。显然，数据库连接池能够很好满足高并发的需求。</p>
+<h3 id="添加DBCP连接池">添加DBCP连接池</h3><ul>
+<li>添加DBCP jar包和mysql驱动包<br>DBCP的依赖jar包有两个：commons-dbcp-1.2.2.jar和commons-pool-1.3.jar<br>mysql驱动包有一个：mysql-connector-java-5.1.18-bin.jar</li>
+<li>配置数据源</li>
+<li>使用数据源</li>
+</ul>
+<p>添加jar包后，需要在Struts-config.xml中配置数据源：</p>
+<pre><code>&lt;data-sources&gt;
+&lt;data-source type=<span class="string">"org.apache.commons.dbcp.BasicDataSource"</span>&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"driverClassName"</span>
+            value=<span class="string">"com.mysql.jdbc.Driver"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"url"</span>
+            value=<span class="string">"jdbc:mysql://localhost:3306/test"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"username"</span> value=<span class="string">"root"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"password"</span> value=<span class="string">"1209"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"maxActive"</span> value=<span class="string">"10"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"maxWait"</span> value=<span class="string">"5000"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"defaultAutoCommit"</span> value=<span class="string">"false"</span> /&gt;
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"defaultReadOnly"</span> value=<span class="string">"false"</span> /&gt;
+        &lt;!<span class="comment">-- 验证连接是否成功 --&gt;</span>
+        &lt;<span class="keyword">set</span>-<span class="keyword">property</span> <span class="keyword">property</span>=<span class="string">"validationQuery"</span>
+            value=<span class="string">"SELECT COUNT(*) FROM user"</span> /&gt;
+    &lt;/data-source&gt;
+&lt;/data-sources&gt;
+</code></pre><p>接着在JavaBean中使用数据源了，以一个表单登录验证为例：</p>
+<pre><code><span class="comment">//创建数据源对象</span>
+    DataSource dataSource = null;
+    Connection conn = null;
+    Statement st = null;
+    try {
+        <span class="comment">//这是Action类中方法，DispatchAction继承了该方法，所以可以直接调用</span>
+        dataSource = getDataSource<span class="params">(request)</span>;
+        conn = dataSource.getConnection<span class="params">()</span>;
+        st = conn.createStatement<span class="params">()</span>;
+        String sql = <span class="string">"select * from user where name='"</span> + loginForm.getUsername<span class="params">()</span> 
+        + <span class="string">"' and password='"</span> + loginForm.getPassword<span class="params">()</span> + <span class="string">"'"</span>;
+        ResultSet rs = st.executeQuery<span class="params">(sql)</span>;
+        <span class="keyword">if</span><span class="params">(rs.next<span class="params">()</span>)</span>{
+            isValid = <span class="literal">true</span>;
+        }
+        <span class="comment">//关闭连接</span>
+        rs.close<span class="params">()</span>;
+        st.close<span class="params">()</span>;
+        conn.close<span class="params">()</span>;
+    } catch <span class="params">(Exception e)</span> {
+        e.printStackTrace<span class="params">()</span>;
+    }
+</code></pre><h1 id="Struts开发————进阶篇">Struts开发————进阶篇</h1><hr>
+<p>进阶部分包括使用Log4j日志管理工具、Validator校验器组件和Sitemesh站点布局，各块都是相互独立的，可以根据实际项目中的需求自由选择，下面就来看看：</p>
+<h2 id="使用Log4j">使用Log4j</h2><p>Log4j是一个日志管理工具，主要作用跟踪代码运行轨迹，对程序进行调试。Log4j包含3个组件：</p>
+<ul>
+<li>Logger:日志记录器</li>
+<li>Appender：控制日志记录操作的输出</li>
+<li>Layout：布局管理器</li>
+</ul>
+<h3 id="Logger日志记录器">Logger日志记录器</h3><p>日志记录器（Logger）是日志处理的核心组件，包括5种正常级别：</p>
+<ul>
+<li>DEBUG：调试程序时的输出信息</li>
+<li>INFO：程序运行期间的输出信息</li>
+<li>WARN：会出现潜在错误的信息</li>
+<li>ERROR：指程序中出现错误，但不影响程序运行的信息</li>
+<li>FATAL：指导致程序退出的运行信息</li>
+</ul>
+<p>创建一个Logger的方法很简单：</p>
+<pre><code><span class="title">Logger</span> logger = Logger.getLogger(<span class="string">"Mylogger"</span>);
+</code></pre><p>也可以很方便的设置级别：</p>
+<pre><code><span class="tag">Level</span><span class="class">.DEBUG</span>;
+...
+</code></pre><h3 id="Appender输出源">Appender输出源</h3><p>指的是日志记录输出的目的地。每个Logger可以有多个Appender，但是相同的Appender只能被添加一次。</p>
+<h3 id="Layout布局器">Layout布局器</h3><p>一个Appender必须有一个Layout，这样Appender才能格式化输出日志记录信息，常用的布局管理器有三种：</p>
+<ul>
+<li>HTMLLayout：格式化输出为HTML表格</li>
+<li>PatternLayout：根据指定的转换模式格式化输出</li>
+<li>SimpleLayout：使用简单的格式输出日志记录信息，一般后面跟上破折号</li>
+</ul>
+<h2 id="配置Log4j">配置Log4j</h2><p>最常用的是使用property文件的形式配置Log4j，一个典型的Log4j配置如下：</p>
+<pre><code><span class="header">## LOGGERS ##</span>
+log4j.rootLogger=INFO,console,file
+
+<span class="header">## APPENDERS ##</span>
+<span class="header"># define an appender named console, which is set to be a ConsoleAppender</span>
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+
+<span class="header"># define an appender named file, which is set to be a RollingFileAppender</span>
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=d:/demo_log.txt
+
+<span class="header">#set the log's size</span>
+log4j.appender.file.MaxFileSize=1000KB
+log4j.appender.file.MaxBackupIndex=20
+
+<span class="header">## LAYOUTS ##</span>
+<span class="header"># assign a SimpleLayout to console appender</span>
+log4j.appender.console.layout=org.apache.log4j.SimpleLayout
+
+<span class="header"># assign a PatternLayout to file appender</span>
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+
+<span class="header"># For debug</span>
+log4j.appender.file.layout.ConversionPattern=[<span class="link_label">%-5p</span>][<span class="link_reference">%t</span>][<span class="link_label">%C</span>][<span class="link_reference">%d{yyyy-MM-dd HH:mm:ss}</span>] %m%n
+<span class="header"># For deployment</span>
+log4j.appender.file.layout.ConversionPattern=[<span class="link_label">%-5p</span>][<span class="link_reference">%d{yyyy-MM-dd HH:mm:ss}</span>] %m%n
+</code></pre><h2 id="Struts国际化">Struts国际化</h2><p>所谓国际化，就是使软件支持多种语言和地区的功能；本地化指软件要支持新的地区和语言的时候，要重新编译程序，修改本地代码。显然，本地化的步骤繁琐，国际化才是主流。而Struts正好解决了这个问题，通过使用一些标签库和资源文件，达到适用语言的要求。说到底，主要还是编码的问题，因为一个汉字需要两个字节，一个字母只需要一个字节，这就势必造成编码的不一致，一种解决方案就是目前主流的Unicode编码方案。那么如何使用Struts实现软件的国际化呢？</p>
+<p>通常要实现国际化，需要经过以下几个步骤：</p>
+<ul>
+<li>创建资源文件</li>
+<li>定义JSP页面的字符集合</li>
+<li>在JSP页面中使用资源文件中的内容</li>
+</ul>
+<p>为了理解方便，仍以之前的测试表单为例：</p>
+<h3 id="创建资源文件">创建资源文件</h3><pre><code><span class="id">#ApplicationResources_zh_CN</span><span class="class">.properties</span>
+testForm<span class="class">.page</span><span class="class">.str1</span> = 用户名
+testForm<span class="class">.page</span><span class="class">.str2</span> = 密码
+testForm<span class="class">.page</span><span class="class">.submit</span> = 确定
+
+<span class="id">#ApplicationResources</span><span class="class">.properties</span>
+testForm<span class="class">.page</span><span class="class">.str1</span> = USERNAME
+testForm<span class="class">.page</span><span class="class">.str2</span> = PASSWORD
+testForm<span class="class">.page</span><span class="class">.submit</span> = CONFIRM
+</code></pre><h3 id="定义JSP页面字符集合">定义JSP页面字符集合</h3><p>该测试表单只有两个元素，已经定义在上面的代码中</p>
+<h3 id="在JSP页面中使用资源文件的内容">在JSP页面中使用资源文件的内容</h3><pre><code>&lt;<span class="tag">form</span> action=<span class="string">"test.do"</span> method=<span class="string">"post"</span>&gt;
+    &lt;bean:message key=<span class="string">"testForm.page.str1"</span>/&gt;
+    &lt;<span class="tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"str1"</span>/&gt;&lt;br&gt;
+
+     &lt;bean:message key=<span class="string">"testForm.page.str2"</span>/&gt;
+    &lt;<span class="tag">input</span> type=<span class="string">"text"</span> name=<span class="string">"str2"</span>/&gt;&lt;br&gt;
+    &lt;<span class="tag">input</span> type=<span class="string">"submit"</span> value=<span class="string">" &lt;bean:message key="</span>testForm<span class="class">.page</span><span class="class">.submit</span><span class="string">"/&gt;"</span>/&gt;
+&lt;/form&gt;
+</code></pre><h2 id="添加校验器组件">添加校验器组件</h2><p>在Struts中ActionServlet接收到客户端的请求根据ActionMapping查找ActionForm和Action，所以可以在ActionForm中添加Validate校验，仍然以上面的例子进行说明：加入必须要用户名和密码都不为空才进入到成功页面，可以编写一个ActionForm类继承ActionForm，在该ActionForm子类中添加校验方法：</p>
+<pre><code>public ActionForward execute<span class="params">(ActionMapping actionMapping,
+        ActionForm actionForm, HttpServletRequest request,
+        HttpServletResponse response)</span> throws Exception {
+
+    <span class="comment">// 错误保存对象</span>
+    ActionErrors actionErrors = new ActionErrors<span class="params">()</span>;
+    <span class="comment">// 请求转发对象</span>
+    ActionForward actionForward = new ActionForward<span class="params">()</span>;
+    <span class="comment">// 请求表单对象</span>
+    LoginForm loginForm = <span class="params">(LoginForm)</span> actionForm;
+
+    try {
+        <span class="comment">// 取得表单参数</span>
+        String username = loginForm.getUsername<span class="params">()</span>;
+        String password = loginForm.getPassword<span class="params">()</span>;
+
+        <span class="comment">// 获取session</span>
+        HttpSession session = request.getSession<span class="params">(<span class="literal">false</span>)</span>;
+        <span class="comment">// 判断session对象是否为空，如果为空则清空session信息，重新获取session对象</span>
+        <span class="keyword">if</span> <span class="params">(session != null)</span> {
+            session.invalidate<span class="params">()</span>;
+        }
+
+        <span class="comment">// 创建一个新的session</span>
+        session = request.getSession<span class="params">(<span class="literal">true</span>)</span>;
+
+        logger.info<span class="params">(<span class="string">"User "</span> + <span class="string">"["</span> + DateFormatUtil.format<span class="params">(new Date<span class="params">()</span>)</span> + <span class="string">"]"</span>
+                + username + <span class="string">" login"</span>)</span>;
+        <span class="comment">/*
+         * //验证登录(非数据库连接验证，本地验证) boolean isValid = false;
+         * if(username.equals("admin") &amp;&amp; password.equals("admin")){ isValid
+         * = true; }
+         */</span>
+        boolean isValid = validate<span class="params">(request, loginForm)</span>;
+        <span class="keyword">if</span> <span class="params">(isValid)</span> {
+            <span class="comment">// 把username属性保存在session中</span>
+            session.setAttribute<span class="params">(Constants.USERNAME_KEY, username)</span>;
+        } <span class="keyword">else</span> {
+            actionErrors.add<span class="params">(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage<span class="params">(<span class="string">"login.message.failed"</span>)</span>)</span>;
+        }
+
+    } catch <span class="params">(Exception e)</span> {
+        actionErrors.add<span class="params">(ActionMessages.GLOBAL_MESSAGE, new ActionMessage<span class="params">(
+                <span class="string">"login.message.failed"</span>)</span>)</span>;
+    }
+    <span class="comment">// 判断是否有错误信息，有则保存错误信息，并跳转到错误页面，没有则跳转到成功页面</span>
+    <span class="keyword">if</span> <span class="params">(!actionErrors.isEmpty<span class="params">()</span>)</span> {
+        saveErrors<span class="params">(request, actionErrors)</span>;
+        <span class="comment">//</span>
+        request.setAttribute<span class="params">(<span class="string">"loginFormBean"</span>, loginForm)</span>;
+        actionForward = actionMapping.findForward<span class="params">(Constants.FAILURE_KEY)</span>;
+    } <span class="keyword">else</span> {
+        actionForward = actionMapping.findForward<span class="params">(Constants.SUCCESS_KEY)</span>;
+    }
+    return actionForward;
+}
+</code></pre><p>可以发现在Action中的错误信息是作为GLOBAL_MESSAGE（全局消息）而存在的。</p>
+<h2 id="利用Sitemesh框架进行站点布局">利用Sitemesh框架进行站点布局</h2><p>Sitemesh技术的主要作用就是可以统一界面风格，就是进行网站的统一的框架布局。在Sitemesh出现之前是Struts的Tiles，其主要作用也是为了统一框架布局的，但是每次创建新的jsp页面都要把其他无关的框架信息加进来，但是这些信息是必须的，所以编写效率不高。而Sitemesh的出现真噶后解决了这个问题，开发人员人员可以只专注核心模块的页面编写，Sitemesh会自动把其他需要的框架模块引进来，可以提高开发效率。</p>
+<h3 id="Struts_Tiles">Struts Tiles</h3><p>Struts Tiles的布局思路是这样的：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Struts%20Tiles布局思路1.jpg" alt="Struts Tiles布局思路"></p>
+<h3 id="为什么使用Sitemesh">为什么使用Sitemesh</h3><p>Sitemesh布局思路是这样的：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Sitemesh布局思路.jpg" alt="Sitemesh布局思路"></p>
+<p>Sitemesh在设计上遵循了Java中<a href="http://baike.baidu.com/link?url=jvy02oFBCv9SGHhmiR4vQqSHFTGSg0GUYAIImXN302DrzQvMqOB6g5TTKwKR-Zxh_W9TfutnTZVJuRm5-2g-H_" target="_blank" rel="external">装饰者模式</a>，Sitemesh相比Struts Tiles的最大特性是任何需要装饰的页面都不知道它将被哪个页面装饰，基于此，所以该装饰者就可以装饰任何需要被装饰的PHP、ASP、ASP.NET、JSP页面了，实际上，它就是一个过滤器，在配置文件中可以指定要被过滤的页面请求。</p>
+<h3 id="如何使用Sitemesh框架">如何使用Sitemesh框架</h3><p>要使用Sitemesh框架需要首先安装该框架，主要是一个jar包和两个tld文件：</p>
+<ul>
+<li>sitemesh-2.3.jar</li>
+<li>sitemesh-decorator.tld</li>
+<li>sitemesh-page.tld</li>
+</ul>
+<p>接下来就是配置Sitemesh框架了，在web.xml中添加如下配置，主要是为了加载上面的依赖文件：</p>
+<pre><code><span class="comment">&lt;!-- 配置Sitemesh过滤器 --&gt;</span>
+<span class="tag">&lt;<span class="title">filter</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>sitemesh<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">filter-class</span>&gt;</span>
+        com.opensymphony.module.sitemesh.filter.PageFilter
+    <span class="tag">&lt;/<span class="title">filter-class</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">filter</span>&gt;</span>
+<span class="tag">&lt;<span class="title">filter-mapping</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>sitemesh<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">filter-mapping</span>&gt;</span>
+<span class="comment">&lt;!-- 配置Sitemesh标签库 --&gt;</span>
+    <span class="tag">&lt;<span class="title">taglib</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">taglib-uri</span>&gt;</span>/WEB-INF/sitemesh-page.tld<span class="tag">&lt;/<span class="title">taglib-uri</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">taglib-location</span>&gt;</span>
+            /WEB-INF/sitemesh-page.tld
+        <span class="tag">&lt;/<span class="title">taglib-location</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">taglib</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">taglib</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">taglib-uri</span>&gt;</span>/WEB-INF/sitemesh-decorator.tld<span class="tag">&lt;/<span class="title">taglib-uri</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">taglib-location</span>&gt;</span>
+            /WEB-INF/sitemesh-decorator.tld
+        <span class="tag">&lt;/<span class="title">taglib-location</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">taglib</span>&gt;</span>
+</code></pre><p>然后是创建装饰着配置文件了（decorator.xml）:</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="comment">&lt;!-- 将一个装饰器名字同一个特定的jsp页面绑定
+    defaultdir：指定装饰器jsp页面的存放位置
+    name：装饰器的名称
+    page：jsp装饰文件
+    pattern：表示要装饰的页面匹配符，/*表示装饰所有的页面
+ --&gt;</span>
+<span class="tag">&lt;<span class="title">decorators</span> <span class="attribute">defaultdir</span>=<span class="value">"/decorators"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">decorator</span> <span class="attribute">name</span>=<span class="value">"frame"</span> <span class="attribute">page</span>=<span class="value">"frame.jsp"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">pattern</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">decorator</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">decorators</span>&gt;</span>
+</code></pre><p>最后是建立装饰者页面了，页面可以需求自己定制，这里就不展示了，源码在<a href="http://pan.baidu.com/s/1kTGj1bD" target="_blank" rel="external">这里</a>。</p>
+<h1 id="Struts框架小结">Struts框架小结</h1><p>Struts框架我也是刚接触不久，学了一段时间，仍然还有许多问题不是很清楚，这边博客说不上有多高的技术含量，至少把我自己学习Struts过程中知识系统梳理了一遍，虽然还没有真正运用到实际的项目中，不过我下一阶段的目标就是将现在的项目用Struts独立完成一遍，从而巩固Struts框架的知识以及对Struts的理解。</p>
+<p>之前看到一片帖子，是关于如何学习框架的，大概说学习框架要经历以下一个学习过程，才能对框架融会贯通：</p>
+<ul>
+<li>看文档</li>
+<li>写入门程序</li>
+<li>运用到实际项目中</li>
+<li>自己写一个类似的框架</li>
+<li>比较两者之间的优劣</li>
+</ul>
+<p>楼主不才，还只到第三步，不过框架这种东西我觉得能够知道怎么使用以及如何使用框架解决现实问题才是更重要的，毕竟，不是每个人都有能力写一个框架出来，所谓量力而行嘛。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/SSH/">SSH</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Struts2/">Struts2</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/struts2-learning-4/" data-title="Struts2框架学习之四：感受Struts 1 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/algorithm-learning-linkedlist/" title="数据结构之存储结构">
+  <strong>上一篇：</strong><br/>
+  <span>
+  数据结构之存储结构</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/mybatis-learning-things-2/"  title="Mybatis学习笔记（二）">
+ <strong>下一篇：</strong><br/> 
+ <span>Mybatis学习笔记（二）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/struts2-learning-4/" data-title="Struts2框架学习之四：感受Struts 1" data-url="http://rhwayfun.com/post/struts2-learning-4/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MVC模式"><span class="toc-number">2.</span> <span class="toc-text">MVC模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Model_1"><span class="toc-number">2.1.</span> <span class="toc-text">Model 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Model_2"><span class="toc-number">2.2.</span> <span class="toc-text">Model 2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Struts开发————入门篇"><span class="toc-number">3.</span> <span class="toc-text">Struts开发————入门篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts框架原理"><span class="toc-number">3.1.</span> <span class="toc-text">Struts框架原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发流程"><span class="toc-number">3.2.</span> <span class="toc-text">开发流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编写测试页面：input-jsp"><span class="toc-number">3.2.1.</span> <span class="toc-text">编写测试页面：input.jsp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置表单和Action"><span class="toc-number">3.2.2.</span> <span class="toc-text">配置表单和Action</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编写ActionForm"><span class="toc-number">3.2.3.</span> <span class="toc-text">编写ActionForm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编写Action"><span class="toc-number">3.2.4.</span> <span class="toc-text">编写Action</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署并运行"><span class="toc-number">3.2.5.</span> <span class="toc-text">部署并运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用DBCP数据库连接池"><span class="toc-number">3.3.</span> <span class="toc-text">使用DBCP数据库连接池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是数据库连接池"><span class="toc-number">3.3.1.</span> <span class="toc-text">什么是数据库连接池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加DBCP连接池"><span class="toc-number">3.3.2.</span> <span class="toc-text">添加DBCP连接池</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Struts开发————进阶篇"><span class="toc-number">4.</span> <span class="toc-text">Struts开发————进阶篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用Log4j"><span class="toc-number">4.1.</span> <span class="toc-text">使用Log4j</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Logger日志记录器"><span class="toc-number">4.1.1.</span> <span class="toc-text">Logger日志记录器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Appender输出源"><span class="toc-number">4.1.2.</span> <span class="toc-text">Appender输出源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layout布局器"><span class="toc-number">4.1.3.</span> <span class="toc-text">Layout布局器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置Log4j"><span class="toc-number">4.2.</span> <span class="toc-text">配置Log4j</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts国际化"><span class="toc-number">4.3.</span> <span class="toc-text">Struts国际化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建资源文件"><span class="toc-number">4.3.1.</span> <span class="toc-text">创建资源文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义JSP页面字符集合"><span class="toc-number">4.3.2.</span> <span class="toc-text">定义JSP页面字符集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在JSP页面中使用资源文件的内容"><span class="toc-number">4.3.3.</span> <span class="toc-text">在JSP页面中使用资源文件的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加校验器组件"><span class="toc-number">4.4.</span> <span class="toc-text">添加校验器组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用Sitemesh框架进行站点布局"><span class="toc-number">4.5.</span> <span class="toc-text">利用Sitemesh框架进行站点布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Struts_Tiles"><span class="toc-number">4.5.1.</span> <span class="toc-text">Struts Tiles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么使用Sitemesh"><span class="toc-number">4.5.2.</span> <span class="toc-text">为什么使用Sitemesh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何使用Sitemesh框架"><span class="toc-number">4.5.3.</span> <span class="toc-text">如何使用Sitemesh框架</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Struts框架小结"><span class="toc-number">5.</span> <span class="toc-text">Struts框架小结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

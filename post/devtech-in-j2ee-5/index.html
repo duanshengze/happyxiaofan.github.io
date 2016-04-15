@@ -1,0 +1,847 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JavaEE开发技术点5：Tomcat jdbc数据库连接池 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言数据库连接是一种昂贵的资源，当有多个用户访问网页的时候，对程序的性能与稳定性都有要求。数据库连接池就是为了解决这个问题的，数据库连接池负责创建、管理并释放连接。连接池中的连接可以被多个程序使用，这样就降低了创建数据库连接的开销。数据库连接池的原理也很简单，就是首先在内存存放一定数量的数据库连接，当请求的时候就从连接池中获取一个连接，该请求用完数据库连接后就会释放，于是这个连接就可以被其他程序请">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaEE开发技术点5：Tomcat jdbc数据库连接池">
+<meta property="og:url" content="http://rhwayfun.com/post/devtech-in-j2ee-5/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言数据库连接是一种昂贵的资源，当有多个用户访问网页的时候，对程序的性能与稳定性都有要求。数据库连接池就是为了解决这个问题的，数据库连接池负责创建、管理并释放连接。连接池中的连接可以被多个程序使用，这样就降低了创建数据库连接的开销。数据库连接池的原理也很简单，就是首先在内存存放一定数量的数据库连接，当请求的时候就从连接池中获取一个连接，该请求用完数据库连接后就会释放，于是这个连接就可以被其他程序请">
+<meta property="og:image" content="http://img.blog.csdn.net/20151127152454336">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaEE开发技术点5：Tomcat jdbc数据库连接池">
+<meta name="twitter:description" content="前言数据库连接是一种昂贵的资源，当有多个用户访问网页的时候，对程序的性能与稳定性都有要求。数据库连接池就是为了解决这个问题的，数据库连接池负责创建、管理并释放连接。连接池中的连接可以被多个程序使用，这样就降低了创建数据库连接的开销。数据库连接池的原理也很简单，就是首先在内存存放一定数量的数据库连接，当请求的时候就从连接池中获取一个连接，该请求用完数据库连接后就会释放，于是这个连接就可以被其他程序请">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/devtech-in-j2ee-5/" title="JavaEE开发技术点5：Tomcat jdbc数据库连接池" itemprop="url">JavaEE开发技术点5：Tomcat jdbc数据库连接池</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-30T15:42:03.000Z" itemprop="datePublished"> 发表于 2015-11-30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong><br>数据库连接是一种昂贵的资源，当有多个用户访问网页的时候，对程序的性能与稳定性都有要求。数据库连接池就是为了解决这个问题的，数据库连接池负责创建、管理并释放连接。连接池中的连接可以被多个程序使用，这样就降低了创建数据库连接的开销。数据库连接池的原理也很简单，就是首先在内存存放一定数量的数据库连接，当请求的时候就从连接池中获取一个连接，该请求用完数据库连接后就会释放，于是这个连接就可以被其他程序请求。可以通过设置连接池的参数来控制连接池中的初始连接数、连接的上下限数以及每个连接的最大使用次数、最大空闲时间等等。<br><a id="more"></a></p>
+<p><strong>自己实现一个数据库连接池</strong><br>目前主流的数据库连接池有dbcp、c3p0和proxool。其实现原理与上面都差不多，为了更好理解数据库连接池，我们手写一个连接池：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package cp;&#10;&#10;import java.io.IOException;&#10;import java.io.InputStream;&#10;import java.sql.Connection;&#10;import java.sql.DriverManager;&#10;import java.sql.SQLException;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;import java.util.Properties;&#10;&#10;public class ConnectoinPool &#123;&#10;&#10;    //&#23384;&#25918;Connection&#23545;&#35937;&#30340;&#38598;&#21512;&#10;    private List&#60;Connection&#62; cons = null;&#10;    private String driver = null;&#10;    private String url = null;&#10;    private String user = null;&#10;    private String password = null;&#10;    //&#36830;&#25509;&#27744;&#20013;&#36830;&#25509;&#30340;&#32034;&#24341;&#10;    private int index = 0;&#10;    //&#25968;&#25454;&#24211;&#36830;&#25509;&#27744;&#20013;&#40664;&#35748;&#22823;&#23567;&#10;    private int size = 5;&#10;    &#10;    public ConnectoinPool()&#123;&#10;        try &#123;&#10;            init();&#10;        &#125; catch (SQLException e) &#123;&#10;            e.printStackTrace();&#10;        &#125; catch (ClassNotFoundException e) &#123;&#10;            e.printStackTrace();&#10;        &#125; catch (IOException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;    &#125;&#10;    &#10;    public ConnectoinPool(int size) &#123;&#10;        this.size = size;&#10;        try &#123;&#10;            init();&#10;        &#125; catch (SQLException e) &#123;&#10;            e.printStackTrace();&#10;        &#125; catch (ClassNotFoundException e) &#123;&#10;            e.printStackTrace();&#10;        &#125; catch (IOException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;    &#125;&#10;&#10;    //&#21021;&#22987;&#21270;&#10;    private void init() throws SQLException, ClassNotFoundException, IOException&#123;&#10;        this.cons = new ArrayList&#60;Connection&#62;();&#10;        parseProperties();&#10;        Class.forName(driver);&#10;        for(int i=0;i&#60;size;i++)&#123;&#10;            Connection con = DriverManager.getConnection(url,user,password);&#10;            cons.add(con);&#10;        &#125;&#10;    &#125;&#10;&#10;    //&#35835;&#21462;properties&#25991;&#20214;&#30340;&#20449;&#24687;&#10;    private void parseProperties() throws IOException &#123;&#10;        Properties p = new Properties();&#10;        InputStream in = getClass().getResourceAsStream(&#34;/db.properties&#34;);&#10;        p.load(in);&#10;        if(p.containsKey(&#34;driver&#34;))&#123;&#10;            driver = p.getProperty(&#34;driver&#34;);&#10;        &#125;&#10;        if(p.containsKey(&#34;url&#34;))&#123;&#10;            url = p.getProperty(&#34;url&#34;);&#10;        &#125;&#10;        if(p.containsKey(&#34;user&#34;))&#123;&#10;            user = p.getProperty(&#34;user&#34;);&#10;        &#125;&#10;        if(p.containsKey(&#34;password&#34;))&#123;&#10;            password = p.getProperty(&#34;password&#34;);&#10;        &#125;&#10;    &#125;&#10;    &#10;    //&#33719;&#21462;&#36830;&#25509;&#10;    public Connection getConnection()&#123;&#10;        Connection con = cons.remove(size-1-index++);&#10;        return con;&#10;    &#125;&#10;    &#10;    //&#37322;&#25918;&#36830;&#25509;&#10;    public void release(Connection con) throws SQLException&#123;&#10;        cons.add(con);&#10;        index--;&#10;        con.close();&#10;    &#125;&#10;    &#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建db.properties配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">driver=com.mysql.jdbc.Driver&#10;url=jdbc:mysql://localhost/test?useUnicode=true&#38;charset=utf8&#10;user=root&#10;password=1234</span><br></pre></td></tr></table></figure></p>
+<p>然后编写主程序测试各功能是否正常：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package cp;&#10;&#10;import java.sql.Connection;&#10;import java.sql.SQLException;&#10;public class TestCp &#123;&#10;    public static void main(String[] args) throws SQLException &#123;&#10;        // &#21019;&#24314;&#19968;&#20010;&#25968;&#25454;&#24211;&#36830;&#25509;&#27744;&#10;        ConnectoinPool cp = new ConnectoinPool();&#10;        // &#33719;&#21462;&#19968;&#20010;&#36830;&#25509;&#10;        Connection con1 = cp.getConnection();&#10;        System.out.println(con1);&#10;        //&#37322;&#25918;&#36825;&#20010;&#36830;&#25509;&#10;        cp.release(con1);&#10;        // &#33719;&#21462;&#19968;&#20010;&#36830;&#25509;&#10;        Connection con2 = cp.getConnection();&#10;        System.out.println(con2);&#10;        // &#33719;&#21462;&#19968;&#20010;&#36830;&#25509;&#10;        Connection con3 = cp.getConnection();&#10;        System.out.println(con3);&#10;        // &#33719;&#21462;&#19968;&#20010;&#36830;&#25509;&#10;        Connection con4 = cp.getConnection();&#10;        System.out.println(con4);&#10;        // &#33719;&#21462;&#19968;&#20010;&#36830;&#25509;&#10;        Connection con5 = cp.getConnection();&#10;        System.out.println(con5);&#10;        // &#33719;&#21462;&#19968;&#20010;&#36830;&#25509;&#10;        Connection con6 = cp.getConnection();&#10;        System.out.println(con6);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以发现，默认连接池有5个连接对象，在释放第一个连接后，连接池仍然有5个连接，所以在程序中创建第6个连接的时候没有报错。</p>
+<p>当然这个程序问题很多，比如不能高访问量的情况，而且是单线程的。实际情况应该是，当用户请求一个连接的时候应该创建一个线程处理，这个线程决定该连接何时释放给连接池。通过上面的简单程序，知道了连接池管理数据库连接的原理。下面我们再看看第三方的数据库连接池的使用。</p>
+<p><strong>Tomcat7 jdbc pool</strong><br>要知道在Tomcat7以前的版本中，使用的都是dbcp连接池，但是这个连接池bug太多，Hibernate官方宣布已经不再支持dbcp连接池dbcp连接池的主要问题：</p>
+<ol>
+<li>dbcp 是单线程的，为了保证线程安全会锁整个连接池</li>
+<li>jdk1.6编译有问题</li>
+<li>结构太复杂</li>
+</ol>
+<p>而jdbc pool在克服以上缺点的情况下，还增加了许多优良特性，详情请看<a href="https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html" target="_blank" rel="external">这里</a></p>
+<p>其中涉及的异步方式获取连接暂时还不懂，先来学习一下如何在独立的应用中获取连接。首先需要导入Tomcat7官方给的两个jar包：<br><strong>tomcat-juli.jar（Tomcat的日志模块，在bin目录下）</strong><br><strong>tomcat-jdbc.jar（jdbc pool连接池，在lib目录下）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package cp;&#10;&#10;import java.io.IOException;&#10;import java.io.InputStream;&#10;import java.sql.Connection;&#10;import java.sql.ResultSet;&#10;import java.sql.SQLException;&#10;import java.sql.Statement;&#10;import java.util.Properties;&#10;&#10;import org.apache.tomcat.jdbc.pool.DataSource;&#10;import org.apache.tomcat.jdbc.pool.PoolProperties;&#10;&#10;public class TomcatJdbcPool &#123;&#10;&#10;    private String driver = null;&#10;    private String url = null;&#10;    private String user = null;&#10;    private String password = null;&#10;    private DataSource datasource = null;&#10;&#10;    public TomcatJdbcPool() &#123;&#10;        this.datasource = new DataSource();&#10;        try &#123;&#10;            parseProperties();&#10;            initPoolProperties();&#10;        &#125; catch (IOException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;    &#125;&#10;&#10;    // &#35835;&#21462;properties&#25991;&#20214;&#30340;&#20449;&#24687;&#10;    private void parseProperties() throws IOException &#123;&#10;        Properties p = new Properties();&#10;        InputStream in = getClass().getResourceAsStream(&#34;/db.properties&#34;);&#10;        p.load(in);&#10;        if (p.containsKey(&#34;driver&#34;)) &#123;&#10;            driver = p.getProperty(&#34;driver&#34;);&#10;        &#125;&#10;        if (p.containsKey(&#34;url&#34;)) &#123;&#10;            url = p.getProperty(&#34;url&#34;);&#10;        &#125;&#10;        if (p.containsKey(&#34;user&#34;)) &#123;&#10;            user = p.getProperty(&#34;user&#34;);&#10;        &#125;&#10;        if (p.containsKey(&#34;password&#34;)) &#123;&#10;            password = p.getProperty(&#34;password&#34;);&#10;        &#125;&#10;    &#125;&#10;&#10;    private void initPoolProperties() &#123;&#10;        PoolProperties p = new PoolProperties();&#10;        p.setUrl(url); // url&#10;        p.setDriverClassName(driver); // &#39537;&#21160;&#10;        p.setUsername(user); // &#29992;&#25143;&#21517;&#10;        p.setPassword(password); // &#23494;&#30721;&#10;        p.setJmxEnabled(true); // &#36890;&#36807;JMX&#27880;&#20876;&#36830;&#25509;&#27744;&#10;        p.setTestWhileIdle(false); // &#34987;&#31354;&#38386;&#23545;&#35937;&#20351;&#29992;&#30340;&#26102;&#20505;&#36830;&#25509;&#26159;&#21542;&#26377;&#25928;&#10;        p.setTestOnBorrow(true); // &#22312;&#34987;&#23545;&#35937;&#25343;&#36208;&#20043;&#21069;&#36830;&#25509;&#26159;&#21542;&#26377;&#25928;&#10;        p.setValidationQuery(&#34;SELECT 1&#34;); // &#27979;&#35797;&#26159;&#21542;&#20026;&#26377;&#25928;&#36830;&#25509;&#10;        p.setTestOnReturn(false); // &#36830;&#25509;&#36820;&#22238;&#36830;&#25509;&#27744;&#20043;&#21069;&#26159;&#21542;&#26377;&#25928;&#10;        p.setTimeBetweenEvictionRunsMillis(30000); // &#39564;&#35777;&#32447;&#31243;&#19982;&#28165;&#38500;&#32447;&#31243;&#20043;&#38388;&#30340;&#27627;&#31186;&#25968;&#10;        p.setMaxActive(100); // &#26368;&#22823;&#30340;&#27963;&#21160;&#30340;&#36830;&#25509;&#25968;&#10;        p.setInitialSize(10); // &#21021;&#22987;&#21270;&#36830;&#25509;&#27744;&#22823;&#23567;&#10;        p.setMaxWait(10000); // &#36830;&#25509;&#27744;&#31561;&#24453;&#36830;&#25509;&#36820;&#22238;&#30340;&#26368;&#38271;&#26102;&#38388;&#10;        p.setRemoveAbandonedTimeout(60); // &#35774;&#32622;&#24223;&#24323;&#36830;&#25509;&#34987;&#31227;&#38500;&#20043;&#21069;&#30340;&#27627;&#31186;&#25968;&#10;        p.setMinIdle(10); // &#26368;&#23567;&#31354;&#38386;&#36830;&#25509;&#25968;&#10;        p.setLogAbandoned(true); // &#26631;&#35760;&#24223;&#24323;&#36830;&#25509;&#30340;&#22534;&#26632;&#36319;&#36394;&#10;        p.setRemoveAbandoned(true); // &#36229;&#26102;&#21518;&#26159;&#21542;&#21487;&#20197;&#31227;&#38500;&#36830;&#25509;&#10;        p.setJdbcInterceptors(&#34;org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;&#34;&#10;                + &#34;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer&#34;);&#10;        // jdbc&#25318;&#25130;&#22120;&#10;        datasource.setPoolProperties(p); // &#35774;&#32622;p&#21040;&#25968;&#25454;&#28304;&#20013;&#10;    &#125;&#10;&#10;    public Connection getTomcatJdbcPoolConnection() &#123;&#10;        Connection con = null;&#10;        try &#123;&#10;            con = datasource.getConnection(); // &#36890;&#36807;&#25968;&#25454;&#28304;&#33719;&#21462;&#36830;&#25509;&#10;            Statement st = con.createStatement();&#10;            ResultSet rs = st.executeQuery(&#34;select * from user&#34;);&#10;            int cnt = 1;&#10;            while (rs.next()) &#123;&#10;                System.out.println((cnt++) + &#34;. Host:&#34; + rs.getString(&#34;Host&#34;)&#10;                        + &#34; User:&#34; + rs.getString(&#34;User&#34;) + &#34; Password:&#34;&#10;                        + rs.getString(&#34;Password&#34;));&#10;            &#125;&#10;            rs.close();&#10;            st.close();&#10;        &#125; catch (SQLException e) &#123;&#10;            e.printStackTrace();&#10;        &#125; finally &#123;&#10;            if (con != null)&#10;                try &#123;&#10;                    con.close();&#10;                &#125; catch (Exception ignore) &#123;&#10;                &#125;&#10;        &#125;&#10;        return con;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果如下：<br><img src="http://img.blog.csdn.net/20151127152454336" alt=""></p>
+<p><strong>jdbc pool 小结</strong></p>
+<p>使用这个数据库连接池主要就是设置相关属性，再通过数据源就可以获取连接对象了。由于进行了封装处理，所以不需要自己释放连接。这里通过properties资源文件设置数据库相关的连接属性，这样做的目的不需要修改源代码，提高程序的健壮性。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/SSH/">SSH</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JavaEE/">JavaEE</a><a href="/tags/jdbc-pool/">jdbc pool</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/devtech-in-j2ee-5/" data-title="JavaEE开发技术点5：Tomcat jdbc数据库连接池 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/devtech-in-j2ee-6/" title="JavaEE开发技术点6：Proxool数据库连接池">
+  <strong>上一篇：</strong><br/>
+  <span>
+  JavaEE开发技术点6：Proxool数据库连接池</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/devtech-in-j2ee-4/"  title="JavaEE开发技术点4：ajax技术">
+ <strong>下一篇：</strong><br/> 
+ <span>JavaEE开发技术点4：ajax技术
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/devtech-in-j2ee-5/" data-title="JavaEE开发技术点5：Tomcat jdbc数据库连接池" data-url="http://rhwayfun.com/post/devtech-in-j2ee-5/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

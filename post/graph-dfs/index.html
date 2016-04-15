@@ -1,0 +1,866 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>图的深度优先遍历算法 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+图的遍历与前面文章中的二叉树遍历还是存在很大区别的。所谓图的遍历指的是从图中的某一个顶点出发访问图中的其余顶点，并且需要保证每个顶点只被访问一次。由于图比二叉树复杂得多，所以前面二叉树的遍历算法在图中是行不通的。因为对于任意一个顶点来讲，都可能与其余的顶点发生连接。如果不对访问的顶点做一些处理，出发重复访问的几率是很高的。因此，一个基本思想是设置一个标记数组，主要用于标记已经被访问过的顶点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图的深度优先遍历算法">
+<meta property="og:url" content="http://rhwayfun.com/post/graph-dfs/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+图的遍历与前面文章中的二叉树遍历还是存在很大区别的。所谓图的遍历指的是从图中的某一个顶点出发访问图中的其余顶点，并且需要保证每个顶点只被访问一次。由于图比二叉树复杂得多，所以前面二叉树的遍历算法在图中是行不通的。因为对于任意一个顶点来讲，都可能与其余的顶点发生连接。如果不对访问的顶点做一些处理，出发重复访问的几率是很高的。因此，一个基本思想是设置一个标记数组，主要用于标记已经被访问过的顶点。">
+<meta property="og:image" content="http://img.blog.csdn.net/20151222211938767">
+<meta property="og:image" content="http://img.blog.csdn.net/20151222212539223">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.707Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图的深度优先遍历算法">
+<meta name="twitter:description" content="前言
+图的遍历与前面文章中的二叉树遍历还是存在很大区别的。所谓图的遍历指的是从图中的某一个顶点出发访问图中的其余顶点，并且需要保证每个顶点只被访问一次。由于图比二叉树复杂得多，所以前面二叉树的遍历算法在图中是行不通的。因为对于任意一个顶点来讲，都可能与其余的顶点发生连接。如果不对访问的顶点做一些处理，出发重复访问的几率是很高的。因此，一个基本思想是设置一个标记数组，主要用于标记已经被访问过的顶点。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/graph-dfs/" title="图的深度优先遍历算法" itemprop="url">图的深度优先遍历算法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-22T16:02:42.000Z" itemprop="datePublished"> 发表于 2015-12-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>图的遍历与前面文章中的二叉树遍历还是存在很大区别的。所谓图的遍历指的是从图中的某一个顶点出发访问图中的其余顶点，并且需要保证每个顶点只被访问一次。由于图比二叉树复杂得多，所以前面二叉树的遍历算法在图中是行不通的。因为对于任意一个顶点来讲，都可能与其余的顶点发生连接。如果不对访问的顶点做一些处理，出发重复访问的几率是很高的。因此，一个基本思想是设置一个标记数组，主要用于标记已经被访问过的顶点。图的遍历算法主要有两种：<strong>深度优先遍历和广度优先遍历</strong>。本篇文章主要介绍的是深度优先遍历算法。</p>
+<p><strong>深度优先遍历的具体过程</strong></p>
+<p>深度优先遍历，简称DFS。具体思想是不放过任何一个死角。在图的遍历中就是<strong>从图的某个顶点v出发，访问此顶点，然后从v的未被访问过的邻接点出发深度优先遍历图，直至图中的所有和v有路径相通的顶点都被访问到（对于连通图来讲）</strong>。</p>
+<p>为了更好说明深度优先遍历的过程，以下面的图为例：</p>
+<p><img src="http://img.blog.csdn.net/20151222211938767" alt="图"></p>
+<p>上图的邻接表定义如下：</p>
+<p><img src="http://img.blog.csdn.net/20151222212539223" alt="邻接表"></p>
+<p>注意：顶点0的第一个元素是2而不是5，其顶点类似。</p>
+<ol>
+<li>起点是顶点0，后面的遍历过程从顶点0开始，把顶点0标记为已访问</li>
+<li>因为顶点2是顶点0的邻接表的第一个元素，所以下一次递归从顶点2开始，同时把顶点2标记为已访问</li>
+<li>顶点2的递归遍历开始，由于顶点2的邻接表的第一个元素是0，但是0已经被访问过了，所以访问顶点1，1没有被访问，于是将1标记为已访问，递归继续从顶点1开始</li>
+<li>查找上表中顶点1的第一个元素，是顶点0，由于已经被访问过，所以访问顶点2，2也被访问过了，于是从顶点1的递归遍历结束，返回到顶点2继续递归。</li>
+<li>查找顶点2的下一个元素，顶点3，没有被访问，于是将顶点3标记为已访问，递归于是从顶点3开始</li>
+<li>查找顶点3邻接表的第一个元素，是顶点5，没有被访问，于是将顶点5标记为已访问，递归从顶点5开始</li>
+<li>顶点5从其邻接表查找第一个元素，是顶点3，已被访问过，继续查找顶点0，也被访问，于是递归从5结束，返回到顶点3继续递归</li>
+<li>查找顶点3邻接表的下一个元素，是顶点4，没有被访问过，于是将顶点4标记为已访问，递归从顶点4继续开始</li>
+<li>顶点4查找其邻接表的第一个元素，发现顶点3已被访问过，继续查找其下一个元素，发现顶点2也被访问过，于是递归从顶点4结束，返回到顶点3继续递归</li>
+<li>顶点查找下一个元素是顶点2了，也是顶点3邻接表的最后一个元素，发现顶点2已经被访问过了，所以递归从顶点3结束，返回到顶点2继续递归</li>
+<li>顶点查找其邻接表的下一个元素，是顶点4，也是其邻接表最后一个元素，发现顶点已被访问过，所以递归从顶点2结束，返回到顶点0继续递归</li>
+<li>顶点0继续查找其邻接表的下一个元素，发现顶点1余顶点5都被访问过了，所以递归结束。总的遍历结束。</li>
+</ol>
+<p>从以上过程来看，上图的顶点访问次序依次是：0，2，1，3，5，4。</p>
+<p><strong>深度优先遍历算法的实现</strong></p>
+<p>首先需要定义一个存储图的数据结构，在Java中可以使用邻接表来实现图存储。具体而言就是，图的顶点用一维数组存储，每个顶点的邻接顶点用一个单链表进行存储。</p>
+<p>图的数据结构：邻接表的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;public class MyGraph &#123;&#10;&#10;    //&#39030;&#28857;&#25968;&#30446;&#10;    private int V;&#10;    //&#36793;&#30340;&#25968;&#30446;&#10;    private int E;&#10;    //&#37051;&#25509;&#34920;&#10;    private Bag&#60;Integer&#62;[] adj;&#10;    &#10;    public MyGraph(int V)&#123;&#10;        this.V = V;&#10;        this.E = 0;&#10;        //&#21019;&#24314;&#37051;&#25509;&#34920;&#10;        adj = (Bag&#60;Integer&#62;[])new Bag[V];&#10;        //&#23558;&#25152;&#26377;&#38142;&#34920;&#21021;&#22987;&#21270;&#10;        for(int v = 0; v &#60; V; v++)&#123;&#10;            adj[v] = new Bag&#60;Integer&#62;();&#10;        &#125;&#10;    &#125;&#10;    &#10;    public int V()&#123;&#10;        return V;&#10;    &#125;&#10;    &#10;    public int E()&#123;&#10;        return E;&#10;    &#125;&#10;    &#10;    public void addEdge(int v,int w)&#123;&#10;        //&#23558;w&#28155;&#21152;&#21040;v&#30340;&#38142;&#34920;&#20013;&#10;        adj[v].add(w);&#10;        //&#23558;v&#28155;&#21152;&#21040;w&#30340;&#38142;&#34920;&#20013;&#10;        adj[w].add(v);&#10;        E++;&#10;    &#125;&#10;    //&#33719;&#21462;&#39030;&#28857;v&#30340;&#37051;&#25509;&#34920;&#39030;&#28857;&#21015;&#34920;&#10;    public Iterable&#60;Integer&#62; adj(int v)&#123;&#10;        return adj[v];&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>深度优先遍历算法的实现代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;/**&#10; * &#28145;&#24230;&#20248;&#20808;&#25628;&#32034;&#10; * &#60;p&#62;Title:DepthFirstSearch&#60;/p&#62;&#10; * &#60;p&#62;Description:&#60;/p&#62;&#10; * @author rhwayfun&#10; * @date Dec 22, 2015 8:04:23 PM&#10; * @version 1.0&#10; */&#10;public class DepthFirstSearch &#123;&#10;&#10;    //&#21019;&#24314;&#19968;&#20010;&#26631;&#35760;&#25968;&#32452;&#10;    private boolean[] marked;&#10;    //&#35775;&#38382;&#35745;&#25968;&#22120;&#10;    private int count;&#10;    &#10;    /**&#10;     * &#26500;&#36896;&#19968;&#24133;&#22270;&#24182;&#36827;&#34892;&#28145;&#24230;&#20248;&#20808;&#36941;&#21382;&#10;     * &#60;p&#62;Description: &#60;/p&#62;&#10;     * @param G &#35835;&#20837;&#30340;&#22270;&#10;     * @param s &#24320;&#22987;&#36941;&#21382;&#30340;&#39030;&#28857;&#10;     */&#10;    public DepthFirstSearch(MyGraph G,int s) &#123;&#10;        marked = new boolean[G.V()];&#10;        dfs(G,s);&#10;    &#125;&#10;&#10;    private void dfs(MyGraph G, int s) &#123;&#10;        marked[s] = true;&#10;        count++;&#10;        System.out.print(s + &#34; &#34;);&#10;        for(int w : G.adj(s))&#123;&#10;            //&#22914;&#26524;&#27809;&#26377;&#34987;&#35775;&#38382;&#36807;&#23601;&#32487;&#32493;&#36941;&#21382;&#10;            if(!marked[w]) dfs(G, w);&#10;        &#125;&#10;    &#125;&#10;&#10;    public boolean[] getMarked() &#123;&#10;        return marked;&#10;    &#125;&#10;&#10;    public int getCount() &#123;&#10;        return count;&#10;    &#125;&#10;    &#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>深度优先遍历算法的非递归实现方式</strong></p>
+<p>使用非递归的方式与递归的思想是一致的，不同的在于需要使用一个栈保存遍历的顶点。下面是具体的实现代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;import java.util.Iterator;&#10;import java.util.Stack;&#10;&#10;/**&#10; * &#20351;&#29992;&#38750;&#36882;&#24402;&#26041;&#24335;&#23545;&#22270;&#36827;&#34892;&#28145;&#24230;&#20248;&#20808;&#36941;&#21382;&#10; * &#60;p&#62;Title:NonrecursiveDFS&#60;/p&#62;&#10; * &#60;p&#62;Description:&#60;/p&#62;&#10; * @author rhwayfun&#10; * @date Dec 22, 2015 10:43:35 PM&#10; * @version 1.0&#10; */&#10;public class NonrecursiveDFS &#123;&#10;&#10;    //&#21019;&#24314;&#19968;&#20010;&#26631;&#35760;&#25968;&#32452;&#26631;&#35760;&#35775;&#38382;&#36807;&#30340;&#20803;&#32032;&#10;    private boolean[] marked;&#10;    &#10;    @SuppressWarnings(&#34;unchecked&#34;)&#10;    public NonrecursiveDFS(MyGraph G, int s)&#123;&#10;        marked = new boolean[G.V()];&#10;        //&#21019;&#24314;&#19968;&#20010;&#36845;&#20195;&#22120;&#36845;&#20195;&#27599;&#20010;&#39030;&#28857;&#30340;&#37051;&#25509;&#34920;&#10;        Iterator&#60;Integer&#62;[] adj = (Iterator&#60;Integer&#62;[])new Iterator[G.V()];&#10;        //&#33719;&#24471;&#27599;&#20010;&#39030;&#28857;&#30340;&#37051;&#25509;&#34920;&#10;        for(int v = 0; v &#60; G.V(); v++)&#123;&#10;            adj[v] = G.adj(v).iterator();&#10;        &#125;&#10;        &#10;        //&#21019;&#24314;&#19968;&#20010;&#26632;&#29992;&#25143;&#23384;&#25918;&#36941;&#21382;&#30340;&#39030;&#28857;&#10;        Stack&#60;Integer&#62; stack = new Stack&#60;Integer&#62;();&#10;        marked[s] = true;&#10;        System.out.print(s + &#34; &#34;);&#10;        stack.add(s);&#10;        while(!stack.isEmpty())&#123;&#10;            int v = stack.peek();&#10;            //&#22914;&#26524;&#26377;&#37051;&#25509;&#34920;&#30340;&#35805;&#65292;&#23601;&#32487;&#32493;&#36941;&#21382;&#10;            if(adj[v].hasNext())&#123;&#10;                int w = adj[v].next();&#10;                //&#21028;&#26029;&#26159;&#21542;&#24050;&#34987;&#35775;&#38382;&#36807;&#10;                if(!marked[w])&#123;&#10;                    //&#27809;&#35775;&#38382;&#36807;&#23601;&#23558;&#22120;&#26631;&#35760;&#20026;&#24050;&#35775;&#38382;&#36807;&#65292;&#19979;&#27425;&#19981;&#20250;&#20877;&#35775;&#38382;&#20102;&#10;                    marked[w] = true;&#10;                    System.out.print(w + &#34; &#34;);&#10;                    stack.push(w);&#10;                &#125;&#10;            &#125;else&#123;&#10;                //&#22914;&#26524;&#27809;&#26377;&#37051;&#25509;&#34920;&#30340;&#35805;&#23601;&#23558;&#35813;&#39030;&#28857;&#24377;&#20986;&#26632;&#39030;&#10;                stack.pop();&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#10;    public boolean marked(int v) &#123;&#10;        return marked[v];&#10;    &#125;&#10;    &#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/算法与数据结构/">算法与数据结构</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/DFS/">DFS</a><a href="/tags/图/">图</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/graph-dfs/" data-title="图的深度优先遍历算法 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/graph-bfs/" title="图的广度优先遍历算法">
+  <strong>上一篇：</strong><br/>
+  <span>
+  图的广度优先遍历算法</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/struts2-learning-7/"  title="Struts2框架学习之七：理解并使用拦截器">
+ <strong>下一篇：</strong><br/> 
+ <span>Struts2框架学习之七：理解并使用拦截器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/graph-dfs/" data-title="图的深度优先遍历算法" data-url="http://rhwayfun.com/post/graph-dfs/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

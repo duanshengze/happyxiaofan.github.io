@@ -1,0 +1,1017 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>【设计模式】观察者模式 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="观察者模式是属于设计模式中的行为型模式，所谓行为型就是指对象的动作发生改变，比如方法以及状态。那么观察者模式是一种什么模式呢？说白了，观察者模式解决的一对多的依赖关系，当一个对象的状态发生改变的时候，其他依赖此对象的对象会得到通知并且做出相应的改变。但从定义上还是很难理解。我们可以从一个简单的例子中更深地去体会观察者模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【设计模式】观察者模式">
+<meta property="og:url" content="http://rhwayfun.com/post/observer-mode/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="观察者模式是属于设计模式中的行为型模式，所谓行为型就是指对象的动作发生改变，比如方法以及状态。那么观察者模式是一种什么模式呢？说白了，观察者模式解决的一对多的依赖关系，当一个对象的状态发生改变的时候，其他依赖此对象的对象会得到通知并且做出相应的改变。但从定义上还是很难理解。我们可以从一个简单的例子中更深地去体会观察者模式。">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/result.JPG">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/result2.JPG">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【设计模式】观察者模式">
+<meta name="twitter:description" content="观察者模式是属于设计模式中的行为型模式，所谓行为型就是指对象的动作发生改变，比如方法以及状态。那么观察者模式是一种什么模式呢？说白了，观察者模式解决的一对多的依赖关系，当一个对象的状态发生改变的时候，其他依赖此对象的对象会得到通知并且做出相应的改变。但从定义上还是很难理解。我们可以从一个简单的例子中更深地去体会观察者模式。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/observer-mode/" title="【设计模式】观察者模式" itemprop="url">【设计模式】观察者模式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-11T13:17:02.000Z" itemprop="datePublished"> 发表于 2015-10-11</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题背景"><span class="toc-number">1.</span> <span class="toc-text">问题背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码实践一"><span class="toc-number">2.</span> <span class="toc-text">编码实践一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码实践二"><span class="toc-number">3.</span> <span class="toc-text">编码实践二</span></a></li></ol>
+		
+		</div>
+		
+		<p>观察者模式是属于设计模式中的行为型模式，所谓<code>行为型</code>就是指对象的动作发生改变，比如方法以及状态。那么观察者模式是一种什么模式呢？说白了，观察者模式解决的一对多的依赖关系，当一个对象的状态发生改变的时候，其他依赖此对象的对象会得到通知并且做出相应的改变。但从定义上还是很难理解。我们可以从一个简单的例子中更深地去体会观察者模式。<br><a id="more"></a></p>
+<h2 id="问题背景">问题背景</h2><blockquote>
+<p>某公司的两名职员在主管离开办公室后，一个在看股票，一个在玩游戏。公司有一个前台，该两名职员让前台当主管回来的时候通知他们不让主管看到他们在干其他的事。</p>
+</blockquote>
+<h2 id="编码实践一">编码实践一</h2><p>根据上述场景，下面是我写出的第一版代码：</p>
+<pre><code><span class="comment">//抽象职员类</span>
+<span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>{
+    <span class="keyword">protected</span> String name;
+    <span class="comment">//通知者对象</span>
+    <span class="keyword">protected</span> Notifyer notifyer;
+    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">()</span></span>{}
+    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name,Notifyer notifyer)</span></span>{
+        <span class="keyword">this</span>.name = name;<span class="keyword">this</span>.notifyer = notifyer;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>{<span class="keyword">this</span>.name = name;}
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>{<span class="keyword">return</span> name;}
+
+    <span class="comment">//更新自己状态的方法，比如当收到前台的通知的时候应该停止看股票继续工作</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span></span>;
+}
+
+<span class="comment">//看股票的职员</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StockEmployee</span> <span class="keyword">extends</span> <span class="title">Employee</span></span>{
+    <span class="function"><span class="keyword">public</span> <span class="title">StockEmployee</span><span class="params">(String name,Notifyer notifyer)</span></span>{<span class="keyword">super</span>(name,notifyer);}
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span></span>{
+        System.out.println(<span class="string">"收到前台"</span> + notifyer.getName() + <span class="string">"的"</span> + notifyer.getMessage() + <span class="string">"的通知，"</span> + getName() + <span class="string">"停止看股票，继续工作！"</span>);
+    }
+}
+
+<span class="comment">//玩游戏的职员，与上面的代码类似</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GameEmployee</span> <span class="keyword">extends</span> <span class="title">Employee</span></span>{
+    <span class="function"><span class="keyword">public</span> <span class="title">GameEmployee</span><span class="params">(String name,Notifyer notifyer)</span></span>{<span class="keyword">super</span>(name,notifyer);}
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span></span>{
+        System.out.println(<span class="string">"收到前台"</span> + notifyer.getName() + <span class="string">"的"</span> + notifyer.getMessage() + <span class="string">"的通知，"</span> + getName() + <span class="string">"停止玩游戏，继续工作！"</span>);
+    }
+}
+
+<span class="comment">//之所以创建一个通知者类主要是由于通知者与职员类执行的功能不同</span>
+<span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Notifyer</span></span>{
+    <span class="comment">//具体的通知内容，比如主管回来了，就是一个具体的通知</span>
+    <span class="keyword">protected</span> String name;
+    <span class="keyword">protected</span> String message;
+    <span class="function"><span class="keyword">public</span> <span class="title">Notifyer</span><span class="params">(String name)</span></span>{<span class="keyword">this</span>.name = name;}
+    <span class="comment">//设置消息的内容</span>
+    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span></span>{<span class="keyword">this</span>.message = message;}
+    <span class="function"><span class="keyword">protected</span> String <span class="title">getMessage</span><span class="params">()</span></span>{<span class="keyword">return</span> message;}
+
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>{<span class="keyword">return</span> name;}
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetName</span><span class="params">(String name)</span></span>{<span class="keyword">this</span>.name = name;}
+    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span></span>;
+}
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receptionist</span> <span class="keyword">extends</span> <span class="title">Notifyer</span></span>{
+    <span class="keyword">private</span> List&lt;Employee&gt; observers = <span class="keyword">new</span> ArrayList&lt;Employee&gt;();
+
+    <span class="function"><span class="keyword">public</span> <span class="title">Receptionist</span><span class="params">(String name)</span></span>{<span class="keyword">super</span>(name);}
+    <span class="comment">//添加一个观察者，这里就是一个职员对象</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(Employee emp)</span></span>{observers.add(emp);}
+    <span class="comment">//移除一个观察者，这样被移除的观察者将收不到前台的通知，自然后果你懂得</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(Employee emp)</span></span>{observers.remove(emp);}
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span></span>{
+        <span class="keyword">for</span>(Employee emp : observers){
+            emp.update();
+        }
+    }
+}
+
+<span class="comment">//测试代码</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>{
+        <span class="comment">//创建一个前台</span>
+        Receptionist rep = om.new Receptionist(<span class="string">"笑笑"</span>);
+        rep.setMessage(<span class="string">"主管回来啦"</span>);
+
+        Employee stockEmp = om.new StockEmployee(<span class="string">"子房"</span>,rep);
+        Employee gameEmp = om.new GameEmployee(<span class="string">"天明"</span>,rep);
+        Employee gameEmp2 = om.new GameEmployee(<span class="string">"少龙"</span>,rep);
+
+        rep.addObserver(stockEmp);
+        rep.addObserver(gameEmp);
+
+        rep.notifyObserver();
+    }
+}
+</code></pre><p>最后程序的运行结果如下：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/result.JPG" alt="测试结果"></p>
+<p>我在程序使用的都是抽象类，抽象类是对类的抽象，类是对对象抽象。但是如果考虑到通知者有可能是完全不相关的对象，使用抽象类就不是很合理了，于是可以换成接口，接口是对类行为的抽象，通知者的核心职责就是告诉观察者具体的通知，其他的都不是最重要的。下面对代码进行进一步的的优化：</p>
+<h2 id="编码实践二">编码实践二</h2><pre><code><span class="comment">//修改抽象通知者对象为一个通知接口</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">INotify</span></span>{
+    <span class="function"><span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(Employee emp)</span></span>;
+    <span class="function"><span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(Employee emp)</span></span>;
+    <span class="function"><span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span></span>;
+    <span class="function">String <span class="title">getName</span><span class="params">()</span></span>;
+    <span class="function">String <span class="title">getMessage</span><span class="params">()</span></span>;
+    <span class="function"><span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span></span>;
+    <span class="function"><span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>;
+}
+
+<span class="comment">//修改前台的代码</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receptionist</span> <span class="keyword">implements</span> <span class="title">INotify</span></span>{
+    <span class="keyword">private</span> List&lt;Employee&gt; observers = <span class="keyword">new</span> ArrayList&lt;Employee&gt;();
+    <span class="keyword">private</span> String message;
+    <span class="keyword">private</span> String name;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">Receptionist</span><span class="params">(String name,String message)</span></span>{
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.message = message;
+    }
+    <span class="comment">//添加一个观察者，这里就是一个职员对象</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(Employee emp)</span></span>{observers.add(emp);}
+    <span class="comment">//移除一个观察者，这样被移除的观察者将收不到前台的通知，自然后果你懂得</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(Employee emp)</span></span>{observers.remove(emp);}
+
+    <span class="keyword">public</span> <span class="function">String <span class="title">getMessage</span><span class="params">()</span></span>{<span class="keyword">return</span> message;}
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span></span>{<span class="keyword">this</span>.message = message;}
+    <span class="keyword">public</span> <span class="function">String <span class="title">getName</span><span class="params">()</span></span>{<span class="keyword">return</span> name;}
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>{<span class="keyword">this</span>.name = name;}
+
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span></span>{
+        <span class="keyword">for</span>(Employee emp : observers){
+            emp.update();
+        }
+    }
+}
+
+<span class="comment">//增加一个新的通知者，比如闹钟（假定主管在10分钟后回来，自然在十分钟后看股票的职员就会收到闹钟的通知了）</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AlarmClock</span> <span class="keyword">implements</span> <span class="title">INotify</span></span>{
+    <span class="keyword">private</span> List&lt;Employee&gt; observers = <span class="keyword">new</span> ArrayList&lt;Employee&gt;();
+    <span class="keyword">private</span> String message;
+
+    <span class="keyword">private</span> String name;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">AlarmClock</span><span class="params">(String name,String message)</span></span>{
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.message = message;
+    }
+
+    <span class="comment">//添加一个观察者，这里就是一个职员对象</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(Employee emp)</span></span>{observers.add(emp);}
+    <span class="comment">//移除一个观察者，这样被移除的观察者将收不到前台的通知，自然后果你懂得</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(Employee emp)</span></span>{observers.remove(emp);}
+
+    <span class="keyword">public</span> <span class="function">String <span class="title">getMessage</span><span class="params">()</span></span>{<span class="keyword">return</span> message;}
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span></span>{<span class="keyword">this</span>.message = message;}
+    <span class="keyword">public</span> <span class="function">String <span class="title">getName</span><span class="params">()</span></span>{<span class="keyword">return</span> name;}
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>{<span class="keyword">this</span>.name = name;}
+
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span></span>{
+        <span class="keyword">for</span>(Employee emp : observers){
+            emp.update();
+        }
+    }
+}
+
+<span class="comment">//注意在Employee及其派生类中的Notifyer对象要改成INotify对象，这里就不粘上代码了</span>
+
+<span class="comment">//下面是测试代码</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>{
+        <span class="comment">//创建一个闹钟</span>
+        AlarmClock alarmClock = om.<span class="keyword">new</span> AlarmClock(<span class="string">"闹钟当当"</span>, <span class="string">"时间到啦"</span>);
+        Employee stockEmp = om.<span class="keyword">new</span> StockEmployee(<span class="string">"子房"</span>,alarmClock);
+        Employee gameEmp = om.<span class="keyword">new</span> GameEmployee(<span class="string">"天明"</span>,alarmClock);
+        Employee gameEmp2 = om.<span class="keyword">new</span> GameEmployee(<span class="string">"少龙"</span>,alarmClock);
+
+        alarmClock.addObserver(stockEmp);
+        alarmClock.addObserver(gameEmp);
+
+        alarmClock.notifyObserver();
+    }
+}
+</code></pre><p>最后的测试结果是：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/result2.JPG" alt="测试结果2"></p>
+<p>从以上两个测试结果可以发现，只要Notifyer的message属性发生改变，其所管辖的观察者的动作也发生了更新。注意到在测试代码中没有将第三个对象添加进来，这样当Notifyer的状态发生改变其动作不会发生更新。这样只有前两个对象发生了动作的更新。也就是说Notifyer这个对象的状态发生改变导致了其他两个对象的改变。而观察者模式也正是在这种情况下使用的。<strong>当一个对象的状态改变导致其他对象的状态也发生改变，而且不知道有多少具体的对象的状态要发生改变的时候，应该使用观察者模式</strong>。观察者模式有两个关键对象Subject（对应上面代码中的Notifyer和INotify对象）和Observer（对应上面的Employee对象）。Subject状态的改变会导致Observer对象的状态的改变一个Subject对象可以吧状态的改变通知给任意数目的观察者对象。一个Subject不需要知道具体的观察者，一个观察者也不需要知道其他观察者是否存在。实际上观察者模式主要是为了解耦（实际上23种设计模式中都体现了这一点，只不过不同的设计模式体现程度不同罢了），使得对象之间不依赖具体而是依赖抽象。这样设计的好处对具体的大修改不会影响其他依赖抽象的类，使得类之间的耦合度降低。</p>
+<p>可以发现，在上面我们的代码中，具体的Subject是依赖Observer对象的，这样的依赖会不会影响呢？答案是肯定的。</p>
+<p>虽然Subject和Observer都是抽象的，但是难保在系统中会一直存在这样抽象的Observer，所以这样的依赖已经最大程度减少了程序之间的耦合，但在这种情况下还是存在问题的。那么还没有其他的方法解决这种耦合呢？有。我们可以采用一种委托的事件机制完成进一步的解耦。事件委托可以将委托者的方法可以事件中去执行，事件委托仅仅需要的是要执行方法的对象、方法以及参数列表，这样事件委托对象就可以根据这三个参数执行制定对象的指定方法，从直观上理解，有点象代理，但不同于代理，由于在Java中没有现成的事件委托模型可以使用，可以实现一个自己的事件委托处理器。实现之后，我们在Subject中引入这个事件委托处理器，并添加相应的事件响应方法，而Observer对象不需要做任何改变。具体事件委托处理器的代码可以参考我的<a href="https://github.com/happyxiaofan/patchwork/blob/master/src/com/rhwayfun/GoF/ObserverMode.java" target="_blank" rel="external">Github</a>上的源码。</p>
+<p>最后对观察者模式做一个简单的总结：</p>
+<ol>
+<li>观察者模式主要适用于一个对象的改变会导致其他对象状态的改变的情况</li>
+<li>使用抽象降低需要关联对象的耦合，不依赖具体而是依赖抽象</li>
+<li>观察者模式的不足在于如果Observer对象的不再存在将对系统产生重大影响</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/设计模式/">设计模式</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/observer-mode/" data-title="【设计模式】观察者模式 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/timers-of-tcp/" title="TCP协议中的计时器">
+  <strong>上一篇：</strong><br/>
+  <span>
+  TCP协议中的计时器</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/congestion-flow-error-control/"  title="TCP拥塞控制、流量控制和差错控制">
+ <strong>下一篇：</strong><br/> 
+ <span>TCP拥塞控制、流量控制和差错控制
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/observer-mode/" data-title="【设计模式】观察者模式" data-url="http://rhwayfun.com/post/observer-mode/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题背景"><span class="toc-number">1.</span> <span class="toc-text">问题背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码实践一"><span class="toc-number">2.</span> <span class="toc-text">编码实践一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码实践二"><span class="toc-number">3.</span> <span class="toc-text">编码实践二</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

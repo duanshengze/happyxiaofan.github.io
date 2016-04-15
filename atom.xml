@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  
+  <title><![CDATA[rhwayfun的博客]]></title>
+  <subtitle><![CDATA[在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://rhwayfun.com//"/>
+  <updated>2016-04-15T07:51:16.881Z</updated>
+  <id>http://rhwayfun.com//</id>
+  
+  <author>
+    <name><![CDATA[rhwayfun]]></name>
+    <email><![CDATA[rhwayfun@163.com]]></email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[《Servlet与JSP核心编程》读书笔记]]></title>
+    <link href="http://rhwayfun.com/post/servlet-jsp-notes/"/>
+    <id>http://rhwayfun.com/post/servlet-jsp-notes/</id>
+    <published>2016-04-15T07:50:04.000Z</published>
+    <updated>2016-04-15T07:51:16.881Z</updated>
+    <content type="html"><![CDATA[<p>虽然Servlet和JSP学习也使用了挺长时间了，但是最近读了下《Servlet和JSP核心编程》这本书，虽然是熟悉的知识，但是仍然有些因为过长时间没使用而忘记了，记下这篇读书笔记，就当是对Servlet和JSP涉及的核心知识点进行一个整理与回顾吧。书中对Servlet与JSP进行了完整的介绍，总体上还是非常基础的，如果是初学者，或者有了一定开发经验的开发人员，都能从书中得到收获。</p>
+<p>下面的条目是我在阅读过程中记下的笔记，调理也许不是那么清晰，但是对于自己在需要的时候复习还是很有帮助的。</p>
+<p><strong>1、应该尽可能覆盖doGet()和doPost()方法，不要为了省事直接覆盖service()方法。</strong></p>
+<p>原因由两个：一是丧失想要覆盖其他doXXX()方法的可能性，不排除以后需要覆盖这些方法的可能性；二是无法实现getLastModified方法，该字段可以得到请求最后修改的时间，如果请求的资源没有发生修改，那么服务端将返回304状态码，表示请求的资源已经是最新的，上次请求的资源可以继续使用。</p>
+<p><strong>getLastModified扩展</strong>：如果方法返回的是整数，并且客户端请求头没有包含If-Modified-Since字段或者已经包含If-Modified-Since字段，但是返回值比If-Modified-Since指定的时间更新的话，会调用doGet方法请求最新的资源，并返回包含Last-Modified头字段的响应信息。如果返回值比If-Modified-Since字段指定的时间小的话（发生在之前），那么服务端可以做出判断上次响应给客户端的资源仍然可用，于是返回304状态码，告诉客户端你上次请求的这个资源可以继续使用。</p>
+<p><strong>2、不要为了阻止并发访问Servlet实例而去实现SingleThreadModel接口，原因有二：</strong></p>
+<p>1) 由于实现SingleThreadModel接口就相当于对Servlet实例进行了同步，表面上不用担心因为多线程并发访问的问题造成数据的安全性和一致性，但是如果servlet被频繁地访问，那么同步对性能造成的影响是巨大的。比如在servlet等待IO任务的时候，servlet不能处理其他的请求</p>
+<p>2) servlet规范允许服务器使用多个实例处理请求，来替代对单个实例的请求进行排队的方案。当然我们并不希望使用多个实例，因为多个servlet实例都拥有变量的单独副本，从而造成数据不能正确共享，在servlet之间传递消息也有困难。</p>
+<p>注：SingleThreadModel在servlet规范2.4中明确反对使用这种方式。为了实现同步，使用synchronized往往是更好的选择。</p>
+<p>3、如果需要读取请求参数，为了防止跨站脚本攻击（XSS），必须过滤出特殊的HTML字符。这种过滤方式的问题可能导致输出部分缺失。比如将’&lt;’替换成’&lt;’,’&gt;’替换成’&gt;’,’”‘替换成’&quot;’,’&amp;’替换成’&amp;’。</p>
+<p><strong>4、使用Servlet构建Excel电子表格</strong></p>
+<p>设置响应头：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(&#34;application/vnd.ms-excel&#34;);&#10;&#9;&#9;PrintWriter out = response.getWriter();</span><br></pre></td></tr></table></figure></p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App1 extends HttpServlet&#123;&#10;&#9;&#9;&#9;public void doGet(HttpServletRequest req,HttpServletResponse res)&#123;&#10;&#9;&#9;&#9;&#9;response.setContentType(&#34;application/vnd.ms-excel&#34;);&#10;&#9;&#9;&#9;&#9;PrintWriter out = response.getWriter();&#10;&#9;&#9;&#9;&#9;out.println(\tQ1\tQ2\tQ3\tQ4\tTotal);&#10;&#9;&#9;&#9;&#9;out.println(&#34;Apples\t78\t87\t92\t29\t=SUM(B2:E2)&#34;);&#10;&#9;&#9;&#9;&#9;out.println(&#34;Oranges\t78\t87\t92\t29\t=SUM(B3:E3)&#34;);&#10;&#9;&#9;&#9;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>5、使用Servlet生成JPEG图像</strong></p>
+<p>第一步：创建一个BufferedImage</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int width = 100px;&#10;&#9;&#9;int height = 100px;&#10;&#9;&#9;BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);</span><br></pre></td></tr></table></figure>
+<p>第二步：在BufferedImage绘制图像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Graphics2D g = (Graphics2D)image.getGraphics();&#10;&#9;&#9;g.setXXX();&#10;&#9;&#9;g.fill();&#10;&#9;&#9;g.draw();</span><br></pre></td></tr></table></figure>
+<p>第三步：设置Content-Type响应头</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(&#34;image/jpeg&#34;);</span><br></pre></td></tr></table></figure>
+<p>第四步：获取输出流</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream out = response.getOutputStream();</span><br></pre></td></tr></table></figure>
+<p>第五步：以JPEG格式将图像发送到输出流</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImageIO.write(image,&#34;jpg&#34;,out);</span><br></pre></td></tr></table></figure>
+<p><strong>6、使用Cookie记录偏好</strong><br>form.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;form action=&#34;/register&#34; method=&#34;post&#34;&#62;&#10;&#9;firstName:&#60;input name=&#34;firstName&#34;/&#62;&#60;br&#62;&#10;&#9;lastName:&#60;input name=&#34;lastName&#34;/&#62;&#60;br&#62;&#10;&#9;&#60;input type=&#34;submit&#34;/&#62;&#10;&#60;/form&#62;</span><br></pre></td></tr></table></figure></p>
+<p>RegisterServlet.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@WebServlet(&#34;/register&#34;);&#10;public class RegisterServlet extends HttpServlet&#123;&#10;&#9;public void doGet(...)&#123;&#10;&#9;&#9;response.setContentType(&#34;text/html&#34;);&#10;&#9;&#9;String firstName = request.getParameter(&#34;firstName&#34;);&#10;&#9;&#9;String lastName = request.getParameter(&#34;lastName&#34;);&#10;&#9;&#9;Cookie c1 = new Cookie(&#34;firstName&#34;,firstName);&#10;&#9;&#9;response.addCookie(c1);&#10;&#9;&#9;Cookie c2 = new Cookie(&#34;lastName&#34;.lastName);&#10;&#9;&#9;response.addCookie(c2);&#10;&#9;&#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>7、对发往客户端的URL进行编码</strong></p>
+<p>如果使用URL重写进行会话跟踪，大部分页面或者全部页面都必须动态生成，站点的任何静态HTML文档都不能指向站点的动态页面的链接</p>
+<p>情况一：在servlet生成的Web页面中含有嵌入的URL，应该调用response的encodeURL，确定当前是否在使用URL重写，仅在必须时附加回话信息；否则不做任何修改直接返回传入的URL。</p>
+<p>情况二：在sendRedirect调用中，应该调用encodeRedirectURL<br>    如果最终可能使用URL重写替代Cookie，那么使用URL编码是最好的选择</p>
+<p><strong>8、JSP的好处</strong><br>    1) 易于编写HTML并维护<br>    2) 可以使用标准的开发工具开发<br>    3) 开发人员可以集中精力在表示上<br>    4) JSP擅长生成结构化的HTML页面，Servlet擅长业务的处理，可以生成二进制的数据 </p>
+<p><strong>9、JSP脚本、表达式编译成的Servlet</strong><br>    Foo.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;h2&#62;foo&#60;/h2&#62;&#10;&#9;&#9;&#60;!-- JSP&#34920;&#36798;&#24335;&#65292;&#35843;&#29992;&#21518;&#20250;&#26174;&#31034;bar&#26041;&#27861;&#25191;&#34892;&#36820;&#22238;&#30340;&#32467;&#26524;&#65292;&#32467;&#23614;&#19981;&#38656;&#35201;&#20998;&#21495; --&#62;&#10;&#9;&#9;&#60;%= bar() %&#62;&#10;&#9;&#9;&#60;!-- JSP scriplet&#65292;&#30452;&#25509;&#35843;&#29992;bar()&#65292;&#32467;&#23614;&#38656;&#35201;&#20998;&#21495; --&#62;&#10;&#9;&#9;&#60;% bar(); %&#62;</span><br></pre></td></tr></table></figure></p>
+<p>Foo_jsp.java，之后被编译成Foo_jsp.class<br>        public void _jspInit(){ ..}     — 当JSP网页一开始执行时，最先执行此方法，执行初始化工作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void _jspDestory()&#123;...&#125; &#8211; JSP&#32593;&#39029;&#26368;&#21518;&#25191;&#34892;&#30340;&#26041;&#27861;&#10;&#10;&#9;&#9;public void _jspService(HttpServletRequest request, HttpServletResponse response)&#10;        throws java.io.IOException, ServletException &#123;&#10;        &#9;HttpSession session = request.getSession();&#10;        &#9;JspWriter out = response.getWriter();&#10;        &#9;out.println(&#60;h2&#62;Foo&#60;/h2&#62;);&#10;        &#9;out.println(bar());&#10;        &#9;bar();&#10;        &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>10、对于JSP的初始化和清理工作，可以使用JSP声明覆盖jspInit()和jspDestroy()方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSP&#22768;&#26126;&#26684;&#24335;&#10;&#60;%! &#21464;&#37327;&#25110;&#32773;&#26041;&#27861; %&#62;&#10;&#29616;&#32771;&#34385;&#22914;&#19979;JSP&#22768;&#26126;&#65306;&#10;&#60;%! private int accessCount = 0;%&#62;&#10;&#60;%= ++accessCount%&#62;</span><br></pre></td></tr></table></figure>
+<p>不同的客户端得到的技术不是唯一的，也就是由于多个请求共享accessCount变量，该代码不是线程安全的。但是在服务器重新启动之前，所有用户看到的都是同样的结果</p>
+<p><strong>11、session属性</strong></p>
+<p>使用形式：&lt;%@ page session = “true” %&gt;&lt;%— default —%&gt;</p>
+<p>session属性属于jsp的page指令。可以控制是否参与会话，<br>true表示如果存在会话，则绑定到现有的会话中，如果没有则创建一个新的session会话（session的类型是HttpSession）；</p>
+<p>值为false，表示不会自动创建会话，在将jsp转为servlet时，对变量session的访问会导致出错。但是false也不是无之地，对于高流量的网站，使用false可以节省大量的服务器内存。但是使用false并不表示会禁用会话跟踪，而且会话只是针对用户，并不针对页面，所以关闭页面的会话跟踪没有任何益处</p>
+<p><strong>12、isELIgnored属性</strong></p>
+<p>默认为false，表示对JSP表达式进行正常的求值，为true则忽略表达式语言。也就是在JSP页面${expression}得到的就是表达式。</p>
+<p>在JSP1.2之前（包括JSP1.2）该属性的值都是true，只有在Servlet2.4之后（JSP2.0）该值的默认属性为false。所以如果在访问JSP的时候出现直接输出JSP表达式的情况，需要检查一下你的Servlet版本是否在2.4之前，如果不想更换版本，只需要在JSP页面只能中直接添加该属性为false即可</p>
+<p><strong>13、jsp:include动作与include指令</strong></p>
+<p>前者会对被包含的JSP的页面在请求时进行处理，后者在页面转换期间就被处理。而且前者会生产两个Servlet文件，后者只会产生一个。</p>
+<p>在维护和能力两方面造成jsp:include动作优于include指令。</p>
+<p>由于jsp:include动作会会产生两个Servlet而后者则有两个，那么如果通过include指令被包含的页面发生了修改，那么所有包含该页面的jsp文件都需要重新转换成新的Servlet，不然下次请求访问的仍然是修改之前的Servlet。</p>
+<blockquote>
+<p>对于文件包含应该尽可能用jsp:include动作，仅在所包含的文件中定义了主页面需要用到的字段或者方法，或者在所包含的文件中设置了主页面的响应头的时候，才应该使用include指令。</p>
+</blockquote>
+<p>然而，不能因为在所包含的页面定义了主页面的需要的字段或者方法就认为必须应该使用include指令。对此合理的解释是，如果使用jsp:include动作，那么针对类似访问计数功能的页面来说，所有使用该页面的主jsp页面都将显示相同的计数。核心就是产生了两个Servlet，而这两个Servlet之间是无法共享计数值的。</p>
+<p><strong>14、基于请求的共享</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class NumberBean&#123;&#10;&#9;&#9;private int num;&#10;&#9;&#9;...&#10;&#9;&#125;&#10;&#9;public class NumberServlet extends HttpServlet&#123;&#10;&#9;&#9;... doGet(...)&#123;&#10;&#9;&#9;&#9;NumberBean number = new NumberBean(new Random().nextInt(Integer.MAX_VALUE));&#10;&#9;&#9;&#9;request.setAttribute(&#34;number&#34;,number);&#10;&#9;&#9;&#9;String addr = &#34;/WEB-INF/view/number.jsp&#34;;&#10;&#9;&#9;&#9;request.getRequestDispatcher(addr).forward(request,response);&#10;&#9;&#9;&#9;&#125;&#10;&#9;&#125;&#10;&#9;number.jsp&#10;&#9;...&#10;&#9;&#60;jsp:useBean id = &#34;number&#34; type=&#34;servlet.NumberServlet&#34; scope=&#34;request&#34;/&#62;&#10;&#9;Your number is: &#10;&#9;&#60;jsp:getProperty name=&#34;number&#34; property=&#34;num&#34;&#62;</span><br></pre></td></tr></table></figure>
+<p>以上这种组合方式只能访问简单类型的属性，对于包装的POJO的属性则需要复杂的语法才能实现，在现在主流的MVC框架中（包括Struts2和Spring Web MVC）都对这点进行了封装，让用户可以像访问简单POJO的属性一样访问包装类型的POJO的属性。</p>
+<p><strong>15、EL</strong><br>    <code>&amp;#36;{bash}</code><br>    输出<br>    ${bash}</p>
+<p><code>\${1+1} is ${1+1}</code><br>    输出<br>${1+1} is 2</p>
+<p>${name}</p>
+<p>作用域访问次序：PageContext—&gt;HttpServletRequest—&gt;HttpSession—&gt;ServletContext</p>
+<p>等同于调用JSP表达式：&lt;%= pageContext.findAttribute(“name”)%&gt;<br>等同于：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;jsp:useBean id=&#34;name&#34; type=&#34;somePackage.someClass&#34; scope=&#34;...&#34;&#62;&#10;&#9;&#9;&#60;%= name%&#62;</span><br></pre></td></tr></table></figure></p>
+<p><strong>返回某个作用域变量的某个属性</strong></p>
+<p>${customer.fistName}等同于${customer[“fistName”]}(这种方式很少使用，不推荐使用)</p>
+<p>等同于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page import=&#34;bean.Customer&#34;%&#62;&#10;&#9;&#9;&#60;% Customer customer = (Customer)pageContext.findAttribute(&#34;customer&#34;); %&#62;&#10;&#9;&#9;&#60;%= customer.getFistName() %&#62;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;jsp:useBean id=&#34;customer&#34; type=&#34;bean.Customer&#34; scope=&#34;request,session, or application&#34; /&#62;&#10;&#9;&#9;&#60;jsp:getProperty name=&#34;customer&#34; property=&#34;fistName&#34; /&#62;</span><br></pre></td></tr></table></figure>
+<p>但是对于类似${customer.address.zipCode}，使用<jsp:usebean>和<jsp:getproperty>则不能完成相同的获取属性的工作</jsp:getproperty></jsp:usebean></p>
+<p><strong>访问集合</strong><br>    ${attributeName[entryName]}</p>
+<p>对于JSP2.0，Servlet2.4以上（包含）的版本，还规定了以下的隐式对象：</p>
+<p><strong>pageContext</strong>:一次拥有request、response、session、out和servletContext属性。获取会话ID可以用${pageContext.session.id}<br><strong>param</strong>和<strong>paramValues</strong>:允许访问基本的参数值和请求参数值数组<br><strong>header</strong>和<strong>headerValues</strong>：访问HTTP请求报头的主要值和全部值<br><strong>cookie</strong>:<br><strong>initParam</strong>:<br><strong>pageScope</strong>，<strong>requestScope</strong>，<strong>sessionScope</strong>和<strong>applicationScope</strong>：</p>
+<p>算数运算符：+，-，*,/(div)<br>关系运算符：==和eq（比较两个参数是否相等）、！=和ne（比较两个参数是否不等）、&lt;和lt、&gt;和gt、&lt;=和le、&gt;=和ge<br>逻辑运算符：&amp;&amp;、and、or、||、!、not<br>空运算符：empty</p>
+<p><strong>16、JDBC</strong></p>
+<p><strong>使用JDBC连接数据库：</strong><br>1) 载入JDBC连接数据库的驱动文件<br>            Class.forName(“com.mysql.jdbc.Driver”);</p>
+<p>2) 定义要打开的连接<br>            String url = “jdbc:mysql://localhost:3306/test”;</p>
+<p>3) 建立连接<br>            String username = “root”;<br>            String password = 1234;<br>            Connection connection = DriverManager.getConnection(url,username,password);<br>4) 创建Statement对象<br>            Statement statement = connection.createStatement();<br>5) 执行查询<br>            String sql = “select * from user where user_id = 3”;<br>            ResultSet rs = statement.executeQuery(sql);<br>6) 结果处理<br>            ResultSet的第一行的索引是1<br>            while(rs.next()){<br>                rs.getString(COLUMN_NAME);<br>            }<br>7) 关闭连接<br>            connection.close();</p>
+<p><strong>调用数据库的存储过程：</strong><br>1) 定义对数据库存储过程的调用<br>            ？ = call procedure_name(?,?..?);</p>
+<p>2) 准备CallableStatement<br>            String procedure = {? = call procedure_name(?..?)}<br>            CallableStatement statement = connection.prepareCall(procedure); </p>
+<p>3) 注册输出参数的类型<br>            statement.registerOutParameters(n,type);<br>            n是输出参数的索引（第一个的索引是1），type是java.sql.Types定义的常量</p>
+<p>4) 提供输入值<br>            statement.setInt(2,12);<br>            statement.setString(3,”name”);<br>将第一个输入参数设为12，将第二个输入参数设为name，输入参数的索引从第一个输出参数开始计起</p>
+<p>5) 执行存储过程<br>            statement.execute();</p>
+<p>6) 访问返回的输出参数<br>            int res = statement.getInt(1);</p>
+<p>这里返回的是第一个输出参数，如果是第二个参数则将参数1变为2，其他以此类推</p>
+<p><strong>事务管理模板：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection connection = DriverManager.getConnection(url.username,password);&#10;boolean autoCommit = connection.getAutoCommit();&#10;try&#123;&#10;&#9;connection.setAutoCommit(fasle);&#10;&#9;Statement st = connection.createStatement();&#10;&#9;//&#25191;&#34892;&#20107;&#21153;&#21333;&#20803;&#10;&#9;...&#10;&#9;st.close();&#10;&#125;catch(SQLException e)&#123;&#10;&#9;connection.rollBack();&#10;&#9;throw new Throwable(e.getCause());&#10;&#125;finally&#123;&#10;&#9;connection.commit();&#10;&#9;connection.setAutoCommit(autoCommit);&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>mysql用户授权</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on database_name.* to USER_NAME@&#34;%&#34; identified by &#39;PASSWORD&#39;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>虽然Servlet和JSP学习也使用了挺长时间了，但是最近读了下《Servlet和JSP核心编程》这本书，虽然是熟悉的知识，但是仍然有些因为过长时间没使用而忘记了，记下这篇读书笔记，就当是对Servlet和JSP涉及的核心知识点进行一个整理与回顾吧。书中对Servlet与J]]>
+    </summary>
+    
+      <category term="JSP" scheme="http://rhwayfun.com/tags/JSP/"/>
+    
+      <category term="Servlet" scheme="http://rhwayfun.com/tags/Servlet/"/>
+    
+      <category term="Web技术" scheme="http://rhwayfun.com/categories/Web%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[node.js+hexo博客多机备份与同步]]></title>
+    <link href="http://rhwayfun.com/post/nodejs-hexo-backup/"/>
+    <id>http://rhwayfun.com/post/nodejs-hexo-backup/</id>
+    <published>2016-04-10T13:24:03.000Z</published>
+    <updated>2016-04-15T07:01:12.737Z</updated>
+    <content type="html"><![CDATA[<p><strong>错误汇总</strong></p>
+<p>最近考虑把Node.js+hexo搭建的博客备份到云端，然后在另一台电脑同步更新。要实现多机同步与备份，首先需要从云端使用git clone得到网站原始文件，然后在新机器上安装node.js+hexo之后才可以正常使用。我在之前的电脑中把网站的原始文件备份到了oschina云端，然后想在另一台电脑的Ubuntu15.10系统上完成博客的同步更新，由于新电脑没有安装node.js+hexo环境，所以需要首先安装这两个软件。</p>
+<p>下面是遇到的问题：</p>
+<ul>
+<li><p>Error: socket hang up</p>
+<blockquote>
+<p>npm config set registry <a href="http://registry.npmjs.org/" target="_blank" rel="external">http://registry.npmjs.org/</a></p>
+</blockquote>
+</li>
+<li><p>Error: CERT_UNTRUSTED</p>
+<blockquote>
+<p>npm config set ca “”</p>
+</blockquote>
+</li>
+<li><p>No compatible version found</p>
+<blockquote>
+<p>npm install -g npm</p>
+</blockquote>
+</li>
+</ul>
+<p><br></p>
+<p><strong>Ubuntu安装Node.js的正确姿势</strong></p>
+<ul>
+<li><p>下载和安装nvm</p>
+<blockquote>
+<p>$ wget -qO- <a href="https://raw.github.com/creationix/nvm/master/install.sh" target="_blank" rel="external">https://raw.github.com/creationix/nvm/master/install.sh</a> | sh</p>
+</blockquote>
+</li>
+<li><p>nvm安装好了之后，通过nvm安装node.js</p>
+<blockquote>
+<p>$ nvm install 4</p>
+</blockquote>
+</li>
+<li><p>让nvm生效</p>
+<blockquote>
+<p>$ source ~/.bashrc</p>
+</blockquote>
+</li>
+<li><p>安装hexo</p>
+<blockquote>
+<p>$ npm install -g hexo-cli</p>
+</blockquote>
+</li>
+<li><p>查看node.js、npm和hexo的版本</p>
+<blockquote>
+<p>\$ node -v<br>\$ npm -v<br>\$ hexo version</p>
+</blockquote>
+</li>
+</ul>
+<p><br></p>
+<p><strong>发布博客的正确姿势</strong></p>
+<p>首先，你得从原来的电脑将网站的原始文件（不包括public文件夹、node_modules）上传到oschina的私有仓库（为什么使用oschina，因为github创建私有项目是需要$的，而oschina创建私有项目则完全免费）。然后需要将一些主题文件隐藏的<code>.git</code>文件删除，因为不删除的话无法提交更新。最后在其他电脑使用clone一下就可以开始写博客并发布了。下面是具体的操作步骤。</p>
+<ul>
+<li><p>在本地的其他路径下创建一个备份文件夹，并初始化git仓库</p>
+<blockquote>
+<p>git init<br>git remote add origin <a href="https://git.oschina.net/ACCOUNT/REPONAME.git" target="_blank" rel="external">https://git.oschina.net/ACCOUNT/REPONAME.git</a><br> 使用的时候需要将ACCOUNT修改成你的oschina的账号，REPONAME修改成你的仓库名称。origin是本地分支，remote add会将本地仓库与云端仓库关联起来</p>
+</blockquote>
+</li>
+<li><p>将网站原始文件上传到oschina的私有仓库</p>
+<blockquote>
+<h5 id="添加blog目录下所有文件，注意有个-（-gitignore声明过的文件不包含在内)">添加blog目录下所有文件，注意有个<code>.</code>（<code>.gitignore</code>声明过的文件不包含在内)</h5><p>git add .  </p>
+<h5 id="添加更新说明">添加更新说明</h5><p>git commit -m “first commit” </p>
+<h5 id="推送更新到云端服务器，-u表示本机第一次提交，之后就不用输-u了">推送更新到云端服务器，-u表示本机第一次提交，之后就不用输-u了</h5><p>git push -u origin master</p>
+</blockquote>
+</li>
+</ul>
+<p><br><br>经过上面的步骤云端备份就已经完成了，之后就是在其他电脑进行clone，然后把网站原始文件同步到本地咯。下面是具体的步骤：</p>
+<ul>
+<li><p>同步网站原始文件到本地</p>
+<blockquote>
+<h5 id="初始化仓库">初始化仓库</h5><p>git init</p>
+<h6 id="将本地文件和云端仓库映射起来">将本地文件和云端仓库映射起来</h6><p>git remote add origin <server></server></p>
+<h5 id="获取云端（oschina）所有的网站文件">获取云端（oschina）所有的网站文件</h5><p>git fetch —all</p>
+<h5 id="将本地仓库强制指向从云端拉取的内容，不做合并处理往往在其他">将本地仓库强制指向从云端拉取的内容，不做合并处理往往在其他</h5><h5 id="电脑操作的时候会首先创建一个空文件夹，所以这步不是必须的">电脑操作的时候会首先创建一个空文件夹，所以这步不是必须的</h5><p>git reset —hard origin/master</p>
+</blockquote>
+</li>
+<li><p>上面的步骤完全针对新手，对git比较熟悉的话可以直接使用下面的命令：</p>
+<blockquote>
+<p>git clone <a href="https://git.oschina.net/ACCOUNT/REPONAME.git" target="_blank" rel="external">https://git.oschina.net/ACCOUNT/REPONAME.git</a></p>
+</blockquote>
+</li>
+<li><p>在修改本地文件后，需要更新本地文件</p>
+<blockquote>
+<p>git add .<br>git commit -m “commit message”<br>git push origin master</p>
+</blockquote>
+</li>
+<li><p>博客发布与部署</p>
+<blockquote>
+<p>hexo g<br>hexo d<br>或者<br>hexo d  -g</p>
+</blockquote>
+</li>
+</ul>
+<p><br><br>这样就完成了从另一台电脑发布博客并同步的目的，至此，多机同步与备份就完成了！</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>错误汇总</strong></p>
+<p>最近考虑把Node.js+hexo搭建的博客备份到云端，然后在另一台电脑同步更新。要实现多机同步与备份，首先需要从云端使用git clone得到网站原始文件，然后在新机器上安装node.js+hexo之后才可以正常使]]>
+    </summary>
+    
+      <category term="hexo" scheme="http://rhwayfun.com/tags/hexo/"/>
+    
+      <category term="nodejs" scheme="http://rhwayfun.com/tags/nodejs/"/>
+    
+      <category term="ubuntu" scheme="http://rhwayfun.com/tags/ubuntu/"/>
+    
+      <category term="IT杂谈" scheme="http://rhwayfun.com/categories/IT%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[CopyOnWriteArrayList源码剖析]]></title>
+    <link href="http://rhwayfun.com/post/deep-in-copyonwritearraylist/"/>
+    <id>http://rhwayfun.com/post/deep-in-copyonwritearraylist/</id>
+    <published>2016-04-09T07:26:44.000Z</published>
+    <updated>2016-04-15T07:01:12.683Z</updated>
+    <content type="html"><![CDATA[<p><strong>CopyOnWriteArrayList简介</strong></p>
+<p>CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方案，CopyOnWriteArrayList在某些情况下具有更好的性能，考虑读远大于写的场景，如果把所有的读操作进行加锁，因为只有一个读线程能够获得锁，所以其他的读线程都必须等待，大大影响性能。CopyOnWriteArrayList称为“写时复制”容器，就是在多线程操作容器对象时，把容器复制一份，这样在线程内部的修改就与其他线程无关了，而且这样设计可以做到不阻塞其他的读线程。从JDK1.5开始Java并发包里提供了两个使用CopyOnWrite机制实现的并发容器，它们是CopyOnWriteArrayList和CopyOnWriteArraySet。</p>
+<p><strong>CopyOnWriteArrayList容器使用示例</strong></p>
+<p>下面的代码演示如何使用CopyOnWriteArrayList容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.patchwork.concurrency.r0408;&#10;&#10;import java.text.DateFormat;&#10;import java.text.SimpleDateFormat;&#10;import java.util.Date;&#10;import java.util.List;&#10;import java.util.concurrent.CopyOnWriteArrayList;&#10;import java.util.concurrent.ExecutorService;&#10;import java.util.concurrent.Executors;&#10;import java.util.concurrent.atomic.AtomicLong;&#10;&#10;/**&#10; * Created by rhwayfun on 16-4-8.&#10; */&#10;public class CopyOnWriteArrayListDdemo &#123;&#10;&#10;    /**&#10;     * &#20869;&#23481;&#32534;&#21495;&#10;     */&#10;    private static AtomicLong contentNum;&#10;&#10;    /**&#10;     * &#26085;&#26399;&#26684;&#24335;&#22120;&#10;     */&#10;    private static DateFormat format;&#10;&#10;    /**&#10;     * &#32447;&#31243;&#27744;&#10;     */&#10;    private final ExecutorService threadPool;&#10;&#10;    public CopyOnWriteArrayListDdemo() &#123;&#10;        contentNum = new AtomicLong();&#10;        format = new SimpleDateFormat(&#34;HH:mm:ss&#34;);&#10;        threadPool = Executors.newFixedThreadPool(10);&#10;    &#125;&#10;&#10;    public void doExec(int num) throws InterruptedException &#123;&#10;        List&#60;String&#62; list = new CopyOnWriteArrayList&#60;&#62;();&#10;        for (int i = 0; i &#60; num; i++)&#123;&#10;            list.add(i,&#34;main-content-&#34; + i);&#10;        &#125;&#10;        //5&#20010;&#20889;&#32447;&#31243;&#10;        for (int i = 0; i &#60; 5; i++)&#123;&#10;            threadPool.execute(new Writer(list,i));&#10;        &#125;&#10;        //&#21551;&#21160;10&#20010;&#35835;&#32447;&#31243;&#10;        for (int i = 0; i &#60; 10; i++)&#123;&#10;            threadPool.execute(new Reader(list));&#10;        &#125;&#10;        //&#20851;&#38381;&#32447;&#31243;&#27744;&#10;        threadPool.shutdown();&#10;    &#125;&#10;&#10;    /**&#10;     * &#20889;&#32447;&#31243;&#10;     *&#10;     * @author rhwayfun&#10;     */&#10;    static class Writer implements Runnable &#123;&#10;&#10;        private final List&#60;String&#62; copyOnWriteArrayList;&#10;        private int i;&#10;&#10;        public Writer(List&#60;String&#62; copyOnWriteArrayList,int i) &#123;&#10;            this.copyOnWriteArrayList = copyOnWriteArrayList;&#10;            this.i = i;&#10;        &#125;&#10;&#10;        @Override&#10;        public void run() &#123;&#10;            copyOnWriteArrayList.add(i,&#34;content-&#34; + contentNum.incrementAndGet());&#10;            System.out.println(Thread.currentThread().getName() + &#34;: write content-&#34; + contentNum.get()&#10;                    + &#34; &#34; +format.format(new Date()));&#10;            System.out.println(Thread.currentThread().getName() + &#34;: remove &#34; + copyOnWriteArrayList.remove(i));&#10;        &#125;&#10;    &#125;&#10;&#10;    static class Reader implements Runnable &#123;&#10;&#10;        private final List&#60;String&#62; list;&#10;&#10;        public Reader(List&#60;String&#62; list) &#123;&#10;            this.list = list;&#10;        &#125;&#10;&#10;        @Override&#10;        public void run() &#123;&#10;            for (String s : list) &#123;&#10;                System.out.println(Thread.currentThread().getName() + &#34;: read &#34; + s&#10;                        + &#34; &#34; +format.format(new Date()));&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#10;    public static void main(String[] args) throws InterruptedException &#123;&#10;        CopyOnWriteArrayListDdemo demo = new CopyOnWriteArrayListDdemo();&#10;        demo.doExec(5);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>首先启动5个写线程，再启动10个读线程，运行该程序发现并没有出现异常，所以使用写时复制容器效率很高。代码的运行结果如下：</p>
+<p><img src="http://img.blog.csdn.net/20160408160313641" alt="部分输出"></p>
+<p><strong>CopyOnWriteArrayList源码剖析</strong></p>
+<p>先说说CopyOnWriteArrayList容器的实现原理：简单地说，就是在需要对容器进行操作的时候，将容器拷贝一份，对容器的修改等操作都在容器的拷贝中进行，当操作结束，再把容器容器的拷贝指向原来的容器。这样设计的好处是实现了读写分离，并且读读不会发生阻塞。下面的源码是CopyOnWriteArrayList的add方法实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void add(int index, E element) &#123;&#10;        final ReentrantLock lock = this.lock;&#10;        lock.lock();&#10;        try &#123;&#10;            Object[] elements = getArray();&#10;            int len = elements.length;&#10;            if (index &#62; len || index &#60; 0)&#10;                throw new IndexOutOfBoundsException(&#34;Index: &#34;+index+&#10;                                                    &#34;, Size: &#34;+len);&#10;            Object[] newElements;&#10;            int numMoved = len - index;&#10;            //1&#12289;&#22797;&#21046;&#20986;&#19968;&#20010;&#26032;&#30340;&#25968;&#32452;&#10;            if (numMoved == 0)&#10;                newElements = Arrays.copyOf(elements, len + 1);&#10;            else &#123;&#10;                newElements = new Object[len + 1];&#10;                System.arraycopy(elements, 0, newElements, 0, index);&#10;                System.arraycopy(elements, index, newElements, index + 1,&#10;                                 numMoved);&#10;            &#125;&#10;            //2&#12289;&#25226;&#26032;&#20803;&#32032;&#28155;&#21152;&#21040;&#26032;&#25968;&#32452;&#20013;&#10;            newElements[index] = element;&#10;            //3&#12289;&#25226;&#25968;&#32452;&#25351;&#21521;&#21407;&#26469;&#30340;&#25968;&#32452;&#10;            setArray(newElements);&#10;        &#125; finally &#123;&#10;            lock.unlock();&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>上面的三个步骤实现了写时复制的思想，在读数据的时候不会锁住list，因为写操作是在原来容器的拷贝上进行的。而且，可以看到，如果对容器拷贝修改的过程中又有新的读线程进来，那么读到的还是旧的数据。读的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;&#10;        return get(getArray(), index);&#10;    &#125;&#10;    final Object[] getArray() &#123;&#10;        return array;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>CopyOnWrite并发容器用于读多写少的并发场景。比如白名单，黑名单，商品类目的访问和更新场景。</p>
+<p><strong>CopyOnWriteArrayList的缺点</strong></p>
+<p>从CopyOnWriteArrayList的实现原理可以看到因为在需要容器对象的时候进行拷贝，所以存在两个问题：<strong>内存占用问题</strong>和<strong>数据一致性问题</strong>。</p>
+<p>内存占用问题：因为需要将原来的对象进行拷贝，这需要一定的开销。特别是当容器对象过大的时候，因为拷贝而占用的内存将增加一倍（原来驻留在内存的对象仍然在使用，拷贝之后就有两份对象在内存中，所以增加了一倍内存）。而且，在高并发的场景下，因为每个线程都拷贝一份对象在内存中，这种情况体现得更明显。由于JVM的优化机制，将会触发频繁的Young GC和Full GC，从而使整个系统的性能下降。</p>
+<p>数据一致性问题：CopyOnWriteArrayList不能保证实时一致性，因为读线程在将引用重新指向原来的对象之前再次读到的数据是旧的，所以CopyOnWriteArrayList只能保证最终一致性。因此在需要实时一致性的厂几个CopyOnWriteArrayList是不能使用的。</p>
+<p>CopyOnWriteArrayList小结：</p>
+<ol>
+<li>CopyOnWriteArrayList适用于读多写少的场景</li>
+<li>在并发操作容器对象时不会抛出ConcurrentModificationException，并且返回的元素与迭代器创建时的元素是一致的</li>
+<li>容器对象的复制需要一定的开销，如果对象占用内存过大，可能造成频繁的YoungGC和Full GC</li>
+<li>CopyOnWriteArrayList不能保证数据实时一致性，只能保证最终一致性</li>
+<li>在需要并发操作List对象的时候优先使用CopyOnWriteArrayList</li>
+</ol>
+<figure class="highlight js"><figcaption><span>Javascript Array Syntax</span><a href="http://j.mp/pPUUmW" target="_blank" rel="external">MDN Documentation</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = <span class="keyword">new</span> <span class="built_in">Array</span>(arrayLength);</span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>(element0, element1, ..., elementN);</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>CopyOnWriteArrayList简介</strong></p>
+<p>CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方案，CopyOnWriteArrayList在某]]>
+    </summary>
+    
+      <category term="集合" scheme="http://rhwayfun.com/tags/%E9%9B%86%E5%90%88/"/>
+    
+      <category term="Java集合框架" scheme="http://rhwayfun.com/categories/Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[阿里2016实习offer经验与总结]]></title>
+    <link href="http://rhwayfun.com/post/alibaba-offer-summary/"/>
+    <id>http://rhwayfun.com/post/alibaba-offer-summary/</id>
+    <published>2016-04-09T07:25:42.000Z</published>
+    <updated>2016-04-15T07:01:12.673Z</updated>
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>目前楼主已经拿到阿里实习offer，一共经历了5次面试，其中4轮技术面，1轮HR面试。在这里分享一下自己的面试经验和学习总结。写这篇面经主要是希望能够帮助更多的小伙伴。我本科毕业于中南大学信管专业，真正开始学习Java是在大三下学期，研究生就读北航的移动云计算专业。刚开始也是小白，也是一步步成成起来的。希望能够给与我有相同经历的亲们一个参考。需要提的一点是，你将来是需要靠这个吃饭的，所以请对找工作保持十二分的热情，而且越早准备越好，摆正心态和位置，那么就开始努力吧！！</p>
+<p><strong>阿里一面</strong><br>    一面是在上午9点多接到支付宝的面试电话的，因为很期望能够尽快接到阿里的电话，所以非常兴奋。电话接通之后还是非常紧张的，毕竟是第一次这样的面试。中间面的问题有些记不清了，下面列出了一面问到的问题：</p>
+<ol>
+<li>自我介绍下自己，不超过3分钟（实际上我的自我介绍不到一分钟）</li>
+<li>你感觉比本科阶段自己进步了多少，有哪些进步</li>
+<li>研究生期间最大的进步是什么</li>
+<li>你觉得你适合从事哪个方向的开发</li>
+<li>synchronized与lock的区别，使用场景。看过synchronized的源码没</li>
+<li>JVM自动内存管理，Minor GC与Full GC的触发机制</li>
+<li>了解过JVM调优没，基本思路是什么</li>
+<li>如何设计存储海量数据的存储系统</li>
+<li>缓存的实现原理，设计缓存要注意什么</li>
+<li>淘宝热门商品信息在JVM哪个内存区域</li>
+<li>操作系统的页式存储</li>
+<li>volatile关键字的如何保证内存可见性</li>
+<li>happen-before原则</li>
+<li>Lucene全文搜索的原理</li>
+<li>你觉得自己适合哪方面的开发，为什么</li>
+<li>想去哪里实习，杭州？</li>
+<li>评价一下我的这次面试表现</li>
+<li>应该在我的技术栈中增加什么</li>
+<li>有机会下次面试吗</li>
+</ol>
+<p><strong>一面总结</strong>： 一面大概面了50多分钟，从面试官口中得知他是一个老员工，比我大不了多少，总体上还是聊得蛮投机的。最后的三个问题是我问面试官的，在回答我是否还有机会下次面试的时候说：竞争很激烈，不过机会还是有的。听到这才松了口气，在挂完电话后赶紧区官网查看自己的状态，刚开始出现了结果将在xxx后公布，那叫一个紧张啊，等了几分钟后，简历状态显示在面试中，这才松了口气。</p>
+<p>可以看出一面的问题不是很难，但是要得到面试官比较高的评价（后面听我同学说，我的面试表现是A），还是需要一定的表达能力和对技术比较本质的认识的，如果在回答问题的时候能够做一些适当的扩展，自然会让面试官对你有不一样的评价。我回答问题的遵循一定的步骤：先回答问题本质，在回答具体细节，最后做一些平时编程中的扩展。这样，会让面试官觉得你确实是在这个技术上面下过功夫的。</p>
+<p><strong>阿里二面</strong><br>    等了将近6天（还以为被刷了呢）终于在第二周的周四接到阿里面试电话，那叫一个激动啊。赶紧找了一个安静的地方，准备好后开始正式面试。二面的面试官是一个部门主管，自然还是有点小紧张的。这次面试官上来就直接问，没有一面的面试官那么好说话，下面是面试过程中的问题：</p>
+<ol>
+<li>自我介绍下自己，不超过3分钟（我的自我介绍仍然不超过1分钟，呵呵了）</li>
+<li>你说你熟悉并发编程，那么你说说Java锁有哪些种类，以及区别（果然深度不一样）</li>
+<li>如何保证内存可见性</li>
+<li>Http请求的过程与原理</li>
+<li>TCP连接的特点</li>
+<li>TCP连接如何保证安全可靠的</li>
+<li>为什么TCP连接需要三次握手，两次不可以吗，为什么</li>
+<li>AOP的原理</li>
+<li>动态代理与cglib实现的区别（这个，醉得很厉害）</li>
+<li>那么你说说代理的实现原理呗</li>
+<li>看过Spring源码没，说说Ioc容器的加载过程吧</li>
+<li>了解过字节码的编译过程吗（这个还真不知道）</li>
+<li>可以来杭州实习吗</li>
+<li>评价一下我的面试表现</li>
+<li>有机会下次面试吗</li>
+<li>您觉得我的技术栈应该补充什么，有哪些方面还需要提高</li>
+</ol>
+<p><strong>二面总结</strong>： 二面面试官问的问题都比较直接，答案也是知道就知道，不知道就不知道。这些问题一部分是基础一部分是根据你的专业技能的来提问的。面完后面试官对我的评价是：中规中矩，有机会下次面试。虽说是中规中矩，但听到面试官说有机会下次面试就感觉这次面试应该过了。挂完电话后赶紧登陆查看我的简历状态，刚开始仍然显示在面试中，但是有一点困惑的是：为什么这次没有出现结果待公布的页面呢？又一阵担心，上课也心不在焉，终于在晚上7点多的时候显示了结果待公布的页面，然后心跳又开始开速，过了几分钟看到终于显示在面试中才放松一点。</p>
+<p>虽说这次面试过了，但是我在思考的是为什么面试官对我的表现是中规中矩。后面我知道我的回答虽然答到了点子上，但是扩展程度不够，对一些问题的理解缺乏足够的实践经验。面试官告诉我，有时间可以去研究字节码的编译过程，以及JVM调优方面的知识（特别强调这个很重要）。针对自己的不足，面完后又投入疯狂的看书写代码的生活中。虽然在面试中有一些回答不出来很正常，但是如果能够做到出乎面试官的意料，也是面试官对你很重要的加分项。</p>
+<p><strong>阿里三面（总监面）</strong><br>    三面与二面隔了5天（不知道是不是因为二面面试官对我的评价是中规中矩的缘故，中间一直担心自己被刷了），仍然在下午4点多接到的电话，一看显示来电归属地是阿里巴巴集团，兴奋得不行，找了一个安静的地方开始面试。据说总监面会问项目多一点，所以在等待的这几天中给项目增加了几个比较肉的点，好在能够面试官耍耍（现在想来只能说：too young too simple）。总监刚上来非常不客气，最尴尬的是总监那边老感觉有回声，因为不好意思提就忍了。下面是三面遇到的问题：</p>
+<ol>
+<li>自我介绍，不超过3分钟（这次好像时间更久了，也就2分钟多点）</li>
+<li>说一下你对哪个项目比较熟悉</li>
+<li>为什么做这个项目</li>
+<li>项目采用了什么架构，数据库如何设计的</li>
+<li>数据库由哪些表，为什么有这些表</li>
+<li>主要有哪些核心模块，模块之间如何通信的</li>
+<li>session放在哪里</li>
+<li>如何保存会话状态，有哪些方式、区别如何</li>
+<li>分布式session如何管理，你有哪些方案</li>
+<li>学过数据结构和算法吗（当然），你说说二分搜索的过程</li>
+<li>说一下快排的过程，写一下伪代码</li>
+<li>了解哪设计模式，举例说说在jdk源码哪些用到了你说的设计模式</li>
+<li>你有什么问我吗（仍然上面三个问题）</li>
+</ol>
+<p><strong>三面总结</strong>：本以为三面是交叉面，没想到是阿里的总监面试。由于具体的技术问题在前两轮面试中已经问过了，所以三面后不会有具体的技术问题，总结来看，对自己做过的项目一定要深入，包括使用使用到的技术原理、为什么要使用这些技术。针对项目，面试官关注的无非以下几点：<br>项目中某个比较重要的点是如何实现的（需要深入技术的原理）<br>遇到的最大困难是什么（有哪些），你怎么解决的？<br>如果需要扩展某个功能，如何降低系统的耦合度<br>如果针对某个功能进行优化，你会怎么设计和优化</p>
+<p> 对于写在简历上面的项目，自己对照上面四个问题进行思考，才会在面试中游刃有余。因为任何在简历中作假的行为，面试官只要详细问你就露馅了。在听到面试官说有机会下次面试的时候，心中自然是非常高兴的。挂完电话后区官网查看自己的简历状态，经过几分钟的煎熬后终于仍然显示是面试中才稍稍放松一些。本以为这次总监面试后直接就是HR面了，奈何在晚上阿里打电话说明天部门总监还需要进行一次面试，让我做好准备。我也是醉了，不是已经总监面了吗。虽然存有疑虑，但不管如何还是好好准备。</p>
+<p><strong>阿里四面 （总监面）</strong><br>    果然，在第二天下午四点多接到了部门总监的电话，简单沟通后开始了面试。这次面试感觉是最放松的，没有什么高深的技术问题，感觉就像和朋友聊天的感觉，真的很感谢这位面试官。下面是面试中的问到的问题：</p>
+<ol>
+<li>来个自我介绍呗，不超过3分钟（这次终于由三分钟了，⊙﹏⊙b汗）</li>
+<li>介绍下你最熟悉的项目</li>
+<li>项目使用了什么架构，亮点是什么</li>
+<li>平时主要学习什么课程</li>
+<li>你目前的研究方向是什么</li>
+<li>家是哪的</li>
+<li>喜欢看什么书</li>
+<li>大概什么时候能来实习呢</li>
+<li>你有什么想要问我吗（仍然上面三个问题）</li>
+</ol>
+<p><strong>四面总结</strong>： 虽然这面比较轻松，也没有什么具体的技术问题，但对项目仍然是面试官关注的，后面了解到总监面除了看你的基础，主要看你的潜力（就是有没有培养的价值），这个东西看起来挺虚的，但是从你平时的学习中仍然是可以看得出来的。所以，作为一名开发人员，平时对技术的研究也是很重要的。在听到面试官说让我好好等HR通知的时候可开心了，感觉饭都吃得更香了。</p>
+<p><strong>阿里五面（HR面）</strong><br>    在隔了4天左右，终于接到了HR的电话，那叫一个激动啊。感觉离阿里offer已经不远了，于是振奋精神，聊得还不错。下面是HR问我的问题：</p>
+<ol>
+<li>自我介绍下吧</li>
+<li>做了哪些项目</li>
+<li>看你在问题中说你在杭州看到很多商贩使用付款二维码，你对支付宝怎么看</li>
+<li>你看吧，每天有那么多人使用支付宝，这些数据如果给你存储，你会怎么设计呢（不是说HR不问技术问题吗？不愧是阿里的HR）</li>
+<li>为什么想来支付宝实习呢</li>
+<li>你身边同学如何评价你、老师呢</li>
+<li>如果与同事发生了意见的不一致，你会如何解决呢</li>
+<li>我什么时候能够得到通知呢</li>
+<li>评价下我的面试表现（听到这个问题，HR居然笑了！）</li>
+<li>阿里如何对实习生进行培训</li>
+</ol>
+<p><strong>五面总结</strong>： 虽然之前就听说阿里HR很犀利，不过我感觉一点都不会啊。难道是我的错觉？不得不说的是这个HR的声音真的很好听诶。</p>
+<p><strong>关于HR面试</strong></p>
+<p>其实早就听说把面试的最终的录取结果具有一票否决权，在面完前面的技术面试之后，还是很担心的。所以咨询了师兄以及网上找了阿里HR面试的资料，大概得到以下结论：</p>
+<ol>
+<li>诚信至上，所以在简历中不要存在任何虚假信息，企图通过虚假信息得到面试机会的后果得不偿失</li>
+<li>HR更关注你的表达能力、与同事相处的能力以及对工作的态度</li>
+<li>对自己的是否一个明确的职业规划（前提是首先得对自己有一个清晰的定位）</li>
+<li>关于待遇的问题（由于面的实习岗位，所以这个没有提，但是就我而言，能力才是最重要的，能力上来了待遇自然就水涨船高）</li>
+</ol>
+<p><strong>关于面试的心态</strong></p>
+<p>在自己拿到阿里offer之前，一直都在想一个问题：我到底该如何做才能离阿里更近？一年的成长与思考让我认清了这点，虽然中间也遇到过很多坑，但却真正让我对自己有了一个清晰的定位，也有了比较明确的目标。正因为如此，我每天所学习的都给我莫大的动力，让我不断进步，并最终实现自己的目标。所以迷茫才是最可怕的，只有摆正心态，对找工作保持十二分的热情，勤奋努力，才能离目标更近一步。</p>
+<p>但是有了目标和努力外，不一定就能实现目标，说到底还有一个运气的成分在里面，只能说你找到心仪的工作概率更大而已。遇到一个好的面试官绝对赚了。这四位阿里的面试官我感觉都挺好的，没有因为他们资历深就为难我，所以还是非常感谢这四位技术面试官的。</p>
+<p><strong>一点总结</strong></p>
+<p>由于本科是非科班出身，也仅仅是接触过Java而已，在大三的时候对自己的未来的发展道路很迷茫，不知道何去何从，感觉自己就是一个loser。那会考完研后有幸进入了金蝶实习，也就是那段时间让我认清了自己的短板，自己欠缺的是什么，那段时间也是我确立自己目标的过程。读研后疯狂看书、写代码、写博客、做项目，每天都在对自己进行总结和反思，正是这样一个不断的自我反思与努力的过程中，我得到了真正的成长与进步。也是这段经历让我能够面对阿里技术面试官的提问应答自如，从而顺利拿到阿里的offer。</p>
+<p>最后，想送给自己两句话以鞭策自己：</p>
+<ul>
+<li><strong>越努力，越幸运！</strong></li>
+<li><strong>以现在大多数人的努力程度之低，根本轮不到可以拼天赋。</strong></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>前言</strong></p>
+<p>目前楼主已经拿到阿里实习offer，一共经历了5次面试，其中4轮技术面，1轮HR面试。在这里分享一下自己的面试经验和学习总结。写这篇面经主要是希望能够帮助更多的小伙伴。我本科毕业于中南大学信管专业，真正开始学习Java是]]>
+    </summary>
+    
+      <category term="阿里巴巴" scheme="http://rhwayfun.com/tags/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4/"/>
+    
+      <category term="面试" scheme="http://rhwayfun.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="IT杂谈" scheme="http://rhwayfun.com/categories/IT%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Java成神之路]]></title>
+    <link href="http://rhwayfun.com/post/dev-in-java/"/>
+    <id>http://rhwayfun.com/post/dev-in-java/</id>
+    <published>2015-12-23T16:02:54.000Z</published>
+    <updated>2016-04-15T07:01:12.685Z</updated>
+    <content type="html"><![CDATA[<p>一、基础篇</p>
+<p>1.1 JVM</p>
+<p>1.1.1. Java内存模型，Java内存管理，Java堆和栈，垃圾回收<br><a href="http://www.jcp.org/en/jsr/detail?id=133" target="_blank" rel="external">http://www.jcp.org/en/jsr/detail?id=133</a><br><a href="http://ifeve.com/jmm-faq/" target="_blank" rel="external">http://ifeve.com/jmm-faq/</a><br>1.1.2. 了解JVM各种参数及调优</p>
+<p>1.1.3. 学习使用Java工具<br>jps, jstack, jmap, jconsole, jinfo, jhat, javap, …<br><a href="http://kenai.com/projects/btrace" target="_blank" rel="external">http://kenai.com/projects/btrace</a><br><a href="http://www.crashub.org/" target="_blank" rel="external">http://www.crashub.org/</a><br><a href="https://github.com/taobao/TProfiler" target="_blank" rel="external">https://github.com/taobao/TProfiler</a><br><a href="https://github.com/CSUG/HouseMD" target="_blank" rel="external">https://github.com/CSUG/HouseMD</a><br><a href="http://wiki.cyclopsgroup.org/jmxterm" target="_blank" rel="external">http://wiki.cyclopsgroup.org/jmxterm</a><br><a href="https://github.com/jlusdy/TBJMap" target="_blank" rel="external">https://github.com/jlusdy/TBJMap</a><br>1.1.4. 学习Java诊断工具<br><a href="http://www.eclipse.org/mat/" target="_blank" rel="external">http://www.eclipse.org/mat/</a><br><a href="http://visualvm.java.net/oqlhelp.html" target="_blank" rel="external">http://visualvm.java.net/oqlhelp.html</a><br>1.1.5. 自己编写各种outofmemory，stackoverflow程序<br>HeapOutOfMemory<br>Young OutOfMemory<br>MethodArea OutOfMemory<br>ConstantPool OutOfMemory<br>DirectMemory OutOfMemory<br>Stack OutOfMemory<br>Stack OverFlow<br>1.1.6. 使用工具尝试解决以下问题，并写下总结<br>当一个Java程序响应很慢时如何查找问题<br>当一个Java程序频繁FullGC时如何解决问题，如何查看垃圾回收日志<br>当一个Java应用发生OutOfMemory时该如何解决，年轻代、年老代、永久代解决办法不同，导致原因也不同<br>1.1.7. 参考资料<br><a href="http://docs.oracle.com/javase/specs/jvms/se7/html/" target="_blank" rel="external">http://docs.oracle.com/javase/specs/jvms/se7/html/</a><br><a href="http://www.cs.umd.edu/~pugh/java/memoryModel/" target="_blank" rel="external">http://www.cs.umd.edu/~pugh/java/memoryModel/</a><br><a href="http://gee.cs.oswego.edu/dl/jmm/cookbook.html" target="_blank" rel="external">http://gee.cs.oswego.edu/dl/jmm/cookbook.html</a><br>1.2. Java基础知识</p>
+<p>1.2.1. 阅读源代码<br>java.lang.String<br>java.lang.Integer<br>java.lang.Long<br>java.lang.Enum<br>java.math.BigDecimal<br>java.lang.ThreadLocal<br>java.lang.ClassLoader &amp; java.net.URLClassLoader<br>java.util.ArrayList &amp; java.util.LinkedList<br>java.util.HashMap &amp; java.util.LinkedHashMap &amp; java.util.TreeMap<br>java.util.HashSet &amp; java.util.LinkedHashSet &amp; java.util.TreeSet<br>1.2.2. 熟悉Java中各种变量类型<br>1.2.3. 熟悉Java String的使用，熟悉String的各种函数<br>1.2.4. 熟悉Java中各种关键字<br>1.2.5. 学会使用List，Map，Stack，Queue，Set<br>上述数据结构的遍历<br>上述数据结构的使用场景<br>Java实现对Array/List排序<br>java.uti.Arrays.sort()<br>java.util.Collections.sort()<br>Java实现对List去重<br>Java实现对List去重，并且需要保留数据原始的出现顺序<br>Java实现最近最少使用cache，用LinkedHashMap<br>1.2.6. Java IO&amp;Java NIO，并学会使用<br>java.io.<em><br>java.nio.</em><br>nio和reactor设计模式<br>文件编码，字符集<br>1.2.7. Java反射与javassist<br>反射与工厂模式<br>java.lang.reflect.<em><br>1.2.8. Java序列化<br>java.io. Serializable<br>什么是序列化，为什么序列化<br>序列化与单例模式<br>google序列化protobuf<br>1.2.9. 虚引用，弱引用，软引用<br>java.lang.ref.</em><br>实验这些引用的回收<br>1.2.10. 熟悉Java系统属性<br>java.util.Properties<br>1.2.11. 熟悉Annotation用法<br>java.lang.annotation.<em><br>1.2.12. JMS<br>javax.jms.</em><br>1.2.13. JMX<br>java.lang.management.<em><br>javax.management.</em><br>1.2.14. 泛型和继承，泛型和擦除<br>1.2.15. 自动拆箱装箱与字节码<br>1.2.16. 实现Callback<br>1.2.17. java.lang.Void类使用<br>1.2.18. Java Agent，premain函数<br>java.lang.instrument<br>1.2.19. 单元测试<br>Junit，<a href="http://junit.org/" target="_blank" rel="external">http://junit.org/</a><br>Jmockit，<a href="https://code.google.com/p/jmockit/" target="_blank" rel="external">https://code.google.com/p/jmockit/</a><br>djUnit，<a href="http://works.dgic.co.jp/djunit/" target="_blank" rel="external">http://works.dgic.co.jp/djunit/</a><br>1.2.20. Java实现通过正则表达式提取一段文本中的电子邮件，并将@替换为#输出<br>java.lang.util.regex.<em><br>1.2.21. 学习使用常用的Java工具库<br>commons.lang, commons.</em>…<br>guava-libraries<br>netty<br>1.2.22. 什么是API&amp;SPI<br><a href="http://en.wikipedia.org/wiki/Application_programming_interface" target="_blank" rel="external">http://en.wikipedia.org/wiki/Application_programming_interface</a><br><a href="http://en.wikipedia.org/wiki/Service_provider_interface" target="_blank" rel="external">http://en.wikipedia.org/wiki/Service_provider_interface</a><br>1.2.23. 参考资料<br>JDK src.zip 源代码<br><a href="http://openjdk.java.net/" target="_blank" rel="external">http://openjdk.java.net/</a><br><a href="http://commons.apache.org/" target="_blank" rel="external">http://commons.apache.org/</a><br><a href="https://code.google.com/p/guava-libraries/" target="_blank" rel="external">https://code.google.com/p/guava-libraries/</a><br><a href="http://netty.io/" target="_blank" rel="external">http://netty.io/</a><br><a href="http://stackoverflow.com/questions/2954372/difference-between-spi-and-api" target="_blank" rel="external">http://stackoverflow.com/questions/2954372/difference-between-spi-and-api</a><br><a href="http://stackoverflow.com/questions/11404230/how-to-implement-the-api-spi-pattern-in-java" target="_blank" rel="external">http://stackoverflow.com/questions/11404230/how-to-implement-the-api-spi-pattern-in-java</a><br>1.3. Java并发编程</p>
+<p>1.3.1. 阅读源代码，并学会使用</p>
+<p>java.lang.Thread<br>java.lang.Runnable<br>java.util.concurrent.Callable<br>java.util.concurrent.locks.ReentrantLock<br>java.util.concurrent.locks.ReentrantReadWriteLock<br>java.util.concurrent.atomic.Atomic*<br>java.util.concurrent.Semaphore<br>java.util.concurrent.CountDownLatch<br>java.util.concurrent.CyclicBarrier<br>java.util.concurrent.ConcurrentHashMap<br>java.util.concurrent.Executors<br>1.3.2. 学习使用线程池，自己设计线程池需要注意什么<br>1.3.3. 锁<br>什么是锁，锁的种类有哪些，每种锁有什么特点，适用场景是什么<br>在并发编程中锁的意义是什么<br>1.3.4. synchronized的作用是什么，synchronized和lock<br>1.3.5. sleep和wait<br>1.3.6. wait和notify<br>1.3.7. 写一个死锁的程序<br>1.3.8. 什么是守护线程，守护线程和非守护线程的区别以及用法<br>1.3.9. volatile关键字的理解<br>C++ volatile关键字和Java volatile关键字<br>happens-before语义<br>编译器指令重排和CPU指令重排<br><a href="http://en.wikipedia.org/wiki/Memory_ordering" target="_blank" rel="external">http://en.wikipedia.org/wiki/Memory_ordering</a><br><a href="http://en.wikipedia.org/wiki/Volatile_variable" target="_blank" rel="external">http://en.wikipedia.org/wiki/Volatile_variable</a><br><a href="http://preshing.com/20130702/the-happens-before-relation/" target="_blank" rel="external">http://preshing.com/20130702/the-happens-before-relation/</a><br>1.3.10. 以下代码是不是线程安全？为什么？如果为count加上volatile修饰是否能够做到线程安全？你觉得该怎么做是线程安全的？<br>public class Sample {<br>private static int count = 0;<br>public static void increment() {<br>count++;<br>}<br>}<br>1.3.11. 解释一下下面两段代码的差别<br>// 代码1<br>public class Sample {<br>private static int count = 0;<br>synchronized public static void increment() {<br>count++;<br>}<br>}</p>
+<p>// 代码2<br>public class Sample {<br>private static AtomicInteger count = new AtomicInteger(0);<br>public static void increment() {<br>count.getAndIncrement();<br>}<br>}<br>1.3.12. 参考资料<br><a href="http://book.douban.com/subject/10484692/" target="_blank" rel="external">http://book.douban.com/subject/10484692/</a><br><a href="http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html" target="_blank" rel="external">http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html</a><br>二、 进阶篇</p>
+<p>2.1. Java底层知识</p>
+<p>2.1.1. 学习了解字节码、class文件格式<br><a href="http://en.wikipedia.org/wiki/Java_class_file" target="_blank" rel="external">http://en.wikipedia.org/wiki/Java_class_file</a><br><a href="http://en.wikipedia.org/wiki/Java_bytecode" target="_blank" rel="external">http://en.wikipedia.org/wiki/Java_bytecode</a><br><a href="http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings" target="_blank" rel="external">http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings</a><br><a href="http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/" target="_blank" rel="external">http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/</a><br><a href="http://asm.ow2.org/" target="_blank" rel="external">http://asm.ow2.org/</a><br>2.1.2. 写一个程序要求实现javap的功能（手工完成，不借助ASM等工具）<br>如Java源代码：<br>public static void main(String[] args) {<br>int i = 0;<br>i += 1;<br>i *= 1;<br>System.out.println(i);<br>}<br>编译后读取class文件输出以下代码：<br>public static void main(java.lang.String[]);<br>Code:<br>Stack=2, Locals=2, Args_size=1<br>0: iconst_0<br>1: istore_1<br>2: iinc 1, 1<br>5: iload_1<br>6: iconst_1<br>7: imul<br>8: istore_1<br>9: getstatic #2; //Field java/lang/System.out:Ljava/io/PrintStream;<br>12: iload_1<br>13: invokevirtual #3; //Method java/io/PrintStream.println:(I)V<br>16: return<br>LineNumberTable:<br>line 4: 0<br>line 5: 2<br>line 6: 5<br>line 7: 9<br>line 8: 16<br>2.1.3. CPU缓存，L1，L2，L3和伪共享<br><a href="http://duartes.org/gustavo/blog/post/intel-cpu-caches/" target="_blank" rel="external">http://duartes.org/gustavo/blog/post/intel-cpu-caches/</a><br><a href="http://mechanical-sympathy.blogspot.com/2011/07/false-sharing.html" target="_blank" rel="external">http://mechanical-sympathy.blogspot.com/2011/07/false-sharing.html</a><br>2.1.4. 什么是尾递归<br>2.1.5. 熟悉位运算<br>用位运算实现加、减、乘、除、取余<br>2.1.6. 参考资料<br><a href="http://book.douban.com/subject/1138768/" target="_blank" rel="external">http://book.douban.com/subject/1138768/</a><br><a href="http://book.douban.com/subject/6522893/" target="_blank" rel="external">http://book.douban.com/subject/6522893/</a><br><a href="http://en.wikipedia.org/wiki/Java_class_file" target="_blank" rel="external">http://en.wikipedia.org/wiki/Java_class_file</a><br><a href="http://en.wikipedia.org/wiki/Java_bytecode" target="_blank" rel="external">http://en.wikipedia.org/wiki/Java_bytecode</a><br><a href="http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings" target="_blank" rel="external">http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings</a><br>2.2. 设计模式</p>
+<p>2.2.1. 实现AOP<br>CGLIB和InvocationHandler的区别<br><a href="http://cglib.sourceforge.net/" target="_blank" rel="external">http://cglib.sourceforge.net/</a><br>动态代理模式<br>Javassist实现AOP<br><a href="http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/" target="_blank" rel="external">http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/</a><br>ASM实现AOP<br><a href="http://asm.ow2.org/" target="_blank" rel="external">http://asm.ow2.org/</a><br>2.2.2. 使用模板方法设计模式和策略设计模式实现IOC<br>2.2.3. 不用synchronized和lock，实现线程安全的单例模式<br>2.2.4. nio和reactor设计模式<br>2.2.5. 参考资料<br><a href="http://asm.ow2.org/" target="_blank" rel="external">http://asm.ow2.org/</a><br><a href="http://cglib.sourceforge.net/" target="_blank" rel="external">http://cglib.sourceforge.net/</a><br><a href="http://www.javassist.org/" target="_blank" rel="external">http://www.javassist.org/</a><br>2.3. 网络编程知识<br>2.3.1. Java RMI，Socket，HttpClient<br>2.3.2. 用Java写一个简单的静态文件的HTTP服务器<br>实现客户端缓存功能，支持返回304<br>实现可并发下载一个文件<br>使用线程池处理客户端请求<br>使用nio处理客户端请求<br>支持简单的rewrite规则<br>上述功能在实现的时候需要满足“开闭原则”<br>2.3.3. 了解nginx和apache服务器的特性并搭建一个对应的服务器<br><a href="http://nginx.org/" target="_blank" rel="external">http://nginx.org/</a><br><a href="http://httpd.apache.org/" target="_blank" rel="external">http://httpd.apache.org/</a><br>2.3.4. 用Java实现FTP、SMTP协议<br>2.3.5. 什么是CDN？如果实现？DNS起到什么作用？<br>搭建一个DNS服务器<br>搭建一个 Squid 或 Apache Traffic Server 服务器<br><a href="http://www.squid-cache.org/" target="_blank" rel="external">http://www.squid-cache.org/</a><br><a href="http://trafficserver.apache.org/" target="_blank" rel="external">http://trafficserver.apache.org/</a><br><a href="http://en.wikipedia.org/wiki/Domain_Name_System" target="_blank" rel="external">http://en.wikipedia.org/wiki/Domain_Name_System</a><br>2.3.6. 参考资料<br><a href="http://www.ietf.org/rfc/rfc2616.txt" target="_blank" rel="external">http://www.ietf.org/rfc/rfc2616.txt</a><br><a href="http://tools.ietf.org/rfc/rfc5321.txt" target="_blank" rel="external">http://tools.ietf.org/rfc/rfc5321.txt</a><br><a href="http://en.wikipedia.org/wiki/Open/closed_principle" target="_blank" rel="external">http://en.wikipedia.org/wiki/Open/closed_principle</a><br>2.4. 框架知识<br>spring，spring mvc，阅读主要源码<br>ibatis，阅读主要源码<br>用spring和ibatis搭建java server<br>2.5. 应用服务器知识<br>熟悉使用jboss，<a href="https://www.jboss.org/overview/" target="_blank" rel="external">https://www.jboss.org/overview/</a><br>熟悉使用tomcat，<a href="http://tomcat.apache.org/" target="_blank" rel="external">http://tomcat.apache.org/</a><br>熟悉使用jetty，<a href="http://www.eclipse.org/jetty/" target="_blank" rel="external">http://www.eclipse.org/jetty/</a><br>三、 高级篇</p>
+<p>3.1. 编译原理知识</p>
+<p>3.1.1. 用Java实现以下表达式解析并返回结果（语法和Oracle中的select sysdate-1 from dual类似）<br>sysdate<br>sysdate - 1<br>sysdate - 1/24<br>sysdate - 1/(12*2)<br>3.1.2. 实现对一个List通过DSL筛选<br>QList<map<string, object="">&gt; mapList = new QList<map<string, object="">&gt;;<br>mapList.add({“name”: “hatter test”});<br>mapList.add({“id”: -1,”name”: “hatter test”});<br>mapList.add({“id”: 0, “name”: “hatter test”});<br>mapList.add({“id”: 1, “name”: “test test”});<br>mapList.add({“id”: 2, “name”: “hatter test”});<br>mapList.add({“id”: 3, “name”: “test hatter”});<br>mapList.query(“id is not null and id &gt; 0 and name like ‘%hatter%’”);<br>要求返回列表中匹配的对象，即最后两个对象；</map<string,></map<string,></p>
+<p>3.1.3. 用Java实现以下程序（语法和变量作用域处理都和JavaScript类似）：<br>代码：<br>var a = 1;<br>var b = 2;<br>var c = function() {<br>var a = 3;<br>println(a);<br>println(b);<br>};<br>c();<br>println(a);<br>println(b);<br>输出：<br>3<br>2<br>1<br>2<br>3.1.4. 参考资料<br><a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree" target="_blank" rel="external">http://en.wikipedia.org/wiki/Abstract_syntax_tree</a><br><a href="https://javacc.java.net/" target="_blank" rel="external">https://javacc.java.net/</a><br><a href="http://www.antlr.org/" target="_blank" rel="external">http://www.antlr.org/</a><br>3.2. 操作系统知识<br>Ubuntu<br>Centos<br>使用linux，熟悉shell脚本<br>3.3. 数据存储知识</p>
+<p>3.3.1. 关系型数据库<br>MySQL<br>如何看执行计划<br>如何搭建MySQL主备<br>binlog是什么<br>Derby，H2，PostgreSQL<br>SQLite<br>3.3.2. NoSQL<br>Cache<br>Redis<br>Memcached<br>Leveldb<br>Bigtable<br>HBase<br>Cassandra<br>Mongodb<br>图数据库<br>neo4j<br>3.3.3. 参考资料<br><a href="http://db-engines.com/en/ranking" target="_blank" rel="external">http://db-engines.com/en/ranking</a><br><a href="http://redis.io/" target="_blank" rel="external">http://redis.io/</a><br><a href="https://code.google.com/p/leveldb/" target="_blank" rel="external">https://code.google.com/p/leveldb/</a><br><a href="http://hbase.apache.org/" target="_blank" rel="external">http://hbase.apache.org/</a><br><a href="http://cassandra.apache.org/" target="_blank" rel="external">http://cassandra.apache.org/</a><br><a href="http://www.mongodb.org/" target="_blank" rel="external">http://www.mongodb.org/</a><br><a href="http://www.neo4j.org/" target="_blank" rel="external">http://www.neo4j.org/</a><br>3.4. 大数据知识</p>
+<p>3.4.1. Zookeeper，在linux上部署zk<br>3.4.2. Solr，Lucene，ElasticSearch<br>在linux上部署solr，solrcloud，，新增、删除、查询索引<br>3.4.3. Storm，流式计算，了解Spark，S4<br>在linux上部署storm，用zookeeper做协调，运行storm hello world，local和remote模式运行调试storm topology。<br>3.4.4. Hadoop，离线计算<br>Hdfs：部署NameNode，SecondaryNameNode，DataNode，上传文件、打开文件、更改文件、删除文件<br>MapReduce：部署JobTracker，TaskTracker，编写mr job<br>Hive：部署hive，书写hive sql，得到结果<br>Presto：类hive，不过比hive快，非常值得学习<br>3.4.5. 分布式日志收集flume，kafka，logstash<br>3.4.6. 数据挖掘，mahout<br>3.4.7. 参考资料<br><a href="http://zookeeper.apache.org/" target="_blank" rel="external">http://zookeeper.apache.org/</a><br><a href="https://lucene.apache.org/solr/" target="_blank" rel="external">https://lucene.apache.org/solr/</a><br><a href="https://github.com/nathanmarz/storm/wiki" target="_blank" rel="external">https://github.com/nathanmarz/storm/wiki</a><br><a href="http://hadoop.apache.org/" target="_blank" rel="external">http://hadoop.apache.org/</a><br><a href="http://prestodb.io/" target="_blank" rel="external">http://prestodb.io/</a><br><a href="http://flume.apache.org/，http://logstash.net/，http://kafka.apache.org/" target="_blank" rel="external">http://flume.apache.org/，http://logstash.net/，http://kafka.apache.org/</a><br><a href="http://mahout.apache.org/" target="_blank" rel="external">http://mahout.apache.org/</a><br>3.5. 网络安全知识</p>
+<p>3.5.1. 什么是DES、AES<br>3.5.2. 什么是RSA、DSA<br>3.5.3. 什么是MD5，SHA1<br>3.5.4. 什么是SSL、TLS，为什么HTTPS相对比较安全<br>3.5.5. 什么是中间人攻击、如果避免中间人攻击<br>3.5.6. 什么是DOS、DDOS、CC攻击<br>3.5.7. 什么是CSRF攻击<br>3.5.8. 什么是CSS攻击<br>3.5.9. 什么是SQL注入攻击<br>3.5.10. 什么是Hash碰撞拒绝服务攻击<br>3.5.11. 了解并学习下面几种增强安全的技术</p>
+<p><a href="http://www.openauthentication.org/" target="_blank" rel="external">http://www.openauthentication.org/</a><br>HOTP <a href="http://www.ietf.org/rfc/rfc4226.txt" target="_blank" rel="external">http://www.ietf.org/rfc/rfc4226.txt</a><br>TOTP <a href="http://tools.ietf.org/rfc/rfc6238.txt" target="_blank" rel="external">http://tools.ietf.org/rfc/rfc6238.txt</a><br>OCRA <a href="http://tools.ietf.org/rfc/rfc6287.txt" target="_blank" rel="external">http://tools.ietf.org/rfc/rfc6287.txt</a><br><a href="http://en.wikipedia.org/wiki/Salt_(cryptography" target="_blank" rel="external">http://en.wikipedia.org/wiki/Salt_(cryptography</a>)<br>3.5.12. 用openssl签一个证书部署到apache或nginx<br>3.5.13. 参考资料<br><a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function" target="_blank" rel="external">http://en.wikipedia.org/wiki/Cryptographic_hash_function</a><br><a href="http://en.wikipedia.org/wiki/Block_cipher" target="_blank" rel="external">http://en.wikipedia.org/wiki/Block_cipher</a><br><a href="http://en.wikipedia.org/wiki/Public-key_cryptography" target="_blank" rel="external">http://en.wikipedia.org/wiki/Public-key_cryptography</a><br><a href="http://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="external">http://en.wikipedia.org/wiki/Transport_Layer_Security</a><br><a href="http://www.openssl.org/" target="_blank" rel="external">http://www.openssl.org/</a><br><a href="https://code.google.com/p/google-authenticator/" target="_blank" rel="external">https://code.google.com/p/google-authenticator/</a><br>四、 扩展篇</p>
+<p>4.1. 相关知识</p>
+<p>4.1.1. 云计算，分布式，高可用，可扩展<br>4.1.2. 虚拟化<br><a href="https://linuxcontainers.org/" target="_blank" rel="external">https://linuxcontainers.org/</a><br><a href="http://www.linux-kvm.org/page/Main_Page" target="_blank" rel="external">http://www.linux-kvm.org/page/Main_Page</a><br><a href="http://www.xenproject.org/" target="_blank" rel="external">http://www.xenproject.org/</a><br><a href="https://www.docker.io/" target="_blank" rel="external">https://www.docker.io/</a><br>4.1.3. 监控<br><a href="http://www.nagios.org/" target="_blank" rel="external">http://www.nagios.org/</a><br><a href="http://ganglia.info/" target="_blank" rel="external">http://ganglia.info/</a><br>4.1.4. 负载均衡<br><a href="http://www.linuxvirtualserver.org/" target="_blank" rel="external">http://www.linuxvirtualserver.org/</a><br>4.1.5. 学习使用git<br><a href="https://github.com/" target="_blank" rel="external">https://github.com/</a><br><a href="https://git.oschina.net/" target="_blank" rel="external">https://git.oschina.net/</a><br>4.1.6. 学习使用maven<br><a href="http://maven.apache.org/" target="_blank" rel="external">http://maven.apache.org/</a><br>4.1.7. 学习使用gradle<br><a href="http://www.gradle.org/" target="_blank" rel="external">http://www.gradle.org/</a><br>4.1.8. 学习一个小语种语言<br>Groovy<br>Scala<br>LISP, Common LISP, Schema, Clojure<br>R<br>Julia<br>Lua<br>Ruby<br>4.1.9. 尝试了解编码的本质</p>
+<p>了解以下概念<br>ASCII, ISO-8859-1<br>GB2312, GBK, GB18030<br>Unicode, UTF-8<br>不使用 String.getBytes() 等其他工具类/函数完成下面功能</p>
+<p>public static void main(String[] args) throws IOException {<br>String str = “Hello, 我们是中国人。”;<br>byte[] utf8Bytes = toUTF8Bytes(str);<br>FileOutputStream fos = new FileOutputStream(“f.txt”);<br>fos.write(utf8Bytes);<br>fos.close();<br>}<br>public static byte[] toUTF8Bytes(String str) {<br>return null; // TODO<br>}</p>
+<p>想一下上面的程序能不能写一个转GBK的？<br>写个程序自动判断一个文件是哪种编码<br>4.1.10. 尝试了解时间的本质<br>时区 &amp; 冬令时、夏令时<br><a href="http://en.wikipedia.org/wiki/Time_zone" target="_blank" rel="external">http://en.wikipedia.org/wiki/Time_zone</a><br>ftp://ftp.iana.org/tz/data/asia<br><a href="http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E6%99%82%E5%8D%80" target="_blank" rel="external">http://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E6%99%82%E5%8D%80</a><br>闰年<br><a href="http://en.wikipedia.org/wiki/Leap_year" target="_blank" rel="external">http://en.wikipedia.org/wiki/Leap_year</a><br>闰秒<br>ftp://ftp.iana.org/tz/data/leapseconds<br>System.currentTimeMillis() 返回的时间是什么<br>4.1.11. 参考资料<br><a href="http://git-scm.com/" target="_blank" rel="external">http://git-scm.com/</a><br><a href="http://en.wikipedia.org/wiki/UTF-8" target="_blank" rel="external">http://en.wikipedia.org/wiki/UTF-8</a><br><a href="http://www.iana.org/time-zones" target="_blank" rel="external">http://www.iana.org/time-zones</a><br>4.2. 扩展学习</p>
+<p>4.2.1. JavaScript知识<br>4.2.1.1. 什么是prototype<br>修改代码，使程序输出“1 3 5”：<br><a href="http://jsfiddle.net/Ts7Fk/" target="_blank" rel="external">http://jsfiddle.net/Ts7Fk/</a><br>4.2.1.2. 什么是闭包<br>看一下这段代码，并解释一下为什么按Button1时没有alert出“This is button: 1”，如何修改：<br><a href="http://jsfiddle.net/FDPj3/1/" target="_blank" rel="external">http://jsfiddle.net/FDPj3/1/</a><br>4.2.1.3. 了解并学习一个JS框架<br>jQuery<br>ExtJS<br>ArgularJS<br>4.2.1.4. 写一个Greasemonkey插件</p>
+<p><a href="http://en.wikipedia.org/wiki/Greasemonkey" target="_blank" rel="external">http://en.wikipedia.org/wiki/Greasemonkey</a><br>4.2.1.5. 学习node.js<br><a href="http://nodejs.org/" target="_blank" rel="external">http://nodejs.org/</a><br>4.2.2. 学习html5<br>ArgularJS，<a href="https://docs.angularjs.org/api" target="_blank" rel="external">https://docs.angularjs.org/api</a><br>4.2.3. 参考资料<br><a href="http://www.ecmascript.org/" target="_blank" rel="external">http://www.ecmascript.org/</a><br><a href="http://jsfiddle.net/" target="_blank" rel="external">http://jsfiddle.net/</a><br><a href="http://jsbin.com/" target="_blank" rel="external">http://jsbin.com/</a><br><a href="http://runjs.cn/" target="_blank" rel="external">http://runjs.cn/</a><br><a href="http://userscripts.org/" target="_blank" rel="external">http://userscripts.org/</a><br>五、 推荐书籍<br>《深入Java虚拟机》<br>《深入理解Java虚拟机》<br>《Effective Java》<br>《七周七语言》<br>《七周七数据》<br>《Hadoop技术内幕》<br>《Hbase In Action》<br>《Mahout In Action》<br>《这就是搜索引擎》<br>《Solr In Action》<br>《深入分析Java Web技术内幕》<br>《大型网站技术架构》<br>《高性能MySQL》<br>《算法导论》<br>《计算机程序设计艺术》<br>《代码大全》<br>《JavaScript权威指南》</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>一、基础篇</p>
+<p>1.1 JVM</p>
+<p>1.1.1. Java内存模型，Java内存管理，Java堆和栈，垃圾回收<br><a href="http://www.jcp.org/en/jsr/detail?id=133" target="_blank" re]]>
+    </summary>
+    
+      <category term="程序员" scheme="http://rhwayfun.com/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/"/>
+    
+      <category term="IT杂谈" scheme="http://rhwayfun.com/categories/IT%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Struts2框架学习之八：避免表单重复提交与等待页面]]></title>
+    <link href="http://rhwayfun.com/post/struts2-learning-8/"/>
+    <id>http://rhwayfun.com/post/struts2-learning-8/</id>
+    <published>2015-12-23T15:40:58.000Z</published>
+    <updated>2016-04-15T07:01:12.778Z</updated>
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>防止表单重复提交在web开发中是一个经常遇到的问题，一般来避免重复提交有两种方式：客户端JavaScript代码实现和服务端代码实现。这里主要介绍服务端的实现方式。在服务端实现表单重复提交的基本原理是：通过创建一个Session对象，并产生一个令牌值，将这个令牌值作为隐藏域随表单一起发送给客户端，同时在Session中保存令牌值。在用户提交表单的时候判断提交参数的令牌值与Session中的是否相等，如果相等则清除，不再使用这个令牌值，，然后执行后续的处理；如果两者不相等，表示已经提交过表单，服务端产生一个新的令牌值并保存到Session中。当用户下次访问的的时候，将新产生的领牌值发送到客户端。</p>
+<a id="more"></a>
+<p><strong>Struts2的实现方式</strong></p>
+<p>在Struts2中通过使用拦截器来实现的，机制与前言中采用令牌的方式是一样的。可以通过两种方式实现避免重复表单（实际上就是两个不同的拦截器）：token拦截器和tokenSession拦截器。由于在struts-default.xml的默认拦截器栈中并没有将这两个拦截器作为默认实现，所以需要在action中手动添加这两个拦截器。这两种方式的区别在于：使用token拦截器重复提交表单的时候，浏览器会跳转到一个错误页面，而使用更tokenSession拦截器重复提交表单的话是不会跳转的，仍然在成功之后页面。需要注意的是，使用者两个拦截器重复提交表单的时候，都只会向服务器提交一次请求，所以这种方式可以有效降低服务器的负担。</p>
+<p><strong>具体的例子</strong></p>
+<p>在使用以上拦截器进行测试的时候，需要如下步骤：<br>步骤一：编写login.jsp、success.jsp和error.jsp三个页面<br>login.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;s:form action=&#34;tokenWait&#34; namespace=&#34;/&#34; method=&#34;post&#34;&#62;&#10;        &#60;s:textfield label=&#34;&#29992;&#25143;&#21517;&#34; name=&#34;user.username&#34;&#62;&#60;/s:textfield&#62;&#10;        &#60;s:password label=&#34;&#23494;&#30721;&#34; name=&#34;user.password&#34;&#62;&#60;/s:password&#62;&#10;        &#60;!-- &#36825;&#20010;&#26631;&#31614;&#19981;&#33021;&#23569; --&#62;&#10;        &#60;%-- &#60;s:token&#62;&#60;/s:token&#62; --%&#62;&#10;        &#60;s:submit value=&#34;&#30331;&#24405;&#34;&#62;&#60;/s:submit&#62;&#10;    &#60;/s:form&#62;&#10; ...</span><br></pre></td></tr></table></figure></p>
+<p>success.jsp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;s:property value=&#34;user.username&#34;/&#62;&#65292;&#60;%=new Date() %&#62;&#10;...</span><br></pre></td></tr></table></figure>
+<p>error.jsp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;html&#62;&#10;&#60;body&#62;&#10;    &#60;!-- &#30331;&#24405;&#22833;&#36133;&#65292;&#35831;&#37325;&#26032;&#30331;&#24405;&#10;    &#60;a href=&#34;login.jsp&#34;&#62;&#36820;&#22238;&#60;/a&#62; --&#62;&#10;    &#24744;&#24050;&#32463;&#25552;&#20132;&#36807;&#34920;&#21333;&#20102;&#65281;&#10;&#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>步骤二：编写action</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package action;&#10;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;&#10;import bean.User;&#10;&#10;import com.opensymphony.xwork2.ActionSupport;&#10;&#10;public class TokenAction extends ActionSupport &#123;&#10;&#10;    private static final long serialVersionUID = 1L;&#10;    private User user;&#10;    &#10;    @Override&#10;    public String execute() throws Exception &#123;&#10;        Thread.sleep(3000);&#10;        List&#60;User&#62; users = new ArrayList&#60;User&#62;();&#10;        users.add(user);&#10;        for (User user : users) &#123;&#10;            System.out.println(user);&#10;        &#125;&#10;        return SUCCESS;&#10;    &#125;&#10;&#10;    public User getUser() &#123;&#10;        return user;&#10;    &#125;&#10;&#10;    public void setUser(User user) &#123;&#10;        this.user = user;&#10;    &#125;&#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>步骤三：配置struts.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#36991;&#20813;&#34920;&#21333;&#37325;&#22797;&#25552;&#20132; --&#62;&#10;        &#60;action name=&#34;token&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;!-- &#37197;&#32622;Token&#25318;&#25130;&#22120; --&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;token&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;!-- &#22914;&#26524;&#37325;&#22797;&#25552;&#20132;&#65292;&#21017;&#36339;&#36716;&#21040;error.jsp --&#62;&#10;            &#60;result name=&#34;invalid.token&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;        &#60;/action&#62;&#10;        &#10;        &#60;action name=&#34;tokenSession&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;!-- &#37197;&#32622;TokenSession&#25318;&#25130;&#22120; --&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;tokenSession&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;!-- &#22914;&#26524;&#37325;&#22797;&#25552;&#20132;&#65292;&#21017;&#36339;&#36716;&#21040;error.jsp --&#62;&#10;            &#60;result name=&#34;invalid.token&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<p>这里需要提出的是，action中name属性为<code>invalid.token</code>的result是不可少的。</p>
+<p>步骤四：发布测试<br>经过测试，发现使用token拦截器在重复提交表单的时候会转到error.jsp，而使用tokenSession拦截器在重复提交表单的时候不会转到error.jsp。</p>
+<p><strong>显示等待页面</strong></p>
+<p>有时候在action需要处理较长时间的时候，一般是5到10分钟，在这种情况下向用户显示一个等待页面可能会比较友好一些。在Struts2中通过使用execAndWait拦截器就可以非常轻松实现这点。</p>
+<p>execAndWait的工作机制：</p>
+<p>execAndWait拦截器能够让一个A执行时间超过5分钟的Action在后台运行，并向用户显示一个等待页面。之所以是5分钟是因为这样防止HTTP请求超时。当一个请求到来的时候，execAndWait拦截器会创建一个线程来执行Session，然后返回一个等待页面，这样用户就知道请求在处理中。等待页面包含了自动刷新功能，在超时之前，浏览器会向初始请求的action再次发起请求，以便知道后台action是否已经执行完毕。如果action仍然没有执行完毕，则继续显示等待页面，如果action已经执行完毕，则等待页面将发生跳转，向用户处理结束之后的页面。</p>
+<p>execAndWait拦截器有以下几个参数：</p>
+<ul>
+<li>threadPriority：执行线程的优先级</li>
+<li>delay：指定在显示等待页面前初始的延迟加载时间，单位是毫秒</li>
+<li>delaySleepInternal：指定检查后台线程是否执行完毕的时间间隔，必须和delay参数一起使用，单位是毫秒，默认是100毫秒。表示每100毫秒进行一次检查</li>
+</ul>
+<p>使用execAndWait拦截器显示等待页面，首先需要编写一个等待页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;&#60;head&#62;&#10;&#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;&#60;title&#62;&#31561;&#24453;&#39029;&#38754;&#60;/title&#62;&#10;&#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;&#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;&#60;meta http-equiv=&#34;refresh&#34; content=&#34;3;url=tokenWait.action&#34;&#62;&#10;&#60;/head&#62;&#10;&#10;&#60;body&#62;&#10;    &#24744;&#30340;&#35831;&#27714;&#27491;&#22312;&#22788;&#29702;&#65292;&#35831;&#31245;&#31561;&#12290;&#10;    &#60;span id=&#34;time&#34; style=&#34;font-size:30px;color:red;font-face:&#38582;&#20070;&#34;&#62;&#60;/span&#62;&#31186;&#21518;&#39029;&#38754;&#23558;&#33258;&#21160;&#36339;&#36716;&#10;    &#60;script type=&#34;text/javascript&#34;&#62;&#10;       var start = 3;&#10;       var step = -1;&#10;       function timer () &#123;&#10;         document.getElementById(&#34;time&#34;).innerHTML = start;&#10;         if(start &#62; 0)&#123;&#10;            start = start + step;&#10;         &#125;&#10;         setTimeout(&#34;timer()&#34;,1000);&#10;       &#125;&#10;       window.onload = timer;&#10;    &#60;/script&#62;&#10;&#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>在head 标签中需要添加自动刷新meta标签，不然是不会出发自动检查的。在这个等待页面中，表示3秒后就会跳转到成功页面。</p>
+<p>之后是添加execAndWait拦截器的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#26174;&#31034;&#33258;&#21160;&#31561;&#24453;&#39029;&#38754; --&#62;&#10;        &#60;action name=&#34;tokenWait&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;result name=&#34;wait&#34;&#62;/wait.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#10;                &#60;!-- &#25226;default&#26041;&#27861;&#25490;&#24207;&#22312;&#22806;&#65292;&#34920;&#31034;&#19981;&#25318;&#25130;!default.action --&#62;&#10;                &#60;param name=&#34;excludeMethods&#34;&#62;default&#60;/param&#62;&#10;            &#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;execAndWait&#34;&#62;&#10;                &#60;!-- &#25226;default&#26041;&#27861;&#25490;&#24207;&#22312;&#22806;&#65292;&#34920;&#31034;&#19981;&#25318;&#25130;!default.action --&#62;&#10;                &#60;param name=&#34;excludeMethods&#34;&#62;default&#60;/param&#62;&#10;                &#60;!-- &#31561;&#24453;&#24310;&#36831;&#26102;&#38388; --&#62;&#10;                &#60;param name=&#34;delay&#34;&#62;1000&#60;/param&#62;&#10;            &#60;/interceptor-ref&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<p>注意到TokenAction类中，使用Tread.sleep(3000)，表示通过让线程休眠的方式延长action的处理时间，还有一点要注意的是struts.xml中execAndWait拦截器的delay参数的值需要小于Thread.sleep(time)的时间。这样就能保证在action处理结束之前完成显示等待页面，不然很可能会直接success.jsp页面了。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>前言</strong></p>
+<p>防止表单重复提交在web开发中是一个经常遇到的问题，一般来避免重复提交有两种方式：客户端JavaScript代码实现和服务端代码实现。这里主要介绍服务端的实现方式。在服务端实现表单重复提交的基本原理是：通过创建一个Session对象，并产生一个令牌值，将这个令牌值作为隐藏域随表单一起发送给客户端，同时在Session中保存令牌值。在用户提交表单的时候判断提交参数的令牌值与Session中的是否相等，如果相等则清除，不再使用这个令牌值，，然后执行后续的处理；如果两者不相等，表示已经提交过表单，服务端产生一个新的令牌值并保存到Session中。当用户下次访问的的时候，将新产生的领牌值发送到客户端。</p>]]>
+    
+    </summary>
+    
+      <category term="Struts2" scheme="http://rhwayfun.com/tags/Struts2/"/>
+    
+      <category term="SSH" scheme="http://rhwayfun.com/categories/SSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[图的广度优先遍历算法]]></title>
+    <link href="http://rhwayfun.com/post/graph-bfs/"/>
+    <id>http://rhwayfun.com/post/graph-bfs/</id>
+    <published>2015-12-23T15:31:20.000Z</published>
+    <updated>2016-04-15T07:01:12.694Z</updated>
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>广度优先遍历算法是图的另一种基本遍历算法，其基本思想是尽最大程度辐射能够覆盖的节点，并对其进行访问。以迷宫为例，深度优先搜索更像是一个人在走迷宫，遇到没有走过就标记，遇到走过就退一步重新走；而广度优先搜索则可以想象成一组人一起朝不同的方向走迷宫，当出现新的未走过的路的时候，可以理解成一个人有分身术，继续从不同的方向走，，当相遇的时候则是合二为一（好吧，有点扯了）。</p>
+<p><strong>广度优先遍历算法的遍历过程</strong></p>
+<p><img src="http://img.blog.csdn.net/20151223171025301" alt="图"></p>
+<p>仍然以上一篇<a href="http://blog.csdn.net/u011116672/article/details/50383221" target="_blank" rel="external">图的深度优先遍历算法</a>的例子进行说明，下面是广度优先遍历的具体过程：</p>
+<ol>
+<li>从起点0开始遍历</li>
+<li>从其邻接表得到所有的邻接节点，把这三个节点都进行标记，表示已经访问过了</li>
+<li>从0的邻接表的第一个顶点2开始寻找新的叉路</li>
+<li>查询顶点2的邻接表，并将其所有的邻接节点都标记为已访问</li>
+<li>继续从顶点0的邻接表的第二个节点，也就是顶点1，遍历从顶点1开始</li>
+<li>查询顶点1的邻接表的所有邻接节点，也就是顶点0和顶点2，发现这两个顶点都被访问过了，顶点1返回</li>
+<li>从顶点0的下一个邻接节点，也就是顶点5，开始遍历</li>
+<li>查询顶点5的邻接节点，发现其邻接节点3和0都被访问过了，顶点5返回</li>
+<li>继续从2的下一个邻接节点3开始遍历</li>
+<li>寻找顶点3的邻接节点，发现都被访问过了，顶点3返回</li>
+<li>继续寻找顶点2的下一个邻接节点4，发现4的所有邻接节点都被访问过了，顶点4返回</li>
+<li>顶点2的所有邻接节点都放过了，顶点2返回，遍历结束</li>
+</ol>
+<p><strong>广度优先遍历算法的实现</strong></p>
+<p>与深度优先遍历算法相同，都需要一个标记数组来记录一个节点是否被访问过，在深度优先遍历算法中，使用的是一个栈来实现的，但是广度优先因为需要记录与起点距离最短的节点，或者说能够用尽可能少的边连通的节点，距离短的优先遍历，距离远的后面再遍历，更像是队列。所以在广度优先遍历算法中，需要使用队列来实现这个过程。下面是具体的实现代码（已附详细注释）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;import java.util.LinkedList;&#10;import java.util.Queue;&#10;&#10;/**&#10; * &#24191;&#24230;&#20248;&#20808;&#25628;&#32034;&#10; * &#60;p&#62;Title:BreadFirstSearch&#60;/p&#62;&#10; * &#60;p&#62;Description:&#60;/p&#62;&#10; * @author rhwayfun&#10; * @date Dec 23, 2015 4:43:41 PM&#10; * @version 1.0&#10; */&#10;public class BreadFirstSearch &#123;&#10;&#10;    //&#21019;&#24314;&#19968;&#20010;&#26631;&#35760;&#25968;&#32452;&#10;    private boolean[] marked;&#10;    //&#36215;&#28857;&#10;    private int s;&#10;    &#10;    public BreadFirstSearch(MyGraph G, int s)&#123;&#10;        marked = new boolean[G.V()];&#10;        this.s = s;&#10;        //&#24320;&#22987;&#24191;&#24230;&#20248;&#20808;&#25628;&#32034;&#10;        bfs(G,s);&#10;    &#125;&#10;&#10;    private void bfs(MyGraph G, int s2) &#123;&#10;        //&#21019;&#24314;&#19968;&#20010;&#38431;&#21015;&#10;        Queue&#60;Integer&#62; queue = new LinkedList&#60;Integer&#62;();&#10;        //&#26631;&#35760;&#36215;&#28857;&#10;        marked[s] = true;&#10;        queue.add(s);&#10;        System.out.print(s + &#34; &#34;);&#10;        while(!queue.isEmpty())&#123;&#10;            //&#20174;&#38431;&#21015;&#20013;&#21024;&#38500;&#19979;&#19968;&#20010;&#33410;&#28857;&#10;            int v = queue.poll();&#10;            //&#23558;&#35813;&#33410;&#28857;&#30340;&#25152;&#26377;&#37051;&#25509;&#33410;&#28857;&#21152;&#20837;&#38431;&#21015;&#20013;&#10;            for(int w : G.adj(v))&#123;&#10;                //&#22914;&#26524;&#27809;&#26377;&#26631;&#35760;&#23601;&#26631;&#35760;&#10;                if(!marked[w])&#123;&#10;                    marked[w] = true;&#10;                    System.out.print(w + &#34; &#34;);&#10;                    queue.add(w);&#10;                &#125;&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>运行该程序，发现广度优先遍历算法对上图的遍历顺序是0，2，1，5，3，4。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>前言</strong></p>
+<p>广度优先遍历算法是图的另一种基本遍历算法，其基本思想是尽最大程度辐射能够覆盖的节点，并对其进行访问。以迷宫为例，深度优先搜索更像是一个人在走迷宫，遇到没有走过就标记，遇到走过就退一步重新走；而广度优先搜索则可以想象成一组]]>
+    </summary>
+    
+      <category term="BFS" scheme="http://rhwayfun.com/tags/BFS/"/>
+    
+      <category term="图" scheme="http://rhwayfun.com/tags/%E5%9B%BE/"/>
+    
+      <category term="算法与数据结构" scheme="http://rhwayfun.com/categories/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[图的深度优先遍历算法]]></title>
+    <link href="http://rhwayfun.com/post/graph-dfs/"/>
+    <id>http://rhwayfun.com/post/graph-dfs/</id>
+    <published>2015-12-22T16:02:42.000Z</published>
+    <updated>2016-04-15T07:01:12.707Z</updated>
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>图的遍历与前面文章中的二叉树遍历还是存在很大区别的。所谓图的遍历指的是从图中的某一个顶点出发访问图中的其余顶点，并且需要保证每个顶点只被访问一次。由于图比二叉树复杂得多，所以前面二叉树的遍历算法在图中是行不通的。因为对于任意一个顶点来讲，都可能与其余的顶点发生连接。如果不对访问的顶点做一些处理，出发重复访问的几率是很高的。因此，一个基本思想是设置一个标记数组，主要用于标记已经被访问过的顶点。图的遍历算法主要有两种：<strong>深度优先遍历和广度优先遍历</strong>。本篇文章主要介绍的是深度优先遍历算法。</p>
+<p><strong>深度优先遍历的具体过程</strong></p>
+<p>深度优先遍历，简称DFS。具体思想是不放过任何一个死角。在图的遍历中就是<strong>从图的某个顶点v出发，访问此顶点，然后从v的未被访问过的邻接点出发深度优先遍历图，直至图中的所有和v有路径相通的顶点都被访问到（对于连通图来讲）</strong>。</p>
+<p>为了更好说明深度优先遍历的过程，以下面的图为例：</p>
+<p><img src="http://img.blog.csdn.net/20151222211938767" alt="图"></p>
+<p>上图的邻接表定义如下：</p>
+<p><img src="http://img.blog.csdn.net/20151222212539223" alt="邻接表"></p>
+<p>注意：顶点0的第一个元素是2而不是5，其顶点类似。</p>
+<ol>
+<li>起点是顶点0，后面的遍历过程从顶点0开始，把顶点0标记为已访问</li>
+<li>因为顶点2是顶点0的邻接表的第一个元素，所以下一次递归从顶点2开始，同时把顶点2标记为已访问</li>
+<li>顶点2的递归遍历开始，由于顶点2的邻接表的第一个元素是0，但是0已经被访问过了，所以访问顶点1，1没有被访问，于是将1标记为已访问，递归继续从顶点1开始</li>
+<li>查找上表中顶点1的第一个元素，是顶点0，由于已经被访问过，所以访问顶点2，2也被访问过了，于是从顶点1的递归遍历结束，返回到顶点2继续递归。</li>
+<li>查找顶点2的下一个元素，顶点3，没有被访问，于是将顶点3标记为已访问，递归于是从顶点3开始</li>
+<li>查找顶点3邻接表的第一个元素，是顶点5，没有被访问，于是将顶点5标记为已访问，递归从顶点5开始</li>
+<li>顶点5从其邻接表查找第一个元素，是顶点3，已被访问过，继续查找顶点0，也被访问，于是递归从5结束，返回到顶点3继续递归</li>
+<li>查找顶点3邻接表的下一个元素，是顶点4，没有被访问过，于是将顶点4标记为已访问，递归从顶点4继续开始</li>
+<li>顶点4查找其邻接表的第一个元素，发现顶点3已被访问过，继续查找其下一个元素，发现顶点2也被访问过，于是递归从顶点4结束，返回到顶点3继续递归</li>
+<li>顶点查找下一个元素是顶点2了，也是顶点3邻接表的最后一个元素，发现顶点2已经被访问过了，所以递归从顶点3结束，返回到顶点2继续递归</li>
+<li>顶点查找其邻接表的下一个元素，是顶点4，也是其邻接表最后一个元素，发现顶点已被访问过，所以递归从顶点2结束，返回到顶点0继续递归</li>
+<li>顶点0继续查找其邻接表的下一个元素，发现顶点1余顶点5都被访问过了，所以递归结束。总的遍历结束。</li>
+</ol>
+<p>从以上过程来看，上图的顶点访问次序依次是：0，2，1，3，5，4。</p>
+<p><strong>深度优先遍历算法的实现</strong></p>
+<p>首先需要定义一个存储图的数据结构，在Java中可以使用邻接表来实现图存储。具体而言就是，图的顶点用一维数组存储，每个顶点的邻接顶点用一个单链表进行存储。</p>
+<p>图的数据结构：邻接表的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;public class MyGraph &#123;&#10;&#10;    //&#39030;&#28857;&#25968;&#30446;&#10;    private int V;&#10;    //&#36793;&#30340;&#25968;&#30446;&#10;    private int E;&#10;    //&#37051;&#25509;&#34920;&#10;    private Bag&#60;Integer&#62;[] adj;&#10;    &#10;    public MyGraph(int V)&#123;&#10;        this.V = V;&#10;        this.E = 0;&#10;        //&#21019;&#24314;&#37051;&#25509;&#34920;&#10;        adj = (Bag&#60;Integer&#62;[])new Bag[V];&#10;        //&#23558;&#25152;&#26377;&#38142;&#34920;&#21021;&#22987;&#21270;&#10;        for(int v = 0; v &#60; V; v++)&#123;&#10;            adj[v] = new Bag&#60;Integer&#62;();&#10;        &#125;&#10;    &#125;&#10;    &#10;    public int V()&#123;&#10;        return V;&#10;    &#125;&#10;    &#10;    public int E()&#123;&#10;        return E;&#10;    &#125;&#10;    &#10;    public void addEdge(int v,int w)&#123;&#10;        //&#23558;w&#28155;&#21152;&#21040;v&#30340;&#38142;&#34920;&#20013;&#10;        adj[v].add(w);&#10;        //&#23558;v&#28155;&#21152;&#21040;w&#30340;&#38142;&#34920;&#20013;&#10;        adj[w].add(v);&#10;        E++;&#10;    &#125;&#10;    //&#33719;&#21462;&#39030;&#28857;v&#30340;&#37051;&#25509;&#34920;&#39030;&#28857;&#21015;&#34920;&#10;    public Iterable&#60;Integer&#62; adj(int v)&#123;&#10;        return adj[v];&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>深度优先遍历算法的实现代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;/**&#10; * &#28145;&#24230;&#20248;&#20808;&#25628;&#32034;&#10; * &#60;p&#62;Title:DepthFirstSearch&#60;/p&#62;&#10; * &#60;p&#62;Description:&#60;/p&#62;&#10; * @author rhwayfun&#10; * @date Dec 22, 2015 8:04:23 PM&#10; * @version 1.0&#10; */&#10;public class DepthFirstSearch &#123;&#10;&#10;    //&#21019;&#24314;&#19968;&#20010;&#26631;&#35760;&#25968;&#32452;&#10;    private boolean[] marked;&#10;    //&#35775;&#38382;&#35745;&#25968;&#22120;&#10;    private int count;&#10;    &#10;    /**&#10;     * &#26500;&#36896;&#19968;&#24133;&#22270;&#24182;&#36827;&#34892;&#28145;&#24230;&#20248;&#20808;&#36941;&#21382;&#10;     * &#60;p&#62;Description: &#60;/p&#62;&#10;     * @param G &#35835;&#20837;&#30340;&#22270;&#10;     * @param s &#24320;&#22987;&#36941;&#21382;&#30340;&#39030;&#28857;&#10;     */&#10;    public DepthFirstSearch(MyGraph G,int s) &#123;&#10;        marked = new boolean[G.V()];&#10;        dfs(G,s);&#10;    &#125;&#10;&#10;    private void dfs(MyGraph G, int s) &#123;&#10;        marked[s] = true;&#10;        count++;&#10;        System.out.print(s + &#34; &#34;);&#10;        for(int w : G.adj(s))&#123;&#10;            //&#22914;&#26524;&#27809;&#26377;&#34987;&#35775;&#38382;&#36807;&#23601;&#32487;&#32493;&#36941;&#21382;&#10;            if(!marked[w]) dfs(G, w);&#10;        &#125;&#10;    &#125;&#10;&#10;    public boolean[] getMarked() &#123;&#10;        return marked;&#10;    &#125;&#10;&#10;    public int getCount() &#123;&#10;        return count;&#10;    &#125;&#10;    &#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>深度优先遍历算法的非递归实现方式</strong></p>
+<p>使用非递归的方式与递归的思想是一致的，不同的在于需要使用一个栈保存遍历的顶点。下面是具体的实现代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.graph;&#10;&#10;import java.util.Iterator;&#10;import java.util.Stack;&#10;&#10;/**&#10; * &#20351;&#29992;&#38750;&#36882;&#24402;&#26041;&#24335;&#23545;&#22270;&#36827;&#34892;&#28145;&#24230;&#20248;&#20808;&#36941;&#21382;&#10; * &#60;p&#62;Title:NonrecursiveDFS&#60;/p&#62;&#10; * &#60;p&#62;Description:&#60;/p&#62;&#10; * @author rhwayfun&#10; * @date Dec 22, 2015 10:43:35 PM&#10; * @version 1.0&#10; */&#10;public class NonrecursiveDFS &#123;&#10;&#10;    //&#21019;&#24314;&#19968;&#20010;&#26631;&#35760;&#25968;&#32452;&#26631;&#35760;&#35775;&#38382;&#36807;&#30340;&#20803;&#32032;&#10;    private boolean[] marked;&#10;    &#10;    @SuppressWarnings(&#34;unchecked&#34;)&#10;    public NonrecursiveDFS(MyGraph G, int s)&#123;&#10;        marked = new boolean[G.V()];&#10;        //&#21019;&#24314;&#19968;&#20010;&#36845;&#20195;&#22120;&#36845;&#20195;&#27599;&#20010;&#39030;&#28857;&#30340;&#37051;&#25509;&#34920;&#10;        Iterator&#60;Integer&#62;[] adj = (Iterator&#60;Integer&#62;[])new Iterator[G.V()];&#10;        //&#33719;&#24471;&#27599;&#20010;&#39030;&#28857;&#30340;&#37051;&#25509;&#34920;&#10;        for(int v = 0; v &#60; G.V(); v++)&#123;&#10;            adj[v] = G.adj(v).iterator();&#10;        &#125;&#10;        &#10;        //&#21019;&#24314;&#19968;&#20010;&#26632;&#29992;&#25143;&#23384;&#25918;&#36941;&#21382;&#30340;&#39030;&#28857;&#10;        Stack&#60;Integer&#62; stack = new Stack&#60;Integer&#62;();&#10;        marked[s] = true;&#10;        System.out.print(s + &#34; &#34;);&#10;        stack.add(s);&#10;        while(!stack.isEmpty())&#123;&#10;            int v = stack.peek();&#10;            //&#22914;&#26524;&#26377;&#37051;&#25509;&#34920;&#30340;&#35805;&#65292;&#23601;&#32487;&#32493;&#36941;&#21382;&#10;            if(adj[v].hasNext())&#123;&#10;                int w = adj[v].next();&#10;                //&#21028;&#26029;&#26159;&#21542;&#24050;&#34987;&#35775;&#38382;&#36807;&#10;                if(!marked[w])&#123;&#10;                    //&#27809;&#35775;&#38382;&#36807;&#23601;&#23558;&#22120;&#26631;&#35760;&#20026;&#24050;&#35775;&#38382;&#36807;&#65292;&#19979;&#27425;&#19981;&#20250;&#20877;&#35775;&#38382;&#20102;&#10;                    marked[w] = true;&#10;                    System.out.print(w + &#34; &#34;);&#10;                    stack.push(w);&#10;                &#125;&#10;            &#125;else&#123;&#10;                //&#22914;&#26524;&#27809;&#26377;&#37051;&#25509;&#34920;&#30340;&#35805;&#23601;&#23558;&#35813;&#39030;&#28857;&#24377;&#20986;&#26632;&#39030;&#10;                stack.pop();&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#10;    public boolean marked(int v) &#123;&#10;        return marked[v];&#10;    &#125;&#10;    &#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>前言</strong></p>
+<p>图的遍历与前面文章中的二叉树遍历还是存在很大区别的。所谓图的遍历指的是从图中的某一个顶点出发访问图中的其余顶点，并且需要保证每个顶点只被访问一次。由于图比二叉树复杂得多，所以前面二叉树的遍历算法在图中是行不通的。因为对于]]>
+    </summary>
+    
+      <category term="DFS" scheme="http://rhwayfun.com/tags/DFS/"/>
+    
+      <category term="图" scheme="http://rhwayfun.com/tags/%E5%9B%BE/"/>
+    
+      <category term="算法与数据结构" scheme="http://rhwayfun.com/categories/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Struts2框架学习之七：理解并使用拦截器]]></title>
+    <link href="http://rhwayfun.com/post/struts2-learning-7/"/>
+    <id>http://rhwayfun.com/post/struts2-learning-7/</id>
+    <published>2015-12-22T15:49:34.000Z</published>
+    <updated>2016-04-15T07:01:12.778Z</updated>
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>拦截器是Struts2框架的核心功能，理解并使用拦截器有助于更灵活使用Struts2。拦截器与Servlet中的过滤器有些类似却又不尽相同。因为在Struts2中拦截器更像一个可插拔的组件，围绕Action和Result进行，可以在方法调用之前、之后使用。通过Struts2的工作流程（后面还会看到一个请求在Struts2中详细的执行流程）可以发现调用一个Action之前之后有许多的拦截器，这些拦截器都通过后才执行具体的action。对于每一个拦截器来说，可以直接返回，从而终止余下的拦截器。</p>
+<p><strong>从Struts2的工作流程说起</strong></p>
+<p>首先请看截取自官方的一张图：</p>
+<p><img src="http://img.blog.csdn.net/20151222173510290" alt="struts2工作流程"></p>
+<p>从图中可以看到，从一个具体的请求到Action需要经过多个拦截器，action处理完毕之后，后续的拦截器会继续执行，最终到浏览器中。Struts2的工作流程如下：</p>
+<ol>
+<li>请求发送给StrutsPrepareAndExecuteFilter</li>
+<li>StrutsPrepareAndExecuteFilter判断该请求是否是一个Struts2请求，如果是则进入第3步</li>
+<li>如果是Struts2请求，则把请求交给ActionProxy，是Action的代理类</li>
+<li>ActionProxy创建一个ActionInvocation实例，并进行初始化</li>
+<li>在执行具体的Action之前，ActionProxy会涉及相关拦截器的调用</li>
+<li>Action调用结束之后，会根据struts.xml文件中action的result配置对象得到对应的返回结果。调用execute方法之后，对返回结果进行渲染</li>
+<li>执行后面的拦截器</li>
+<li>把结果返回给浏览器</li>
+</ol>
+<p>从整个请求处理过程来看，拦截器是处理的关键。ok，通过以上请求处理过程，我们知道了一个拦截器在Struts2中的工作方式。下面从编写一个简单的拦截开始，学习使用拦截器。</p>
+<p><strong>一个简单的拦截器</strong></p>
+<p>主要有两种方式：</p>
+<ul>
+<li>实现Interceptor接口</li>
+<li>继承AbstractInterceptor抽象类</li>
+</ul>
+<p>编写自己的拦截器必须实现com.opensymphony.xwork2.interceptor.Interceptor接口，该接口有三个方法：init()、destroy()、intercept()。init方法在拦截器实例创建之后，intercept方法之前调用，主要用于初始化拦截器所需要的资源；destroy方法在拦截器实例销毁之前调用，用于销毁init初始化分配的资源；intercept方法则是在Action执行之前调用，可以通过invocation对象获取Action的状态，从而根据状态的不同进行需要的拦截操作。</p>
+<p>下面以实现Interceptor接口为例，编写一个计算Action执行execute方法的时间的拦截器。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package interceptor;&#10;&#10;import com.opensymphony.xwork2.ActionInvocation;&#10;import com.opensymphony.xwork2.interceptor.Interceptor;&#10;&#10;public class TimeIntercptor implements Interceptor &#123;&#10;&#10;    private static final long serialVersionUID = 1L;&#10;&#10;    @Override&#10;    public void destroy() &#123;&#10;    &#125;&#10;&#10;    @Override&#10;    public void init() &#123;&#10;    &#125;&#10;&#10;    @Override&#10;    public String intercept(ActionInvocation invocation) throws Exception &#123;&#10;        long start = System.currentTimeMillis();&#10;        //&#25191;&#34892;action&#30340;execute&#26041;&#27861;&#10;        String result = invocation.invoke();&#10;        long end = System.currentTimeMillis();&#10;        System.out.println(&#34;&#25191;&#34892;execute&#26041;&#27861;&#30340;&#26102;&#38388;&#26159;&#34; + (end - start));&#10;        return result;&#10;    &#125;&#10;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在编写一个action并在struts.xml配置文件中进行配置，在浏览器中进行测试就可以得到执行execute方法的具体时间了。在编写拦截器类的时候需要注意：在拦截器中不应该有实例变量，因为拦截器是无状态的，无状态的解释是如果拦截器有状态，那么在多线程同时访问拦截器实例的时候，拦截器的状态是不可预知的。</p>
+<p>至此，我们已经学会了如何编写一个简单的拦截器，下面介绍在拦截器中自带的拦截器哟哪些。</p>
+<p><strong>Struts2中自带的拦截器</strong></p>
+<p>自带的拦截器可以在struts-default.xml文件中得到，主要有：</p>
+<ul>
+<li>execAndWait（该拦截器可以让需要运行较长时间的action在后台运行，并向用户显示进度信息）</li>
+<li>exception（主要用于异常处理）</li>
+<li>fileUpload（用于文件上传）</li>
+<li>i18n（国际化的支持）</li>
+<li>logger（日志，记录action的开始于结束日志）</li>
+<li>modelDriven（支持模型驱动的拦截器）</li>
+<li>validation（定义自己的验证器）</li>
+</ul>
+<p><strong>开发安全验证功能的拦截器</strong></p>
+<p>在日常开发中，进行登录验证是很常见的。这里开发的拦截器主要实现的功能是：如果用户没有登录则提示没有登录的信息，并返回到登录页面。如果用户已经登录，则显示资源。这里主要介绍实际开发中拦截器的开发步骤。</p>
+<p>步骤1：编写基本页面</p>
+<p>登录页面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;&#30331;&#24405;&#60;/title&#62;&#10;    &#60;s:head/&#62;&#10;  &#60;/head&#62;&#10;&#60;/html&#62;&#10;&#60;s:form action=&#34;login2&#34;&#62;&#10;    &#60;s:actionerror/&#62;&#10;    &#60;s:textfield label=&#34;&#29992;&#25143;&#21517;&#34; name=&#34;user.username&#34;&#62;&#60;/s:textfield&#62;&#10;    &#60;s:password label=&#34;&#23494;&#30721;&#34; name=&#34;user.password&#34;&#62;&#60;/s:password&#62;&#10;    &#60;s:submit value=&#34;&#30331;&#24405;&#34;&#62;&#60;/s:submit&#62;&#10;&#60;/s:form&#62;</span><br></pre></td></tr></table></figure></p>
+<p>登录成功页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;&#30331;&#24405; | &#25104;&#21151;&#60;/title&#62;&#10;  &#60;/head&#62;&#10;  &#60;body&#62;&#10;    &#60;h3&#62;&#10;        &#60;s:property value=&#34;user.username&#34;/&#62;&#65292;&#27426;&#36814;&#35775;&#38382;struts2&#23448;&#26041;&#32593;&#31449;&#65281;&#10;    &#60;/h3&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>资源页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;&#32477;&#23494;&#36164;&#28304;&#60;/title&#62;&#10;  &#60;/head&#62;&#10;  &#60;body&#62;&#10;    &#60;strong&#62;&#36825;&#26159;&#32477;&#23494;&#36164;&#28304;&#65281;&#60;/strong&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>步骤二：编写Action<br>LoginAction2.java：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package action;&#10;&#10;import java.util.Map;&#10;&#10;import org.apache.struts2.interceptor.SessionAware;&#10;&#10;import bean.User;&#10;&#10;import com.opensymphony.xwork2.ActionSupport;&#10;&#10;public class LoginAction2 extends ActionSupport implements SessionAware &#123;&#10;&#10;    private static final long serialVersionUID = 1L;&#10;&#10;    private User user;&#10;    private Map&#60;String, Object&#62; session;&#10;    &#10;    //&#36890;&#36807;login!input&#26469;&#35775;&#38382;login.jsp&#10;    public String input() throws Exception&#123;&#10;        return INPUT;&#10;    &#125;&#10;    &#10;    @Override&#10;    public String execute() throws Exception &#123;&#10;        if(&#34;admin&#34;.equals(user.getUsername()) &#38;&#38; &#34;admin&#34;.equals(user.getPassword()))&#123;&#10;            System.out.println(user.getUsername()+&#34;=&#34; + user.getPassword());&#10;            session.put(&#34;user&#34;, user);&#10;            return SUCCESS;&#10;        &#125;else&#123;&#10;            addActionError(&#34;&#30331;&#24405;&#22833;&#36133;&#65281;&#34;);&#10;            return INPUT;&#10;        &#125;&#10;    &#125;&#10;    &#10;    @Override&#10;    public void setSession(Map&#60;String, Object&#62; session) &#123;&#10;        this.session = session;&#10;    &#125;&#10;&#10;    public User getUser() &#123;&#10;        return user;&#10;    &#125;&#10;&#10;    public void setUser(User user) &#123;&#10;        this.user = user;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>步骤四：编写拦截器</p>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package interceptor;&#10;&#10;import java.util.Map;&#10;&#10;import com.opensymphony.xwork2.ActionContext;&#10;import com.opensymphony.xwork2.ActionInvocation;&#10;import com.opensymphony.xwork2.ActionSupport;&#10;import com.opensymphony.xwork2.interceptor.AbstractInterceptor;&#10;&#10;public class AuthenticationInterceptor extends AbstractInterceptor &#123;&#10;&#10;    private static final long serialVersionUID = 1L;&#10;&#10;    /**&#10;     * &#23545;&#30331;&#24405;&#19982;&#21542;&#36827;&#34892;&#25318;&#25130;&#39564;&#35777;&#10;     */&#10;    @Override&#10;    public String intercept(ActionInvocation invocation) throws Exception &#123;&#10;        ActionContext context = ActionContext.getContext();&#10;        Map&#60;String, Object&#62; session = context.getSession();&#10;        Object user = session.get(&#34;user&#34;);&#10;        if(user == null)&#123;&#10;            //&#22914;&#26524;&#29992;&#25143;&#26410;&#30331;&#24405;&#65292;&#21017;&#36820;&#22238;&#30331;&#24405;&#39029;&#38754;,&#24182;&#28155;&#21152;&#38169;&#35823;&#20449;&#24687;&#10;            ActionSupport action = (ActionSupport) invocation.getAction();&#10;            action.addActionError(&#34;&#24744;&#36824;&#27809;&#26377;&#30331;&#24405;&#65292;&#35831;&#20808;&#30331;&#24405;&#65281;&#34;);&#10;            return action.LOGIN;&#10;        &#125;else&#123;&#10;            //&#22914;&#26524;&#29992;&#25143;&#24050;&#32463;&#30331;&#24405;&#65292;&#21017;&#25191;&#34892;&#21518;&#38754;&#30340;&#25318;&#25130;&#22120;&#26041;&#27861;&#10;            return invocation.invoke();&#10;        &#125;&#10;    &#125;&#10;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>步骤五：在struts.xml中进行配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;interceptors&#62; &#10;    &#60;interceptor name=&#34;auth&#34; class=&#34;interceptor.AuthenticationInterceptor&#34; /&#62; &#10;        &#60;interceptor-stack name=&#34;securityStack&#34;&#62; &#10;            &#60;interceptor-ref name=&#34;defaultStack&#34; /&#62; &#10;            &#60;interceptor-ref name=&#34;auth&#34; /&#62; &#10;        &#60;/interceptor-stack&#62; &#10;&#60;/interceptors&#62; &#10;&#10;    &#60;global-results&#62;&#10;        &#60;result name=&#34;login&#34;&#62;/WEB-INF/pages/login.jsp&#60;/result&#62;&#10;    &#60;/global-results&#62;&#10;    &#10;&#60;action name=&#34;login2&#34; class=&#34;action.LoginAction2&#34;&#62;&#10;        &#60;result name=&#34;input&#34;&#62;/WEB-INF/pages/login.jsp&#60;/result&#62;&#10;        &#60;result&#62;/WEB-INF/pages/success.jsp&#60;/result&#62;&#10;&#60;/action&#62;&#10;&#10;    &#23545;&#20110;&#21463;&#20445;&#25252;&#30340;&#36164;&#28304;&#24341;&#29992;&#19978;&#38754;&#30340;&#25318;&#25130;&#22120;&#21363;&#21487;&#10;&#60;action name=&#34;resource&#34; class=&#34;action.ResourceAction&#34;&#62;&#10;        &#60;result&#62;/WEB-INF/pages/resource.jsp&#60;/result&#62;&#10;        &#60;interceptor-ref name=&#34;annotatedStack&#34; /&#62;&#10;&#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<p>步骤六：在浏览器中输入http:localhost:8090/struts2/login2!input进行测试。</p>
+<p>至此，一个安全验证的拦截器就开发完毕。</p>
+<p><strong>拦截器小结</strong></p>
+<p>从开发过程可以看待，拦截器的作用是Action的某个状态进行拦截操作，使用拦截器可以更方便处理业务逻辑。除了以上方式的开发拦截器外还有注解方式，不过注解方式的一个明显缺点是不利于代码的复用，而且注解的底层使用反射的方式完成的，所以使用注解开发，性能是一个值得考虑的问题。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>前言</strong></p>
+<p>拦截器是Struts2框架的核心功能，理解并使用拦截器有助于更灵活使用Struts2。拦截器与Servlet中的过滤器有些类似却又不尽相同。因为在Struts2中拦截器更像一个可插拔的组件，围绕Action和Result]]>
+    </summary>
+    
+      <category term="Struts2" scheme="http://rhwayfun.com/tags/Struts2/"/>
+    
+      <category term="Struts2" scheme="http://rhwayfun.com/categories/Struts2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之六十五：机器人的运动范围]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-65/"/>
+    <id>http://rhwayfun.com/post/oj-offer-65/</id>
+    <published>2015-12-22T02:43:42.000Z</published>
+    <updated>2016-04-15T07:01:12.764Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>地上有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，每一次只能向左，右，上，下四个方向移动一格，但是不能进入行坐标和列坐标的数位之和大于k的格子。 例如，当k为18时，机器人能够进入方格（35,37），因为3+5+3+7 = 18。但是，它不能进入方格（35,38），因为3+5+3+8 = 19。请问该机器人能够达到多少个格子？</p>
+<p>这题实际与上一题“矩阵中的路径”思路是相似的，都是需要创建一个状态数组对访问的格子进行标记，但是这里需要计算所有能够走的格子总数，实际上只需要对下一个进行访问的格子进行计算，进行从上、下、左、右四个方向进行递归，就可以计算出可以达到的格子总数了。下面是具体的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class RobotMovingCount &#123;&#10;&#10;    public int movingCount(int threshold, int rows, int cols) &#123;&#10;        // &#21019;&#24314;&#19968;&#20010;&#25968;&#32452;&#35760;&#24405;&#19968;&#20010;&#26684;&#23376;&#26159;&#21542;&#34987;&#35775;&#38382;&#10;        boolean[][] visited = new boolean[rows][cols];&#10;        return movingCountCore(threshold, rows, cols, 0, 0, visited);&#10;    &#125;&#10;&#10;    private int movingCountCore(int threshold, int rows, int cols, int i,&#10;            int j, boolean[][] visited) &#123;&#10;        int count = 0;&#10;        // &#24322;&#24120;&#22788;&#29702;&#10;        if (i &#60; 0 || i &#62;= rows || j &#60; 0 || j &#62;= cols&#10;                || numberIndexCount(i) + numberIndexCount(j) &#62; threshold&#10;                || visited[i][j])&#10;            return 0;&#10;        visited[i][j] = true;&#10;        count = 1 + movingCountCore(threshold, rows, cols, i - 1, j, visited)&#10;                  + movingCountCore(threshold, rows, cols, i + 1, j, visited)&#10;                  + movingCountCore(threshold, rows, cols, i, j - 1, visited)&#10;                  + movingCountCore(threshold, rows, cols, i, j + 1, visited);&#10;        return count;&#10;    &#125;&#10;&#10;    // &#29992;&#20110;&#35745;&#31639;&#27599;&#20010;&#22352;&#26631;&#30340;&#25968;&#20301;&#20043;&#21644;&#10;    private int numberIndexCount(int number) &#123;&#10;        int sum = 0;&#10;        while (number &#62; 0) &#123;&#10;            sum += number % 10;&#10;            number /= 10;&#10;        &#125;&#10;        return sum;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int sum = new RobotMovingCount().movingCount(5, 10, 10);&#10;        System.out.println(sum);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>地上有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，每一次只能向左，右，上，下四个方向移动一格，但是不能进入行坐标和列坐标的数位之和大于k的格子。 例如，当k为18时，机器人能够进入方格（35,37），因为3+5+3+7 = 18。但是]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之六十四：矩阵中的路径]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-64/"/>
+    <id>http://rhwayfun.com/post/oj-offer-64/</id>
+    <published>2015-12-22T02:33:15.000Z</published>
+    <updated>2016-04-15T07:01:12.763Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，向下移动一个格子。如果一条路径经过了矩阵中的某一个格子，则该路径不能再进入该格子。 例如 a b c e s f c s a d e e 矩阵中包含一条字符串”bcced”的路径，但是矩阵中不包含”abcb”路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。</p>
+<p>这实际上是回溯法的一个应用。所谓回溯法就是按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择。具体到这道题目就是对于每个字符，如果在矩阵中找到了其在矩阵中的位置，进行下一次寻找的时候，可以从上、下、左、右四个方向（边界元素除外）进行递归寻找，如果找到了则继续寻找下一个字符；如果没有找到的话，则回到上一个字符重新寻找。直到找到全部字符在矩阵中对应的位置。下面是具体实现的代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class HasPath &#123;&#10;&#10;    /**&#10;     * &#22522;&#26412;&#24605;&#36335;&#26159;&#21019;&#24314;&#19968;&#20010;&#24067;&#23572;&#25968;&#32452;&#65292;&#29992;&#20110;&#35760;&#24405;&#30697;&#38453;&#20013;&#24050;&#32463;&#35775;&#38382;&#36807;&#30340;&#26631;&#35760;&#12290; &#23545;&#20110;&#36335;&#24452;&#20013;&#30340;&#31532;i&#20010;&#23383;&#31526;&#65292;&#38500;&#20102;&#36793;&#30028;&#30340;&#20803;&#32032;&#22806;&#65292;&#20854;&#20182;&#20301;&#32622;&#30340;&#20803;&#32032;&#37117;&#10;     * &#26377;&#19978;&#12289;&#19979;&#12289;&#24038;&#12289;&#21491;&#22235;&#20010;&#30456;&#37051;&#30340;&#20301;&#32622;&#12290;&#37027;&#20040;&#36335;&#24452;&#20013;&#30340;&#31532;i+1&#20010;&#23383;&#31526;&#21487; &#20197;&#20174;&#36825;&#22235;&#20010;&#20301;&#32622;&#20013;&#23547;&#25214;&#24471;&#21040;&#12290;&#20381;&#27492;&#36827;&#34892;&#36882;&#24402;&#65292;&#30452;&#21040;&#25214;&#21040;&#26368;&#21518;&#19968;&#20010;&#23383;&#31526; &#22312;&#30697;&#38453;&#20013;&#30340;&#20301;&#32622;&#20026;&#27490;&#12290;&#10;     * &#10;     * @Description: TODO&#10;     * @param @param matrix&#10;     * @param @param rows&#10;     * @param @param cols&#10;     * @param @param str&#10;     * @param @return&#10;     * @return boolean&#10;     * @throws&#10;     * @author rhwayfun&#10;     * @date Dec 21, 2015&#10;     */&#10;    public boolean hasPath(char[] matrix, int rows, int cols, char[] str) &#123;&#10;        // &#21019;&#24314;&#19968;&#20010;&#24067;&#23572;&#25968;&#32452;&#10;        boolean[] visited = new boolean[matrix.length];&#10;        for (int i = 0; i &#60; rows; i++) &#123;&#10;            for (int j = 0; j &#60; cols; j++) &#123;&#10;                if (hasPathCore(matrix, rows, cols, i, j, 0, str, visited)) &#123;&#10;                    return true;&#10;                &#125;&#10;            &#125;&#10;        &#125;&#10;        return false;&#10;    &#125;&#10;&#10;    private boolean hasPathCore(char[] matrix, int rows, int cols, int i,&#10;            int j, int k, char[] str, boolean[] visited) &#123;&#10;        // &#23545;&#20110;&#32473;&#23450;&#34892;&#25968;&#21644;&#21015;&#25968;&#24471;&#21040;&#20854;&#22312;&#30697;&#38453;&#20013;&#30340;&#19979;&#26631;&#10;        int index = i * cols + j;&#10;        if (i &#60; 0 || i &#62;= rows || j &#60; 0 || j &#62;= cols || matrix[index] != str[k]&#10;                || visited[index])&#10;            return false;&#10;        visited[index] = true;&#10;        // &#22914;&#26524;&#36882;&#24402;&#21040;&#26368;&#21518;&#19968;&#20010;&#20301;&#32622;&#30340;&#23383;&#31526;&#65292;&#21017;&#34920;&#26126;&#21069;&#38754;&#20301;&#32622;&#30340;&#23383;&#31526;&#37117;&#22312;&#30697;&#38453;&#20013;&#25214;&#21040;&#20102;&#23545;&#24212;&#30340;&#20301;&#32622;&#10;        if (k == str.length - 1)&#10;            return true;&#10;        // &#22914;&#26524;&#27809;&#26377;&#36882;&#24402;&#21040;&#26368;&#21518;&#19968;&#20010;&#20301;&#32622;&#30340;&#23383;&#31526;&#65292;&#21017;&#32487;&#32493;&#36882;&#24402;,k+1&#34920;&#31034;&#32487;&#32493;&#22312;&#30697;&#38453;&#20013;&#23547;&#25214;str&#25968;&#32452;&#20013;&#19979;&#19968;&#20010;&#20301;&#32622;&#30340;&#23383;&#31526;&#22312;&#30697;&#38453;&#20013;&#30340;&#20301;&#32622;&#10;        if (hasPathCore(matrix, rows, cols, i - 1, j, k + 1, str, visited)&#10;                || hasPathCore(matrix, rows, cols, i + 1, j, k + 1, str, visited)&#10;                || hasPathCore(matrix, rows, cols, i, j - 1, k + 1, str, visited)&#10;                || hasPathCore(matrix, rows, cols, i, j + 1, k + 1, str, visited)) &#123;&#10;            return true;&#10;        &#125;else&#123;&#10;            //&#22914;&#26524;&#30456;&#37051;&#26684;&#23376;&#30340;&#23383;&#31526;&#37117;&#27809;&#26377;&#21305;&#37197;&#21040;&#19979;&#19968;&#20010;&#23383;&#31526;&#65292;&#21017;&#38656;&#35201;&#22238;&#21040;&#21069;&#19968;&#20010;&#26684;&#23376;&#65292;&#20174;&#32780;&#38656;&#35201;&#25226;&#25226;&#20301;&#32622;&#30340;&#29366;&#24577;&#37325;&#26032;&#35774;&#23450;&#20026;&#26410;&#35775;&#38382;&#10;            k--;&#10;            visited[index] = false;&#10;        &#125;&#10;        return false;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        String s= &#34;abcesfcsadee&#34;;&#10;        String s2 = &#34;abcb&#34;;&#10;        char[] matrix = s.toCharArray();&#10;        char[] str = s2.toCharArray();&#10;        boolean b = new HasPath().hasPath(matrix, 3, 4, str);&#10;        System.out.println(b);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，向下移动一个格子。如果一条路径经过了矩阵中的某一个格子，则该路径不能再进入该格子。 例如 a b c ]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之六十三：滑动窗口的最大值]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-63/"/>
+    <id>http://rhwayfun.com/post/oj-offer-63/</id>
+    <published>2015-12-22T02:26:49.000Z</published>
+    <updated>2016-04-15T07:01:12.763Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}； 针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个： {[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}， {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}， {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。</p>
+<p>这实际上可以看成是TCP/IP中差错控制中滑动窗口的算法实现了。由于每次窗口大小是固定的，所以可以创建一个指针用于指向当前窗口的第一个值，而且位置该值是当前窗口的最大值的下标。这么做的好处在于每次窗口移动只需要从第一个位置取值就可以，时间复杂度是O(1)。那么具体需要在获取每个窗口的值得时候与队列中（需要创建一个队列用于保存每个窗口最大值的下标）的队尾指针的元素进行比较，如果比当前遍历到的元素小的话，需要把队尾元素移除，因为我们需要获得的是最大值。这样一直遍历到最后一个元素，就把每个窗口的最大值获取到了。下面是具体的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayDeque;&#10;import java.util.ArrayList;&#10;&#10;public class MaxNumInWindow &#123;&#10;&#10;    public ArrayList&#60;Integer&#62; maxInWindows(int[] num, int size) &#123;&#10;        ArrayList&#60;Integer&#62; maxList = new ArrayList&#60;Integer&#62;();&#10;        if(size &#60;= 0) return maxList;&#10;        //&#21019;&#24314;&#19968;&#20010;&#21452;&#31471;&#38431;&#21015;&#20445;&#23384;&#27599;&#20010;&#28369;&#21160;&#31383;&#21475;&#30340;&#26368;&#22823;&#20540;&#24471;&#19979;&#26631;&#10;        ArrayDeque&#60;Integer&#62; queue = new ArrayDeque&#60;Integer&#62;();&#10;        //&#21019;&#24314;&#19968;&#20010;&#21464;&#37327;start&#29992;&#20110;&#35760;&#24405;&#24403;&#21069;&#28369;&#21160;&#31383;&#21475;&#30340;&#26368;&#22823;&#20540;&#30340;&#19979;&#26631;&#10;        int start = 0;&#10;        for (int i = 0; i &#60; num.length; i++) &#123;&#10;            start = i + 1 - size;//&#24403;start&#22823;&#20110;&#30340;&#26102;&#20505;&#34920;&#31034;&#31532;&#19968;&#20010;&#31383;&#21475;&#24050;&#32463;&#19981;&#33021;&#20877;&#31227;&#21160;&#20102;&#10;            if(queue.isEmpty())&#123;&#10;                queue.add(i);&#10;            &#125;else if(start &#62; queue.peekFirst())&#123;//&#36825;&#20010;&#26465;&#20214;&#34920;&#31034;&#24403;&#21069;&#31383;&#21475;start&#30340;&#20540;&#27604;&#19978;&#19968;&#20010;&#31383;&#21475;&#30340;start&#26356;&#22823;&#10;                queue.pollFirst();&#10;            &#125;&#10;            &#10;            while(!queue.isEmpty() &#38;&#38; num[queue.peekLast()] &#60;= num[i])&#123;&#10;                //&#36825;&#31181;&#24773;&#20917;&#34920;&#31034;&#65292;&#38431;&#21015;&#38431;&#23614;&#20301;&#32622;&#23545;&#24212;&#30340;&#20803;&#32032;&#27604;&#24403;&#21069;&#20803;&#32032;&#26356;&#23567;&#65292;&#23601;&#31227;&#38500;&#20182;&#65292;&#22240;&#20026;&#38656;&#35201;&#24471;&#21040;&#30340;&#26159;&#31383;&#21475;&#26368;&#22823;&#20540;&#10;                queue.pollLast();&#10;            &#125;&#10;            queue.add(i);&#10;            if(start &#62;= 0)&#123;&#10;                //&#23454;&#38469;&#19978;&#24403;start=0&#30340;&#26102;&#20505;&#31532;&#31532;&#19968;&#20010;&#28369;&#21160;&#31383;&#21475;&#65292;&#36825;&#26102;&#38431;&#21015;&#20013;&#20445;&#23384;&#30340;&#26159;&#31532;&#19968;&#20010;&#28369;&#21160;&#31383;&#21475;&#26368;&#22823;&#20540;&#30340;&#19979;&#26631;&#65292;&#30452;&#25509;&#28155;&#21152;&#23601;&#34892;&#10;                maxList.add(num[queue.peekFirst()]);&#10;            &#125;&#10;        &#125;&#10;        return maxList;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] num = &#123;2,3,4,2,6,2,5,1&#125;;&#10;        ArrayList&#60;Integer&#62; list = new MaxNumInWindow().maxInWindows(num, 3);&#10;        System.out.println(list);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}； 针对数组{2,3,4,2,6,2,5,1}]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之六十二：数据流中的中位数]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-62/"/>
+    <id>http://rhwayfun.com/post/oj-offer-62/</id>
+    <published>2015-12-22T02:18:30.000Z</published>
+    <updated>2016-04-15T07:01:12.762Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。</p>
+<p>根据题目的意思，就是对数据流中的数据进行排序然后得到其中位数。要解决的关键问题是如何在读入数据的时候就对数据进行排序。实际上可以看成是插入排序算法的应用，可以维持一个List集合，保证每次读入数据集合中的数据都是排序的。基本思路是：从集合的第一个元素开始，依次比较与新读入的元素的大小关系，从而把新读入的数据插入到合适的位置。可以看出，这实际上就是插入排序的思想了。下面是具体实现的代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import java.util.ArrayList;&#10;public class Solution &#123;&#10;&#10;    ArrayList&#60;Integer&#62; list = new ArrayList&#60;Integer&#62;();&#10;&#10;    public void Insert(Integer num) &#123;&#10;        int index = 0;&#10;        int size = list.size();&#10;        while (index &#60; size) &#123;&#10;            if (num &#60;= list.get(index))&#10;                break;&#10;            index++;&#10;        &#125;&#10;        list.add(index, num);&#10;    &#125;&#10;&#10;    public Double GetMedian() &#123;&#10;        int size = list.size();&#10;        if ((size &#38; 1) == 0)&#10;            return (double) ((list.get(size / 2) + list.get(size / 2 - 1)) / 2.0);&#10;        return (double)list.get(size / 2) * 1.0;&#10;    &#125;&#10;&#10;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。</p>
+<p>根据题目的意思，就是对数据流中的数据进行排序然后]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之六十一：二叉搜索树的第k个节点]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-61/"/>
+    <id>http://rhwayfun.com/post/oj-offer-61/</id>
+    <published>2015-12-22T02:05:19.000Z</published>
+    <updated>2016-04-15T07:01:12.762Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>给定一颗二叉搜索树，请找出其中的第k大的结点。例如， 5 / \ 3 7 /\ /\ 2 4 6 8 中，按结点数值大小顺序第三个结点的值为4。</p>
+<p>因为二叉搜索树是排序的，所以如果需要找出第k个节点只需要进行中序遍历就可以得到第k节点。不过中序遍历的结果就是排序的，所以实质上就是插入排序。可以利用一个集合，在遍历的过程中利用插入排序的算法就能得到第k个节点。下面是这种实现思路的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;&#10;    //&#37319;&#29992;&#38750;&#36882;&#24402;&#20013;&#24207;&#36941;&#21382;&#30340;&#26041;&#24335;&#24471;&#21040;&#31532;k&#22823;&#30340;&#33410;&#28857;&#10;    TreeNode KthNode(TreeNode pRoot, int k) &#123;&#10;        if(pRoot== null) return pRoot;&#10;        //&#21019;&#24314;&#19968;&#20010;&#21464;&#37327;&#25351;&#21521;&#31532;k&#22823;&#30340;&#33410;&#28857;&#10;        int p = 0;&#10;        //&#21019;&#24314;&#19968;&#20010;&#26632;&#29992;&#20110;&#20445;&#23384;&#36941;&#21382;&#30340;&#39034;&#24207;&#10;        Stack&#60;TreeNode&#62; s = new Stack&#60;TreeNode&#62;();&#10;        TreeNode curNode = pRoot;&#10;        while(curNode != null || !s.isEmpty())&#123;&#10;            while(curNode != null)&#123;&#10;                s.add(curNode);&#10;                curNode = curNode.left;&#10;            &#125;&#10;            if(!s.isEmpty())&#123;&#10;                curNode = s.pop();&#10;                p++;&#10;                if(p == k) return curNode;&#10;                curNode = curNode.right;&#10;            &#125;&#10;        &#125;&#10;        return null;&#10;    &#125;&#10;&#10;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>给定一颗二叉搜索树，请找出其中的第k大的结点。例如， 5 / \ 3 7 /\ /\ 2 4 6 8 中，按结点数值大小顺序第三个结点的值为4。</p>
+<p>因为二叉搜索树是排序的，所以如果需要找出第k个节点只需要进行中序遍历就可以得到第k节点。不]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之六十：序列化二叉树]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-60/"/>
+    <id>http://rhwayfun.com/post/oj-offer-60/</id>
+    <published>2015-12-22T01:53:08.000Z</published>
+    <updated>2016-04-15T07:01:12.762Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>请实现两个函数，分别用来序列化和反序列化二叉树</p>
+<p>首先得理解题目的意思，序列化就是返回一个带有#和逗号的字符串。反序列化就是根据带有#和逗号的字符串返回一棵二叉树。比如对于二叉树</p>
+<pre><code>   <span class="number">1</span>
+  / <span class="string">\</span>
+ <span class="number">2</span>    <span class="number">3</span>
+ /<span class="string">\</span>    /<span class="string">\</span>
+<span class="number">4</span>  <span class="number">5</span>   <span class="number">6</span>  <span class="number">7</span>
+</code></pre><p>来讲，序列化的结果是1,2,#,#,3,4,#,7,#,#,5,#,#,。而反序列化的结果则是输出一棵二叉树。</p>
+<p>下面是具体的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String Serialize(TreeNode root) &#123;&#10;        StringBuilder sb = new StringBuilder();&#10;        if (root == null) &#123;&#10;            sb.append(&#34;#,&#34;);&#10;            return sb.toString();&#10;        &#125;&#10;        sb.append(root.val + &#34;,&#34;);&#10;        sb.append(Serialize(root.left));&#10;        sb.append(Serialize(root.right));&#10;        return sb.toString();&#10;    &#125;&#10;&#10;    &#10;    int p = -1;&#10;    TreeNode Deserialize(String str) &#123;&#10;        p++;&#10;        if (p &#62;= str.length())&#10;            return null;&#10;        TreeNode node = null;&#10;        String[] strArray = str.split(&#34;,&#34;);&#10;        if (!strArray[p].equals(&#34;#&#34;)) &#123;&#10;            node = new TreeNode(Integer.valueOf(strArray[p]));&#10;            node.left = Deserialize(str);&#10;            node.right = Deserialize(str);&#10;        &#125;&#10;        return node;&#10;    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>请实现两个函数，分别用来序列化和反序列化二叉树</p>
+<p>首先得理解题目的意思，序列化就是返回一个带有#和逗号的字符串。反序列化就是根据带有#和逗号的字符串返回一棵二叉树。比如对于二叉树</p>
+<pre><code>   <span class]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之五十九：链表中环的入口节点]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-59/"/>
+    <id>http://rhwayfun.com/post/oj-offer-59/</id>
+    <published>2015-12-18T15:49:13.000Z</published>
+    <updated>2016-04-15T07:01:12.761Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>一个链表中包含环，请找出该链表的环的入口结点。</p>
+<p>此题的思路其实 很简单，之所以出现环，是因为在整个链表中出现了重复的节点，而遇到的第一个重复的节点就是环的入口节点。所以可以使用Set来保存遍历到的节点，因为Set集合是不允许出现重复元素的，所以当一个节点被第二次添加的时候，往Set中放元素是失败的。所以可以利用这一点找出第一个重复的元素。基于这种思路的代码比较简洁，代码如下（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import java.util.HashSet;&#10;import java.util.Set;&#10;public class Solution &#123;&#10;&#10;    public ListNode EntryNodeOfLoop(ListNode pHead)&#10;    &#123;&#10;        Set&#60;ListNode&#62; set = new HashSet&#60;ListNode&#62;();&#10;        while(pHead!= null &#38;&#38; set.add(pHead))&#123;&#10;            pHead = pHead.next;&#10;        &#125;&#10;        return pHead;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>一个链表中包含环，请找出该链表的环的入口结点。</p>
+<p>此题的思路其实 很简单，之所以出现环，是因为在整个链表中出现了重复的节点，而遇到的第一个重复的节点就是环的入口节点。所以可以使用Set来保存遍历到的节点，因为Set集合是不允许出现重复元素]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之五十八：删除链表中重复的节点]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-58/"/>
+    <id>http://rhwayfun.com/post/oj-offer-58/</id>
+    <published>2015-12-18T15:42:26.000Z</published>
+    <updated>2016-04-15T07:01:12.761Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 例如，链表1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5 处理后为 1-&gt;2-&gt;5</p>
+<p>因为需要找到重复的节点，所以对链表进行遍历，而且在遍历的过程中需要对每个当前遍历的节点以及后面的节点进行比较直到遇到下一个节点不与当前节点重复。如果下一个节点与当前遍历的节点不重复，则继续遍历，直到把整个链表遍历结束。下面是具体的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> public class ListNode &#123;&#10;    int val;&#10;    ListNode next = null;&#10;&#10;    ListNode(int val) &#123;&#10;        this.val = val;&#10;    &#125;&#10;&#125;&#10;&#10;public class Solution &#123;&#10;    public ListNode deleteDuplication(ListNode pHead)&#10;    &#123;&#10;        if(pHead == null) return pHead;&#10;        ListNode firstNode = new ListNode(-1);&#10;        firstNode.next = pHead;&#10;        ListNode preNode = firstNode;&#10;        ListNode curNode = pHead;&#10;        while(curNode != null &#38;&#38; curNode.next != null)&#123;&#10;            if(curNode.val == curNode.next.val)&#123;&#10;                int val = curNode.val;&#10;                while(curNode != null &#38;&#38; curNode.val == val)&#123;&#10;                    curNode = curNode.next;&#10;                &#125;&#10;                preNode.next = curNode;&#10;            &#125;else&#123;&#10;                preNode = curNode;&#10;                curNode = curNode.next;&#10;            &#125;&#10;        &#125;&#10;        return firstNode.next;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 例如，链表1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5 处理后为 1-&gt;2-&gt;5</p>
+<p>因为需要找到重]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之五十七：二叉树的下一个节点]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-57/"/>
+    <id>http://rhwayfun.com/post/oj-offer-57/</id>
+    <published>2015-12-18T15:38:16.000Z</published>
+    <updated>2016-04-15T07:01:12.760Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。</p>
+<p>根据中序遍历的特点，要找到一个节点的下一个节点无非就是三种情况：1、有右子树，这时只需要把其右孩子作为下一个遍历的（并不是要找的）节点，然后沿着该节点的左子树（如果有的话）出发，直到遇到叶子节点，那么该叶子节点就是其下一个要找的节点；2、没有右子树，则判断该节点是否是其父节点的左孩子，如果是则其下一个要找的节点是其父节点；3、如果不是其父节点的左孩子，则把其父节点作为下一个遍历的节点，向上回溯，直到找到父节点没有父节点并且父节点是父节点的父节点的左孩子为止。综合这三种情况就可以找到二叉树中任意一个节点的下一个节点。下面是具体的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class TreeLinkNode &#123;&#10;    int val;&#10;    TreeLinkNode left = null;&#10;    TreeLinkNode right = null;&#10;    TreeLinkNode next = null;&#10;&#10;    TreeLinkNode(int val) &#123;&#10;        this.val = val;&#10;    &#125;&#10;&#125;&#10;&#10;public class Solution &#123;&#10;    public TreeLinkNode GetNext(TreeLinkNode pNode)&#10;    &#123;&#10;        TreeLinkNode curNode = null;&#10;        //&#31532;&#19968;&#27493;&#65306;&#21028;&#26029;&#26159;&#21542;&#26377;&#21491;&#23401;&#23376;&#10;        if(pNode.right != null)&#123;&#10;            curNode = pNode.right;&#10;            while(curNode.left != null) curNode = curNode.left;&#10;            return curNode;&#10;        &#125;&#10;        //&#31532;&#20108;&#27493;&#65306;&#21028;&#26029;&#26159;&#21542;&#26159;&#20854;&#29238;&#33410;&#28857;&#30340;&#24038;&#23401;&#23376;&#10;        if(pNode.next == null) return null;&#10;        if(pNode == pNode.next.left)&#123;&#10;            return pNode.next;&#10;        &#125;&#10;        //&#31532;&#19977;&#27493;&#65306;&#21521;&#19978;&#25214;&#20854;&#29238;&#33410;&#28857;&#65292;&#30452;&#21040;&#29238;&#33410;&#28857;&#26159;&#20854;&#29238;&#33410;&#28857;&#30340;&#29238;&#33410;&#28857;&#30340;&#24038;&#23401;&#23376;&#10;        curNode = pNode.next;&#10;        while(curNode.next != null)&#123;&#10;            if(curNode == curNode.next.left)&#123;&#10;                return curNode.next;&#10;            &#125;&#10;            //&#32487;&#32493;&#21521;&#19978;&#25214;&#29238;&#33410;&#28857;&#10;            curNode = curNode.next;&#10;        &#125;&#10;        return null;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。</p>
+<p>根据中序遍历的特点，要找到一个节点的下一个节点无非就是三种情况：1、有右子树，这时只需要把其右孩子作]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之五十六：对称二叉树的判断]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-56/"/>
+    <id>http://rhwayfun.com/post/oj-offer-56/</id>
+    <published>2015-12-18T15:32:32.000Z</published>
+    <updated>2016-04-15T07:01:12.760Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>请实现一个函数，用来判断一颗二叉树是不是对称的。注意，如果一个二叉树同此二叉树的镜像是同样的，定义其为对称的。</p>
+<p>前面有一题是打印输出某二叉树的镜像，回想其实现的思路是：采用层序遍历的思路对每一个遍历的节点，如果其有孩子节点，那么就交换两者。直到遍历的节点没有孩子节点为止，然而此题是对二叉树木镜像的判断，明显是更简单的，只需要进行两个判断：对节点的左孩子与其兄弟节点右孩子的判断以及对节点右孩子与其兄弟节点左孩子的判断。这样就完成对对一棵二叉树是否对称的判断。下面是具体的实现代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;&#10;    boolean isSymmetrical(TreeNode pRoot) &#123;&#10;        if (pRoot == null) return true;&#10;        return isSymmetricalCore(pRoot.left, pRoot.right);&#10;    &#125;&#10;&#10;    private boolean isSymmetricalCore(TreeNode left, TreeNode right) &#123;&#10;        if (left == null &#38;&#38; right == null) return true;&#10;        if (left == null || right == null) return false;&#10;        if (left.val == right.val)&#10;            return isSymmetricalCore(left.right, right.left)&#10;                    &#38;&#38; isSymmetricalCore(left.left, right.right);&#10;        return false;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>请实现一个函数，用来判断一颗二叉树是不是对称的。注意，如果一个二叉树同此二叉树的镜像是同样的，定义其为对称的。</p>
+<p>前面有一题是打印输出某二叉树的镜像，回想其实现的思路是：采用层序遍历的思路对每一个遍历的节点，如果其有孩子节点，那么就交换两]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[剑指offer系列之五十五：把二叉树打印成多行]]></title>
+    <link href="http://rhwayfun.com/post/oj-offer-55/"/>
+    <id>http://rhwayfun.com/post/oj-offer-55/</id>
+    <published>2015-12-18T15:27:19.000Z</published>
+    <updated>2016-04-15T07:01:12.760Z</updated>
+    <content type="html"><![CDATA[<p>题目描述</p>
+<p>从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。</p>
+<p>此题实际上与上面一题是重复了，总体还是层序遍历的思路，只不过现在不需要在打印每一行之前对打印顺序进行判断了，所以可以在前面一题的代码进行简单的修改就可以实现题目的要求了。不多说，直接看代码（已被牛客AC）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;import java.util.LinkedList;&#10;import java.util.Queue;&#10;&#10;public class PrintBiTreeFromTopToBottom2 &#123;&#10;&#10;    static class TreeNode &#123;&#10;        int val = 0;&#10;        TreeNode left = null;&#10;        TreeNode right = null;&#10;&#10;        public TreeNode(int val) &#123;&#10;            this.val = val;&#10;&#10;        &#125;&#10;&#10;    &#125;&#10;&#10;    ArrayList&#60;ArrayList&#60;Integer&#62;&#62; Print(TreeNode pRoot) &#123;&#10;        ArrayList&#60;ArrayList&#60;Integer&#62;&#62; resultList = new ArrayList&#60;ArrayList&#60;Integer&#62;&#62;();&#10;        if (pRoot == null) return resultList;&#10;        // &#21019;&#24314;&#19968;&#20010;&#38431;&#21015;&#20445;&#23384;&#36941;&#21382;&#30340;&#39034;&#24207;&#10;        Queue&#60;TreeNode&#62; queue = new LinkedList&#60;TreeNode&#62;();&#10;        queue.add(pRoot);&#10;        // &#21019;&#24314;&#27599;&#19968;&#34892;&#36941;&#21382;&#30340;&#32467;&#26524;&#10;        ArrayList&#60;Integer&#62; result = new ArrayList&#60;Integer&#62;();&#10;        int begin = 0,end = 1;&#10;        while(!queue.isEmpty())&#123;&#10;            TreeNode curNode = queue.poll();&#10;            result.add(curNode.val);&#10;            begin++;&#10;            if(curNode.left != null) queue.add(curNode.left);&#10;            if(curNode.right != null) queue.add(curNode.right);&#10;            //&#21028;&#26029;&#19968;&#34892;&#30340;&#25152;&#26377;&#20803;&#32032;&#26159;&#21542;&#37117;&#28155;&#21152;&#21040;result&#20013;&#10;            if(begin == end)&#123;&#10;                resultList.add(result);&#10;                end = queue.size();&#10;                begin = 0;&#10;                //&#19968;&#34892;&#25171;&#21360;&#23436;&#27605;&#20043;&#21518;&#65292;&#38656;&#35201;&#21019;&#24314;&#30340;result&#38598;&#21512;&#20445;&#23384;&#19979;&#19968;&#34892;&#36941;&#21382;&#30340;&#20803;&#32032;&#10;                result = new ArrayList&#60;Integer&#62;();&#10;            &#125;&#10;        &#125;&#10;        return resultList;&#10;    &#125;&#10;&#10;    public static void main(String[] args) &#123;&#10;        TreeNode root = new TreeNode(8);&#10;        TreeNode node1 = new TreeNode(6);&#10;        TreeNode node2 = new TreeNode(10);&#10;        TreeNode node3 = new TreeNode(5);&#10;        TreeNode node4 = new TreeNode(7);&#10;        TreeNode node5 = new TreeNode(9);&#10;        TreeNode node6 = new TreeNode(11);&#10;&#10;        root.left = node1;&#10;        root.right = node2;&#10;        node1.left = node3;&#10;        node1.right = node4;&#10;        node2.left = node5;&#10;        node2.right = node6;&#10;        &#10;        ArrayList&#60;ArrayList&#60;Integer&#62;&#62; list = new PrintBiTreeFromTopToBottom2().Print(root);&#10;&#10;        for (ArrayList&#60;Integer&#62; arrayList : list) &#123;&#10;            System.out.println(arrayList);&#10;        &#125;&#10;        /*ArrayList&#60;Integer&#62; list = new PrintBiTreeFromTopToBottom2()&#10;                .PrintFromTopToBottom(root);&#10;        System.out.println();&#10;        for (Integer integer : list) &#123;&#10;            System.out.println(integer + &#34; &#34;);&#10;        &#125;*/&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>题目描述</p>
+<p>从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。</p>
+<p>此题实际上与上面一题是重复了，总体还是层序遍历的思路，只不过现在不需要在打印每一行之前对打印顺序进行判断了，所以可以在前面一题的代码进行简单的修改就可以实现题目的要求了。]]>
+    </summary>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/tags/%E5%89%91%E6%8C%87offer/"/>
+    
+      <category term="剑指offer" scheme="http://rhwayfun.com/categories/%E5%89%91%E6%8C%87offer/"/>
+    
+  </entry>
+  
+</feed>

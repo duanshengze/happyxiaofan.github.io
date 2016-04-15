@@ -1,0 +1,925 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>深入理解Java内存模型之二：volatile和锁的内存语义 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+在前面的文章中已经提到过volatile关键字的底层实现原理：处理器的LOCK指令会使得其他处理器将缓存刷新到内存中（确切说是主存）以及会把其他处理器的缓存设置为无效。这里的内存语义则说的是在JMM中的实现，那么为什么要理解volatile和锁在JMM中的内存语义呢？主要原因是这部分内容是与程序开发息息相关的，所以在高并发量的系统中，如果对这块知识的了解欠缺的话将无法设计出优雅支持高并发的系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java内存模型之二：volatile和锁的内存语义">
+<meta property="og:url" content="http://rhwayfun.com/post/jmm-volatile-lock/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+在前面的文章中已经提到过volatile关键字的底层实现原理：处理器的LOCK指令会使得其他处理器将缓存刷新到内存中（确切说是主存）以及会把其他处理器的缓存设置为无效。这里的内存语义则说的是在JMM中的实现，那么为什么要理解volatile和锁在JMM中的内存语义呢？主要原因是这部分内容是与程序开发息息相关的，所以在高并发量的系统中，如果对这块知识的了解欠缺的话将无法设计出优雅支持高并发的系">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.725Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Java内存模型之二：volatile和锁的内存语义">
+<meta name="twitter:description" content="前言
+在前面的文章中已经提到过volatile关键字的底层实现原理：处理器的LOCK指令会使得其他处理器将缓存刷新到内存中（确切说是主存）以及会把其他处理器的缓存设置为无效。这里的内存语义则说的是在JMM中的实现，那么为什么要理解volatile和锁在JMM中的内存语义呢？主要原因是这部分内容是与程序开发息息相关的，所以在高并发量的系统中，如果对这块知识的了解欠缺的话将无法设计出优雅支持高并发的系">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/jmm-volatile-lock/" title="深入理解Java内存模型之二：volatile和锁的内存语义" itemprop="url">深入理解Java内存模型之二：volatile和锁的内存语义</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-02T16:14:01.000Z" itemprop="datePublished"> 发表于 2015-12-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>在前面的文章中已经提到过volatile关键字的底层实现原理：处理器的LOCK指令会使得其他处理器将缓存刷新到内存中（确切说是主存）以及会把其他处理器的缓存设置为无效。这里的内存语义则说的是在JMM中的实现，那么为什么要理解volatile和锁在JMM中的内存语义呢？主要原因是这部分内容是与程序开发息息相关的，所以在高并发量的系统中，如果对这块知识的了解欠缺的话将无法设计出优雅支持高并发的系统（之前广被吐槽的12306，现在勉强能够支持千万级别的访问量了）。<br><a id="more"></a></p>
+<p><strong>volatile的内存语义</strong></p>
+<p>简而言之，volatile关键字具有以下两个特性：</p>
+<ol>
+<li>可见性。对一个volatile变量的读，总是能看到（任意线程）对这个变量最后的写入。</li>
+<li>原子性。对任意<strong>单个</strong>volatile变量的读/写具有原子性，但是类似volatile++这样的操作是不具有原子性的。</li>
+</ol>
+<p>之前看过一篇文章，将volatile关键字从硬件讲到软件，再从软件讲到JMM，然后从JMM讲到volatile关键字，整个过程显得特别复杂，这里仅仅站在程序员的角度，对volatile关键字在JMM的语义进行说明。上面这个过程的成立时需要一个称为<strong>happens-before</strong>的原则支持的。</p>
+<p>happens-before原则可以概括为三点：</p>
+<ol>
+<li>程序顺序规则：就是每个操作都按照在程序中顺序执行的</li>
+<li>监视器锁规则：锁的释放之后就是锁的获取</li>
+<li>volatile变量规则：volatile写操作之后才是任意对这个volatile的读</li>
+<li>传递性规则：这个好理解</li>
+</ol>
+<p>这个原则保证了volatile特性的成立。现在问题是，虽然volatile有上面的特性，但是这个与我们程序员有什么关系呢？由于添加volatile关键字修饰一个变量的时候都是一个被共享的变量，那么任意对该共享变量的操作何时对其他线程可见（也就是内存可见性）是我们比较关心的，首先可以从JMM的角度说明volatile：<strong>volatile的写-读与锁的释放-获取有相同的效果</strong>。比如如下的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.primer.thread;&#10;&#10;public class VolatileExample &#123;&#10;&#10;    int a = 0;                          //&#26222;&#36890;&#21464;&#37327;&#10;    volatile boolean flag = false;      //&#20849;&#20139;&#21464;&#37327;&#10;    &#10;    //&#20889;&#32447;&#31243;&#10;    public void writer()&#123;&#10;        a = 1;                          //1.&#26222;&#36890;&#20889;&#10;        flag = true;                    //2.volatile&#20889;&#10;    &#125;&#10;    &#10;    //&#35835;&#32447;&#31243;&#10;    public void reader()&#123;&#10;        if(flag)&#123;                       //3.volatile&#35835;&#10;            int i = a;                  //4.&#26222;&#36890;&#35835;&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>根据happens-before原则，具有以下的happens-before关系：</p>
+<ol>
+<li>操作1 happens-befoe 操作2；操作3 happens-before 操作4</li>
+<li>操作2 happens-before 操作3</li>
+<li>操作1 happens-before 操作4</li>
+</ol>
+<p>上面的这些关系有什么作用呢？其中第一点和第三点比较好理解，关键是第二点，为什么操作2会 happens-before 操作3呢？根据前面重排序的知识，编译器和处理器会对指令进行重排序（在保证正确性的前提下），但是如果一个变量被声明为volatile，那么JMM会插入内存屏障指令来防止重排序，插入内存屏障指令就保证了指令之前的volatile变量与后面的普通读/写发生重排序，所以明白这点就可以理解为什么操作2 happens-before 操作3了。根据前面处理器对volatile的处理，这里讲JMM的volatile语义做一个小结：</p>
+<ol>
+<li><strong>执行volatile写的时候，JMM会把该线程对应的本地内存（并不是实际存在的，也称为TLB，线程本地缓冲区）刷新到主内存中。这个过程可以理解为线程1（执行写方法的线程）向接下来要读取这个变量的线程2（执行读方法的线程）发送了一条消息</strong></li>
+<li><strong>执行volatile读的时候，JMM会把该线程对应的本地内存设置为无效。线程接下来将直接从主内存中读取共享变量的值。这个过程可以理解为线程2接收到了线程1发送的消息</strong></li>
+</ol>
+<p>上面提到了内存屏障指令，volatile的语义在JMM中实际上与处理器的重排序规则有些类似，下面是volatile的重排序规则表：</p>
+<table>
+<thead>
+<tr>
+<th>是否能重排序</th>
+<th>第二个操作</th>
+<th>第二个操作</th>
+<th>第二个操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一个操作</td>
+<td>普通读/写</td>
+<td>volatile读</td>
+<td>volatile写</td>
+</tr>
+<tr>
+<td>普通读/写</td>
+<td></td>
+<td></td>
+<td>NO</td>
+</tr>
+<tr>
+<td>volatile读</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>volatile写</td>
+<td></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
+<p>第一列表示的是第一个操作，NO的意思是不允许进行重排序。上面的表格有点丑，Markdown的语法不支持跨列（鸡肋啊）。我们可以从上面的表格中得到三个结论：</p>
+<ol>
+<li>当第一个操作为volatile读的时候，不管第二操作是什么，都不允许进行重排序</li>
+<li>当第二个操作是volatile写的时候，不管第一个操作是什么，都不允许进行重排序</li>
+<li>当第一个操作是volatile写的时候，如果第二个操作也是volatile的操作，那么不允许进行从排序</li>
+</ol>
+<p>上面的结论怎么理解呢？根据上篇博文中JMM的内存屏障指令，以第一条结论为例，我们可以这么理解：如果volatile读和下面的普通写或读发生了重排序将会读到错误的值。</p>
+<p>下面的问题是在volatile读或者写之间该使用什么内存屏障指令呢？具体是这样的：</p>
+<ul>
+<li>在每个volatile写操作的前面插入一个StoreStore屏障。这个屏障可以禁止上面的普通写和下面的volatile写发生重排序</li>
+<li>在每个volatile写操作的后面插入一个StoreLoad屏障。该屏障可以防止上面的volatile写与下面的volatile读或写操作发生重排序</li>
+<li>在每个volatile读操作的后面插入一个LoadLoad屏障。该屏障可以禁止下面所有的普通读操作与上面的volatile读发生重排序</li>
+<li>在每个volatile读后面插入一个LoadStore屏障，该屏障可以禁止下面所有的普通写和上面的volatile读发生重排序</li>
+</ul>
+<p>这里需要注意的是，处理器会根据具体的情况省略不必要的内存屏障。所以比如当有连续多个volatile读的时候，可能会省略一个LoadStore屏障。</p>
+<p><strong>锁的内存语义</strong></p>
+<p>锁是实现同步的重要手段，虽然volatile关键字很给力，但是volatile只能保证对单个volatile变量读或写的操作具有原子性，诸如复杂操作或者多个volatile变量的操作就不能保证了。而锁的互斥执行的特性可以确保对整个临界区的代码都具有原子性。</p>
+<p>锁中的happens-before关系与volatile中的happens-before关系大致是一样的，现在考虑锁的获取和锁的释放在JMM中的实现，了解volatile之后，可以把锁的获取与释放的内存语义简要概括为以下几句话：</p>
+<ul>
+<li>线程释放一个锁，JMM就会把该线程对应的本地内存中共享变量刷新到主内存中。这个过程可以理解为该线程向接下来需要获取这个锁的线程发送一条消息</li>
+<li>另一个线程获得该锁，JMM就会把该线程对应的本地内存设置为无效。这个过程可以理解为该线程接收到了之前释放该锁的线程发送的消息</li>
+</ul>
+<p>锁的内存语义的实现与可重入锁相关，可以简要总结锁的内存语义的实现包括以下两种方式：</p>
+<ul>
+<li>利用volatile变量的内存语义</li>
+<li>利用CAS附带的volatile语义</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java并发编程/">Java并发编程</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JMM/">JMM</a><a href="/tags/volatile/">volatile</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/jmm-volatile-lock/" data-title="深入理解Java内存模型之二：volatile和锁的内存语义 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/jmm-happens-before-rule/" title="深入理解Java内存模型之三：happens-before">
+  <strong>上一篇：</strong><br/>
+  <span>
+  深入理解Java内存模型之三：happens-before</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/jmm-reorder-and-sequence/"  title="深入理解Java内存模型之一：重排序和顺序一致性">
+ <strong>下一篇：</strong><br/> 
+ <span>深入理解Java内存模型之一：重排序和顺序一致性
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/jmm-volatile-lock/" data-title="深入理解Java内存模型之二：volatile和锁的内存语义" data-url="http://rhwayfun.com/post/jmm-volatile-lock/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,998 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>查找算法之二叉查找树 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="二叉查找树是也称为二叉排序树，设计这种数据结构的目的是希望在查找的过程能够快速的动态删除和插入，而且时间复杂度是O(logn)，算是一种比较理想的动态查找算法了。二叉查找树要么是一颗空树要么具有如下三个性质：1）如果左子树不为空，那么其左子树上的所有节点的值都小于根节点的值；2）如果右子树不为空，那么其右子树上的所有节点的值都大于根节点的值；3）其左右子树也是一棵二叉查找树。对一个数据集合进行二叉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="查找算法之二叉查找树">
+<meta property="og:url" content="http://rhwayfun.com/post/datastructure-bitree/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="二叉查找树是也称为二叉排序树，设计这种数据结构的目的是希望在查找的过程能够快速的动态删除和插入，而且时间复杂度是O(logn)，算是一种比较理想的动态查找算法了。二叉查找树要么是一颗空树要么具有如下三个性质：1）如果左子树不为空，那么其左子树上的所有节点的值都小于根节点的值；2）如果右子树不为空，那么其右子树上的所有节点的值都大于根节点的值；3）其左右子树也是一棵二叉查找树。对一个数据集合进行二叉">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTreeCreate.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_1.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_2.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_3.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_4.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_6.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_7.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_8.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="查找算法之二叉查找树">
+<meta name="twitter:description" content="二叉查找树是也称为二叉排序树，设计这种数据结构的目的是希望在查找的过程能够快速的动态删除和插入，而且时间复杂度是O(logn)，算是一种比较理想的动态查找算法了。二叉查找树要么是一颗空树要么具有如下三个性质：1）如果左子树不为空，那么其左子树上的所有节点的值都小于根节点的值；2）如果右子树不为空，那么其右子树上的所有节点的值都大于根节点的值；3）其左右子树也是一棵二叉查找树。对一个数据集合进行二叉">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/datastructure-bitree/" title="查找算法之二叉查找树" itemprop="url">查找算法之二叉查找树</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-31T15:07:44.000Z" itemprop="datePublished"> 发表于 2015-10-31</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>二叉查找树是也称为二叉排序树，设计这种数据结构的目的是希望在查找的过程能够快速的动态删除和插入，而且时间复杂度是O(logn)，算是一种比较理想的动态查找算法了。二叉查找树要么是一颗空树要么具有如下三个性质：1）如果左子树不为空，那么其左子树上的所有节点的值都小于根节点的值；2）如果右子树不为空，那么其右子树上的所有节点的值都大于根节点的值；3）其左右子树也是一棵二叉查找树。对一个数据集合进行二叉查找的首要步骤就是构建二叉查找树。下面我们以一个具体的例子，说明构建二叉查找树的具体过程：<br><a id="more"></a></p>
+<p>比如有一个集合{62,88,58,47,35,73,51,99,37,93}，要对这些元素构建一个二叉查找树</p>
+<ol>
+<li>首先是62，由于是第一个节点，所以直接作为根节点</li>
+<li>接着是88，由于88大于根节点62，所以将88作为62的右孩子</li>
+<li>然后是58,58小于根节点62，所以把58作为根节点62的左孩子</li>
+<li>继续是47,47小于62，应该在62的左子树，然后碰到了已经是62左孩子的58，继续比较58和47，明显47小于58，于是将47作为58的左孩子</li>
+<li>再就是35,35小于62，插入的位置应该是左子树，小于58，在58的左边，而35小于47，于是将35作为47的左孩子</li>
+<li>然后是73，大于62，小于88，于是把73作为88这个节点的左孩子</li>
+<li>还有51，小于62，小于58，但是大于47，于是把51作为47的右孩子</li>
+<li>接着是99,99大于62，还大于88，所以把99作为88节点是右孩子</li>
+<li>继续是37,37小于47，但是大于35，于是把37作为35的右孩子</li>
+<li>最后是93,93大于88，小于99，于是把93作为99的左孩子结点</li>
+</ol>
+<p>最后构建完成是这样的：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTreeCreate.jpg" alt=""></p>
+<p>如果我们对这棵二叉查找树进行中序遍历，可以得到遍历序列为{35,37,47,51,58,62,73,88,93,99}，是排序的。既然是有序的我们就可以利用折半查找算法、插值查找算法或者斐波那契查找算法。请看实现代码：</p>
+<p>代码清单1</p>
+<pre><code><span class="comment">/* 递归查找二叉查找树中是否存在key */</span>
+<span class="comment">/* <span class="doctag">@param</span> T: 二叉查找树 */</span>
+<span class="comment">/* <span class="doctag">@param</span> key: 要查找的元素 */</span>
+<span class="comment">/* <span class="doctag">@param</span> f: 指向T的双亲 */</span>
+<span class="comment">/* <span class="doctag">@param</span> *p: 如果查找成功，则指针p指向该元素结点，并返回true */</span>
+<span class="comment">/* 如果查找失败，则指针p指向访问的最后一个元素结点，并返回false */</span>
+Status BiTree_Search(BiTree T,int key,BiTree f,BiTree *p)
+{
+    <span class="keyword">if</span>(!T)                              <span class="comment">/* 查找失败 */</span>
+    {
+        *p = f;
+        <span class="keyword">return</span> <span class="keyword">FALSE</span>;
+    }
+    <span class="keyword">else</span> <span class="keyword">if</span>(T-&gt;data == key)             <span class="comment">/*  查找成功 */</span>
+    {
+        *p = T;
+        <span class="keyword">return</span> <span class="keyword">TRUE</span>; 
+    }
+    <span class="keyword">else</span> <span class="keyword">if</span>(T-&gt;data &gt; key)              <span class="comment">/* 从左子树中递归查找 */</span>
+    {
+        <span class="keyword">return</span> BiTree_Search(T-&gt;lchild,key,f,p);
+    }
+    <span class="keyword">else</span>                                <span class="comment">/* 从右子树中递归查找 */</span>
+    {
+        <span class="keyword">return</span> BiTree_Search(T-&gt;rchild,key,f,p);
+    }
+} 
+</code></pre><p>比如，我们要查找51，程序的执行过程是这样的：</p>
+<ol>
+<li>二叉查找树T指向根节点62，key=51,62的双亲结点是NULL</li>
+<li>由于根节点不为空，所以程序执行第一个elseif判断语句，62不等于51，所以执行下一步</li>
+<li>显然51&lt;62,所以程序会递归从左子树中查找</li>
+<li>根节点是左孩子是58，key=51,f=null</li>
+<li>58仍然不等于51，而且51小于58，程序继续以58为根节点，递归从58的左子树中查找51</li>
+<li>58的左孩子是47，显然47仍然不等于51，但是51大于47，所以程序继续以47为根节点，递归从47的右子树中查找</li>
+<li>47的右孩子是51，比较51与key的值，显然是相等的，于是指针p指向51这个节点，程序返回TRUE，查找结束</li>
+</ol>
+<p>那么如何在一棵二叉查找树中插入一个元素呢？正如上面的过程一样，只需要找到其插入的合适位置就可以直接插入到二叉查找树中了，看代码：</p>
+<p>代码清单2：</p>
+<pre><code><span class="comment">/* 插入元素至二叉查找树中 */</span>
+<span class="comment">/* @param T: 二叉查找树 */</span>
+<span class="comment">/* @param key: 要插入的元素结点 */</span>
+Status BiTree_Insert(BiTree <span class="subst">*</span>T,int key)
+{
+    BiTree p,s;
+    <span class="keyword">if</span>(<span class="subst">!</span>BiTree_Search(<span class="subst">*</span>T,key,<span class="built_in">NULL</span>,<span class="subst">&amp;</span>p))      <span class="comment">/*  查找不成功 */</span>
+    {
+        s <span class="subst">=</span> (BiTree)malloc(sizeof(BiTNode));
+        s<span class="subst">-&gt;</span><span class="built_in">data</span> <span class="subst">=</span> key;
+        s<span class="subst">-&gt;</span>lchild <span class="subst">=</span> s<span class="subst">-&gt;</span>rchild <span class="subst">=</span> <span class="built_in">NULL</span>;
+        <span class="keyword">if</span>(<span class="subst">!</span>p)                              <span class="comment">/* 指针p指向NULL,说明是一棵空树 */</span>
+        {
+            <span class="subst">*</span>T <span class="subst">=</span> s;
+        }
+        <span class="keyword">else</span> <span class="keyword">if</span>(key <span class="subst">&lt;</span> p<span class="subst">-&gt;</span><span class="built_in">data</span>)
+            p<span class="subst">-&gt;</span>lchild <span class="subst">=</span> s;
+        <span class="keyword">else</span>
+            p<span class="subst">-&gt;</span>rchild <span class="subst">=</span> s;
+        <span class="keyword">return</span> <span class="literal">TRUE</span>;
+    }
+    <span class="keyword">return</span> <span class="literal">FALSE</span>;
+}
+</code></pre><p>具体的插入过程已经在上面说过了，下面我们看看如何删除二叉查找树的一个结点，删除结点需要分为三种情况：</p>
+<ul>
+<li>既无左子树也无右子树，就是叶子结点</li>
+<li>只有左子树或者只有右子树</li>
+<li>既有左子树又有右子树</li>
+</ul>
+<p>我们先看第一种情况：如何删除一个叶子结点呢？可以看出，当删除叶子结点，并不会破坏二叉查找树的性质，所以可以直接删除</p>
+<p>下面我们看看只有左子树或者只有右子树的情况，比如：</p>
+<p>我们要删除我们刚开始构建的35结点：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_1.jpg" alt=""><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_2.jpg" alt=""></p>
+<p>再比如要删除73这个节点：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_3.jpg" alt=""><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_4.jpg" alt=""></p>
+<p>过程也很简单，就是用左子树或者右子树的根节点替换要删除那个节点的位置即可</p>
+<p>然后，我们看看既有左子树又有右子树的情况，比如我们要删除47，该怎么处理呢？</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_6.jpg" alt=""></p>
+<p>一种较好的处理思路就是用47的前驱或者后继作为47的替代者，这里47的前驱是37,后继是48，我们发现用37或者48作为47的替代者，二叉查找树的性质没有改变，所以我们就考虑如何找到待删除结点的前驱或者后继，然后把待删除的结点替换为其前驱或者后继就好了。</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_7.jpg" alt="47被其前驱37代替"><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/BiTree_Delete_8.jpg" alt="47被其后继48代替"></p>
+<p>那么其过程可以用代码实现如下：</p>
+<p>代码清单3：</p>
+<pre><code><span class="comment">/* 使用待删除结点的前驱作为其替换者 */</span>
+Status Delete(BiTree <span class="subst">*</span>p)
+{
+    BiTree q,s;
+    <span class="keyword">if</span>((<span class="subst">*</span>p)<span class="subst">-&gt;</span>rchild <span class="subst">==</span> <span class="built_in">NULL</span>)                <span class="comment">/* 右子树为空，重接左子树 */</span>
+    {
+        q <span class="subst">=</span> <span class="subst">*</span>p;
+        <span class="subst">*</span>p <span class="subst">=</span> (<span class="subst">*</span>p)<span class="subst">-&gt;</span>lchild;
+        free(q);
+    }
+    <span class="keyword">else</span> <span class="keyword">if</span>((<span class="subst">*</span>p)<span class="subst">-&gt;</span>lchild <span class="subst">==</span> <span class="built_in">NULL</span>)           <span class="comment">/* 左子树为空，重接右子树 */</span>
+    {
+        q <span class="subst">=</span> <span class="subst">*</span>p;
+        <span class="subst">*</span>p <span class="subst">=</span> (<span class="subst">*</span>p)<span class="subst">-&gt;</span>rchild;
+        free(q);
+    }
+    <span class="keyword">else</span>                                    <span class="comment">/* 既有左子树又有右子树 */</span>
+    {
+        q <span class="subst">=</span> <span class="subst">*</span>p;
+        s <span class="subst">=</span> (<span class="subst">*</span>p)<span class="subst">-&gt;</span>lchild;
+        <span class="keyword">while</span>(s<span class="subst">-&gt;</span>rchild)                    <span class="comment">/* 转左子树，以左子树为根节点找到待删除结点的直接前驱 */</span>
+        {
+            q <span class="subst">=</span> s;
+            s <span class="subst">=</span> s<span class="subst">-&gt;</span>rchild;
+        }
+(<span class="subst">*</span>p)<span class="subst">-&gt;</span><span class="built_in">data</span> <span class="subst">=</span> s<span class="subst">-&gt;</span><span class="built_in">data</span>;<span class="comment">/* 循坏结束，s已经是待删除结点p的直接前驱了，把结点的值替换成前驱的值 */</span>
+        <span class="keyword">if</span>(q<span class="subst">!=*</span>p)
+            q<span class="subst">-&gt;</span>rchild <span class="subst">=</span> s<span class="subst">-&gt;</span>lchild;      <span class="comment">/* 把s的左子树接到q的右子树上 */</span>
+        <span class="keyword">else</span>
+            q<span class="subst">-&gt;</span>lchild <span class="subst">=</span> s<span class="subst">-&gt;</span>lchild;
+        free(s);
+    }
+    <span class="keyword">return</span> <span class="literal">TRUE</span>;
+
+}
+
+<span class="comment">/* 删除二叉查找树中为key结点 */</span>
+Status Delete(BiTree <span class="subst">*</span>T,int key)
+{
+    <span class="keyword">if</span>(<span class="subst">!*</span>T)                                 <span class="comment">/*  如果是空树，那么删除失败 */</span>
+        <span class="keyword">return</span> <span class="literal">FALSE</span>;
+    <span class="keyword">else</span>
+    {
+        <span class="keyword">if</span>((<span class="subst">*</span>T)<span class="subst">-&gt;</span><span class="built_in">data</span> <span class="subst">==</span> key)
+            <span class="keyword">return</span> Delete(T);
+        <span class="keyword">else</span> <span class="keyword">if</span>((<span class="subst">*</span>T)<span class="subst">-&gt;</span><span class="built_in">data</span> <span class="subst">&gt;</span> key)
+            <span class="keyword">return</span> Delete(<span class="subst">&amp;</span>(<span class="subst">*</span>T)<span class="subst">-&gt;</span>lchild,key);
+        <span class="keyword">else</span>
+            <span class="keyword">return</span> Delete(<span class="subst">&amp;</span>(<span class="subst">*</span>T)<span class="subst">-&gt;</span>rchild,key);
+    }
+}
+</code></pre><p>注意带Delete函数与插入函数有一些类似，差别在于删除算法执行的是Delete(BiTree *p)函数，该函数就是根据结点左右子树的情况重接其左子树或者右子树</p>
+<p>下面我们看看删除47结点的代码执行过程：</p>
+<ol>
+<li>首先将待删除结点p赋值给临时变量q，再把p的左孩子赋值给s，此时q指向47，s指向35</li>
+<li>进入循环，找到p的前驱结点</li>
+<li>循坏结束，s指向37，把s-&gt;data赋值给p-&gt;data，此时p-&gt;data变为37。s也就是p的直接前驱结点，q指向35，也就是s的直接前驱</li>
+<li>如果p和q的指向不同，那么就把q-&gt;rchild赋为s-&gt;lchild,在这个例子中，显然p与q的指向不同，那么q的右孩子变为s的左孩子，也就是36。</li>
+<li>最后执行free(s)，就是把s结点删除，这里也就是把37这个节点删除</li>
+</ol>
+<p>二叉查找树小结</p>
+<p>由于二叉查找树是以链式存储的，当插入或者删除某个结点时候，只需要修改其左右孩子的指针就行，所以效率是比较高的，而如果使用二叉查找树进行元素的查找，由于二叉查找树的深度有限，那么花去的时间也不会太多。二叉查找树的平均时间复杂度是O(logn)，最差的时间复杂度是O(n)，最好的情况就是查找根节点，时间复杂度是O(1)，性能还是很不错的。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/算法与数据结构/">算法与数据结构</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/数据结构/">数据结构</a><a href="/tags/算法/">算法</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/datastructure-bitree/" data-title="查找算法之二叉查找树 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/jvm-java-memory/" title="深入理解JVM之Java内存区域">
+  <strong>上一篇：</strong><br/>
+  <span>
+  深入理解JVM之Java内存区域</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/internet-protocol-2/"  title="【转】互联网协议入门（二）">
+ <strong>下一篇：</strong><br/> 
+ <span>【转】互联网协议入门（二）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/datastructure-bitree/" data-title="查找算法之二叉查找树" data-url="http://rhwayfun.com/post/datastructure-bitree/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

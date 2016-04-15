@@ -1,0 +1,904 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>HTTP协议必知必会 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="HTTP协议篇
+1、Http的报文结构http的报文分为请求报文和响应报文，请求报文结构包括：请求行、请求头、请求体；响应报文结构包括响应行、响应头、响应体。下图简要表示了请求报文的结构：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP协议必知必会">
+<meta property="og:url" content="http://rhwayfun.com/post/http-protocol-notes/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="HTTP协议篇
+1、Http的报文结构http的报文分为请求报文和响应报文，请求报文结构包括：请求行、请求头、请求体；响应报文结构包括响应行、响应头、响应体。下图简要表示了请求报文的结构：">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/http请求报文.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.714Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP协议必知必会">
+<meta name="twitter:description" content="HTTP协议篇
+1、Http的报文结构http的报文分为请求报文和响应报文，请求报文结构包括：请求行、请求头、请求体；响应报文结构包括响应行、响应头、响应体。下图简要表示了请求报文的结构：">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/http-protocol-notes/" title="HTTP协议必知必会" itemprop="url">HTTP协议必知必会</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-29T10:48:44.000Z" itemprop="datePublished"> 发表于 2015-09-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HTTP协议篇"><span class="toc-number">1.</span> <span class="toc-text">HTTP协议篇</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="HTTP协议篇">HTTP协议篇</h1><hr>
+<p>1、Http的报文结构<br>http的报文分为请求报文和响应报文，请求报文结构包括：请求行、请求头、请求体；响应报文结构包括响应行、响应头、响应体。下图简要表示了请求报文的结构：<br><a id="more"></a><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/http请求报文.jpg" alt="http请求报文"></p>
+<p>下面是我输入www.baidu.com获取的请求信息和响应信息：</p>
+<p>请求报文：</p>
+<pre><code><span class="comment">/*请求行，get是请求方法，http://www.baidu.com/是我访问的URL，HTTP/1.1表示http协议的版本号*/</span>
+GET http:<span class="comment">//www.baidu.com/ HTTP/1.1</span>
+<span class="comment">//从这行开始是请求头</span>
+<span class="comment">//Host表示要访问的主机</span>
+Host: www.baidu.com
+<span class="comment">//Connection表示其连接属性，keep-alive就是保持连接</span>
+Connection: keep-alive
+<span class="comment">//Accept属性告诉服务端客户端要接受什么类型的数据</span>
+Accept: <span class="keyword">text</span>/html,application/xhtml+xml,application/xml;q=<span class="number">0.9</span>,<span class="keyword">image</span>/webp,<span class="variable">*/</span><span class="variable">*;</span>q=<span class="number">0.8</span>
+<span class="comment">//表示客户端的浏览器信息</span>
+User-Agent: Mozilla/<span class="number">5.0</span> (Windows NT <span class="number">10.0</span>; WOW64) AppleWebKit/<span class="number">537.36</span> (KHTML, like Gecko) Chrome/<span class="number">44.0</span>.2403.69 Safari/<span class="number">537.36</span> QQBrowser/<span class="number">9.1</span>.4060.400
+HTTPS: <span class="number">1</span>
+<span class="comment">//DNT就是Do Not Track，要求应用程序不要跟踪用户的浏览信息，1表示true0表示false</span>
+DNT: <span class="number">1</span>
+<span class="comment">//列出客户端可接受的编码</span>
+Accept-Encoding: gzip, deflate, sdch
+<span class="comment">//列出客户端可接受的语言类型</span>
+Accept-Language: zh-CN,zh;q=<span class="number">0.8</span>
+<span class="comment">//客户端就是通过这个报文属性给服务器发送cookies</span>
+Cookie: BAIDUID=<span class="number">19</span>EDEC9B9CC10B7F16C0C832A656734B:FG=<span class="number">1</span>; BIDUPSID=<span class="number">19</span>EDEC9B9CC10B7F16C0C832A656734B; PSTM=<span class="number">1438532720</span>; BDUSS=ktSU2hkQVpXVzRZcFJ3dFlrZ2U1aWp4ZEoxTVpJQUJwMGQ0Z2VweUlTfkJGaWRXQVFBQUFBJCQAAAAAAAAAAAEAAABdz4AlY3N10KHW0wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGJ~<span class="number">1</span>XBif9VU; ispeed_lsm=<span class="number">0</span>; BDRCVFR[S_ukKV6dOkf]=mk3SLVN4HKm; BD_CK_SAM=<span class="number">1</span>; H_PS_PSSID=<span class="number">1429</span>_14603_12867_17447_17245_16937_17003_15940_12230_17351_16011_17051; BD_UPN=<span class="number">1</span>a314753; sugstore=<span class="number">1</span>; H_PS_645EC=ab8fCT41tKelcC3E<span class="variable">%2BEU78Af4afyPd5vkuKRlLeUtva2ucdKprySVETfLkIn1K3SxYok</span>; BDSVRTM=<span class="number">0</span>
+</code></pre><p>更多的请求报文属性可以访问<a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields" target="_blank" rel="external">更多Http报文属性</a></p>
+<p>响应报文：</p>
+<pre><code><span class="comment">//302是http响应的状态码，302代表永久重定向</span>
+HTTP/<span class="number">1.1</span> <span class="number">302</span> Moved Temporarily
+<span class="string">Date:</span> Wed, <span class="number">30</span> Sep <span class="number">2015</span> <span class="number">04</span>:<span class="number">40</span>:<span class="number">53</span> GMT
+<span class="comment">//Content-Type是MIME的类型</span>
+Content-<span class="string">Type:</span> text/html
+<span class="comment">//响应的字节长度</span>
+Content-<span class="string">Length:</span> <span class="number">215</span>
+<span class="string">Connection:</span> Keep-Alive
+<span class="comment">//在重定向时使用，在请求一个新的资源的时候使用</span>
+<span class="string">Location:</span> <span class="string">https:</span><span class="comment">//www.baidu.com/</span>
+<span class="comment">//服务器的一个名称</span>
+<span class="string">Server:</span> BWS/<span class="number">1.1</span>
+<span class="comment">//建议的浏览器渲染引擎</span>
+X-UA-<span class="string">Compatible:</span> IE=Edge,chrome=<span class="number">1</span>
+<span class="comment">//设置客户端cookies</span>
+Set-<span class="string">Cookie:</span> BD_LAST_QID=<span class="number">14746362566880008569</span>; path=/; Max-Age=<span class="number">1</span>
+
+<span class="comment">//下面是响应正文</span>
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;<span class="number">302</span> Found&lt;<span class="regexp">/title&gt;&lt;/</span>head&gt;
+&lt;body bgcolor=<span class="string">"white"</span>&gt;
+&lt;center&gt;&lt;h1&gt;<span class="number">302</span> Found&lt;<span class="regexp">/h1&gt;&lt;/</span>center&gt;
+&lt;hr&gt;&lt;center&gt;pr-nginx_1-<span class="number">0</span>-<span class="number">249</span>_BRANCH Branch
+<span class="string">Time :</span> Wed Sep <span class="number">23</span> <span class="number">14</span>:<span class="number">17</span>:<span class="number">25</span> CST <span class="number">2015</span>&lt;/center&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>2、Http的状态码含义<br>http的状态码是针对响应来讲的，http状态码分为5类33种：</p>
+<ul>
+<li>1XX</li>
+<li>2XX</li>
+<li>3XX</li>
+<li>4XX</li>
+<li>5XX<br>1XX：告诉客户端已经收到了请求<br>2XX：表示处理成功，包括收到请求、解析了请求信息、受理请求、响应请求等内容<br>3XX：表示重定向其他URL，客户端要重新发送请求完成后面的处理<br>4XX：表示客户端错误，如语法错误、资源不存在、访问禁止等<br>5XX：表示服务端错误，后台异常、版本异常等<br>更详细的状态码信息可以访问<a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank" rel="external">更多Http状态码</a></li>
+</ul>
+<p>3、Http request的几种类型</p>
+<p>4、Http1.1和Http1.0的区别<br><code>可扩展性</code>：HTTP/1.1定义Via头域，增加了版本号的支持<br><code>缓存</code>：HTTP/1.1增加对缓存的重激活机制（revalidation），使用ETag头域唯一描述一个资源；HTTP/1.1增加了Cache-Control头域支持可扩展的指令集<br><code>带宽优化</code>：HTTP/1.1中允许请求资源的某部分，而不是整个资源<br><code>长连接</code>:HTTP/1.0只支持浏览器与服务器保持短暂的连接，浏览器的每次请求都要建立一个新的连接。而HTTP/1.1允许在一个TCP连接上可以传送多个HTTP请求和响应。HTTP/1.1协议的持续连接有两种方式，即非流水线方式和流水线方式。非流水线方式的特点是，客户在收到前一个响应后才能发出下一个请求；流水线方式的特点是，客户在收到HTTP的响应报文之前就能接着发送新的请求报文<br>以上就是认为比较重要的区别，其他的区别可以参看<a href="http://www2.research.att.com/~bala/papers/h0vh1.html" target="_blank" rel="external">这篇文章</a>，翻译版可以参看<a href="http://blog.csdn.net/forgotaboutgirl/article/details/6936982" target="_blank" rel="external">这篇博客</a></p>
+<p>5、Http怎么处理长连接<br>在HTTP/1.1中长连接是指一次TCP连接可以处理多次请求与响应，这样可以产生较少的网络流量，提高处理效率。在请求报文中<code>Connection:keep-alive</code>就是告诉服务端保持长连接的作用</p>
+<p>6、Cookie与Session的作用与原理<br>HTTP本身是无状态的，刚开始设计HTTP时，客户端只要完成了其所请求的内容就可以say bye了。但是人们逐渐发现，如果可以让服务器选择性响应内容，客户端获取的信息或更多针对性。但是由于http没有状态，怎么办呢？Cookie与Session就是两种解决方案，简单来说，Cookie是在客户端保持状态的方法，而Session是在服务器保持状态的方法，但是服务器必须和客户端建立联系才能把状态维持下去，所以在客户端的Cookie中有一个Session的标识，称为SessionId。<br>Cookie机制：服务器通过键值对的形式给客户端发送Cookie信息，当再次访问的时候从Cookie中直接读取，Cookie的内容包括：域和路径、过期时间、名字、值<br>以上面访问baidu.com为例：域就是baidu.com，路径就是域后面的URL，路径与域构成了Cookie的作用范围，过期时间是指cookie的生存时间，如果不指定过期时间，则默认就是浏览器会话时间，只要关闭了浏览器cookie就失效了。但是这样并不是cookie设计的初衷，通过cookie信息保存在硬盘上，当即使关闭浏览器下次打开cookie仍然是有效的。<br>Session机制：是一种在服务端保持状态的机制，当客户端需要为请求创建一个session的时候，服务端会检查在客户端是否包含一个session id，如果有就把这个session检索出来，如果没有就会为客户端创建一个session并且生成一个session id保存在客户端。保存session id的方式是cookie，当客户端发送请求的时候，服务器会从发送的cookie检索是否包含有session id。但是cookie是可以用户手动禁止的，那么如何在被禁止的条件下把session ID发送给服务端呢？有一种技术可以实现，就是URL重写。具体是怎么样呢？简单说就是把session id附在URL后面，这里又有两种方式：作为附加信息；作为查询参数；表单隐藏字段</p>
+<p><strong>“只要关闭浏览器，session就失效”的误解</strong><br>要知道，虽然用户把浏览器关闭了，但是服务器对这点是透明的，服务器根本知道用户什么时候关闭了浏览器。所以简答说关闭浏览器session就消失是错误的。我们这么理解基于一个假设，由于sessionId采用的会话cookie来保存的，而会话cookie的一个特点是当浏览器关闭cookie的信息就会失效，那么session id在再次打开浏览器自然是无法找到，也就无法检索原来的session了。但是如果通过硬盘的方式存储session id，这样把原来的session id发送给服务器，就可以检索出来了。</p>
+<p>7、电脑上访问一个网页，整个过程是怎么样的<br>完整的描述应该包括DNS、HTTP、TCP、OSPF、IP、ARP<br>简略描述如下：<br>1）DNS把域名解析成对应的IP<br>2）发送一次请求，服务器返回一个永久重定向响应，这样浏览器就知道要访问的正确网址<br>3）发送请求html的请求，这个连接过程基于TCP/IP三次握手四次挥手的，建立连接<br>4）服务器返回一个html响应<br>5）浏览器根据渲染引擎解析返回的html响应，呈现内容<br>6）继续发送内嵌在html文件其他资源的请求，比如css、js、图片资源等<br>7）加载整个页面</p>
+<p>8、Ping的整个过程。ICMP报文是什么？<br>ICMP也叫互联网控制报文协议，是IP层的组成部分，ICMP主要用于传递差错报文以及一些不可达信息。ICMP报文分为查询报文和差错报文，当IP传输发生错误的时候会产生一个差错报文，这个报文会发送给源主机，源主机根据这个报文做出处理。</p>
+<p>下面讲一下Ping的过程：<br>分为两种情况，同网段以及不同网段<br>先说相同网段：<br>1）主机A要去Ping主机B， 主机A会封装两层报文，主机A先检查自己MAC地址中是否有B的MAC地址，如果没有就向外发送一个ARP广播包<br>2）交换机收到这个ARP后，会检查在交换机中是否包含B的MAC地址，如果有就直接返回给A；如果没有就向所有端口发送ARP，该网段的主机的MAC如果与B的MAC地址不同就丢弃，如果主机B收到了该ARP就马上返回相同格式的ARP<br>3）这时主机A已经有了B的MAC地址，就把B的MAC地址封装到ICMP报中，向主机B发送一个回显请求<br>４）主机B收到该报文后，知道是主机A的一个回显请求，就会返回一个相同格式的报文。这样就完成了同一个网段的Ping的过程</p>
+<p>再说不同网段：<br>1）主机A要去Ping一个不同网段的主机C，主机A会去找网关转发<br>2）如果主机A不知道网关的MAC地址，就会发送一个ARP广播一下，这样就知道了网关的MAC地址<br>3）网关收到主机A的ICMP报文，根据上面的目的IP，会去查找路由表，找到一个出口指针，给主机C发送一个ICMP报文<br>4）如果网关不知道主机C的MAC地址，就会给网关内所有的主机发送一个ARP，从而找到主机C的MAC地址<br>5）主机C收到主机A的报文就会给主机A发送一个回显请求。这样就完成了不同网段的Ping的请求</p>
+<p>9、C/S模式下使用socket通信，几个关键函数<br>服务端涉及的关键函数有ServerSocket，accept()，IO流，close()，客户端涉及的函数有Socket，IO流，close()</p>
+<p>10、路由器与交换机区别<br>路由器包含了交换机的功能，交换机主要的作用是扩展接口。比如原来只有一个接口，但是有两个人需要使用，这时就可以使用交换机来扩展接口，两个人使用各自的宽带账号上网，所以彼此的网速不会受到影响。而路由器处理扩展接口，还可以一个账号多个人上网，然而由于所有人共用一个上网账号，必然彼此的网速会收到影响，所以经常会出现，一个人在下载文件的时候，其他人的上网速率会下降的情况。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java网络编程/">Java网络编程</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/HTTP/">HTTP</a><a href="/tags/网络编程/">网络编程</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/http-protocol-notes/" data-title="HTTP协议必知必会 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/how-to-harvest-offer-of-bat/" title="(转)技术不牛如何才拿到国内IT巨头的Offer">
+  <strong>上一篇：</strong><br/>
+  <span>
+  (转)技术不牛如何才拿到国内IT巨头的Offer</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/java-questions-todo/"  title="Java笔试面试题解析（二）">
+ <strong>下一篇：</strong><br/> 
+ <span>Java笔试面试题解析（二）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/http-protocol-notes/" data-title="HTTP协议必知必会" data-url="http://rhwayfun.com/post/http-protocol-notes/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HTTP协议篇"><span class="toc-number">1.</span> <span class="toc-text">HTTP协议篇</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

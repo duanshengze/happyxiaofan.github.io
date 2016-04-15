@@ -1,0 +1,977 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java笔试面试题解析（一） | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="进来看了许多笔试面经，但网上大多没有答案，基本是一些lz的思路，对于一个明年暑假准备找实习的程序猿来说，对知识的总结是很有必要的。刚好最近把一些Java核心技术、Java网络编程、Java并发编程等书籍看了部分，正愁怎么梳理这些零散的知识点，终于看到各lz贡献的笔试面经，把其中的题目进行分类汇总，权当是对Java基础知识的总结吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java笔试面试题解析（一）">
+<meta property="og:url" content="http://rhwayfun.com/post/javaSE-questions-todo/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="进来看了许多笔试面经，但网上大多没有答案，基本是一些lz的思路，对于一个明年暑假准备找实习的程序猿来说，对知识的总结是很有必要的。刚好最近把一些Java核心技术、Java网络编程、Java并发编程等书籍看了部分，正愁怎么梳理这些零散的知识点，终于看到各lz贡献的笔试面经，把其中的题目进行分类汇总，权当是对Java基础知识的总结吧。">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/类型转换关系.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Collection框架.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.723Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java笔试面试题解析（一）">
+<meta name="twitter:description" content="进来看了许多笔试面经，但网上大多没有答案，基本是一些lz的思路，对于一个明年暑假准备找实习的程序猿来说，对知识的总结是很有必要的。刚好最近把一些Java核心技术、Java网络编程、Java并发编程等书籍看了部分，正愁怎么梳理这些零散的知识点，终于看到各lz贡献的笔试面经，把其中的题目进行分类汇总，权当是对Java基础知识的总结吧。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/javaSE-questions-todo/" title="Java笔试面试题解析（一）" itemprop="url">Java笔试面试题解析（一）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-25T06:00:40.000Z" itemprop="datePublished"> 发表于 2015-09-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>进来看了许多笔试面经，但网上大多没有答案，基本是一些lz的思路，对于一个明年暑假准备找实习的程序猿来说，对知识的总结是很有必要的。刚好最近把一些Java核心技术、Java网络编程、Java并发编程等书籍看了部分，正愁怎么梳理这些零散的知识点，终于看到各lz贡献的笔试面经，把其中的题目进行分类汇总，权当是对Java基础知识的总结吧。<br><a id="more"></a><br>ok，进入正题，为了系统梳理Java中的知识点，我将这个作为一个专题，大概有以下几个专题：</p>
+<ul>
+<li>JavaSE</li>
+<li>网络编程</li>
+<li>Java并发编程</li>
+<li>数据结构与算法</li>
+<li>JVM</li>
+<li>MySQL</li>
+<li>Spring</li>
+<li>设计模式</li>
+</ul>
+<p>每一块都包含了许多知识，作为解析，不可能面面俱到，lz只是借鉴前人的经验为自己所用罢了，如果其中的内容涉及到版权问题，欢迎指出，lz将在第一时间更正并声明版权信息。</p>
+<p>1、Java中8中基本数据类型及其封装类<br>在Java中包含8中基本数据类型：byte,short,char,int,long,float,double,boolean;对象的封装类分别为：Byte,Short,Character,Integer,Long,FLoat,Double,Boolean<br>扩展1：各数据类型的转换关系？<br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/类型转换关系.jpg" alt="类型转换关系"><br>扩展2：浮点数相等的比较？<br>假设有两个double类型的数,d1,d2,比较相等可以采用两个数的差在很小的范围即可认为相等，具体操作如下：<br>(d1 - d2) &gt; -0.000001 &amp;&amp; (d1 - d2) &lt; 0.000001</p>
+<p>2、Switch能否用string做参数？<br>在jdk1.7之前的版本不支持，Switch使用String做参数是在jdk1.7之后引入的新特性，所以在jdk1.7之后的版本可以。<br>扩展：Switch支持哪些类型做参数？<br>在jdk1.7之前，Switch支持byte,short,char,int(即所有可以转换为int的类型都可以)以及enum</p>
+<p>3、equals与==的区别<br>简单来说，1、基本类型的比较：使用==进行值的比较，如果使用了包装类，那么使用equals比较的仍然是值；2、引用类型的比较：在重写equals方法的前提下，equals比较的是内容是否相同，如果没有重写equals方法，则默认使用==进行比较，这就是说默认比较的是两个对象的地址。在Java中，Integer等包装类、String、Date都重写了equals方法。</p>
+<pre><code><span class="comment">//Object类的equals方法</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>{
+    <span class="keyword">return</span> (<span class="keyword">this</span> == obj);
+}
+</code></pre><p>4、Object有哪些公用方法？<br>既然是公用方法，那么只有hashCode()、equals()、toString()、wait()、notify()、notifyAll()</p>
+<p>hashCode():返回一个对象的哈希值，可以注意到，当一个对象多次调用hashCode()方法该对象返回的哈希值始终是相等的。<br>equals():默认进行对象地址的比较，只有new对象返回的地址相同才返回true<br>toString():返回一个对象的字符串表示，一般来说，toString()方法返回的值等同于getClass().getName() + ‘@’ + Integer.toHexString(hashCode())</p>
+<p>wait()、notify()、notifyAll()是多线程中知识，这里暂不展开陈述</p>
+<p>5、Java的四种引用以及用到的场景<br>强引用：具有强引用的对象，在内存不足时Java虚拟机宁愿抛出OutOfMemoryError也不会回收该对象。<br>软引用：如果一个对象只具有软引用，那么当内存足够时不会被回收，当内存不够的时候则会被回收。只要没有被回收，程序中就继续使用该对象。软引用主要用于内存敏感的高速缓存。软引用可以与一个引用队列一起使用，如果软引用的对象被回收，那么就会把该对象加入到关联的引用队列中<br>弱引用：与软引用类似，区别在于弱引用拥有更短暂的生命周期，当垃圾回收器扫描到它所管辖的区域中有只具有弱引用的对象，则不管内存是否足够都会将该对象及进行回收。弱引用也可以与一个引用队列一起使用，在弱引用的对象被垃圾回收后，垃圾回收器会把这个对象加入到其关联的引用队列中<br>虚引用：虚引用就是可有可无，与前两种引用不同，虚引用没有生命周期，即只具有虚引用的对象可能在任何时候被回收。虚引用必须于一个引用队列关联，主要作用是跟踪被垃圾回收对象的活动</p>
+<p>6、Hashcode的作用<br>简单来说，hashCode主要用于解决存储大量数据查找效率的问题。就是说，hashCode根据一定的规则将对象的信息（比如存储地址、字段的值）映射成一个数值，这个数值就是哈希值。那么这个哈希值是如何发挥其强大作用呢？详细请参考我的<a href="http://rhwayfun.com/2015/09/04/HashMap-Hashtable-ConcurrentHashMap-Analysis/">这篇博客</a></p>
+<p>7、ArrayList、LinkedList、Vector的区别<br><code>从底层数据结构看</code>：ArrayList和Vector使用的是数组，LinkedList使用的是双向链表；<br><code>从执行效率看</code>：ArrayList和Vector查找指定索引的元素效率很高，平均只需要O(1)的时间复杂度，而LinkedList由于是链表，查找效率较低，查找一个元素的平均复杂度是O(n)，但是LinkedList插入和删除元素相比ArrayList和Vector具有较高的效率，平均复杂度是O(1)<br><code>从线程安全的角度对比</code>：Vector是线程安全的，ArrayList和LinkedList不是线程安全的；<br><code>从应用场景角度看</code>：ArrayList应用于不需要同步且查找频繁的情况，Vector应用于需要同步且查找频繁的情况，LinkedList应用于插入与删除频繁的情况</p>
+<p>8、String、StringBuffer与StringBuilder的区别<br><code>从字符的可变性考虑</code>：String是不可改变的，StringBuffer与StringBuilder是可改变的；<br><code>从线程安全看</code>：String与StringBuilder不是线程安全的，StringBuffer是线程安全的；<br><code>从执行效率考虑</code>：StringBuilder &gt; StringBuffer &gt; String，简单分析一下，首先由于String是字符串常量，每次的字符串拼接都等同于创建新的对象，当拼接很多的时候，就会存在很多无效的引用，这时候GC会开始工作，从而导致效率降低，而StringBuilder和StringBuffer则是在原来的字符串对象进行修改，并不会产生新的对象，所以效率当然大于String。接下来说说为什么StringBuilder &gt; StringBuffer？主要是由于StringBuffer是线程安全的，使用同步必要导致更大的资源开销，所以StringBuilder &gt; StringBuffer。<br><code>从使用场景看</code>：少量字符串拼接使用String，单线程大量字符串拼接使用StringBuilder，多线程大量字符串拼接使用StringBuffer</p>
+<p>9、Map、Set、List、Queue、Stack的特点与用法<br>这个问题比较杂，基本牵涉了Java集合框架中的所有知识点，如果在面试中遇到这个问题，我觉得可以这么回答：Set、List、Queue、Stack都实现了Collection接口，属于Collection接口阵营，用于存放单个元素，Map是一种存放键值对元素的接口；Set中存放的元素是不可重复的，而且元素的存放没有顺序。List集合中存放的元素是可重复的，存放的元素是有序的。Queue类似生活中排队模型，实现的是数据结构中的“队列”这种数据结构，队列是一种先进先出（FIFO）的数据结构，每次都是队头出队，从队尾入队，要注意的是Queue不支持随机访问元素，只能从队头或者队尾进行操作。不过在Java集合框架中，Deque双向了一种“双端队列”，支持从队头和队尾添加删除元素。Stack实现了“栈”这种数据结构，栈具有先进后出（FILO）的特点，Stack类继承于Vector类，所以Stack是线程安全的</p>
+<p>10、HashMap和HashTable的区别<br>第1点：HashMap是从jdk1.2之后才有的，从Hashtable从jdk1.0中就有，Hashtable是Dictionary的子类，同时也是Map接口的实现类，而HashMap是AbstractMap的子类同时也是Map接口的实现类<br>第2点：Hashtable不允许null作为key或者value，而HashMap允许<br>第3点：Hashtable是线程安全的，HashMap不是线程安全的<br>第4点：HashMap取消了Hashtable的contains()方法，增加了containsKey()和containsValue()方法<br>第5点：Hashtable的初始容量是11，每次增加的方式是oldCapacity*2 + 1，而HashMap的初始容量是16，且只能为2的指数次方大小。<br>第6点：哈希值不同。Hashtable直接使用hashCode方法返回的值，HashMap使用的是与运算重新计算哈希值</p>
+<pre><code><span class="comment">//HashMap计算哈希值的方法</span>
+<span class="keyword">final</span> <span class="built_in">int</span> hash(<span class="keyword">Object</span> k) {
+    <span class="built_in">int</span> h = hashSeed;
+    <span class="keyword">if</span> (<span class="number">0</span> != h &amp;&amp; k <span class="keyword">instanceof</span> <span class="keyword">String</span>) {
+        <span class="keyword">return</span> sun.misc.Hashing.stringHash32((<span class="keyword">String</span>) k);
+    }
+    h ^= k.hashCode();
+    <span class="comment">// This function ensures that hashCodes that differ only by</span>
+    <span class="comment">// constant multiples at each bit position have a bounded</span>
+    <span class="comment">// number of collisions (approximately 8 at default load factor).</span>
+    h ^= (h &gt;&gt;&gt; <span class="number">20</span>) ^ (h &gt;&gt;&gt; <span class="number">12</span>);
+    <span class="keyword">return</span> h ^ (h &gt;&gt;&gt; <span class="number">7</span>) ^ (h &gt;&gt;&gt; <span class="number">4</span>);
+}
+<span class="comment">//Hashtable计算哈希值的方法</span>
+ <span class="built_in">int</span> hash = <span class="variable">key</span>.hashCode();
+ <span class="built_in">int</span> index = (hash &amp; <span class="number">0x7FFFFFFF</span>) % tab.length;
+</code></pre><p>11、HashMap和ConcurrentHashMap的区别，HashMap的底层源码<br>先说HashMap与ConcurrentHashMap的区别：<br>第1点：HashMap不是线程安全的，ConcurrentHashMap是线程安全的<br>第2点：ConcurrentHashMap的执行效率比HashMap高，默认提高16倍<br>再说HashMap为什么不是线程安全的以及为什么ConcurrentHashMap是线程安全的。<br>因为HashMap的底层源码没有做任何线程安全的处理，自然就不是线程安全的了。ok，我们从底层的源码角度分析一下为什么？<br>说白了，HashMap底层就是一种散列结构，更通俗的说，就是数组+链表。为了添加一个元素到散列中，首先会使用hashCode函数（不过HashMap多hashCode函数做了特别处理）定位要插入的位置，再调用indexFor方法确定该元素要插入的桶的位置，之后呢？然后使用我们熟悉的equals方法比较，如果存在则覆盖，否则直接添加。</p>
+<pre><code><span class="keyword">public</span> V put(K <span class="variable">key</span>, V value) {
+    <span class="keyword">if</span> (table == EMPTY_TABLE) {
+        inflateTable(threshold);
+    }
+    <span class="keyword">if</span> (<span class="variable">key</span> == <span class="keyword">null</span>)
+        <span class="keyword">return</span> putForNullKey(value);
+    <span class="built_in">int</span> hash = hash(<span class="variable">key</span>);
+    <span class="built_in">int</span> i = indexFor(hash, table.length);
+    <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="keyword">null</span>; e = e.next) {
+        <span class="keyword">Object</span> k;
+        <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.<span class="variable">key</span>) == <span class="variable">key</span> || <span class="variable">key</span>.equals(k))) {
+            V oldValue = e.value;
+            e.value = value;
+            e.recordAccess(<span class="keyword">this</span>);
+            <span class="keyword">return</span> oldValue;
+        }
+    }
+    modCount++;
+    addEntry(hash, <span class="variable">key</span>, value, i);
+    <span class="keyword">return</span> <span class="keyword">null</span>;
+}
+<span class="keyword">void</span> addEntry(<span class="built_in">int</span> hash, K <span class="variable">key</span>, V value, <span class="built_in">int</span> bucketIndex) {
+    <span class="keyword">if</span> ((<span class="built_in">size</span> &gt;= threshold) &amp;&amp; (<span class="keyword">null</span> != table[bucketIndex])) {
+        resize(<span class="number">2</span> * table.length);
+        hash = (<span class="keyword">null</span> != <span class="variable">key</span>) ? hash(<span class="variable">key</span>) : <span class="number">0</span>;
+        bucketIndex = indexFor(hash, table.length);
+    }
+    createEntry(hash, <span class="variable">key</span>, value, bucketIndex);
+}
+</code></pre><p>在addEntry()方法中，首先会判断一下当前桶的大小，如果小于阈值*0.75的话就会扩大桶的容量，这样就可以使得添加的元素更加离散，从而降低哈希冲突的几率。</p>
+<p>ConcurrentHashMap主要采用锁分段技术，对一个HashMap分成一个个Segment，对每个Segment执行加锁操作，以put为例，首先需要获取key的hashCode值，根据这个hashCode定位到具体的Segment，具体步骤是：将散列值右移 segmentShift 个位，并在高位填充 0 ，然后把得到的值与SegmentMask进行与操作获取Segment的下标，最后根据下标找到具体的Segment对象。在这个具体的Segment中执行put操作，首先会对要操作的Segment加锁，如果超过阈值就进行再哈希，把Segment中的table长度扩大一倍，否则把key的哈希值与table的长度-1进行“与”操作，得到该key在table中具体的索引值，根据这个索引值得到具体的桶，每一个桶存放的都是HashEntry对象，返回第一个HashEntry对象，执行循环，从该桶的位置开始遍历，如果存在则覆盖否则创建一个新的节点并放在链表的头部，添加完成后，count变量以及modCount的值增加1，最后释放锁。（注意：每个Segment的锁可以被同一个线程获取多次，但不可以被不同的线程获取）</p>
+<p>12、TreeMap、HashMap、LinkedHashMap的区别<br>这个三个类都是Map接口的实现类，所以都具有Map接口的基本特性。<br>下面说说区别：<br>HashMap是最常用的类，允许使用nul作为key或者value，但是只能有一个null值的key，而可以对应多个null值的value，另外HashMap不支持线程的同步<br>LinkedHashMap会记录插入元素的顺序，使用迭代器遍历LinkedHashMap先输出的元素是先插入的元素，有HashMap的全部特性<br>TreeMap能够把保存的记录根据key排序，默认升序排序，TreeMap的key值以及value值不能为空</p>
+<p>13、Collection包结构，Collection与Collections的区别<br>包结构如下：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Collection框架.jpg" alt="Collection包结构"></p>
+<p>下面说说Collection与Collections的区别：<br>第1点：Collection是接口，Collections是类<br>第2点：Collection集合的顶级接口，其直接子类包括List、Set、Queue；Collections类包含了许多静态方法，包括搜索、排序以及线程安全等操作，服务于Collection集合框架</p>
+<p>14、try catch finally，try里有return，finally还执行么？<br>如果try块中有return，由于finally值一定会执行的，所以在执行return之前会限制性finally块的代码，如果finally块没有return语句，则执行完finally块的代码后才只i系那个return语句。而如果finally块中也有return语句的话，则只会执行finally块的return，由于return之后整个方法结束，故不会执行try块的return语句。</p>
+<p>15、Excption与Error包结构。<br>先说Exception与Error包结构：<br>Exception包括Checked Exception与RuntimeException，RuntimeException常见的包括NullPointerException、ClassCastException、IndexOutOfBoundException等；Checked Exception包括IOException、SAXException、XMLParseException等。</p>
+<p>16、Java面向对象的三个特征与含义<br>封装、继承与多态<br>封装：封装就是对外扩展开放，对内修改封闭，Java中的封装就是把数据以及对数据的操作放在一个个单元中（也就是类），对于其他使用该类的人来说，不需要关心其内部实现，只需要调用其方法就可以了<br>继承：就是在一个基础类的基础上创建新类的方法，创建的新类拥有基类的非private属性与方法，从而可以缩短开发周期<br>多态：分为设计时多态与运行时多态，设计时多态一般有重载，而对于覆盖或者继承的方法，Java运行时更具创建的实例决定调用哪个方法称为运行时多态。</p>
+<p>17、Override和Overload的含义去区别<br>顾名思义，Override是重写的意思，重写发生在一个子类继承一个父类并重写父类的方法的时候，被重写的方法会覆盖父类的实现，当创建一个子类对象的时候，会调用被重写的方法，而不会调用其父类的方法。下面说Overload，就是重载的意思，重载是指具有相同方法名但具有不同参数类型的情况，但是返回值相同与否以及是否具有返回值不是判断两个函数是重载关系的根据。</p>
+<p>18、Interface与abstract类的区别<br>第1点：一个类只能继承一个抽象类，但可以实现多个接口<br>第2点：抽象类可以有自己的数据成员，也可以有非抽象方法；接口可以有自己的数据成员，但必须是public static final的，且必须赋初值，接口中的方法都是public abstract的<br>第3点：实现一个抽象类或者接口必须实现其所有的抽象方法，即要么继续声明为abstract class要么实现其抽象方法<br>第4点：设计理念不同，抽象类是is-a的关系，而接口则是like-a的关系<br>第5点：抽象类可以没有抽象方法，但接口中必须是抽象方法</p>
+<p>19、静态类与非静态类的区别<br>第1点：静态类不能被实例化，非静态类可以被实例化<br>第2点：静态类只包含静态属性、方法，非静态类既可以包含静态属性与方法又可以包含非静态属性与方法<br>第3点：静态类不能调用非静态的方法与属性，非静态类可以调用<br>第4点：静态方法只能被重载而不能被重写，因为静态类不需要创建实例对象</p>
+<p>20、写出生产者消费者模式<br>问题背景：房子只能容纳100人 如果房子中没有人，是不会有人从门口出来的，如果房子中满了100人，外面的人需要等待屋子里的人走出门口才能进入</p>
+<pre><code><span class="comment">//问题背景</span>
+<span class="comment">/*房子只能容纳100人 如果房子中没有人，是不会有人从门口出来的，如果房子中满了100人，外面的人需要等待屋子里的人走出门口才能进入*/</span>
+<span class="comment">//进入的方法</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enter</span>(<span class="params"></span>) throws InterruptedException</span>{
+    <span class="comment">//加锁</span>
+    <span class="keyword">lock</span>.<span class="keyword">lock</span>();
+    <span class="keyword">try</span> {
+        <span class="keyword">while</span>(persons == <span class="number">100</span>){
+            full.await();
+        }
+        persons++;
+        System.<span class="keyword">out</span>.println(<span class="string">"enter one,persons is "</span> + persons);
+        <span class="comment">/*唤醒所有在等待的线程，不过仅仅是唤醒而已，还必须等当前线程释放锁后才能获得锁*/</span>
+        full.signalAll();
+    } <span class="keyword">finally</span>{
+        <span class="keyword">lock</span>.unlock();
+    }
+}
+
+<span class="comment">//出去的方法</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exit</span>(<span class="params"></span>) throws InterruptedException</span>{
+    <span class="comment">//加锁</span>
+    <span class="keyword">lock</span>.<span class="keyword">lock</span>();
+    <span class="keyword">try</span> {
+        <span class="keyword">while</span>(persons == <span class="number">0</span>){
+            empty.await();
+        }
+        persons--;
+        System.<span class="keyword">out</span>.println(<span class="string">"exit one,persons is "</span> + persons);
+        <span class="comment">//唤醒所有在等待的线程，不过仅仅是唤醒而已，还必须等当前线程释放锁后才能获得锁</span>
+        full.signalAll();
+    } <span class="keyword">finally</span>{
+        <span class="keyword">lock</span>.unlock();
+    }
+}
+</code></pre><p>21、wait()和sleep()的区别<br>第1点：wait()方法是Object类的方法，sleep()是Thread类中的方法<br>第2点：wait()方法会释放锁资源，而sleep()方法不会释放锁资源。具体是这样的：调用wait方法的线程释放锁，其他线程可以通过竞争获得该锁，而该线程会进入等待池中，一般来说wait方法是没有时间限制的，因为这时资源已经被占用了，即使早一点结束等待状态也无济于事。只有其他线程执行了notify或者notifyAll方法后才被唤醒，从而进入就绪状态以竞争资源。sleep方法当等待的时间到了会自动唤醒<br>第3点：wait()、notify和notifyAll只能在同步方法或者同步块中使用，而sleep则没有这个限制</p>
+<p>22、反射的作用与原理<br>反射是实现Java动态性的手段之一，反射机制允许我们在程序运行期间获取类的信息，只要给出类的名字就可以获得类的所有信息。<br>通过反射我们获取类的属性、方法、构造方法、静态方法、静态属性等信息，这些信息都存放在名为Class的对象中，每一个类都有一个Class对象，JVM在运行的时候也是从生成的.class文件中获取这个类的信息的，这里我们可以通过Class.forName()方法获取类的全部信息</p>
+<p>23、jdk1.7与jdk1.8的新特性<br>jdk1.7新特性：<br>1）switch可以使用字符串作为表达式了<br>2）泛型实例化支持自动推断<br>3）两个char间的equals，boolean Character.equalsIgnoreCase(char ch1, char ch2)<br>4）支持二进制文字<br>jdk1.8新特性：<br>1）允许我们给接口添加一个非抽象的方法实现</p>
+<pre><code><span class="class"><span class="keyword">interface</span> <span class="title">Formula</span> </span>{
+<span class="function"><span class="keyword">double</span> <span class="title">calculate</span><span class="params">(<span class="keyword">int</span> a)</span></span>;
+<span class="keyword">default</span> <span class="function"><span class="keyword">double</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">int</span> a)</span> </span>{
+    <span class="function"><span class="keyword">return</span> Math.<span class="title">sqrt</span><span class="params">(a)</span></span>;
+}
+}
+</code></pre><p>2）Lambda 表达式<br>之前比较字符串的方式：</p>
+<pre><code><span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names = Arrays.asList(<span class="string">"peter"</span>, <span class="string">"anna"</span>, <span class="string">"mike"</span>, <span class="string">"xenia"</span>);
+Collections.sort(names, <span class="keyword">new</span> Comparator&lt;<span class="built_in">String</span>&gt;() {
+    <span class="annotation">@Override</span>
+    public <span class="built_in">int</span> compare(<span class="built_in">String</span> a, <span class="built_in">String</span> b) {
+        <span class="keyword">return</span> b.compareTo(a);
+    }
+});
+</code></pre><p>现在比较字符串的方式：</p>
+<pre><code>Collections.sort<span class="function"><span class="params">(names, (String a, String b) -&gt; {
+<span class="keyword">return</span> b.compareTo(a);
+})</span>;
+或者
+<span class="title">Collections</span>.<span class="title">sort</span><span class="params">(names, (String a, String b) -&gt; b.compareTo(a))</span>;</span>
+</code></pre><p>3）函数式接口<br>4）方法与构造函数引用<br>5）Lambda 作用域<br>6）访问局部变量<br>7）访问对象字段与静态变量<br>8）访问接口的默认方法<br>9）Date API<br>10）Annotation 注解<br>如果想详细了解jdk1.8新特性，可以看<a href="http://www.jb51.net/article/48304.htm" target="_blank" rel="external">这篇博客</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/笔试面试/">笔试面试</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JavaSE/">JavaSE</a><a href="/tags/笔试面试/">笔试面试</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/javaSE-questions-todo/" data-title="Java笔试面试题解析（一） | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/tcp-ip-notes/" title="TCP/IP必知必会">
+  <strong>上一篇：</strong><br/>
+  <span>
+  TCP/IP必知必会</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/java-net/"  title="UDP通信与TCP通信基础">
+ <strong>下一篇：</strong><br/> 
+ <span>UDP通信与TCP通信基础
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/javaSE-questions-todo/" data-title="Java笔试面试题解析（一）" data-url="http://rhwayfun.com/post/javaSE-questions-todo/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

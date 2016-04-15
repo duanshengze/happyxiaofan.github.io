@@ -1,0 +1,972 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>HTTP协议必知必会【续】 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="一个http事务包括客户向HTTP服务器发送请求以及服务器向客户端发送响应两个过程。根据事务的特点，这两个过程具有原子性，任何一个过程失败都会进行回滚（恢复事务之前的状态）。从请求与响应的角度出发，http的知识点都是围绕这两个角度展开的。每次客户的请求都会向服务器发送一个请求报文，请求报文的结构包括请求行、首部行、空行和请求体，一个http响应包括响应行、首部行、空行和响应体。http是基于TC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP协议必知必会【续】">
+<meta property="og:url" content="http://rhwayfun.com/post/http-protocol-notes-2/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="一个http事务包括客户向HTTP服务器发送请求以及服务器向客户端发送响应两个过程。根据事务的特点，这两个过程具有原子性，任何一个过程失败都会进行回滚（恢复事务之前的状态）。从请求与响应的角度出发，http的知识点都是围绕这两个角度展开的。每次客户的请求都会向服务器发送一个请求报文，请求报文的结构包括请求行、首部行、空行和请求体，一个http响应包括响应行、首部行、空行和响应体。http是基于TC">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/请求报文.JPG">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/响应报文.JPG">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.713Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP协议必知必会【续】">
+<meta name="twitter:description" content="一个http事务包括客户向HTTP服务器发送请求以及服务器向客户端发送响应两个过程。根据事务的特点，这两个过程具有原子性，任何一个过程失败都会进行回滚（恢复事务之前的状态）。从请求与响应的角度出发，http的知识点都是围绕这两个角度展开的。每次客户的请求都会向服务器发送一个请求报文，请求报文的结构包括请求行、首部行、空行和请求体，一个http响应包括响应行、首部行、空行和响应体。http是基于TC">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/http-protocol-notes-2/" title="HTTP协议必知必会【续】" itemprop="url">HTTP协议必知必会【续】</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-15T15:18:36.000Z" itemprop="datePublished"> 发表于 2015-10-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>一个http事务包括客户向HTTP服务器发送请求以及服务器向客户端发送响应两个过程。根据事务的特点，这两个过程具有原子性，任何一个过程失败都会进行回滚（恢复事务之前的状态）。从请求与响应的角度出发，http的知识点都是围绕这两个角度展开的。每次客户的请求都会向服务器发送一个请求报文，请求报文的结构包括请求行、首部行、空行和请求体，一个http响应包括响应行、首部行、空行和响应体。http是基于TCP协议之上的应用层协议，默认使用80端口进行传输，也有基于SSL/TSL协议的https协议，默认使用443端口进行传输。<br><a id="more"></a></p>
+<p>http协议虽然是基于TCP传输协议的，但确实无状态的，就是说每次完成一个事务后，客户端与服务器之间的连接就会断开，服务器不保存任何客户端的信息。但是人们发现无状态会降低使用体验，最直观的例子就是当我们登陆一个网站不小心退出向再次登陆的时候，因为http是一种无状态协议，所以用户的登陆信息需要重新输入，显然很影响使用体验，于是人们就想出了后来我们耳熟能详的Cookie和Session（后面还会提到）。</p>
+<p>http协议到目前有两个版本，http1.0和http1.1，现在目前普遍再使用的是http1.1的版本。http1.1在http1.0的基础增加以下特性：</p>
+<ol>
+<li>http1.1默认支持长连接</li>
+<li>http1.1在消息头中增加Host域</li>
+<li>http1.1增加了100、101、203等响应状态码</li>
+<li>http1.1增加OPTIONS,PUT,DELETE,TRACE,CONNECT这些Request方法</li>
+<li>http1.1使用了更完整的缓存机制（后面还会提到）</li>
+</ol>
+<p>下面就从请求与响应两个角度说明http协议的方方面面</p>
+<p><strong>http请求</strong></p>
+<p>前面提到http协议（这里介绍的都是基于http1.1版本）请求会发送给一个请求报文，我们从这个请求报文入手，详细说明http请求是什么鬼，下面是一个http请求的模板</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/请求报文.JPG" alt="请求报文"></p>
+<p>其中<code>sp</code>表示空格，<code>cr</code>表示回车，<code>lf</code>表示换行，注意到从请求行到主体，每一行都包括回车和换行，中间的空行是为了区分请求头和请求主体的。空行之前的都是请求头，空行之后的是具体的请求消息主体。</p>
+<p><strong>请求方法</strong></p>
+<p>对方法字段的说明如下：</p>
+<ol>
+<li>GET：从服务器请求文档</li>
+<li>HEAD：请求关于这个文档的信息，然并不是文档自身</li>
+<li>POST：从客户端向服务器发送消息</li>
+<li>PUT：服务器向客户端发送文档</li>
+<li>TRACE：回显服务器收到的请求，主要用于测试或诊断</li>
+<li>CONNECT：预留给能够将连接改为管道方式的代理服务器</li>
+<li>DELETE：删除Web网页</li>
+<li>OPTIONS：询问可用的选项</li>
+</ol>
+<p>URL就是在浏览器中提交的地址信息，版本则是http1.1</p>
+<p><strong>请求首部行（也称为请求头）</strong></p>
+<p>注意到首部行中可以包含多个行，每个首部行都是首部名陈与值的组合，那么首部名称有哪些呢？</p>
+<ol>
+<li>Accept：给出客户能够接收的媒体类型。例如Accept: text/plain, text/html</li>
+<li>User-agent：标志客户程序的相关信息。例如User-Agent: Mozilla/5.0 (Linux; X11)</li>
+<li>Accept-Charset：给出客户能够接受的字符集。例如Accept-Charset: iso-8859-5</li>
+<li>Accept-Encoding：给出客户能够处理的编码方案。例如Accept-Encoding: compress, gzip</li>
+<li>Accept-Language：给出客户能够接受的语言类型。例如Accept-Language: en,zh</li>
+<li>Authorization：HTTP授权的授权证书。例如Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==</li>
+<li>Host：给出主机地址和端口号。例如Host: www.baidu.com</li>
+<li>Upgrade：指明优先使用的通信协议（如果支持的话）。例如Upgrade: HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11</li>
+<li>Cookie：把Cookie回送给服务器。例如Cookie: $Version=1; Skin=new;</li>
+<li>If-Modified-Since：如果请求的部分在指定时间之后被修改则请求成功，未被修改则返回304代码。例如If-Modified-Since: Sat, 29 Oct 2010 19:43:31 GMT</li>
+<li>Connection：表示是否需要持久连接。（HTTP 1.1默认进行持久连接）。例如Connection: close表示不使用长连接</li>
+<li>Cache-Control：指定请求和响应遵循的缓存机制。例如Cache-Control: no-cache表示不使用缓存</li>
+<li>Content-Length：请求的内容长度</li>
+<li>Content-Type：请求的与MIME对应的类型。例如Content-Type: application/x-www-form-urlencoded</li>
+<li>Pragma：用来包含实现特定的指令</li>
+</ol>
+<p><strong>请求实体</strong></p>
+<p>这里面的内容就是客户端实际请求的内容了，通常是一些备注信息</p>
+<p><strong>http响应</strong></p>
+<p>响应就是服务器给客户端发送的数据，是根据请求而来的。这一点http比较<code>死板</code>，因为没有收到来自客户单的请求服务器就不会主动给客户端发送响应数据。一个标准的响应报文通常包括状态行、响应首部行、空行和响应主体构成。下面是一个标准的HTTP响应报文模板</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/响应报文.JPG" alt="响应报文"></p>
+<p><strong>状态行</strong></p>
+<p>状态行由三个字段构成：版本号标示了当前使用的HTTP协议的版本目前是http1.1，状态码由三位的十进制数字构成，后面会详细说明各个状态码的意义，短语是状态码的补充说明信息。在HTTP协议1.1版本中，共有5类41个状态码，下面是一些常用的状态码：</p>
+<ul>
+<li>1**   信息，服务器收到请求，需要请求者继续执行操作</li>
+<li>2**   成功，操作被成功接收并处理</li>
+<li>3**   重定向，需要进一步的操作以完成请求</li>
+<li>4**   客户端错误，请求包含语法错误或无法完成请求</li>
+<li>5**   服务器错误，服务器在处理请求的过程中发生了错误</li>
+</ul>
+<p>下面是常见状态码的补充说明：</p>
+<ol>
+<li>100：短语是Continue。请求的开始部分已经收到，客户可以继续它的请求</li>
+<li>101：Switching protocol。服务器同意切换协议，只能切换到更高版本的协议</li>
+<li>200：OK。请求成功</li>
+<li>201：Created。成功请求并创建了新的资源</li>
+<li>202：Accepted。已接受请求，但是还没有处理完成</li>
+<li>203：Non-Authoritative Information，非授权信息。请求成功，但返回的meta信息不在原始的服务器，而是一个副本</li>
+<li>204：No Content。无内容，服务器成功处理，但未返回内容。在未更新网页的情况下，可确保浏览器继续显示当前文档</li>
+<li>301：Move Permanently。永久重定向，请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</li>
+<li>302：Found。临时移动。与301类似，但资源只是临时被移动。客户端应继续使用原有URI</li>
+<li>304：Not Modified。未修改，所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</li>
+<li>400：Bad Request。客户端请求的语法错误，服务器无法理解</li>
+<li>401：Unauthorized。请求要求用户的身份认证</li>
+<li>403：Forbidden。服务器理解请求客户端的请求，但是拒绝执行此请求</li>
+<li>404：Not Found。未找到，服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置”您所请求的资源无法找到”的个性页面</li>
+<li>405：Method Not Allowed。客户端请求中的方法被禁止</li>
+<li>406：Not Acceptable。服务器无法根据客户端请求的内容特性完成请求</li>
+<li>500：Internal Server Error。服务器内部错误，无法完成请求</li>
+<li>501：Not Implemented：服务器不支持请求的功能，无法完成请求</li>
+<li>503：Service Unavailable。由于超载或系统维护，服务器暂时的无法处理客户端的请求。</li>
+</ol>
+<p><strong>响应首部行</strong></p>
+<ol>
+<li>Date：给出当前日期</li>
+<li>Upgrade：指明优先使用的协议（如果可用的话）</li>
+<li>Server：给出服务器的相关信息。例如Server: Apache/1.3.27 (Unix) (Red-Hat/Linux)</li>
+<li>Set-Cookie：设置http Cookie。例如Set-Cookie: UserID=JohnDoe; Max-Age=3600; Version=1</li>
+<li>Accept-Ranges：服务器可接受的字节范围</li>
+<li>Last-Modified:请求的资源的最后修改时间。例如Last-Modified: Tue, 15 Nov 2010 12:45:26 GMT</li>
+<li>ETag：请求变量的实体标签的当前值。例如ETag: “737060cd8c284d8af7ad3082f209582d”</li>
+<li>Expires：响应过期的日期和时间</li>
+<li>Location：请求客户将请求发送另一个站点。例如Location: <a href="http://www.zcmhi.com/archives/94.html" target="_blank" rel="external">http://www.zcmhi.com/archives/94.html</a></li>
+<li>Cache-Control：缓存机制的类型</li>
+<li>Content-Encoding：web服务器支持的返回内容压缩编码类型。</li>
+<li>Content-Language:响应体的语言</li>
+<li>Content-Length:响应体的长度</li>
+<li>Content-Type：返回内容的MIME类型</li>
+</ol>
+<p><strong>响应主体</strong></p>
+<p>如果不是错误的报文，这里的内容是服务器给客户端发送的文档</p>
+<p>由于HTTP是基于TCP协议的，所以当我们输入一个网址按回车后，也会经历三次握手，然后开始传输数据。TCP的三次握手已经在前面的文章详细介绍了，这里就不再赘述，这里要说的是长连接（在TCPIP协议族中叫持续连接，都一样）。长连接通过在Connection设置值为keep-alive就可以实现长连接，不过由于在HTTP1.1的版本中已经默认支持了，所以设置也是多余，但是经过抓包发现，虽然是默认支持的，但是请求头中仍然保留了这个设置。使用长连接后，客户端与服务器可以在同一条连接中操作多个事务，提高传输的效率，同时也降低了资源的开销。</p>
+<p><strong>Cookie</strong></p>
+<p>Cookie是由服务器创建并保存在客户端的小文件，其内容通常是键值的形式。其主要解决的是http协议无状态这一问题的，通过使用cookie，每次客户端的请求都会把cookie的信息发给服务器，由于cookie文件本来就是由服务器创建的，所以如果发现客户端的请求已经在cookie中出现过，那么就会从cookie中发送响应给客户端，这样就相当于<code>记住</code>了这个请求，还是上面的例子，我们以登陆淘宝网为例，看看cookie是怎么运行的：</p>
+<p>下面是我第二次登陆淘宝产生的请求报文：</p>
+<pre><code>POST /member/request_nick_check.<span class="keyword">do</span>?_input_charset=utf-<span class="number">8</span> HTTP/<span class="number">1.1</span>
+x-requested-with: XMLHttpRequest
+Accept-Language: zh-cn
+Referer: https:<span class="comment">//login.taobao.com/member/login.jhtml</span>
+Accept: application/json, <span class="keyword">text</span>/javascript, <span class="variable">*/</span><span class="variable">*;</span> q=<span class="number">0.01</span>
+Content-Type: application/x-www-form-urlencoded; charset=UTF-<span class="number">8</span>
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/<span class="number">5.0</span> (compatible; MSIE <span class="number">9.0</span>; Windows NT <span class="number">6.1</span>; WOW64; Trident/<span class="number">5.0</span>)
+Host: login.taobao.com
+Content-Length: <span class="number">822</span>
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: _umdata=AEEAFDDAE83E4B00CA26803C9421B97EAE678B97A4115D92D89F741A086801F18EEF2C6E67DABD4A9190B085E75633A9F934D879D43962A8B0382F45BAC9B5426DA54C37E8208E0C; lid=<span class="variable">%E6</span><span class="variable">%84</span><span class="variable">%A4</span><span class="variable">%E6</span><span class="variable">%80</span><span class="variable">%92</span><span class="variable">%E7</span><span class="variable">%9A</span><span class="variable">%84</span><span class="variable">%E5</span><span class="variable">%86</span><span class="variable">%AC</span><span class="variable">%E8</span><span class="variable">%87</span><span class="variable">%B3</span><span class="variable">%E9</span><span class="variable">%A5</span><span class="variable">%BA00</span>; lc=Vy0WoxbX7NpINANgekCtYw<span class="variable">%3D</span><span class="variable">%3D</span>; v=<span class="number">0</span>; cookie2=<span class="number">2</span>c2bbad4a87b1888fab6a665d85a8707; _tb_token_=ggD20qBz0u0pkz3; uc1=cookie14=UoWzXcxBeVjymA<span class="variable">%3D</span><span class="variable">%3D</span>&amp;existShop=false&amp;cookie16=WqG3DMC9UpAPBHGz5QBErFxlCA<span class="variable">%3D</span><span class="variable">%3D</span>&amp;cookie21=W5iHLLyFeYZ1WM9hVnmS&amp;tag=<span class="number">2</span>&amp;cookie15=URm48syIIVrSKA<span class="variable">%3D</span><span class="variable">%3D</span>&amp;pas=<span class="number">0</span>; existShop=MTQ0NDgxMDE4Mw<span class="variable">%3D</span><span class="variable">%3D</span>; sg=<span class="number">062</span>; cookie1=B0OqfY0RHVr<span class="variable">%2FOcx9qBvroWb9XgI8Di0Qd</span><span class="variable">%2BuC3PoFnEk</span><span class="variable">%3D</span>; unb=<span class="number">1863540266</span>; skt=<span class="number">1</span>baf89c3fabaf276; _l_g_=Ug<span class="variable">%3D</span><span class="variable">%3D</span>; _nk_=<span class="variable">%5Cu6124</span><span class="variable">%5Cu6012</span><span class="variable">%5Cu7684</span><span class="variable">%5Cu51AC</span><span class="variable">%5Cu81F3</span><span class="variable">%5Cu997A00</span>; cookie17=UondFzxqdRam2Q<span class="variable">%3D</span><span class="variable">%3D</span>; t=<span class="number">1e9865</span>b82d621d88c434e1eafa0e3756; cna=kPukDggEeVQCAbfPvQ7eJp+f; isg=<span class="number">0</span>A6DCA6FDD8F2080179659CB403CD682; l=AoaGaE8yxBlkra71oB90h7kflnIJc8qj; thw=cn; uc3=nk2=<span class="number">1</span>BgxApbvq5DWyJqZEM8<span class="variable">%3D</span>&amp;id2=UondFzxqdRam2Q<span class="variable">%3D</span><span class="variable">%3D</span>&amp;vt3=F8dASMh8gmM6QZZWUV8<span class="variable">%3D</span>&amp;lg2=U<span class="variable">%2BGCWk</span><span class="variable">%2F75gdr5Q</span><span class="variable">%3D</span><span class="variable">%3D</span>; lgc=<span class="variable">%5Cu6124</span><span class="variable">%5Cu6012</span><span class="variable">%5Cu7684</span><span class="variable">%5Cu51AC</span><span class="variable">%5Cu81F3</span><span class="variable">%5Cu997A00</span>; tracknick=<span class="variable">%5Cu6124</span><span class="variable">%5Cu6012</span><span class="variable">%5Cu7684</span><span class="variable">%5Cu51AC</span><span class="variable">%5Cu81F3</span><span class="variable">%5Cu997A00</span>; mt=ci=<span class="number">51</span>_1; _cc_=UIHiLt3xSw<span class="variable">%3D</span><span class="variable">%3D</span>; tg=<span class="number">0</span>
+
+username=&amp;ua=<span class="number">244</span>UW5TcyMNYQwiAiwQRHhBfEF8QXtHcklnMWc<span class="variable">%3D</span><span class="variable">%7CUm5OcktyS35Cf0B</span><span class="variable">%2BR35Cfig</span><span class="variable">%3D</span><span class="variable">%7CU2xMHDJxPk82UjVOI1h2VnhNY0NtMVA2Wj1DORdBFw</span><span class="variable">%3D</span><span class="variable">%3D</span><span class="variable">%7CVGhXd1llXGVcaVVoV2lQaVVpXmNBfkJ3T3FIfEV5RHtOcUV4TGI0</span><span class="variable">%7CVWldfS0SMgk8HCAVNRs</span><span class="variable">%2FUyJRYVF1UWwdI057DjMPMQgmcCY</span><span class="variable">%3D</span><span class="variable">%7CVmNDbUMV</span><span class="variable">%7CV2NDbUMV</span><span class="variable">%7CWGRYeCgGZhtmH2VScVI2UT5fORtmD2gCawwuRSJHZAFsCWMOdVYyVTpbPR99HWAFYU9vQW85bw</span><span class="variable">%3D</span><span class="variable">%3D</span><span class="variable">%7CWWdHFyMdPQAgHCQeKgo</span><span class="variable">%2FCzMTLxQpFDQAPQAgHCcaJwcyCTRiNA</span><span class="variable">%3D</span><span class="variable">%3D</span><span class="variable">%7CWmZYeCgGWjtdMVYoUn5EakpkOHs</span><span class="variable">%2FEy8bOwYmGzsEOQMtey0</span><span class="variable">%3D</span><span class="variable">%7CW2FBET9</span><span class="variable">%2FK28OZQZVaVBpUGVZZFtkX2FZZ0lpVHRMeS95</span><span class="variable">%7CXGZGFjhnPHouUihFPlgxVDltUX9fY0N7TxlP</span><span class="variable">%7CXWFcfFICPQA8ADgYT2FdZF1kUW1QbFBlUGVRJBk7AToDOgU6ATsHPQI3AjYKXXNTbzkXQQ</span><span class="variable">%3D</span><span class="variable">%3D</span><span class="variable">%7CXmZGFjgWNmZaZ1xjQ39Aey0NMBA</span><span class="variable">%2BEDAPMAwwZjA</span><span class="variable">%3D</span><span class="variable">%7CX2VFFTtkP3ktUStGPVsyVzpuUnxcYUF</span><span class="variable">%2BQX5CFEI</span><span class="variable">%3D</span><span class="variable">%7CQHpaCiQKKhY2CTYINGI0</span><span class="variable">%7CQXhFeFhlRXpaZl9jQ31Ff19nU3NJcVFtUWhIdFRoU25OcERkWm9Pek9vU2xMckpqVG07</span>
+</code></pre><p>下面是服务器返回的响应报文：</p>
+<pre><code><span class="status">HTTP/1.1 <span class="number">200</span> OK</span>
+<span class="attribute">Server</span>: <span class="string">Tengine</span>
+<span class="attribute">Date</span>: <span class="string">Wed, 14 Oct 2015 08:10:46 GMT</span>
+<span class="attribute">Content-Type</span>: <span class="string">application/x-www-form-urlencoded;charset=UTF-8</span>
+<span class="attribute">Content-Length</span>: <span class="string">18</span>
+<span class="attribute">Connection</span>: <span class="string">keep-alive</span>
+<span class="attribute">S</span>: <span class="string">STATUS_NORMAL</span>
+<span class="attribute">X-Category</span>: <span class="string"></span>
+<span class="attribute">Expires</span>: <span class="string">Thu, 01 Jan 1970 00:00:01 GMT</span>
+<span class="attribute">Cache-Control</span>: <span class="string">no-cache</span>
+<span class="attribute">Pragma</span>: <span class="string">no-cache</span>
+<span class="attribute">Cache-Control</span>: <span class="string">no-store</span>
+
+<span class="json">{"<span class="attribute">needcode</span>":<span class="value"><span class="literal">false</span></span>}</span>
+</code></pre><p>从上面的响应报文中可以发现响应体并没有内容，那返回的内容是哪里来的呢？自然是从Cookie中获取并发送给浏览器的。通过这个实例可以发现服务器通过在客户端存储Cookie达到<code>记住</code>客户的目的，从而大大提高了网站的响应速度。还有一点，Cookie并不是与具体的web页面关联的，Cookie只与网站关联，所以在一个网站的每个页面的不同操作如果在用户没有禁止Cookie的情况下，服务器会把所有的操作都记录在Cookie文件中，如果客户的操作记录不再Cookie中，服务器会把新的操作记录更新到Cookie文件中，只要Cookie文件没有过期，网站就会记住你在这个网站的所有操作记录或者叫点击记录。</p>
+<p>现在已经知道Cookie是通过在客户端保存用户信息来达到服务器记住用户的目的的，还有一种通过把客户信息保存在服务器的方式记住客户的方法，这就是Session</p>
+<p><strong>Session</strong></p>
+<p>客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。Session对象也是客户端在第一次请求服务器创建的，Session对象的存储形式也是键值对，在服务器可以通过request.getSession().setAttribute(“name”,”value”)设置Session，而在客户端可以通过request.getSeesion().getAttribute(“name”)的方式获取session的value。虽然Session是保存在服务器端的，但是也需要客户端浏览器的支持，http协议由于是无状态的，所以Session对象不能TCP连接就确认是否是同一个客户，所以服务器向客户端发送一个名为JSESSIONID的Cookie并保存在客户端，value就是HttpSession.getId()方法返回的值，这样在客户端就保存了该Session对象Session id。该Session id的值的有效期仅对当前浏览器有效，因为更具体的说Session id的值是保存在内存中的，所以关闭浏览器Session id就会失效。因为Session从语义上理解就是<code>回话</code>的意思，所以会话结束Session自然就失效了。但要注意的是，尽管Session仅对当前浏览器有效，但是对从当前窗口打开的子窗口仍然是有效的，就是说父子页面之间的Session对象是可以共享的。</p>
+<p>Session对象和Cookie一样也是有有效期的，从上面已经知道在同一个浏览器打开连个窗口会产生两个Session，那么如果打开的窗口越来越多肯定占用的内存会越来越大，而长期不活跃的Session不过不及时删除的话就很容易造成内存溢出。Session的超时时间为maxInactiveInterval属性，可以通过对应的getMaxInactiveInterval()获取超时时间，通过setMaxInactiveInterval(longinterval)修改。这个超时时间就保证了不活跃的Session会被及时删除，降低发生内存溢出的可能性。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java网络编程/">Java网络编程</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java网络编程，HTTP/">Java网络编程，HTTP</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/http-protocol-notes-2/" data-title="HTTP协议必知必会【续】 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/command-mode/" title="【设计模式】命令模式">
+  <strong>上一篇：</strong><br/>
+  <span>
+  【设计模式】命令模式</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/dutychain-mode/"  title="【设计模式】责任链模式">
+ <strong>下一篇：</strong><br/> 
+ <span>【设计模式】责任链模式
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/http-protocol-notes-2/" data-title="HTTP协议必知必会【续】" data-url="http://rhwayfun.com/post/http-protocol-notes-2/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

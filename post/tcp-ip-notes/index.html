@@ -1,0 +1,889 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>TCP/IP必知必会 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="这里列出了TCP/IP协议中一些比较重要的问题，TCP/IP协议是一块很复杂的知识点，lz了解的也不深，不过作为面试求职必备，这块知识点必须拿下。文章的一些基本问题都是lz从各大bat大神的笔试面经中得来，虽谈不上详细和深入，但都是一些非常基本的TCP/IP知识，本着从小处着手，大处着眼的原则，lz准备先把下面的一些基本知识搞定，搞定这些之后至少不会感觉那么虚吧。如果在后面的学习与实践中遇到其他的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP/IP必知必会">
+<meta property="og:url" content="http://rhwayfun.com/post/tcp-ip-notes/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="这里列出了TCP/IP协议中一些比较重要的问题，TCP/IP协议是一块很复杂的知识点，lz了解的也不深，不过作为面试求职必备，这块知识点必须拿下。文章的一些基本问题都是lz从各大bat大神的笔试面经中得来，虽谈不上详细和深入，但都是一些非常基本的TCP/IP知识，本着从小处着手，大处着眼的原则，lz准备先把下面的一些基本知识搞定，搞定这些之后至少不会感觉那么虚吧。如果在后面的学习与实践中遇到其他的">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/tcp-ip协议栈.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/TCP报文结构.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/TCP报文结构简化版.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/tcpfsm.png">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/tcp慢开始算法与拥塞避免算法实例.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/tcp拥塞控制原理.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/tcp滑动窗口协议.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.779Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP/IP必知必会">
+<meta name="twitter:description" content="这里列出了TCP/IP协议中一些比较重要的问题，TCP/IP协议是一块很复杂的知识点，lz了解的也不深，不过作为面试求职必备，这块知识点必须拿下。文章的一些基本问题都是lz从各大bat大神的笔试面经中得来，虽谈不上详细和深入，但都是一些非常基本的TCP/IP知识，本着从小处着手，大处着眼的原则，lz准备先把下面的一些基本知识搞定，搞定这些之后至少不会感觉那么虚吧。如果在后面的学习与实践中遇到其他的">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/tcp-ip-notes/" title="TCP/IP必知必会" itemprop="url">TCP/IP必知必会</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-28T06:47:57.000Z" itemprop="datePublished"> 发表于 2015-09-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP协议篇"><span class="toc-number">1.</span> <span class="toc-text">TCP协议篇</span></a></li></ol>
+		
+		</div>
+		
+		<p>这里列出了TCP/IP协议中一些比较重要的问题，TCP/IP协议是一块很复杂的知识点，lz了解的也不深，不过作为面试求职必备，这块知识点必须拿下。文章的一些基本问题都是lz从各大bat大神的笔试面经中得来，虽谈不上详细和深入，但都是一些非常基本的TCP/IP知识，本着从小处着手，大处着眼的原则，lz准备先把下面的一些基本知识搞定，搞定这些之后至少不会感觉那么虚吧。如果在后面的学习与实践中遇到其他的知识，我会及时在这篇博客更新上来。水平有限，欢迎吐槽。<br><a id="more"></a><br>ok，开始TCP/IP协议之旅吧。</p>
+<h1 id="TCP协议篇">TCP协议篇</h1><hr>
+<p>1、OSI与TCP/IP各层的结构与功能，都有哪些协议？<br>OSI全程开放式系统互联参考模型（Open System Interconnect Reference Model），共有七层，是理论上参考模型，分为应用层、表示层、会话层、传输层、网络层、数据链路层、物理层；而TCP/IP协议共有4层，其参考了OSI模型，并对之加以简化，共有4层，分别为应用层、传输层、网络层、物理链路层，下图简要的说明TCP/IP的主要功能：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/tcp-ip协议栈.jpg" alt="TCP/IP协议与简要说明"></p>
+<p>下面详细说一下各层：<br>应用层：顾名思义，主要和应用程序打交道，负责处理程序执行细节，通过应用层把程序的传输信息交给下一层————传输层。应用层的主要协议有：Http协议（超文本传送协议）、FTP协议（文件传输协议）、Telnet（远程登录）<br>传输层：我们要讨论的TCP协议就属于传输层，传输层的主要作用是为两台主机间的程序提供点到点的通信，传输层接收来自应用层的消息，并且在必要的时候（所谓必要的时候，是指由于TCP每次传送的数据量大小有限制，故当传送的协议大于限定的数据量的时候，就会把要传输的数据分成多次进行传输）把消息分成较小的单元传送给网络层，并保证传输的各段信息是准确无误的（如何保证？往下看就知道了）。在传输层的主要协议有：TCP(传输控制协议)、UDP（用户数据报协议）<br>网络层：IP就属于网络层协议，网络层的主要作用就是对数据进行转发，而进行转发涉及的关键问题是选择从源端到目的端的最佳路由。网络层并不保证数据的完整性与准确性。网络层包括的协议有：IP（网际协议）、ICMP（互联网控制报文协议）、IGMP（互联网组管理协议）、ARP（地址解析协议）、RARP（反向地址解析协议）<br>物理链路层：主要在信道上传输原始比特流</p>
+<p>2、TCP与UDP的区别<br>TCP协议面向连接的、可靠的、安全的传输控制协议；UDP是面向数据的、不可靠、不安全的传输协议。具体来讲，有以下几点区别：<br>第1点：TCP是面向连接的，UDP是面向数据的<br>第2点：TCP的数据传输的可靠安全完成准确的，而UDP则不能保证这点<br>第3点：TCP可能出现网络拥塞，而UDP不会<br>第4点：每次TCP连接都是点到点的，即每次传输都是两个对象在进行，是一对一的传输方式；而UDP则可以是一对多、多对多<br>第5点：两者的报文首部开销不同，TCP是20个字节，UDP只有8字节</p>
+<p>3、TCP报文结构<br>下图是一张详细版的TCP报文结构，<a href="https://nmap.org/book/tcpip-ref.html" target="_blank" rel="external">图片来源</a></p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/TCP报文结构.jpg" alt="TCP报文结构"></p>
+<p>哇哦，看起来好复杂，为了便于理解，我自己画了一张简化版TCP报文结构：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/TCP报文结构简化版.jpg" alt="TCP报文简化版"></p>
+<p>下面就根据这张简化版的TCP报文来详细了解一下各个部分的含义以及作用：</p>
+<p>源端口与目标端口：标识发送方与接收方的端口信息，各占2字节，共4个字节</p>
+<p>序号：是本报文发送数据的第一个字节的序号，tcp传输流中，每一个字节都有一个序号，占用4字节</p>
+<p>确认序号：是期望收到下次对方发送的数据的第一个字节的序号，同样占4个字节</p>
+<p>偏移量：简单理解就是tcp报文首部的长度，占6比特</p>
+<p>保留字段：供以后使用，占6比特</p>
+<p>6比特的状态字段<br>UGR：紧急比特，当UGR=1时，意为此报文应该尽快发送<br>ACK：确认比特，当ACK=1时，确认比特才有实际意义<br>PSH：急迫比特，当PSH=1时，意味着此报文应当立即传送给应用层<br>RST：复位比特，当RST=1时，意味着传送出现严重错误，必须重新连接再继续传输数据<br>SYN：同步比特，当SYN=1且ACK=0时，意味着这是一个请求连接的报文字段，如果对方确认可以连接，那么将发送SYN=1且ACK=1的报文信息<br>FIN：终断比特，当FIN=1，说明数据传输完毕</p>
+<p>窗口：指示了接收方的接管窗口，此字段的意义在于告诉对方，在未收到接收方的ACK=1的信息前最多发送的数据量为此窗口的大小，此字段占用2字节，包括通知窗口和拥塞窗口</p>
+<p>选项：此选项表示每台主机可以设定的最大TCP负荷（默认是536字节）</p>
+<p>4、TCP的三次握手与四次挥手过程，说明各个状态名称与含义以及TIMEWAIT的作用<br>为了理解方便，我趴了一张图，<a href="http://www.tcpipguide.com/free/t_TCPOperationalOverviewandtheTCPFiniteStateMachineF-2.htm" target="_blank" rel="external">图片来源</a></p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/tcpfsm.png" alt="TCP状态图"></p>
+<p>那么具体的三次握手与四次挥手的过程是怎样呢？</p>
+<p>第1次握手：主机1向主机2发送一个SYN=1、ACK=0的请求连接信息，同时生成一个序号seq=1000，告诉主机2“我要和你建立连接，你确认一下”。主机1的状态由CLOSED变为SYN_SEND，主机2由CLOSED变为LISTEN<br>第2次握手：主机2收到主机1SYN=1的信息就知道其要建立连接，于是主机2给主机1发送SYN=1、ACK=1，同时发送确认序号ack = 1001，seq=2000的TCP报文，告诉主机1“你的连接我已经确认了，你可以准备连接了”。此时主机1的状态还是SYN_SNED，主机2的状态由LISTEN变为SYN_RCVD<br>第3次握手：主机1首先确认是否ACK=1，ack是否等于1001，如果是则给主机2发送ACK = 1，ack=2001的报文信息，主机2收到后会检查ACK是否等于1、ack是否等于2001，如果是则连接成功。主机1的状态由SYN_SEND变为ESTABLISHED，主机2由SYN_RCVD变为ESTABLISHED</p>
+<p>建立连接后，主机1和2之间就开始传输数据了，传输完毕后，就要断开连接了，也就是4次挥手的过程<br>第1次挥手：主机1向主机2发送FIN=1的信息，告诉主机2“我的数据传输完了，准备断开连接了”。主机1的状态由ESTABLISHED变为FIN_WAIT_1<br>第2次挥手：主机2收到主机1的FIN=1的信息后，知道主机1要关闭连接，但主机2不会立即关闭，而是给主机1发送ACK=1的信息，告诉主机1“你的关闭信息我收到了，不过我的数据还没有传输完，你再等等，我传输完数据就告诉你”。主机2的状态由ESTABLISHED变为CLOSE_WAIT<br>第3次挥手：主机2传输完数据了，于是向主机1发送FIN=1的信息，告诉主机1“我的数据也传输完了，你可以断开连接了”。主机2的状态由CLOSE_WAIT变为LAST_ACk<br>第4次挥手：主机1收到主机2的FIN=1的信息后（状态由FIN_WAIT_1变为FIN_WAIT_2），由于担心主机2不知道自己已经关闭了连接，于是再一次发送ACK=1的信息，状态由FIN_WAIT_2变为TIME_WAIT。主机2如果没有主机1的ACK=1的信息，主机1会在主机1的定时器到时间后重新发送ACK=1的信息，主机2收到主机1的ACK=1的信息后就关闭了，状态由LAST_ACK变为CLOSED。如果主机1等待了2倍的报文生存信息后，还没有收到主机2的重新发送ACK=1的信息的请求，那么主机1就会认为主机2已经收到了它发送的ACK=1的信息，这样主机1就关闭连接了，状态由FIN_WAIT_2变为CLOSED<br>注：上面主机1和2的状态转换都是建立在非同时关闭的情况下的，那么如果是同时关闭，状态又有什么不同呢？</p>
+<p>不考虑是否同时关闭，那么有三种可能会直接转换到TIME_WAIT状态：<br>1）在非同时关闭的情况下，过程是：当主机1发送完FIN=1的信息后，主机2接收到FIN=1的信息时它的数据仍然没有传输完毕，那么当主机2把数据传输完毕之后，给主机1发送FIN=1的消息，，主机1的状态由FIN_WAIT_2变为TIME_WAIT<br>2）在同时关闭的情况，过程是：当主机1给主机2发送FIN=1的消息的同时，主机2也给主机1发送FIN=1消息，那么双方会同时接收到对方的ACK=1的消息，那么这时主机1的状态由FIN_WAIT_1转变为TIME_WAIT状态<br>3）主机1首先发送FIN=1的消息，主机2在接收到主机1的FIN=1的消息的同时，立即给主机1发送FIN=1以及ACK=1的消息，那么主机1的状态会由CLOSING变为TIME_WAIT状态</p>
+<p>5、TCP拥塞控制<br>所谓拥塞是指对资源的需求超过了可用的资源，进行拥塞控制的目的在于防止注入过多的数据，这样可以使网络不至于过载。常见的拥塞控制的方法有：</p>
+<ul>
+<li>慢开始</li>
+<li>拥塞避免</li>
+<li>快重传</li>
+<li>快恢复</li>
+</ul>
+<p>这里发送方会维持一个拥塞窗口cwnd（Congestion Window）的状态变量，主要是提醒自己不要发送过多的数据分组到网络中，cwnd是一个动态的变量，主要取决于网络拥塞程度的大小。所以，下面的四种机制都有一个前提，就是：只要网络不拥塞，就发送多一些分组数据，如果网络拥塞就发送少一些数据分组。ok，下面，讨论一下上面的四种机制：</p>
+<p>慢开始：这里的慢开始并不是指发送很慢，由于刚开始发送数据的时候发送方并不知道网络的拥塞状况，那么发送方会先首先发送cwnd=最大报文段的值的分组数据，如果收到了接收的确认信息，cwnd的值就会加倍，可以发现cwnd的值是呈指数增长的，比如1，2，4，8，16，意味着发送方将发送1，2，4，8，16的数据分组信息。很显然，如果这么一直发送下去，出现拥塞是迟早的事，所以为了尽快提醒发送方注意发送数据不要太大，这里有一个阈值————ssthresh状态变量。这样，当发送方的cwnd等于或者大于ssthresh的值就会执行拥塞避免算法，下面说拥塞避免算法</p>
+<p>拥塞避免算法：不同于慢开始算法，发送方让拥塞窗口的大小缓慢增大，没经过一个往返时间（发送和接收的时间）RTT，拥塞窗口只增加1，所以在拥塞避免算法里，cwnd的值是线性增大的。可以说是很慢的。</p>
+<p>无论是慢开始算法还是拥塞避免算法，只要发送方判断网络出现了拥塞，那么就会把ssthresh的值设为原来的一半，然后把拥塞窗口cwnd的值重新设为1，执行慢开始算法。之所以这样处理，主要是为了留出足够的时间给接收方处理未被处理的数据。下图是一个典型的慢开始算法和拥塞避免算法的实例(<a href="http://image.baidu.com/search/index?tn=baiduimage&amp;ps=1&amp;ct=201326592&amp;lm=-1&amp;cl=2&amp;nc=1&amp;ie=utf-8&amp;word=tcp拥塞控制" target="_blank" rel="external">图片来源</a>)：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/tcp慢开始算法与拥塞避免算法实例.jpg" alt="tcp慢开始算法与拥塞避免算法实例"></p>
+<p>1）初始阶段，cwnd的值等于1，ssthresh为16<br>2）发送方每次发完信息并收到接收方的确认后，cwnd以指数方式增长，这样当发送方第4次发送的时候，由于已经到达了16，所以发送方开始执行拥塞避免算法，cwnd的值以线程方式增长<br>3）假设当cwnd的值等于24的时候网络出现拥塞，那么发送方会将ssthresh的值设为原来的一半，即12，并把cwnd的值重新设为1，并执行慢开始算法，这样当cwnd的值等于或者大于12的时候会执行拥塞避免算法</p>
+<p>下面说说快重传与快恢复机制：</p>
+<p>快重传：当接收方收到失序的报文立即发送重传确认，而不是等待接收方自己发送数据的时候才对数据的失序进行确认，这样主要是为了让发送方尽早知道有失序的报文要重新发送。该机制规定，只要发送方接收到连续三次的重传确认就应该立即重传失序的报文。</p>
+<p>快重传机制区别于慢开始与拥塞避免算法：当发送方收到接受方连续三次的重传确认的时候，执行“乘法减小”算法，把ssthresh减小为原来的一半，但是并不会执行慢开始算法。下图说明这一点（<a href="http://image.baidu.com/search/index?tn=baiduimage&amp;ps=1&amp;ct=201326592&amp;lm=-1&amp;cl=2&amp;nc=1&amp;ie=utf-8&amp;word=tcp拥塞控制" target="_blank" rel="external">图片来源</a>）</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/tcp拥塞控制原理.jpg" alt="快重传机制"></p>
+<p>6、TCP滑动窗口协议、回退N针协议与选择重传协议<br>滑动窗口协议：发送方与接收方都维持着一个连续发送或接收的帧的序号，称为发送窗口或者接收窗口。发送方窗口的帧的序号代表已经发送但违背接收方确认的序号，或者等待发送的帧的序号。滑动窗口协议不是统一的，区别在于不同的滑动窗口协议的窗口大小不同罢了。以下图为例（<a href="http://image.baidu.com/search/index?tn=baiduimage&amp;ps=1&amp;ct=201326592&amp;lm=-1&amp;cl=2&amp;nc=1&amp;ie=utf-8&amp;word=TCP滑动窗口与回退N针协议" target="_blank" rel="external">图片来源</a>）</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/tcp滑动窗口协议.jpg" alt="tcp滑动窗口协议"></p>
+<blockquote>
+<p>这里假设发送方的窗口为2，接收方的窗口为1 </p>
+</blockquote>
+<p>1）刚开始的时候，发送方窗口未打开，接收打开0号窗口，等待接收0号帧的数据<br>2）由于接收方已经打开0号窗口，发送方打开0号窗口，并进行发送，此时接收方窗口未改变<br>3）发送方继续打开1号窗口，由于其窗口上限是2，所以可以打开两个窗口，发送帧为1的数据，在接收方返回其接收确认的信息之前，发送方不能继续发送数据，此时接收方的窗口状态未变<br>4）接收方已收到0号帧，0号窗口关闭，1号窗口打开，表示准备接收1号帧。此时发送窗口状态不变<br>5）发送方收到接收方发来的0号帧确认返回信息，关闭0号窗口，并打开2号窗口。此时接收窗口状态仍不变<br>6）发送方继续发送2号帧，由于已打开的窗口数量又变为2，所以发送方又得等待接收方返回1号帧数据的确认信息。此时接收方的窗口状态未变<br>7）接收方已收到1号帧，1号窗口关闭，打开2号窗口，表示准备接收2号帧。此时发送窗口状态不变<br>8）发送方收到接收方发来的1号帧的接收确认信息，于是关闭1号窗口。此时接收窗口状态仍不变。</p>
+<p>滑动窗口协议又分为1比特滑动窗口协议、回退n帧协议以及选择重传协议</p>
+<p>1比特滑动窗口协议：所谓1比特，就是发送窗口与接收窗口的值都是1，由于发送方每次发完1帧的消息都要等待接收方返回的确认消息，所以也叫停等协议（stop-on-wait）</p>
+<p>回退n帧协议：由于1比特滑动窗口协议效率太低，不能充分利用信道，所以在此基础上提出了回退n帧协议。在回退n帧协议中，发送方连续发送一段数据帧，不会等待接收方返回确认消息后才继续发送，而是继续发送数据，即使在发送的过程中接收到了接收方的确认消息，也会继续发送，反正就是停不下来的感觉。但要注意的，比如发送连续发送了8帧的数据，假设接收方在第3帧的数据有错，之后怎么办？那么根据回退n帧协议，发送方需要重新发送第3帧到第8帧之间的数据。此协议的发送窗口为k，接收窗口为1</p>
+<p>可以发现，如果发送一段很多帧的数据，接收方检测到刚开始的某帧有错误，发送方不得不几乎全部再发送一遍，这种情况下还不如1比特滑动窗口协议</p>
+<p>选择重传协议：注意到在回退n帧协议中，如果接收方发现有错误的帧就不再接收后续的帧，即使是正确帧。选择重传协议优化了这一点，即接收方收到错误的帧数据后仍然会接收后后续的帧，并把这些帧按照接收顺序放在一个缓冲区中，同时要求发送方重传出错的那一帧数据，当重传成功后，接收方把缓冲区的帧数据（注意，是有顺序的哦）交给上层进行处理。从而提高对出错帧数据的处理能力。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java网络编程/">Java网络编程</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/TCP-IP/">TCP/IP</a><a href="/tags/网络编程/">网络编程</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/tcp-ip-notes/" data-title="TCP/IP必知必会 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/java-questions-todo/" title="Java笔试面试题解析（二）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java笔试面试题解析（二）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/javaSE-questions-todo/"  title="Java笔试面试题解析（一）">
+ <strong>下一篇：</strong><br/> 
+ <span>Java笔试面试题解析（一）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/tcp-ip-notes/" data-title="TCP/IP必知必会" data-url="http://rhwayfun.com/post/tcp-ip-notes/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP协议篇"><span class="toc-number">1.</span> <span class="toc-text">TCP协议篇</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,1223 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>深入理解Tomcat之Context容器和Wrapper容器 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="Context容器是一个Web项目的代表，主要管理Servlet实例，在Tomcat中Servlet实例是以Wrapper出现的，现在问题是如何才能通过Context容器找到具体的Servlet呢？在解决这个问题之前，Context容器需要先启动，启动的过程就是加载个类资源文件以及打开子容器以及Pipeline管道的过程。启动Context容器后，就可以处理具体的请求了，具体是通过Request对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Tomcat之Context容器和Wrapper容器">
+<meta property="og:url" content="http://rhwayfun.com/post/tomcat-context-wrapper/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="Context容器是一个Web项目的代表，主要管理Servlet实例，在Tomcat中Servlet实例是以Wrapper出现的，现在问题是如何才能通过Context容器找到具体的Servlet呢？在解决这个问题之前，Context容器需要先启动，启动的过程就是加载个类资源文件以及打开子容器以及Pipeline管道的过程。启动Context容器后，就可以处理具体的请求了，具体是通过Request对">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/StandContext.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Wrapper.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/StandardWrapper.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/loadServlet_invoke.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/allocate.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.781Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Tomcat之Context容器和Wrapper容器">
+<meta name="twitter:description" content="Context容器是一个Web项目的代表，主要管理Servlet实例，在Tomcat中Servlet实例是以Wrapper出现的，现在问题是如何才能通过Context容器找到具体的Servlet呢？在解决这个问题之前，Context容器需要先启动，启动的过程就是加载个类资源文件以及打开子容器以及Pipeline管道的过程。启动Context容器后，就可以处理具体的请求了，具体是通过Request对">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/tomcat-context-wrapper/" title="深入理解Tomcat之Context容器和Wrapper容器" itemprop="url">深入理解Tomcat之Context容器和Wrapper容器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-22T04:44:43.000Z" itemprop="datePublished"> 发表于 2015-10-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>Context容器是一个Web项目的代表，主要管理Servlet实例，在Tomcat中Servlet实例是以Wrapper出现的，现在问题是如何才能通过Context容器找到具体的Servlet呢？在解决这个问题之前，Context容器需要先启动，启动的过程就是加载个类资源文件以及打开子容器以及Pipeline管道的过程。启动Context容器后，就可以处理具体的请求了，具体是通过Request对象，从代码清单4-3的<code>Wrapper wrapper = request.getWrapper()</code>就可以看出来。<br>那么Context调用invoke方法后又发生什么了呢？具体执行的是org.apache.catalina.core.StandardContextValve的invoke方法。相当于进入了Context管道中，要开始通过管道中一个个闸门了。<br><a id="more"></a></p>
+<p>StandardContext的处理流程可以用下面的图简化：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/StandContext.jpg" alt="Context容器处理请求流程简化版"></p>
+<p>代码清单4-3：</p>
+<pre><code><span class="comment">/**
+ * Select the appropriate child Wrapper to process this request,
+ * based on the specified request URI.  If no matching Wrapper can
+ * be found, return an appropriate HTTP error.
+ *
+ * @param request Request to be processed
+ * @param response Response to be produced
+ *
+ * @exception IOException if an input/output error occurred
+ * @exception ServletException if a servlet error occurred
+ */</span>
+@Override
+public final void invoke<span class="params">(Request request, Response response)</span>
+    throws IOException, ServletException {
+    <span class="comment">// Disallow any direct access to resources under WEB-INF or META-INF</span>
+    MessageBytes requestPathMB = request.getRequestPathMB<span class="params">()</span>;
+    <span class="keyword">if</span> <span class="params">(<span class="params">(requestPathMB.startsWithIgnoreCase<span class="params">(<span class="string">"/META-INF/"</span>, <span class="number">0</span>)</span>)</span>
+            || <span class="params">(requestPathMB.equalsIgnoreCase<span class="params">(<span class="string">"/META-INF"</span>)</span>)</span>
+            || <span class="params">(requestPathMB.startsWithIgnoreCase<span class="params">(<span class="string">"/WEB-INF/"</span>, <span class="number">0</span>)</span>)</span>
+            || <span class="params">(requestPathMB.equalsIgnoreCase<span class="params">(<span class="string">"/WEB-INF"</span>)</span>)</span>)</span> {
+        response.sendError<span class="params">(HttpServletResponse.SC_NOT_FOUND)</span>;
+        return;
+    }
+    <span class="comment">// Select the Wrapper to be used for this Request</span>
+    Wrapper wrapper = request.getWrapper<span class="params">()</span>;
+    <span class="keyword">if</span> <span class="params">(wrapper == null || wrapper.isUnavailable<span class="params">()</span>)</span> {
+        response.sendError<span class="params">(HttpServletResponse.SC_NOT_FOUND)</span>;
+        return;
+    }
+    <span class="comment">// Acknowledge the request</span>
+    try {
+        response.sendAcknowledgement<span class="params">()</span>;
+    } catch <span class="params">(IOException ioe)</span> {
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                <span class="string">"standardContextValve.acknowledgeException"</span>)</span>, ioe)</span>;
+        request.setAttribute<span class="params">(RequestDispatcher.ERROR_EXCEPTION, ioe)</span>;
+        response.sendError<span class="params">(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)</span>;
+        return;
+    }
+
+    <span class="keyword">if</span> <span class="params">(request.isAsyncSupported<span class="params">()</span>)</span> {
+        request.setAsyncSupported<span class="params">(wrapper.getPipeline<span class="params">()</span>.isAsyncSupported<span class="params">()</span>)</span>;
+    }
+    wrapper.getPipeline<span class="params">()</span>.getFirst<span class="params">()</span>.invoke<span class="params">(request, response)</span>;
+}
+</code></pre><ol>
+<li>禁止直接访问WEB-INF或者META-INF目录下的资源</li>
+<li>选择具体的Wrapper处理请求</li>
+<li>返回一个确认响应</li>
+<li>调用Wrapper容器的invoke方法，把处理请求交给StandardWrapperValve处理</li>
+</ol>
+<p><strong>Wrapper容器</strong><br>Wrapper容器负责管理一个Servlet，包括Servlet的装载、初始化、资源回收。Wrapper是最底层的容器，其不能在添加子容器了。Wrapper是一个接口，其标准实现类是StandardWrapper，下面是这两个类的结构：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Wrapper.jpg" alt="Wrapper"><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/StandardWrapper.jpg" alt="StandardWrapper"></p>
+<p>上面的图都只是类的一部分，由于Wrapper与Servlet息息相关，其中的loadServlet方法负责装载Servlet，其源码如下：</p>
+<p>代码清单4-4：</p>
+<pre><code><span class="comment">/**
+ * Load and initialize an instance of this servlet, if there is not already
+ * at least one initialized instance.  This can be used, for example, to
+ * load servlets that are marked in the deployment descriptor to be loaded
+ * at server startup time.
+ */</span>
+public synchronized Servlet loadServlet<span class="params">()</span> throws ServletException {
+    <span class="keyword">if</span> <span class="params">(unloading)</span> {
+        throw new ServletException<span class="params">(
+                sm.getString<span class="params">(<span class="string">"standardWrapper.unloading"</span>, getName<span class="params">()</span>)</span>)</span>;
+    }
+    <span class="comment">// Nothing to do if we already have an instance or an instance pool</span>
+    <span class="keyword">if</span> <span class="params">(!singleThreadModel &amp;&amp; <span class="params">(instance != null)</span>)</span>
+        return instance;
+    PrintStream out = System.out;
+    <span class="keyword">if</span> <span class="params">(swallowOutput)</span> {
+        SystemLogHandler.startCapture<span class="params">()</span>;
+    }
+    Servlet servlet;
+    try {
+        long t1=System.currentTimeMillis<span class="params">()</span>;
+        <span class="comment">// Complain if no servlet class has been specified</span>
+        <span class="keyword">if</span> <span class="params">(servletClass == null)</span> {
+            unavailable<span class="params">(null)</span>;
+            throw new ServletException
+                <span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.notClass"</span>, getName<span class="params">()</span>)</span>)</span>;
+        }
+        InstanceManager instanceManager = <span class="params">(<span class="params">(StandardContext)</span>getParent<span class="params">()</span>)</span>.getInstanceManager<span class="params">()</span>;
+        try {
+            servlet = <span class="params">(Servlet)</span> instanceManager.newInstance<span class="params">(servletClass)</span>;
+        } catch <span class="params">(ClassCastException e)</span> {
+            unavailable<span class="params">(null)</span>;
+            <span class="comment">// Restore the context ClassLoader</span>
+            throw new ServletException
+                <span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.notServlet"</span>, servletClass)</span>, e)</span>;
+        } catch <span class="params">(Throwable e)</span> {
+            e = ExceptionUtils.unwrapInvocationTargetException<span class="params">(e)</span>;
+            ExceptionUtils.handleThrowable<span class="params">(e)</span>;
+            unavailable<span class="params">(null)</span>;
+            <span class="comment">// Added extra log statement for Bugzilla 36630:</span>
+            <span class="comment">// http://issues.apache.org/bugzilla/show_bug.cgi?id=36630</span>
+            <span class="keyword">if</span><span class="params">(log.isDebugEnabled<span class="params">()</span>)</span> {
+                <span class="built_in">log</span>.debug<span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.instantiate"</span>, servletClass)</span>, e)</span>;
+            }
+            <span class="comment">// Restore the context ClassLoader</span>
+            throw new ServletException
+                <span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.instantiate"</span>, servletClass)</span>, e)</span>;
+        }
+        <span class="keyword">if</span> <span class="params">(multipartConfigElement == null)</span> {
+            MultipartConfig annotation =
+                    servlet.getClass<span class="params">()</span>.getAnnotation<span class="params">(MultipartConfig.class)</span>;
+            <span class="keyword">if</span> <span class="params">(annotation != null)</span> {
+                multipartConfigElement =
+                        new MultipartConfigElement<span class="params">(annotation)</span>;
+            }
+        }
+        processServletSecurityAnnotation<span class="params">(servlet.getClass<span class="params">()</span>)</span>;
+        <span class="comment">// Special handling for ContainerServlet instances</span>
+        <span class="keyword">if</span> <span class="params">(<span class="params">(servlet instanceof ContainerServlet)</span> &amp;&amp;
+                <span class="params">(isContainerProvidedServlet<span class="params">(servletClass)</span> ||
+                        <span class="params">(<span class="params">(Context)</span> getParent<span class="params">()</span>)</span>.getPrivileged<span class="params">()</span> )</span>)</span> {
+            <span class="params">(<span class="params">(ContainerServlet)</span> servlet)</span>.setWrapper<span class="params">(this)</span>;
+        }
+        classLoadTime=<span class="params">(int)</span> <span class="params">(System.currentTimeMillis<span class="params">()</span> -t1)</span>;
+        <span class="keyword">if</span> <span class="params">(servlet instanceof SingleThreadModel)</span> {
+            <span class="keyword">if</span> <span class="params">(instancePool == null)</span> {
+                instancePool = new Stack&lt;Servlet&gt;<span class="params">()</span>;
+            }
+            singleThreadModel = <span class="literal">true</span>;
+        }
+        <span class="comment">//init servlet instance</span>
+        initServlet<span class="params">(servlet)</span>;
+        fireContainerEvent<span class="params">(<span class="string">"load"</span>, this)</span>;
+        loadTime=System.currentTimeMillis<span class="params">()</span> -t1;
+    } finally {
+        <span class="keyword">if</span> <span class="params">(swallowOutput)</span> {
+            String <span class="built_in">log</span> = SystemLogHandler.stopCapture<span class="params">()</span>;
+            <span class="keyword">if</span> <span class="params">(log != null &amp;&amp; log.length<span class="params">()</span> &gt; <span class="number">0</span>)</span> {
+                <span class="keyword">if</span> <span class="params">(getServletContext<span class="params">()</span> != null)</span> {
+                    getServletContext<span class="params">()</span>.<span class="built_in">log</span><span class="params">(log)</span>;
+                } <span class="keyword">else</span> {
+                    out.println<span class="params">(log)</span>;
+                }
+            }
+        }
+    }
+    return servlet;
+}
+</code></pre><p>该类主要负责初始化一个Servlet实例，并调用该实例的init方法，然后通知感兴趣的事件监听程序。代码清单4-3中调用了Wrapper的invoke方法，这个方法完成什么呢？</p>
+<p>代码清单4-5：</p>
+<pre><code><span class="comment">/**
+ * Invoke the servlet we are managing, respecting the rules regarding
+ * servlet lifecycle and SingleThreadModel support.
+ *
+ * @param request Request to be processed
+ * @param response Response to be produced
+ *
+ * @exception IOException if an input/output error occurred
+ * @exception ServletException if a servlet error occurred
+ */</span>
+@Override
+public final void invoke<span class="params">(Request request, Response response)</span>
+    throws IOException, ServletException {
+    <span class="comment">// Initialize local variables we may need</span>
+    boolean unavailable = <span class="literal">false</span>;
+    Throwable throwable = null;
+    <span class="comment">// This should be a Request attribute...</span>
+    long t1=System.currentTimeMillis<span class="params">()</span>;
+    requestCount++;
+    StandardWrapper wrapper = <span class="params">(StandardWrapper)</span> getContainer<span class="params">()</span>;
+    Servlet servlet = null;
+    Context context = <span class="params">(Context)</span> wrapper.getParent<span class="params">()</span>;
+
+    <span class="comment">// Check for the application being marked unavailable</span>
+    <span class="keyword">if</span> <span class="params">(!context.getState<span class="params">()</span>.isAvailable<span class="params">()</span>)</span> {
+        response.sendError<span class="params">(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                       sm.getString<span class="params">(<span class="string">"standardContext.isUnavailable"</span>)</span>)</span>;
+        unavailable = <span class="literal">true</span>;
+    }
+    <span class="comment">// Check for the servlet being marked unavailable</span>
+    <span class="keyword">if</span> <span class="params">(!unavailable &amp;&amp; wrapper.isUnavailable<span class="params">()</span>)</span> {
+        container.getLogger<span class="params">()</span>.info<span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.isUnavailable"</span>,
+                wrapper.getName<span class="params">()</span>)</span>)</span>;
+        long available = wrapper.getAvailable<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(<span class="params">(available &gt; <span class="number">0</span>L)</span> &amp;&amp; <span class="params">(available &lt; Long.MAX_VALUE)</span>)</span> {
+            response.setDateHeader<span class="params">(<span class="string">"Retry-After"</span>, available)</span>;
+            response.sendError<span class="params">(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                    sm.getString<span class="params">(<span class="string">"standardWrapper.isUnavailable"</span>,
+                            wrapper.getName<span class="params">()</span>)</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(available == Long.MAX_VALUE)</span> {
+            response.sendError<span class="params">(HttpServletResponse.SC_NOT_FOUND,
+                    sm.getString<span class="params">(<span class="string">"standardWrapper.notFound"</span>,
+                            wrapper.getName<span class="params">()</span>)</span>)</span>;
+        }
+        unavailable = <span class="literal">true</span>;
+    }
+    <span class="comment">// Allocate a servlet instance to process this request</span>
+    try {
+        <span class="keyword">if</span> <span class="params">(!unavailable)</span> {
+            servlet = wrapper.allocate<span class="params">()</span>;
+        }
+    } catch <span class="params">(UnavailableException e)</span> {
+        container.getLogger<span class="params">()</span>.error<span class="params">(
+                sm.getString<span class="params">(<span class="string">"standardWrapper.allocateException"</span>,
+                        wrapper.getName<span class="params">()</span>)</span>, e)</span>;
+        long available = wrapper.getAvailable<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(<span class="params">(available &gt; <span class="number">0</span>L)</span> &amp;&amp; <span class="params">(available &lt; Long.MAX_VALUE)</span>)</span> {
+            response.setDateHeader<span class="params">(<span class="string">"Retry-After"</span>, available)</span>;
+            response.sendError<span class="params">(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                       sm.getString<span class="params">(<span class="string">"standardWrapper.isUnavailable"</span>,
+                                    wrapper.getName<span class="params">()</span>)</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(available == Long.MAX_VALUE)</span> {
+            response.sendError<span class="params">(HttpServletResponse.SC_NOT_FOUND,
+                       sm.getString<span class="params">(<span class="string">"standardWrapper.notFound"</span>,
+                                    wrapper.getName<span class="params">()</span>)</span>)</span>;
+        }
+    } catch <span class="params">(ServletException e)</span> {
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.allocateException"</span>,
+                         wrapper.getName<span class="params">()</span>)</span>, StandardWrapper.getRootCause<span class="params">(e)</span>)</span>;
+        throwable = e;
+        exception<span class="params">(request, response, e)</span>;
+    } catch <span class="params">(Throwable e)</span> {
+        ExceptionUtils.handleThrowable<span class="params">(e)</span>;
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.allocateException"</span>,
+                         wrapper.getName<span class="params">()</span>)</span>, e)</span>;
+        throwable = e;
+        exception<span class="params">(request, response, e)</span>;
+        servlet = null;
+    }
+    <span class="comment">// Identify if the request is Comet related now that the servlet has been allocated</span>
+    boolean comet = <span class="literal">false</span>;
+    <span class="keyword">if</span> <span class="params">(servlet instanceof CometProcessor &amp;&amp; request.getAttribute<span class="params">(
+            Globals.COMET_SUPPORTED_ATTR)</span> == Boolean.TRUE)</span> {
+        comet = <span class="literal">true</span>;
+        request.setComet<span class="params">(<span class="literal">true</span>)</span>;
+    }
+
+    MessageBytes requestPathMB = request.getRequestPathMB<span class="params">()</span>;
+    DispatcherType dispatcherType = DispatcherType.REQUEST;
+    <span class="keyword">if</span> <span class="params">(request.getDispatcherType<span class="params">()</span>==DispatcherType.ASYNC)</span> dispatcherType = DispatcherType.ASYNC; 
+    request.setAttribute<span class="params">(Globals.DISPATCHER_TYPE_ATTR,dispatcherType)</span>;
+    request.setAttribute<span class="params">(Globals.DISPATCHER_REQUEST_PATH_ATTR,
+            requestPathMB)</span>;
+    <span class="comment">// Create the filter chain for this request</span>
+    ApplicationFilterFactory factory =
+        ApplicationFilterFactory.getInstance<span class="params">()</span>;
+    ApplicationFilterChain filterChain =
+        factory.createFilterChain<span class="params">(request, wrapper, servlet)</span>;
+
+    <span class="comment">// Reset comet flag value after creating the filter chain</span>
+    request.setComet<span class="params">(<span class="literal">false</span>)</span>;
+    <span class="comment">// Call the filter chain for this request</span>
+    <span class="comment">// <span class="doctag">NOTE</span>: This also calls the servlet's service() method</span>
+    try {
+        <span class="keyword">if</span> <span class="params">(<span class="params">(servlet != null)</span> &amp;&amp; <span class="params">(filterChain != null)</span>)</span> {
+            <span class="comment">// Swallow output if needed</span>
+            <span class="keyword">if</span> <span class="params">(context.getSwallowOutput<span class="params">()</span>)</span> {
+                try {
+                    SystemLogHandler.startCapture<span class="params">()</span>;
+                    <span class="keyword">if</span> <span class="params">(request.isAsyncDispatching<span class="params">()</span>)</span> {
+                        <span class="comment">//<span class="doctag">TODO</span> SERVLET3 - async</span>
+                        <span class="params">(<span class="params">(AsyncContextImpl)</span>request.getAsyncContext<span class="params">()</span>)</span>.doInternalDispatch<span class="params">()</span>; 
+                    } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(comet)</span> {
+                        filterChain.doFilterEvent<span class="params">(request.getEvent<span class="params">()</span>)</span>;
+                        request.setComet<span class="params">(<span class="literal">true</span>)</span>;
+                    } <span class="keyword">else</span> {
+                        filterChain.doFilter<span class="params">(request.getRequest<span class="params">()</span>, 
+                                response.getResponse<span class="params">()</span>)</span>;
+                    }
+                } finally {
+                    String <span class="built_in">log</span> = SystemLogHandler.stopCapture<span class="params">()</span>;
+                    <span class="keyword">if</span> <span class="params">(log != null &amp;&amp; log.length<span class="params">()</span> &gt; <span class="number">0</span>)</span> {
+                        context.getLogger<span class="params">()</span>.info<span class="params">(log)</span>;
+                    }
+                }
+            } <span class="keyword">else</span> {
+                <span class="keyword">if</span> <span class="params">(request.isAsyncDispatching<span class="params">()</span>)</span> {
+                    <span class="comment">//<span class="doctag">TODO</span> SERVLET3 - async</span>
+                    <span class="params">(<span class="params">(AsyncContextImpl)</span>request.getAsyncContext<span class="params">()</span>)</span>.doInternalDispatch<span class="params">()</span>;
+                } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(comet)</span> {
+                    request.setComet<span class="params">(<span class="literal">true</span>)</span>;
+                    filterChain.doFilterEvent<span class="params">(request.getEvent<span class="params">()</span>)</span>;
+                } <span class="keyword">else</span> {
+                    filterChain.doFilter
+                        <span class="params">(request.getRequest<span class="params">()</span>, response.getResponse<span class="params">()</span>)</span>;
+                }
+            }
+        }
+    } catch <span class="params">(ClientAbortException e)</span> {
+        throwable = e;
+        exception<span class="params">(request, response, e)</span>;
+    } catch <span class="params">(IOException e)</span> {
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                <span class="string">"standardWrapper.serviceException"</span>, wrapper.getName<span class="params">()</span>,
+                context.getName<span class="params">()</span>)</span>, e)</span>;
+        throwable = e;
+        exception<span class="params">(request, response, e)</span>;
+    } catch <span class="params">(UnavailableException e)</span> {
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                <span class="string">"standardWrapper.serviceException"</span>, wrapper.getName<span class="params">()</span>,
+                context.getName<span class="params">()</span>)</span>, e)</span>;
+        <span class="comment">//            throwable = e;</span>
+        <span class="comment">//            exception(request, response, e);</span>
+        wrapper.unavailable<span class="params">(e)</span>;
+        long available = wrapper.getAvailable<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(<span class="params">(available &gt; <span class="number">0</span>L)</span> &amp;&amp; <span class="params">(available &lt; Long.MAX_VALUE)</span>)</span> {
+            response.setDateHeader<span class="params">(<span class="string">"Retry-After"</span>, available)</span>;
+            response.sendError<span class="params">(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                       sm.getString<span class="params">(<span class="string">"standardWrapper.isUnavailable"</span>,
+                                    wrapper.getName<span class="params">()</span>)</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(available == Long.MAX_VALUE)</span> {
+            response.sendError<span class="params">(HttpServletResponse.SC_NOT_FOUND,
+                        sm.getString<span class="params">(<span class="string">"standardWrapper.notFound"</span>,
+                                    wrapper.getName<span class="params">()</span>)</span>)</span>;
+        }
+        <span class="comment">// Do not save exception in 'throwable', because we</span>
+        <span class="comment">// do not want to do exception(request, response, e) processing</span>
+    } catch <span class="params">(ServletException e)</span> {
+        Throwable rootCause = StandardWrapper.getRootCause<span class="params">(e)</span>;
+        <span class="keyword">if</span> <span class="params">(!<span class="params">(rootCause instanceof ClientAbortException)</span>)</span> {
+            container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                    <span class="string">"standardWrapper.serviceExceptionRoot"</span>,
+                    wrapper.getName<span class="params">()</span>, context.getName<span class="params">()</span>, e.getMessage<span class="params">()</span>)</span>,
+                    rootCause)</span>;
+        }
+        throwable = e;
+        exception<span class="params">(request, response, e)</span>;
+    } catch <span class="params">(Throwable e)</span> {
+        ExceptionUtils.handleThrowable<span class="params">(e)</span>;
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                <span class="string">"standardWrapper.serviceException"</span>, wrapper.getName<span class="params">()</span>,
+                context.getName<span class="params">()</span>)</span>, e)</span>;
+        throwable = e;
+        exception<span class="params">(request, response, e)</span>;
+    }
+    <span class="comment">// Release the filter chain (if any) for this request</span>
+    <span class="keyword">if</span> <span class="params">(filterChain != null)</span> {
+        <span class="keyword">if</span> <span class="params">(request.isComet<span class="params">()</span>)</span> {
+            <span class="comment">// If this is a Comet request, then the same chain will be used for the</span>
+            <span class="comment">// processing of all subsequent events.</span>
+            filterChain.reuse<span class="params">()</span>;
+        } <span class="keyword">else</span> {
+            filterChain.release<span class="params">()</span>;
+        }
+    }
+    <span class="comment">// Deallocate the allocated servlet instance</span>
+    try {
+        <span class="keyword">if</span> <span class="params">(servlet != null)</span> {
+            wrapper.deallocate<span class="params">(servlet)</span>;
+        }
+    } catch <span class="params">(Throwable e)</span> {
+        ExceptionUtils.handleThrowable<span class="params">(e)</span>;
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.deallocateException"</span>,
+                         wrapper.getName<span class="params">()</span>)</span>, e)</span>;
+        <span class="keyword">if</span> <span class="params">(throwable == null)</span> {
+            throwable = e;
+            exception<span class="params">(request, response, e)</span>;
+        }
+    }
+    <span class="comment">// If this servlet has been marked permanently unavailable,</span>
+    <span class="comment">// unload it and release this instance</span>
+    try {
+        <span class="keyword">if</span> <span class="params">(<span class="params">(servlet != null)</span> &amp;&amp;
+            <span class="params">(wrapper.getAvailable<span class="params">()</span> == Long.MAX_VALUE)</span>)</span> {
+            wrapper.unload<span class="params">()</span>;
+        }
+    } catch <span class="params">(Throwable e)</span> {
+        ExceptionUtils.handleThrowable<span class="params">(e)</span>;
+        container.getLogger<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.unloadException"</span>,
+                         wrapper.getName<span class="params">()</span>)</span>, e)</span>;
+        <span class="keyword">if</span> <span class="params">(throwable == null)</span> {
+            throwable = e;
+            exception<span class="params">(request, response, e)</span>;
+        }
+    }
+}
+</code></pre><ol>
+<li>初始化一些本地变量</li>
+<li>判断当前应用是否可用，就是判断是否确实有这个项目</li>
+<li>分配一个Servlet实例</li>
+<li>为请求创建一个过滤器链</li>
+<li>过滤器过滤请求</li>
+<li>关闭过滤器</li>
+<li>重新委派原来委派的Servlet实例</li>
+<li>释放资源</li>
+</ol>
+<p>这个方法与上面的loadServlet关系如下：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/loadServlet_invoke.jpg" alt="关系"></p>
+<p>可以看出在调用loadServlet的allocate方法的时候调用了StandardWrapperValve的invoke方法，在Wrapper容器获得请求后，通过allocate方法从实例池栈中弹出一个servlet实例来处理这个请求，servlet实例被封装成filterChain对象，紧接着通过一系列的过滤器过滤到达servlet.service()方法。这个过程可以如下：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/allocate.jpg" alt="Wrapper容器处理请求过程简化版"></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Tomcat/">Tomcat</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Tomcat/">Tomcat</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/tomcat-context-wrapper/" data-title="深入理解Tomcat之Context容器和Wrapper容器 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/tomcat-servlet-principle/" title="深入理解Tomcat之Servlet工作原理">
+  <strong>上一篇：</strong><br/>
+  <span>
+  深入理解Tomcat之Servlet工作原理</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/tomcat-engine-host/"  title="深入理解Tomcat之Engine和Host容器">
+ <strong>下一篇：</strong><br/> 
+ <span>深入理解Tomcat之Engine和Host容器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/tomcat-context-wrapper/" data-title="深入理解Tomcat之Context容器和Wrapper容器" data-url="http://rhwayfun.com/post/tomcat-context-wrapper/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,865 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Struts2框架学习之八：避免表单重复提交与等待页面 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+防止表单重复提交在web开发中是一个经常遇到的问题，一般来避免重复提交有两种方式：客户端JavaScript代码实现和服务端代码实现。这里主要介绍服务端的实现方式。在服务端实现表单重复提交的基本原理是：通过创建一个Session对象，并产生一个令牌值，将这个令牌值作为隐藏域随表单一起发送给客户端，同时在Session中保存令牌值。在用户提交表单的时候判断提交参数的令牌值与Session中的是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Struts2框架学习之八：避免表单重复提交与等待页面">
+<meta property="og:url" content="http://rhwayfun.com/post/struts2-learning-8/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+防止表单重复提交在web开发中是一个经常遇到的问题，一般来避免重复提交有两种方式：客户端JavaScript代码实现和服务端代码实现。这里主要介绍服务端的实现方式。在服务端实现表单重复提交的基本原理是：通过创建一个Session对象，并产生一个令牌值，将这个令牌值作为隐藏域随表单一起发送给客户端，同时在Session中保存令牌值。在用户提交表单的时候判断提交参数的令牌值与Session中的是">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.778Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Struts2框架学习之八：避免表单重复提交与等待页面">
+<meta name="twitter:description" content="前言
+防止表单重复提交在web开发中是一个经常遇到的问题，一般来避免重复提交有两种方式：客户端JavaScript代码实现和服务端代码实现。这里主要介绍服务端的实现方式。在服务端实现表单重复提交的基本原理是：通过创建一个Session对象，并产生一个令牌值，将这个令牌值作为隐藏域随表单一起发送给客户端，同时在Session中保存令牌值。在用户提交表单的时候判断提交参数的令牌值与Session中的是">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/struts2-learning-8/" title="Struts2框架学习之八：避免表单重复提交与等待页面" itemprop="url">Struts2框架学习之八：避免表单重复提交与等待页面</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-23T15:40:58.000Z" itemprop="datePublished"> 发表于 2015-12-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>防止表单重复提交在web开发中是一个经常遇到的问题，一般来避免重复提交有两种方式：客户端JavaScript代码实现和服务端代码实现。这里主要介绍服务端的实现方式。在服务端实现表单重复提交的基本原理是：通过创建一个Session对象，并产生一个令牌值，将这个令牌值作为隐藏域随表单一起发送给客户端，同时在Session中保存令牌值。在用户提交表单的时候判断提交参数的令牌值与Session中的是否相等，如果相等则清除，不再使用这个令牌值，，然后执行后续的处理；如果两者不相等，表示已经提交过表单，服务端产生一个新的令牌值并保存到Session中。当用户下次访问的的时候，将新产生的领牌值发送到客户端。</p>
+<a id="more"></a>
+<p><strong>Struts2的实现方式</strong></p>
+<p>在Struts2中通过使用拦截器来实现的，机制与前言中采用令牌的方式是一样的。可以通过两种方式实现避免重复表单（实际上就是两个不同的拦截器）：token拦截器和tokenSession拦截器。由于在struts-default.xml的默认拦截器栈中并没有将这两个拦截器作为默认实现，所以需要在action中手动添加这两个拦截器。这两种方式的区别在于：使用token拦截器重复提交表单的时候，浏览器会跳转到一个错误页面，而使用更tokenSession拦截器重复提交表单的话是不会跳转的，仍然在成功之后页面。需要注意的是，使用者两个拦截器重复提交表单的时候，都只会向服务器提交一次请求，所以这种方式可以有效降低服务器的负担。</p>
+<p><strong>具体的例子</strong></p>
+<p>在使用以上拦截器进行测试的时候，需要如下步骤：<br>步骤一：编写login.jsp、success.jsp和error.jsp三个页面<br>login.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;s:form action=&#34;tokenWait&#34; namespace=&#34;/&#34; method=&#34;post&#34;&#62;&#10;        &#60;s:textfield label=&#34;&#29992;&#25143;&#21517;&#34; name=&#34;user.username&#34;&#62;&#60;/s:textfield&#62;&#10;        &#60;s:password label=&#34;&#23494;&#30721;&#34; name=&#34;user.password&#34;&#62;&#60;/s:password&#62;&#10;        &#60;!-- &#36825;&#20010;&#26631;&#31614;&#19981;&#33021;&#23569; --&#62;&#10;        &#60;%-- &#60;s:token&#62;&#60;/s:token&#62; --%&#62;&#10;        &#60;s:submit value=&#34;&#30331;&#24405;&#34;&#62;&#60;/s:submit&#62;&#10;    &#60;/s:form&#62;&#10; ...</span><br></pre></td></tr></table></figure></p>
+<p>success.jsp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;s:property value=&#34;user.username&#34;/&#62;&#65292;&#60;%=new Date() %&#62;&#10;...</span><br></pre></td></tr></table></figure>
+<p>error.jsp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;html&#62;&#10;&#60;body&#62;&#10;    &#60;!-- &#30331;&#24405;&#22833;&#36133;&#65292;&#35831;&#37325;&#26032;&#30331;&#24405;&#10;    &#60;a href=&#34;login.jsp&#34;&#62;&#36820;&#22238;&#60;/a&#62; --&#62;&#10;    &#24744;&#24050;&#32463;&#25552;&#20132;&#36807;&#34920;&#21333;&#20102;&#65281;&#10;&#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>步骤二：编写action</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package action;&#10;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;&#10;import bean.User;&#10;&#10;import com.opensymphony.xwork2.ActionSupport;&#10;&#10;public class TokenAction extends ActionSupport &#123;&#10;&#10;    private static final long serialVersionUID = 1L;&#10;    private User user;&#10;    &#10;    @Override&#10;    public String execute() throws Exception &#123;&#10;        Thread.sleep(3000);&#10;        List&#60;User&#62; users = new ArrayList&#60;User&#62;();&#10;        users.add(user);&#10;        for (User user : users) &#123;&#10;            System.out.println(user);&#10;        &#125;&#10;        return SUCCESS;&#10;    &#125;&#10;&#10;    public User getUser() &#123;&#10;        return user;&#10;    &#125;&#10;&#10;    public void setUser(User user) &#123;&#10;        this.user = user;&#10;    &#125;&#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>步骤三：配置struts.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#36991;&#20813;&#34920;&#21333;&#37325;&#22797;&#25552;&#20132; --&#62;&#10;        &#60;action name=&#34;token&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;!-- &#37197;&#32622;Token&#25318;&#25130;&#22120; --&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;token&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;!-- &#22914;&#26524;&#37325;&#22797;&#25552;&#20132;&#65292;&#21017;&#36339;&#36716;&#21040;error.jsp --&#62;&#10;            &#60;result name=&#34;invalid.token&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;        &#60;/action&#62;&#10;        &#10;        &#60;action name=&#34;tokenSession&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;!-- &#37197;&#32622;TokenSession&#25318;&#25130;&#22120; --&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;tokenSession&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;!-- &#22914;&#26524;&#37325;&#22797;&#25552;&#20132;&#65292;&#21017;&#36339;&#36716;&#21040;error.jsp --&#62;&#10;            &#60;result name=&#34;invalid.token&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<p>这里需要提出的是，action中name属性为<code>invalid.token</code>的result是不可少的。</p>
+<p>步骤四：发布测试<br>经过测试，发现使用token拦截器在重复提交表单的时候会转到error.jsp，而使用tokenSession拦截器在重复提交表单的时候不会转到error.jsp。</p>
+<p><strong>显示等待页面</strong></p>
+<p>有时候在action需要处理较长时间的时候，一般是5到10分钟，在这种情况下向用户显示一个等待页面可能会比较友好一些。在Struts2中通过使用execAndWait拦截器就可以非常轻松实现这点。</p>
+<p>execAndWait的工作机制：</p>
+<p>execAndWait拦截器能够让一个A执行时间超过5分钟的Action在后台运行，并向用户显示一个等待页面。之所以是5分钟是因为这样防止HTTP请求超时。当一个请求到来的时候，execAndWait拦截器会创建一个线程来执行Session，然后返回一个等待页面，这样用户就知道请求在处理中。等待页面包含了自动刷新功能，在超时之前，浏览器会向初始请求的action再次发起请求，以便知道后台action是否已经执行完毕。如果action仍然没有执行完毕，则继续显示等待页面，如果action已经执行完毕，则等待页面将发生跳转，向用户处理结束之后的页面。</p>
+<p>execAndWait拦截器有以下几个参数：</p>
+<ul>
+<li>threadPriority：执行线程的优先级</li>
+<li>delay：指定在显示等待页面前初始的延迟加载时间，单位是毫秒</li>
+<li>delaySleepInternal：指定检查后台线程是否执行完毕的时间间隔，必须和delay参数一起使用，单位是毫秒，默认是100毫秒。表示每100毫秒进行一次检查</li>
+</ul>
+<p>使用execAndWait拦截器显示等待页面，首先需要编写一个等待页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;&#60;head&#62;&#10;&#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;&#60;title&#62;&#31561;&#24453;&#39029;&#38754;&#60;/title&#62;&#10;&#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;&#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;&#60;meta http-equiv=&#34;refresh&#34; content=&#34;3;url=tokenWait.action&#34;&#62;&#10;&#60;/head&#62;&#10;&#10;&#60;body&#62;&#10;    &#24744;&#30340;&#35831;&#27714;&#27491;&#22312;&#22788;&#29702;&#65292;&#35831;&#31245;&#31561;&#12290;&#10;    &#60;span id=&#34;time&#34; style=&#34;font-size:30px;color:red;font-face:&#38582;&#20070;&#34;&#62;&#60;/span&#62;&#31186;&#21518;&#39029;&#38754;&#23558;&#33258;&#21160;&#36339;&#36716;&#10;    &#60;script type=&#34;text/javascript&#34;&#62;&#10;       var start = 3;&#10;       var step = -1;&#10;       function timer () &#123;&#10;         document.getElementById(&#34;time&#34;).innerHTML = start;&#10;         if(start &#62; 0)&#123;&#10;            start = start + step;&#10;         &#125;&#10;         setTimeout(&#34;timer()&#34;,1000);&#10;       &#125;&#10;       window.onload = timer;&#10;    &#60;/script&#62;&#10;&#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>在head 标签中需要添加自动刷新meta标签，不然是不会出发自动检查的。在这个等待页面中，表示3秒后就会跳转到成功页面。</p>
+<p>之后是添加execAndWait拦截器的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#26174;&#31034;&#33258;&#21160;&#31561;&#24453;&#39029;&#38754; --&#62;&#10;        &#60;action name=&#34;tokenWait&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;result name=&#34;wait&#34;&#62;/wait.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#10;                &#60;!-- &#25226;default&#26041;&#27861;&#25490;&#24207;&#22312;&#22806;&#65292;&#34920;&#31034;&#19981;&#25318;&#25130;!default.action --&#62;&#10;                &#60;param name=&#34;excludeMethods&#34;&#62;default&#60;/param&#62;&#10;            &#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;execAndWait&#34;&#62;&#10;                &#60;!-- &#25226;default&#26041;&#27861;&#25490;&#24207;&#22312;&#22806;&#65292;&#34920;&#31034;&#19981;&#25318;&#25130;!default.action --&#62;&#10;                &#60;param name=&#34;excludeMethods&#34;&#62;default&#60;/param&#62;&#10;                &#60;!-- &#31561;&#24453;&#24310;&#36831;&#26102;&#38388; --&#62;&#10;                &#60;param name=&#34;delay&#34;&#62;1000&#60;/param&#62;&#10;            &#60;/interceptor-ref&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<p>注意到TokenAction类中，使用Tread.sleep(3000)，表示通过让线程休眠的方式延长action的处理时间，还有一点要注意的是struts.xml中execAndWait拦截器的delay参数的值需要小于Thread.sleep(time)的时间。这样就能保证在action处理结束之前完成显示等待页面，不然很可能会直接success.jsp页面了。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/SSH/">SSH</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Struts2/">Struts2</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/struts2-learning-8/" data-title="Struts2框架学习之八：避免表单重复提交与等待页面 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/dev-in-java/" title="Java成神之路">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java成神之路</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/graph-bfs/"  title="图的广度优先遍历算法">
+ <strong>下一篇：</strong><br/> 
+ <span>图的广度优先遍历算法
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/struts2-learning-8/" data-title="Struts2框架学习之八：避免表单重复提交与等待页面" data-url="http://rhwayfun.com/post/struts2-learning-8/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

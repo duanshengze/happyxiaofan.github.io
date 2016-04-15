@@ -1,0 +1,1488 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>深入理解Tomcat之Connector | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="Connector是Tomcat的连接器，其主要任务是负责处理浏览器发送过来的请求，并创建一个Request和Response的对象用于和浏览器交换数据，然后产生一个线程用于处理请求，Connector会把Request和Response对象传递给该线程，该线程的具体的处理过程是Container容器的事了。执行过程分为以下几个步骤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Tomcat之Connector">
+<meta property="og:url" content="http://rhwayfun.com/post/tomcat-connector/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="Connector是Tomcat的连接器，其主要任务是负责处理浏览器发送过来的请求，并创建一个Request和Response的对象用于和浏览器交换数据，然后产生一个线程用于处理请求，Connector会把Request和Response对象传递给该线程，该线程的具体的处理过程是Container容器的事了。执行过程分为以下几个步骤">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Connector启动过程.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Connector-2.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Connector-1.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/protocolhanlder.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.780Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Tomcat之Connector">
+<meta name="twitter:description" content="Connector是Tomcat的连接器，其主要任务是负责处理浏览器发送过来的请求，并创建一个Request和Response的对象用于和浏览器交换数据，然后产生一个线程用于处理请求，Connector会把Request和Response对象传递给该线程，该线程的具体的处理过程是Container容器的事了。执行过程分为以下几个步骤">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/tomcat-connector/" title="深入理解Tomcat之Connector" itemprop="url">深入理解Tomcat之Connector</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-22T02:13:17.000Z" itemprop="datePublished"> 发表于 2015-10-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>Connector是Tomcat的连接器，其主要任务是负责处理浏览器发送过来的请求，并创建一个Request和Response的对象用于和浏览器交换数据，然后产生一个线程用于处理请求，Connector会把Request和Response对象传递给该线程，该线程的具体的处理过程是Container容器的事了。执行过程分为以下几个步骤<br><a id="more"></a></p>
+<ol>
+<li>实例化Connector，构造一个Connector对象</li>
+<li>调用Connector的initIntenal方法，初始化Connetor</li>
+<li>调用ProtocolHanlder的init方法，完成ProtocolHanlder的初始化。这个过程包括了创建线程池并创建一个线程处理浏览器请求</li>
+<li>调用Connector的startIntenal方法，启动Connector</li>
+<li>调用ProtocolHandler的start方法，启动Protocolhanlder</li>
+<li>调用MapperListener的start方法，启动监听器程序</li>
+</ol>
+<p>为了对Connector的执行过程有一个大概的印象，可以参考下面的序列图：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Connector启动过程.jpg" alt="Connector启动过程"></p>
+<p><strong>注意</strong>：由于Tomcat还支持AJP协议，但为了简化，我画的这个序列图是基于Http协议的，这也是我们在Web开发中接触最多的协议了。</p>
+<p>在深入Connector之前我们先看看Connector类的结构：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Connector-2.jpg" alt="Connector属性"><br><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Connector-1.jpg" alt="Connector部分方法"></p>
+<p>既然是处理浏览器请求，那么需要支持http协议，在Tomcat中有两种协议处理器：HTTP/1.1与AJP/1.3协议处理器。在server.xml中已经指明tomcat所支持的两种协议：</p>
+<p>代码清单3-1：</p>
+<pre><code>&lt;Connector <span class="variable">port=</span><span class="string">"8080"</span> <span class="variable">protocol=</span><span class="string">"HTTP/1.1"</span>
+           <span class="variable">connectionTimeout=</span><span class="string">"20000"</span>
+           <span class="variable">redirectPort=</span><span class="string">"8443"</span> /&gt;
+&lt;Connector <span class="variable">port=</span><span class="string">"8009"</span> <span class="variable">protocol=</span><span class="string">"AJP/1.3"</span> <span class="variable">redirectPort=</span><span class="string">"8443"</span> /&gt;
+</code></pre><p>在tomcat中是怎么样分别处理这两种协议的呢，我们可以ProtocolHanlder类中找到答案：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/protocolhanlder.jpg" alt="ProtocolHanlder协议处理器"></p>
+<p>图中被选中的就是Tomcat默认使用协议处理器，其实现过程与Java标准Socket编程是一样的，在tomcat中可以使用Connetor类的setProtocol方法，看看源码就知道了：</p>
+<p>代码清单3-2：</p>
+<pre><code>public void setProtocol<span class="params">(String protocol)</span> {
+    <span class="keyword">if</span> <span class="params">(AprLifecycleListener.isAprAvailable<span class="params">()</span>)</span> {
+        <span class="keyword">if</span> <span class="params">(<span class="string">"HTTP/1.1"</span>.equals<span class="params">(protocol)</span>)</span> {
+            setProtocolHandlerClassName
+                <span class="params">(<span class="string">"org.apache.coyote.http11.Http11AprProtocol"</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(<span class="string">"AJP/1.3"</span>.equals<span class="params">(protocol)</span>)</span> {
+            setProtocolHandlerClassName
+                <span class="params">(<span class="string">"org.apache.coyote.ajp.AjpAprProtocol"</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(protocol != null)</span> {
+            setProtocolHandlerClassName<span class="params">(protocol)</span>;
+        } <span class="keyword">else</span> {
+            setProtocolHandlerClassName
+                <span class="params">(<span class="string">"org.apache.coyote.http11.Http11AprProtocol"</span>)</span>;
+        }
+    } <span class="keyword">else</span> {
+        <span class="keyword">if</span> <span class="params">(<span class="string">"HTTP/1.1"</span>.equals<span class="params">(protocol)</span>)</span> {
+            setProtocolHandlerClassName
+                <span class="params">(<span class="string">"org.apache.coyote.http11.Http11Protocol"</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(<span class="string">"AJP/1.3"</span>.equals<span class="params">(protocol)</span>)</span> {
+            setProtocolHandlerClassName
+                <span class="params">(<span class="string">"org.apache.coyote.ajp.AjpProtocol"</span>)</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(protocol != null)</span> {
+            setProtocolHandlerClassName<span class="params">(protocol)</span>;
+        }
+    }
+}
+</code></pre><p>从第2个if子句的最后一个else可以知道tomcat默认使用的是http1.1协议。<br>我们再看看Connector的初始化过程：</p>
+<p>代码清单3-3：</p>
+<pre><code>@Override
+protected void initInternal<span class="params">()</span> throws LifecycleException {
+    super.initInternal<span class="params">()</span>;
+    <span class="comment">// Initialize adapter</span>
+    adapter = new CoyoteAdapter<span class="params">(this)</span>;
+    protocolHandler.setAdapter<span class="params">(adapter)</span>;
+    <span class="comment">// Make sure parseBodyMethodsSet has a default</span>
+    <span class="keyword">if</span><span class="params">( null == parseBodyMethodsSet )</span> {
+        setParseBodyMethods<span class="params">(getParseBodyMethods<span class="params">()</span>)</span>;
+    }
+    <span class="keyword">if</span> <span class="params">(protocolHandler.isAprRequired<span class="params">()</span> &amp;&amp;
+            !AprLifecycleListener.isAprAvailable<span class="params">()</span>)</span> {
+        throw new LifecycleException<span class="params">(
+                sm.getString<span class="params">(<span class="string">"coyoteConnector.protocolHandlerNoApr"</span>,
+                        getProtocolHandlerClassName<span class="params">()</span>)</span>)</span>;
+    }
+    try {
+        protocolHandler.init<span class="params">()</span>;
+    } catch <span class="params">(Exception e)</span> {
+        throw new LifecycleException
+            <span class="params">(sm.getString
+             <span class="params">(<span class="string">"coyoteConnector.protocolHandlerInitializationFailed"</span>)</span>, e)</span>;
+    }
+    <span class="comment">// Initialize mapper listener</span>
+    mapperListener.init<span class="params">()</span>;
+}
+</code></pre><p>从这段代码中可以看到：首先调用父类org.apache.catalina.util.LifecycleMBeanBase的初始化方法，然后创建一个Adapter，然后设置protocolHanlder（协议处理器）的Adapter，同时判断传过来的请求的请求方法（比如get或者post），如果没有指明请求方法，默认使用post处理，然后调用protocolHanlder的初始化方法，最后调用mapperListener的初始化方法，而mapperListener的初始化方法调用的是org.apache.catalina.util.LifecycleBase的init方法，我们重点关注protocolHanlder的初始化方法，具体是实现在AbstractProtocol抽象类中，其直接子类有AbstractAjpProtocol和AbstractHttp11Protocol，分别对应的是两种不同的处理协议，所以协议处理器的初始化方法是在其子抽象类（实现ProtocolHanlder接口的抽象类）来实现的，这里看看AbstractHttp11Protocol的初始化方法：</p>
+<p>代码清单3-4：</p>
+<pre><code>@Override
+public void init<span class="params">()</span> throws Exception {
+    <span class="keyword">if</span> <span class="params">(getLog<span class="params">()</span>.isInfoEnabled<span class="params">()</span>)</span>
+        getLog<span class="params">()</span>.info<span class="params">(sm.getString<span class="params">(<span class="string">"abstractProtocolHandler.init"</span>,
+                getName<span class="params">()</span>)</span>)</span>;
+    <span class="keyword">if</span> <span class="params">(oname == null)</span> {
+        <span class="comment">// Component not pre-registered so register it</span>
+        oname = createObjectName<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(oname != null)</span> {
+            Registry.getRegistry<span class="params">(null, null)</span>.registerComponent<span class="params">(this, oname,
+                null)</span>;
+        }
+    }
+    <span class="keyword">if</span> <span class="params">(this.domain != null)</span> {
+        try {
+            tpOname = new ObjectName<span class="params">(domain + <span class="string">":"</span> +
+                    <span class="string">"type=ThreadPool,name="</span> + getName<span class="params">()</span>)</span>;
+            Registry.getRegistry<span class="params">(null, null)</span>.registerComponent<span class="params">(endpoint,
+                    tpOname, null)</span>;
+        } catch <span class="params">(Exception e)</span> {
+            getLog<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                    <span class="string">"abstractProtocolHandler.mbeanRegistrationFailed"</span>,
+                    tpOname, getName<span class="params">()</span>)</span>, e)</span>;
+        }
+        rgOname=new ObjectName<span class="params">(domain +
+                <span class="string">":type=GlobalRequestProcessor,name="</span> + getName<span class="params">()</span>)</span>;
+        Registry.getRegistry<span class="params">(null, null)</span>.registerComponent<span class="params">(
+                getHandler<span class="params">()</span>.getGlobal<span class="params">()</span>, rgOname, null )</span>;
+    }
+    String endpointName = getName<span class="params">()</span>;
+    endpoint.setName<span class="params">(endpointName.substring<span class="params">(<span class="number">1</span>, endpointName.length<span class="params">()</span>-<span class="number">1</span>)</span>)</span>;
+    try {
+        endpoint.init<span class="params">()</span>;
+    } catch <span class="params">(Exception ex)</span> {
+        getLog<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"abstractProtocolHandler.initError"</span>,
+                getName<span class="params">()</span>)</span>, ex)</span>;
+        throw ex;
+    }
+}
+</code></pre><p>打断点调试可以知道oname的值是<code>Tomcat:type=ProtocolHandler,port=auto-1,address=&quot;127.0.0.1&quot;</code>,tpOname是<code>Tomcat:type=ProtocolHandler,port=auto-1,address=&quot;127.0.0.1&quot;</code>,rOname是<code>Tomcat:type=GlobalRequestProcessor,name=&quot;http-bio-127.0.0.1-auto-1&quot;</code>,我们重点关注endpoint的init方法，主要完成以下几个过程：</p>
+<ol>
+<li>设置线程接收数和最大连接数</li>
+<li>创建线程池,启动监听的线程监听用户请求</li>
+<li>启动一个线程处理请求</li>
+</ol>
+<p>初始化完成Connector就可以启动了，启动阶段调用startInternal方法：</p>
+<p>代码清单3-5：</p>
+<pre><code>@Override
+protected void startInternal<span class="params">()</span> throws LifecycleException {
+    <span class="comment">// Validate settings before starting</span>
+    <span class="keyword">if</span> <span class="params">(getPort<span class="params">()</span> &lt; <span class="number">0</span>)</span> {
+        throw new LifecycleException<span class="params">(sm.getString<span class="params">(
+                <span class="string">"coyoteConnector.invalidPort"</span>, Integer.valueOf<span class="params">(getPort<span class="params">()</span>)</span>)</span>)</span>;
+    }
+    setState<span class="params">(LifecycleState.STARTING)</span>;
+    try {
+        protocolHandler.start<span class="params">()</span>;
+    } catch <span class="params">(Exception e)</span> {
+        String errPrefix = <span class="string">""</span>;
+        <span class="keyword">if</span><span class="params">(this.service != null)</span> {
+            errPrefix += <span class="string">"service.getName(): \""</span> + this.service.getName<span class="params">()</span> + <span class="string">"\"; "</span>;
+        }
+        throw new LifecycleException
+            <span class="params">(errPrefix + <span class="string">" "</span> + sm.getString
+             <span class="params">(<span class="string">"coyoteConnector.protocolHandlerStartFailed"</span>)</span>, e)</span>;
+    }
+    mapperListener.start<span class="params">()</span>;
+}
+</code></pre><p>可以看出Connector调用<code>protocolHandler.start()</code>方法，继续看看这个方法的源码：</p>
+<p>代码清单3-6：</p>
+<pre><code>@Override
+public void start<span class="params">()</span> throws Exception {
+    <span class="keyword">if</span> <span class="params">(getLog<span class="params">()</span>.isInfoEnabled<span class="params">()</span>)</span>
+        getLog<span class="params">()</span>.info<span class="params">(sm.getString<span class="params">(<span class="string">"abstractProtocolHandler.start"</span>,
+                getName<span class="params">()</span>)</span>)</span>;
+    try {
+        endpoint.start<span class="params">()</span>;
+    } catch <span class="params">(Exception ex)</span> {
+        getLog<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"abstractProtocolHandler.startError"</span>,
+                getName<span class="params">()</span>)</span>, ex)</span>;
+        throw ex;
+    }
+}
+</code></pre><p>这个方法又调用了<code>endpoint.start()</code>方法：</p>
+<p>代码清单3-7：</p>
+<pre><code><span class="label">public</span> final void start() throws Exception {
+    <span class="preprocessor">if</span> (<span class="keyword">bindState </span>== <span class="keyword">BindState.UNBOUND) </span>{
+        <span class="keyword">bind();
+</span>        <span class="keyword">bindState </span>= <span class="keyword">BindState.BOUND_ON_START;
+</span>    }
+    startInternal()<span class="comment">;</span>
+}
+</code></pre><p>然后又调用了org.apache.tomcat.util.net.AbstractEndpoint.startInternal()方法：</p>
+<p>代码清单3-8：</p>
+<pre><code>@Override
+public void startInternal<span class="params">()</span> throws Exception {
+    <span class="keyword">if</span> <span class="params">(!running)</span> {
+        running = <span class="literal">true</span>;
+        paused = <span class="literal">false</span>;
+        <span class="comment">// Create worker collection</span>
+        <span class="keyword">if</span> <span class="params">(getExecutor<span class="params">()</span> == null)</span> {
+            createExecutor<span class="params">()</span>;
+        }
+        initializeConnectionLatch<span class="params">()</span>;
+        startAcceptorThreads<span class="params">()</span>;
+        <span class="comment">// Start async timeout thread</span>
+        Thread timeoutThread = new Thread<span class="params">(new AsyncTimeout<span class="params">()</span>,
+                getName<span class="params">()</span> + <span class="string">"-AsyncTimeout"</span>)</span>;
+        timeoutThread.setPriority<span class="params">(threadPriority)</span>;
+        timeoutThread.setDaemon<span class="params">(<span class="literal">true</span>)</span>;
+        timeoutThread.start<span class="params">()</span>;
+    }
+}
+</code></pre><ol>
+<li>设置线程接收数和最大连接数</li>
+<li>创建线程池,启动监听的线程监听用户请求</li>
+<li>启动一个线程处理异步请求</li>
+</ol>
+<p>这里启动了一个异步线程处理请求，这个异步线程是如何执行的呢？</p>
+<p>代码清单3-9：</p>
+<pre><code><span class="comment">/**
+ * Async timeout thread
+ */</span>
+protected class AsyncTimeout implements Runnable {
+    <span class="comment">/**
+     * The background thread that checks async requests and fires the
+     * timeout if there has been no activity.
+     */</span>
+    @Override
+    public void run<span class="params">()</span> {
+        <span class="comment">// Loop until we receive a shutdown command</span>
+        while <span class="params">(running)</span> {
+            try {
+                Thread.sleep<span class="params">(<span class="number">1000</span>)</span>;
+            } catch <span class="params">(InterruptedException e)</span> {
+                <span class="comment">// Ignore</span>
+            }
+            long now = System.currentTimeMillis<span class="params">()</span>;
+            Iterator&lt;SocketWrapper&lt;Socket&gt;&gt; sockets =
+                waitingRequests.iterator<span class="params">()</span>;
+            while <span class="params">(sockets.hasNext<span class="params">()</span>)</span> {
+                SocketWrapper&lt;Socket&gt; socket = sockets.next<span class="params">()</span>;
+                long access = socket.getLastAccess<span class="params">()</span>;
+                <span class="keyword">if</span> <span class="params">(socket.getTimeout<span class="params">()</span> &gt; <span class="number">0</span> &amp;&amp;
+                        <span class="params">(now-access)</span>&gt;socket.getTimeout<span class="params">()</span>)</span> {
+                    processSocketAsync<span class="params">(socket,SocketStatus.TIMEOUT)</span>;
+                }
+            }
+            <span class="comment">// Loop if endpoint is paused</span>
+            while <span class="params">(paused &amp;&amp; running)</span> {
+                try {
+                    Thread.sleep<span class="params">(<span class="number">1000</span>)</span>;
+                } catch <span class="params">(InterruptedException e)</span> {
+                    <span class="comment">// Ignore</span>
+                }
+            }
+        }
+    }
+}
+
+<span class="comment">//processSocket</span>
+public boolean processSocketAsync<span class="params">(SocketWrapper&lt;Socket&gt; socket,
+        SocketStatus status)</span> {
+    try {
+        synchronized <span class="params">(socket)</span> {
+            <span class="keyword">if</span> <span class="params">(waitingRequests.remove<span class="params">(socket)</span>)</span> {
+                SocketProcessor proc = new SocketProcessor<span class="params">(socket,status)</span>;
+                ClassLoader loader = Thread.currentThread<span class="params">()</span>.getContextClassLoader<span class="params">()</span>;
+                try {
+                    <span class="comment">//threads should not be created by the webapp classloader</span>
+                    <span class="keyword">if</span> <span class="params">(Constants.IS_SECURITY_ENABLED)</span> {
+                        PrivilegedAction&lt;Void&gt; pa = new PrivilegedSetTccl<span class="params">(
+                                getClass<span class="params">()</span>.getClassLoader<span class="params">()</span>)</span>;
+                        AccessController.doPrivileged<span class="params">(pa)</span>;
+                    } <span class="keyword">else</span> {
+                        Thread.currentThread<span class="params">()</span>.setContextClassLoader<span class="params">(
+                                getClass<span class="params">()</span>.getClassLoader<span class="params">()</span>)</span>;
+                    }
+                    <span class="comment">// During shutdown, executor may be null - avoid NPE</span>
+                    <span class="keyword">if</span> <span class="params">(!running)</span> {
+                        return <span class="literal">false</span>;
+                    }
+                    getExecutor<span class="params">()</span>.execute<span class="params">(proc)</span>;
+                    <span class="comment">//<span class="doctag">TODO</span> gotta catch RejectedExecutionException and properly handle it</span>
+                } finally {
+                    <span class="keyword">if</span> <span class="params">(Constants.IS_SECURITY_ENABLED)</span> {
+                        PrivilegedAction&lt;Void&gt; pa = new PrivilegedSetTccl<span class="params">(loader)</span>;
+                        AccessController.doPrivileged<span class="params">(pa)</span>;
+                    } <span class="keyword">else</span> {
+                        Thread.currentThread<span class="params">()</span>.setContextClassLoader<span class="params">(loader)</span>;
+                    }
+                }
+            }
+        }
+    } catch <span class="params">(Throwable t)</span> {
+        ExceptionUtils.handleThrowable<span class="params">(t)</span>;
+        <span class="comment">// This means we got an OOM or similar creating a thread, or that</span>
+        <span class="comment">// the pool and its queue are full</span>
+        <span class="built_in">log</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"endpoint.process.fail"</span>)</span>, t)</span>;
+        return <span class="literal">false</span>;
+    }
+    return <span class="literal">true</span>;
+}
+</code></pre><p>org.apache.tomcat.util.net.JIoEndpoint.SocketProcessor的职责是把具体的请求处理过程委派给org.apache.tomcat.util.net.JIoEndpoint.Handler，然后根据handler返回的不同SocketState，来决定是否关闭连接或者进行下一轮处理。 </p>
+<p>代码清单3-10：</p>
+<pre><code>public void run<span class="params">()</span> {
+        boolean launch = <span class="literal">false</span>;
+        synchronized <span class="params">(socket)</span> {
+            try {
+                SocketState state = SocketState.OPEN;
+                try {
+                    <span class="comment">// SSL handshake</span>
+                    serverSocketFactory.handshake<span class="params">(socket.getSocket<span class="params">()</span>)</span>;
+                } catch <span class="params">(Throwable t)</span> {
+                    ExceptionUtils.handleThrowable<span class="params">(t)</span>;
+                    <span class="keyword">if</span> <span class="params">(log.isDebugEnabled<span class="params">()</span>)</span> {
+                        <span class="built_in">log</span>.debug<span class="params">(sm.getString<span class="params">(<span class="string">"endpoint.err.handshake"</span>)</span>, t)</span>;
+                    }
+                    <span class="comment">// Tell to close the socket</span>
+                    state = SocketState.CLOSED;
+                }
+                <span class="keyword">if</span> <span class="params">(<span class="params">(state != SocketState.CLOSED)</span>)</span> {
+                    <span class="keyword">if</span> <span class="params">(status == null)</span> {
+                        state = handler.process<span class="params">(socket, SocketStatus.OPEN_READ)</span>;
+                    } <span class="keyword">else</span> {
+                        state = handler.process<span class="params">(socket,status)</span>;
+                    }
+                }
+                <span class="keyword">if</span> <span class="params">(state == SocketState.CLOSED)</span> {
+                    <span class="comment">// Close socket</span>
+                    <span class="keyword">if</span> <span class="params">(log.isTraceEnabled<span class="params">()</span>)</span> {
+                        <span class="built_in">log</span>.trace<span class="params">(<span class="string">"Closing socket:"</span>+socket)</span>;
+                    }
+                    countDownConnection<span class="params">()</span>;
+                    try {
+                        socket.getSocket<span class="params">()</span>.close<span class="params">()</span>;
+                    } catch <span class="params">(IOException e)</span> {
+                        <span class="comment">// Ignore</span>
+                    }
+                } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(state == SocketState.OPEN ||
+                        state == SocketState.UPGRADING ||
+                        state == SocketState.UPGRADING_TOMCAT  ||
+                        state == SocketState.UPGRADED)</span>{
+                    socket.setKeptAlive<span class="params">(<span class="literal">true</span>)</span>;
+                    socket.access<span class="params">()</span>;
+                    launch = <span class="literal">true</span>;
+                } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(state == SocketState.LONG)</span> {
+                    socket.access<span class="params">()</span>;
+                    waitingRequests.add<span class="params">(socket)</span>;
+                }
+            } finally {
+                <span class="keyword">if</span> <span class="params">(launch)</span> {
+                    try {
+                        getExecutor<span class="params">()</span>.execute<span class="params">(new SocketProcessor<span class="params">(socket, SocketStatus.OPEN_READ)</span>)</span>;
+                    } catch <span class="params">(RejectedExecutionException x)</span> {
+                        <span class="built_in">log</span>.warn<span class="params">(<span class="string">"Socket reprocessing request was rejected for:"</span>+socket,x)</span>;
+                        try {
+                            <span class="comment">//unable to handle connection at this time</span>
+                            handler.process<span class="params">(socket, SocketStatus.DISCONNECT)</span>;
+                        } finally {
+                            countDownConnection<span class="params">()</span>;
+                        }
+                    } catch <span class="params">(NullPointerException npe)</span> {
+                        <span class="keyword">if</span> <span class="params">(running)</span> {
+                            <span class="built_in">log</span>.error<span class="params">(sm.getString<span class="params">(<span class="string">"endpoint.launch.fail"</span>)</span>,
+                                    npe)</span>;
+                        }
+                    }
+                }
+            }
+        }
+        socket = null;
+        <span class="comment">// Finish up this request</span>
+    }
+}
+</code></pre><p>其中的process方法主要完成对request的解析，包括请求头、请求行和请求体<br>代码清单3-11：</p>
+<pre><code><span class="comment">//process method of org.apache.coyote.http11.AbstractHttp11Processor&lt;S&gt;.HttpProcessor extends org.apache.coyote.http11.AbstractHttp11Processor&lt;S&gt;</span>
+@Override
+public SocketState process<span class="params">(SocketWrapper&lt;S&gt; socketWrapper)</span>
+    throws IOException {
+    RequestInfo rp = request.getRequestProcessor<span class="params">()</span>;
+    rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_PARSE)</span>;
+    <span class="comment">// Setting up the I/O</span>
+    setSocketWrapper<span class="params">(socketWrapper)</span>;
+    getInputBuffer<span class="params">()</span>.init<span class="params">(socketWrapper, endpoint)</span>;
+    getOutputBuffer<span class="params">()</span>.init<span class="params">(socketWrapper, endpoint)</span>;
+    <span class="comment">// Flags</span>
+    error = <span class="literal">false</span>;
+    keepAlive = <span class="literal">true</span>;
+    comet = <span class="literal">false</span>;
+    openSocket = <span class="literal">false</span>;
+    sendfileInProgress = <span class="literal">false</span>;
+    readComplete = <span class="literal">true</span>;
+    <span class="keyword">if</span> <span class="params">(endpoint.getUsePolling<span class="params">()</span>)</span> {
+        keptAlive = <span class="literal">false</span>;
+    } <span class="keyword">else</span> {
+        keptAlive = socketWrapper.isKeptAlive<span class="params">()</span>;
+    }
+    <span class="keyword">if</span> <span class="params">(disableKeepAlive<span class="params">()</span>)</span> {
+        socketWrapper.setKeepAliveLeft<span class="params">(<span class="number">0</span>)</span>;
+    }
+    while <span class="params">(!error &amp;&amp; keepAlive &amp;&amp; !comet &amp;&amp; !isAsync<span class="params">()</span> &amp;&amp;
+            upgradeInbound == null &amp;&amp;
+            httpUpgradeHandler == null &amp;&amp; !endpoint.isPaused<span class="params">()</span>)</span> {
+        <span class="comment">// Parsing the request header</span>
+        try {
+            setRequestLineReadTimeout<span class="params">()</span>;
+            <span class="keyword">if</span> <span class="params">(!getInputBuffer<span class="params">()</span>.parseRequestLine<span class="params">(keptAlive)</span>)</span> {
+                <span class="keyword">if</span> <span class="params">(handleIncompleteRequestLineRead<span class="params">()</span>)</span> {
+                    break;
+                }
+            }
+            <span class="keyword">if</span> <span class="params">(endpoint.isPaused<span class="params">()</span>)</span> {
+                <span class="comment">// 503 - Service unavailable</span>
+                response.setStatus<span class="params">(<span class="number">503</span>)</span>;
+                error = <span class="literal">true</span>;
+            } <span class="keyword">else</span> {
+                <span class="comment">// Make sure that connectors that are non-blocking during</span>
+                <span class="comment">// header processing (NIO) only set the start time the first</span>
+                <span class="comment">// time a request is processed.</span>
+                <span class="keyword">if</span> <span class="params">(request.getStartTime<span class="params">()</span> &lt; <span class="number">0</span>)</span> {
+                    request.setStartTime<span class="params">(System.currentTimeMillis<span class="params">()</span>)</span>;
+                }
+                keptAlive = <span class="literal">true</span>;
+                <span class="comment">// Set this every time in case limit has been changed via JMX</span>
+                request.getMimeHeaders<span class="params">()</span>.setLimit<span class="params">(endpoint.getMaxHeaderCount<span class="params">()</span>)</span>;
+                <span class="comment">// Currently only NIO will ever return false here</span>
+                <span class="keyword">if</span> <span class="params">(!getInputBuffer<span class="params">()</span>.parseHeaders<span class="params">()</span>)</span> {
+                    <span class="comment">// We've read part of the request, don't recycle it</span>
+                    <span class="comment">// instead associate it with the socket</span>
+                    openSocket = <span class="literal">true</span>;
+                    readComplete = <span class="literal">false</span>;
+                    break;
+                }
+                <span class="keyword">if</span> <span class="params">(!disableUploadTimeout)</span> {
+                    setSocketTimeout<span class="params">(connectionUploadTimeout)</span>;
+                }
+            }
+        } catch <span class="params">(IOException e)</span> {
+            <span class="keyword">if</span> <span class="params">(getLog<span class="params">()</span>.isDebugEnabled<span class="params">()</span>)</span> {
+                getLog<span class="params">()</span>.debug<span class="params">(
+                        sm.getString<span class="params">(<span class="string">"http11processor.header.parse"</span>)</span>, e)</span>;
+            }
+            error = <span class="literal">true</span>;
+            break;
+        } catch <span class="params">(Throwable t)</span> {
+            ExceptionUtils.handleThrowable<span class="params">(t)</span>;
+            UserDataHelper.Mode logMode = userDataHelper.getNextMode<span class="params">()</span>;
+            <span class="keyword">if</span> <span class="params">(logMode != null)</span> {
+                String message = sm.getString<span class="params">(
+                        <span class="string">"http11processor.header.parse"</span>)</span>;
+                switch <span class="params">(logMode)</span> {
+                    case INFO_THEN_DEBUG:
+                        message += sm.getString<span class="params">(
+                                <span class="string">"http11processor.fallToDebug"</span>)</span>;
+                        <span class="comment">//$FALL-THROUGH$</span>
+                    case INFO:
+                        getLog<span class="params">()</span>.info<span class="params">(message)</span>;
+                        break;
+                    case DEBUG:
+                        getLog<span class="params">()</span>.debug<span class="params">(message)</span>;
+                }
+            }
+            <span class="comment">// 400 - Bad Request</span>
+            response.setStatus<span class="params">(<span class="number">400</span>)</span>;
+            adapter.<span class="built_in">log</span><span class="params">(request, response, <span class="number">0</span>)</span>;
+            error = <span class="literal">true</span>;
+        }
+        <span class="keyword">if</span> <span class="params">(!error)</span> {
+            <span class="comment">// Setting up filters, and parse some request headers</span>
+            rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_PREPARE)</span>;
+            try {
+                prepareRequest<span class="params">()</span>;
+            } catch <span class="params">(Throwable t)</span> {
+                ExceptionUtils.handleThrowable<span class="params">(t)</span>;
+                <span class="keyword">if</span> <span class="params">(getLog<span class="params">()</span>.isDebugEnabled<span class="params">()</span>)</span> {
+                    getLog<span class="params">()</span>.debug<span class="params">(sm.getString<span class="params">(
+                            <span class="string">"http11processor.request.prepare"</span>)</span>, t)</span>;
+                }
+                <span class="comment">// 400 - Internal Server Error</span>
+                response.setStatus<span class="params">(<span class="number">400</span>)</span>;
+                adapter.<span class="built_in">log</span><span class="params">(request, response, <span class="number">0</span>)</span>;
+                error = <span class="literal">true</span>;
+            }
+        }
+        <span class="keyword">if</span> <span class="params">(maxKeepAliveRequests == <span class="number">1</span>)</span> {
+            keepAlive = <span class="literal">false</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(maxKeepAliveRequests &gt; <span class="number">0</span> &amp;&amp;
+                socketWrapper.decrementKeepAlive<span class="params">()</span> &lt;= <span class="number">0</span>)</span> {
+            keepAlive = <span class="literal">false</span>;
+        }
+        <span class="comment">// Process the request in the adapter</span>
+        <span class="keyword">if</span> <span class="params">(!error)</span> {
+            try {
+                rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_SERVICE)</span>;
+                adapter.service<span class="params">(request, response)</span>;
+
+                <span class="keyword">if</span><span class="params">(keepAlive &amp;&amp; !error)</span> { <span class="comment">// Avoid checking twice.</span>
+                    error = response.getErrorException<span class="params">()</span> <span class="built_in">!</span>= null ||
+                            <span class="params">(!isAsync<span class="params">()</span> &amp;&amp;
+                            statusDropsConnection<span class="params">(response.getStatus<span class="params">()</span>)</span>)</span>;
+                }
+                setCometTimeouts<span class="params">(socketWrapper)</span>;
+            } catch <span class="params">(InterruptedIOException e)</span> {
+                error = <span class="literal">true</span>;
+            } catch <span class="params">(HeadersTooLargeException e)</span> {
+                error = <span class="literal">true</span>;
+                <span class="comment">// The response should not have been committed but check it</span>
+                <span class="comment">// anyway to be safe</span>
+                <span class="keyword">if</span> <span class="params">(!response.isCommitted<span class="params">()</span>)</span> {
+                    response.reset<span class="params">()</span>;
+                    response.setStatus<span class="params">(<span class="number">500</span>)</span>;
+                    response.setHeader<span class="params">(<span class="string">"Connection"</span>, <span class="string">"close"</span>)</span>;
+                }
+            } catch <span class="params">(Throwable t)</span> {
+                ExceptionUtils.handleThrowable<span class="params">(t)</span>;
+                getLog<span class="params">()</span>.error<span class="params">(sm.getString<span class="params">(
+                        <span class="string">"http11processor.request.process"</span>)</span>, t)</span>;
+                <span class="comment">// 500 - Internal Server Error</span>
+                response.setStatus<span class="params">(<span class="number">500</span>)</span>;
+                adapter.<span class="built_in">log</span><span class="params">(request, response, <span class="number">0</span>)</span>;
+                error = <span class="literal">true</span>;
+            }
+        }
+        <span class="comment">// Finish the handling of the request</span>
+        rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_ENDINPUT)</span>;
+        <span class="keyword">if</span> <span class="params">(!isAsync<span class="params">()</span> &amp;&amp; !comet)</span> {
+            <span class="keyword">if</span> <span class="params">(error)</span> {
+
+                getInputBuffer<span class="params">()</span>.setSwallowInput<span class="params">(<span class="literal">false</span>)</span>;
+            }
+            <span class="keyword">if</span> <span class="params">(response.getStatus<span class="params">()</span> &lt; <span class="number">200</span> || response.getStatus<span class="params">()</span> &gt; <span class="number">299</span>)</span> {
+                <span class="keyword">if</span> <span class="params">(expectation)</span> {
+                    <span class="comment">// Client sent Expect: 100-continue but received a</span>
+                    <span class="comment">// non-2xx response. Disable keep-alive (if enabled) to</span>
+                    <span class="comment">// ensure the connection is closed. Some clients may</span>
+                    <span class="comment">// still send the body, some may send the next request.</span>
+                    <span class="comment">// No way to differentiate, so close the connection to</span>
+                    <span class="comment">// force the client to send the next request.</span>
+                    getInputBuffer<span class="params">()</span>.setSwallowInput<span class="params">(<span class="literal">false</span>)</span>;
+                    keepAlive = <span class="literal">false</span>;
+                }
+            }
+            endRequest<span class="params">()</span>;
+        }
+        rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_ENDOUTPUT)</span>;
+        <span class="comment">// If there was an error, make sure the request is counted as</span>
+        <span class="comment">// and error, and update the statistics counter</span>
+        <span class="keyword">if</span> <span class="params">(error)</span> {
+            response.setStatus<span class="params">(<span class="number">500</span>)</span>;
+        }
+        request.updateCounters<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(!isAsync<span class="params">()</span> &amp;&amp; !comet || error)</span> {
+            getInputBuffer<span class="params">()</span>.nextRequest<span class="params">()</span>;
+            getOutputBuffer<span class="params">()</span>.nextRequest<span class="params">()</span>;
+        }
+        <span class="keyword">if</span> <span class="params">(!disableUploadTimeout)</span> {
+            <span class="keyword">if</span><span class="params">(endpoint.getSoTimeout<span class="params">()</span> &gt; <span class="number">0</span>)</span> {
+                setSocketTimeout<span class="params">(endpoint.getSoTimeout<span class="params">()</span>)</span>;
+            } <span class="keyword">else</span> {
+                setSocketTimeout<span class="params">(<span class="number">0</span>)</span>;
+            }
+        }
+        rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_KEEPALIVE)</span>;
+        <span class="keyword">if</span> <span class="params">(breakKeepAliveLoop<span class="params">(socketWrapper)</span>)</span> {
+            break;
+        }
+    }
+    rp.setStage<span class="params">(org.apache.coyote.Constants.STAGE_ENDED)</span>;
+    }
+}
+</code></pre><p>首先在Http11Processor的process方法里，会先从socket里读取http请求数据，并解析请求头，构造Request对象和Response对象，然后调用Adapter.service()方法。Adapter.service()完成请求行以及请求体的解析，并把解析出来的信息封装到Request和Response对象中，Adapter（确切说是org.apache.catalina.connector.CoyoteAdapter）是connector和container的桥梁，经过这一步，请求就从connector传递到container里了，Adapter.service()方法之后便将封装了Request以及Response对象的Socket传给Container容器了。<br>要注意的是：最先处理请求的Request是org.apache.coyote.Request类型，这是一个Tomcat中一个轻量级对象，完成基本的请求处理后很容易被JVM回收，那为什么不直接交给Connector.Request对象处理呢？由于后者是Servlet容器真正传递的对象其完成的职责比前者复杂，这里使用org.apache.coyote.Request主要减轻后者的任务负担，出于性能考虑才这么设计。<br>具体service方法清单如下：</p>
+<p>代码清单3-12：</p>
+<pre><code>@Override
+public void service<span class="params">(org.apache.coyote.Request req,
+                    org.apache.coyote.Response res)</span>
+    throws Exception {
+    Request request = <span class="params">(Request)</span> req.getNote<span class="params">(ADAPTER_NOTES)</span>;
+    Response response = <span class="params">(Response)</span> res.getNote<span class="params">(ADAPTER_NOTES)</span>;
+    <span class="keyword">if</span> <span class="params">(request == null)</span> {
+        <span class="comment">// Create objects</span>
+        request = connector.createRequest<span class="params">()</span>;
+        request.setCoyoteRequest<span class="params">(req)</span>;
+        response = connector.createResponse<span class="params">()</span>;
+        response.setCoyoteResponse<span class="params">(res)</span>;
+        <span class="comment">// Link objects</span>
+        request.setResponse<span class="params">(response)</span>;
+        response.setRequest<span class="params">(request)</span>;
+        <span class="comment">// Set as notes</span>
+        req.setNote<span class="params">(ADAPTER_NOTES, request)</span>;
+        res.setNote<span class="params">(ADAPTER_NOTES, response)</span>;
+        <span class="comment">// Set query string encoding</span>
+        req.getParameters<span class="params">()</span>.setQueryStringEncoding
+            <span class="params">(connector.getURIEncoding<span class="params">()</span>)</span>;
+    }
+    <span class="keyword">if</span> <span class="params">(connector.getXpoweredBy<span class="params">()</span>)</span> {
+        response.addHeader<span class="params">(<span class="string">"X-Powered-By"</span>, POWERED_BY)</span>;
+    }
+    boolean comet = <span class="literal">false</span>;
+    boolean async = <span class="literal">false</span>;
+    try {
+        <span class="comment">// Parse and set Catalina and configuration specific</span>
+        <span class="comment">// request parameters</span>
+        req.getRequestProcessor<span class="params">()</span>.setWorkerThreadName<span class="params">(Thread.currentThread<span class="params">()</span>.getName<span class="params">()</span>)</span>;
+        <span class="comment">//postParseRequest方法把CoyoteRequest转换为Connector.Request对象</span>
+        <span class="comment">//后一类型的对象才是在Tomcat容器流转时真正传递的对象</span>
+        boolean postParseSuccess = postParseRequest<span class="params">(req, request, res, response)</span>;
+        <span class="keyword">if</span> <span class="params">(postParseSuccess)</span> {
+            <span class="comment">//check valves if we support async</span>
+            request.setAsyncSupported<span class="params">(connector.getService<span class="params">()</span>.getContainer<span class="params">()</span>.getPipeline<span class="params">()</span>.isAsyncSupported<span class="params">()</span>)</span>;
+            <span class="comment">// 调用Container容器的invoke方法，把请求交给Container容器</span>
+            connector.getService<span class="params">()</span>.getContainer<span class="params">()</span>.getPipeline<span class="params">()</span>.getFirst<span class="params">()</span>.invoke<span class="params">(request, response)</span>;
+            <span class="keyword">if</span> <span class="params">(request.isComet<span class="params">()</span>)</span> {
+                <span class="keyword">if</span> <span class="params">(!response.isClosed<span class="params">()</span> &amp;&amp; !response.isError<span class="params">()</span>)</span> {
+                    <span class="keyword">if</span> <span class="params">(request.getAvailable<span class="params">()</span> || <span class="params">(request.getContentLength<span class="params">()</span> &gt; <span class="number">0</span> &amp;&amp; <span class="params">(!request.isParametersParsed<span class="params">()</span>)</span>)</span>)</span> {
+                        <span class="comment">// Invoke a read event right away if there are available bytes</span>
+                        <span class="keyword">if</span> <span class="params">(event<span class="params">(req, res, SocketStatus.OPEN_READ)</span>)</span> {
+                            comet = <span class="literal">true</span>;
+                            res.action<span class="params">(ActionCode.COMET_BEGIN, null)</span>;
+                        }
+                    } <span class="keyword">else</span> {
+                        comet = <span class="literal">true</span>;
+                        res.action<span class="params">(ActionCode.COMET_BEGIN, null)</span>;
+                    }
+                } <span class="keyword">else</span> {
+                    <span class="comment">// Clear the filter chain, as otherwise it will not be reset elsewhere</span>
+                    <span class="comment">// since this is a Comet request</span>
+                    request.setFilterChain<span class="params">(null)</span>;
+                }
+            }
+        }
+        AsyncContextImpl asyncConImpl = <span class="params">(AsyncContextImpl)</span>request.getAsyncContext<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(asyncConImpl != null)</span> {
+            async = <span class="literal">true</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(!comet)</span> {
+            request.finishRequest<span class="params">()</span>;
+            response.finishResponse<span class="params">()</span>;
+            <span class="keyword">if</span> <span class="params">(postParseSuccess &amp;&amp;
+                    request.getMappingData<span class="params">()</span>.context != null)</span> {
+                <span class="params">(<span class="params">(Context)</span> request.getMappingData<span class="params">()</span>.context)</span>.logAccess<span class="params">(
+                        request, response,
+                        System.currentTimeMillis<span class="params">()</span> - req.getStartTime<span class="params">()</span>,
+                        <span class="literal">false</span>)</span>;
+            }
+            req.action<span class="params">(ActionCode.POST_REQUEST , null)</span>;
+        }
+    } catch <span class="params">(IOException e)</span> {
+        <span class="comment">// Ignore</span>
+    } finally {
+       <span class="comment">//ignore</span>
+    }
+}
+</code></pre><p>从<code>connector.getService().getContainer().getPipeline().getFirst().invoke(request, response);</code>这句代码中可以知道下一步的处理需要交给Container容器了。</p>
+<p>经过上面一系列复杂的操作流程，Tomcat的Connector已经完成了protocol.start()方法，返回Connector的startIntenal方法，还有一个步骤要完成就是<code>mapperListener.start()</code>的方法了，整个执行过程比较简单，有两步：</p>
+<ol>
+<li>执行Connector的startIntenal方法</li>
+<li>执行MapperListener的startIntenal方法</li>
+</ol>
+<p>代码清单3-14：</p>
+<pre><code>@Override
+public void startInternal<span class="params">()</span> throws LifecycleException {
+    setState<span class="params">(LifecycleState.STARTING)</span>;
+    findDefaultHost<span class="params">()</span>;
+    Engine engine = <span class="params">(Engine)</span> connector.getService<span class="params">()</span>.getContainer<span class="params">()</span>;
+    addListeners<span class="params">(engine)</span>;
+    Container[] conHosts = engine.findChildren<span class="params">()</span>;
+    <span class="keyword">for</span> <span class="params">(Container conHost : conHosts)</span> {
+        Host host = <span class="params">(Host)</span> conHost;
+        <span class="keyword">if</span> <span class="params">(!LifecycleState.NEW.equals<span class="params">(host.getState<span class="params">()</span>)</span>)</span> {
+            <span class="comment">// Registering the host will register the context and wrappers</span>
+            registerHost<span class="params">(host)</span>;
+        }
+    }
+}
+</code></pre><p>首先注册已初始化的组件，然后为这些组件添加监听器，最后添加容器之间的映射关系。这样经过上面两个大步骤以及N个小步骤，我们的Connector才算启动完毕，可谓是路途艰辛啊！</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Tomcat/">Tomcat</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Tomcat/">Tomcat</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/tomcat-connector/" data-title="深入理解Tomcat之Connector | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/tomcat-engine-host/" title="深入理解Tomcat之Engine和Host容器">
+  <strong>上一篇：</strong><br/>
+  <span>
+  深入理解Tomcat之Engine和Host容器</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/tomcat-workflow-architect/"  title="深入理解Tomcat之系统架构">
+ <strong>下一篇：</strong><br/> 
+ <span>深入理解Tomcat之系统架构
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/tomcat-connector/" data-title="深入理解Tomcat之Connector" data-url="http://rhwayfun.com/post/tomcat-connector/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

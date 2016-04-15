@@ -1,0 +1,899 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>利用Hexo搭建博客 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="经过一番折腾，终于搭建好了自己的博客网站，结果是美好的，但过程却惨不忍睹。作为本站的开篇之作，博主我主要想分享一些建站的想法以及一些初略的经验。欢迎围观，欢迎吐槽。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Hexo搭建博客">
+<meta property="og:url" content="http://rhwayfun.com/post/first-blog/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="经过一番折腾，终于搭建好了自己的博客网站，结果是美好的，但过程却惨不忍睹。作为本站的开篇之作，博主我主要想分享一些建站的想法以及一些初略的经验。欢迎围观，欢迎吐槽。">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/caca.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/CNAME.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/rhwayfun.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.694Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Hexo搭建博客">
+<meta name="twitter:description" content="经过一番折腾，终于搭建好了自己的博客网站，结果是美好的，但过程却惨不忍睹。作为本站的开篇之作，博主我主要想分享一些建站的想法以及一些初略的经验。欢迎围观，欢迎吐槽。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/first-blog/" title="利用Hexo搭建博客" itemprop="url">利用Hexo搭建博客</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-19T11:24:35.000Z" itemprop="datePublished"> 发表于 2015-07-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装软件"><span class="toc-number">2.</span> <span class="toc-text">安装软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么选择Hexo与github_pages？"><span class="toc-number">3.</span> <span class="toc-text">为什么选择Hexo与github pages？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo是什么？"><span class="toc-number">4.</span> <span class="toc-text">Hexo是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo快速入门"><span class="toc-number">5.</span> <span class="toc-text">Hexo快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Hexo"><span class="toc-number">5.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署Hexo"><span class="toc-number">5.2.</span> <span class="toc-text">部署Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署hexo遇到的问题"><span class="toc-number">5.3.</span> <span class="toc-text">部署hexo遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改默认主题"><span class="toc-number">5.4.</span> <span class="toc-text">修改默认主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启用调试"><span class="toc-number">5.5.</span> <span class="toc-text">启用调试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github_pages是什么？"><span class="toc-number">6.</span> <span class="toc-text">github pages是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github_pages快速入门"><span class="toc-number">7.</span> <span class="toc-text">github pages快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注册github"><span class="toc-number">7.1.</span> <span class="toc-text">注册github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置SSH密匙"><span class="toc-number">7.2.</span> <span class="toc-text">配置SSH密匙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Github_pages"><span class="toc-number">7.3.</span> <span class="toc-text">使用Github pages</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github_pages进阶篇"><span class="toc-number">8.</span> <span class="toc-text">Github pages进阶篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注册域名"><span class="toc-number">8.1.</span> <span class="toc-text">注册域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置域名"><span class="toc-number">8.2.</span> <span class="toc-text">设置域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改DNS设置"><span class="toc-number">8.3.</span> <span class="toc-text">修改DNS设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Github_pages的设置"><span class="toc-number">8.4.</span> <span class="toc-text">Github pages的设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol>
+		
+		</div>
+		
+		<p>经过一番折腾，终于搭建好了自己的博客网站，结果是美好的，但过程却惨不忍睹。<br>作为本站的开篇之作，博主我主要想分享一些建站的想法以及一些初略的经验。欢<br>迎围观，欢迎吐槽。<a id="more"></a></p>
+<h2 id="前言">前言</h2><hr>
+<p><a href="https://pages.github.com/" target="_blank" rel="external">github pages</a>是github下一个免费域名空间，可以自动生成项目或者用户的网站作为一门前沿技术，我深知学习</p>
+<p>技术的重要性，技术的思考与学习让我产生了撰写博客的想法，之前试过iteye，反<br>正就是没坚持下去。直到遇到了hexo，才萌生了搭建自己的博客网站的想法。经过各种失<br>败，终于柳暗花明又一村。为了让后来者少走弯路，虽然网上已经有各种教程，但<br>总结自己失败的经历对别人还是有帮助的。这篇博客就以rhwayfun.com的建立过程<br>谈谈经验。<br> <br></p>
+<h2 id="安装软件">安装软件</h2><hr>
+<p>1、 <a href="https://nodejs.org/" target="_blank" rel="external">node.js</a> </p>
+<p>2、 <a href="https://github.com/" target="_blank" rel="external">github客户端</a></p>
+<p>3、 <a href="http://www.sublimetext.com/2" target="_blank" rel="external">Sublime Text 2.0</a></p>
+<hr>
+<h2 id="为什么选择Hexo与github_pages？">为什么选择Hexo与github pages？</h2><hr>
+<ul>
+<li>Hexo是什么？</li>
+<li>Hexo快速入门</li>
+<li>github pages是什么？</li>
+<li>github pages快速入门</li>
+</ul>
+<h2 id="Hexo是什么？">Hexo是什么？</h2><p>Hexo是一款基于Node.js的静态博客框架，运行速度超快，支持Markdown语法，<br>撰写文章就是那么简单。如果想详细了解Hexo，可以参考<a href="https://hexoplus.com/" target="_blank" rel="external">官方指南</a>或者看<br><a href="http://cnfeat.com/2014/05/10/2014-05-11-how-to-build-a-blog/" target="_blank" rel="external">这篇文章</a>。</p>
+<hr>
+<h2 id="Hexo快速入门">Hexo快速入门</h2><hr>
+<h3 id="安装Hexo">安装Hexo</h3><p>在电脑任意目录创建hexo文件夹（E:\hexo）,执行以下命令</p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">e</span>:\hexo
+npm install -<span class="keyword">g</span>
+</code></pre><h3 id="部署Hexo">部署Hexo</h3><p>继续在E:\hexo目录下进行操作，执行以下命令</p>
+<pre><code>hexo init
+hexo <span class="keyword">g</span>
+hexo <span class="literal">s</span>
+</code></pre><p><code>hexo init</code>命令会在hexo文件夹生成一些初始化文件和一些配置信息<br><code>hexo g</code>命令在hexo文件夹生成public文件夹，这个文件里面的文件是面向网站的，以后写文章创建的<br>文件都是在这个文件夹进行操作<br><code>hexo s</code>会启动hexo服务，在浏览器输入<code>localhost:4000</code>就可以直接访问了</p>
+<h3 id="部署hexo遇到的问题">部署hexo遇到的问题</h3><p>在执行上述命令后打开<code>localhost:4000</code>,页面出现的都是代码，一开始怀疑是不是自己部署hexo出问题了，<br>于是又重新部署Hexo,结果还是一样，眼看就要成功了却卡在这里，上网查找资料才发现，没有安装模版文件，<br>解决这个问题只需要使用以下命令</p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> hexo-renderer-ejs <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-stylus <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-marked <span class="comment">--save</span></span>
+</code></pre><h3 id="修改默认主题">修改默认主题</h3><p>首先需要clone新的主题到本地，我使用的是jacman的，在git shell中切换到e:\hexo，使用以下命令克隆主题到<br>本地：</p>
+<pre><code><span class="variable">$ </span>git clone <span class="symbol">https:</span>/<span class="regexp">/github.com/wuchong</span><span class="regexp">/jacman.git themes/jacman</span>
+</code></pre><p>然后jacman的主题就复制到了themes/jacman中。接着需要在hexo下的_config.yml中修改主题：</p>
+<pre><code><span class="attribute">themes</span>: <span class="string">jacman</span>
+</code></pre><p>修改之后，需要更新主题，直接执行下面的命令即可：</p>
+<pre><code><span class="built_in">cd</span> themes\jacman
+git pull
+</code></pre><h3 id="启用调试">启用调试</h3><p>更新主题后，需要重新部署hexo,并配置hexo下的<em>config.yml，修改配置如下</em></p>
+<pre><code># Deployment
+## <span class="string">Docs:</span> <span class="string">http:</span><span class="comment">//hexo.io/docs/deployment.html</span>
+<span class="string">deploy:</span>
+<span class="label">  type:</span> git
+<span class="label">  repository:</span> <span class="string">https:</span><span class="comment">//github.com/happyxiaofan/happyxiaofan.github.io.git</span>
+<span class="label">  branch:</span> master
+</code></pre><p>然后在git shell中执行以下命令（可以不切换路径）</p>
+<pre><code>hexo clean
+hexo <span class="keyword">g</span>
+hexo <span class="literal">s</span>
+</code></pre><p>以后每次修改文件或者themes下的_config.yml文件都要重新执行<code>hexo g</code>和<code>hexo s</code>，然后打开本地预览窗口，查看修改效果。<br>不过现在有许多在线Markdown预览工具，简单实用，可以直接在预览工具或者Sublime Text中编写代码（在Sublime Text预览需要首先安装<br>MarkdownEditing插件），在网页中查看编写效果。不过当对Markdown语法熟悉之后，直接在Sublime Text中写代码是很不错的体验，之前<br>使用Notepad ++，后面发现Sublime Text那么强大，果断使用它了</p>
+<hr>
+<h2 id="github_pages是什么？">github pages是什么？</h2><p>github pages可以自动为你的项目生成一个网站模版，并且没有数量限制，类似这样：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/caca.jpg" alt="caca" title="github pages"></p>
+<p>使用github pages还能生成个人或者组织网站，相当强大。而且发布一个网站仅仅需要的只是一个github账号而已。详情可以访问<a href="https://pages.github.com" target="_blank" rel="external">这里</a></p>
+<hr>
+<h2 id="github_pages快速入门">github pages快速入门</h2><hr>
+<h3 id="注册github">注册github</h3><p>访问github官网,注册一个账号，并创建一个项目，比如一个公共项目rhwayfun。</p>
+<h3 id="配置SSH密匙">配置SSH密匙</h3><p>配置SSH密匙是为了本地github项目与远程建立联系，详细的配置过程请参考<a href="https://help.github.com/articles/generating-ssh-keys/" target="_blank" rel="external">官方指南</a>。</p>
+<h3 id="使用Github_pages">使用Github pages</h3><p>配置成功后，在rhwayfun项目主页点击setting，然后点击左边的Options，下拉到Github pages，直接点那个<code>Launch automatic page generator</code>按钮就行。然后选择网站模版就行，等待大约几分钟，github pages就帮你生成了项目的网站，默认网址是<code>https:username.github.io/project</code><br>如果想访问自定义的域名，请查看<strong>Github pages进阶篇</strong></p>
+<hr>
+<h2 id="Github_pages进阶篇">Github pages进阶篇</h2><hr>
+<h3 id="注册域名">注册域名</h3><p>访问<a href="https://www.godaddy.com/?ci=" target="_blank" rel="external">godaddy</a>，首先查找想要注册的域名，然后一直点击<strong>CONTINUE TO CHART</strong>就行。godaddy是国外唯一支持支付宝的域名提供商，而且godaddy性能稳定，这也是选择它的原因。支付成功后，点击<code>My Account</code>——&gt;<code>Manage My Domains</code>，就可以看到你注册的那个域名了。</p>
+<h3 id="设置域名">设置域名</h3><p>进入域名管理页面后需要修改Nameservers，选中域名，选自定义，将Nameservers修改为f1g1ns1.dnspod.net和f1g1ns2.dnspod.net</p>
+<h3 id="修改DNS设置">修改DNS设置</h3><p>使用<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSPod</a>添加域名，创建两条A记录，端口号保持600不变，将IP地址分别设为github pages提供的IP：</p>
+<ul>
+<li>192.30.252.153</li>
+<li>192.30.252.154</li>
+</ul>
+<h3 id="Github_pages的设置">Github pages的设置</h3><p>在username.github.io项目根目录下创建CNAME文件，文件内容为你在godaddy购买的域名（顶级域名贵些，建议购买顶级域名），如rhwayfun.com</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/CNAME.jpg" alt="CNAME文件"></p>
+<p>至此博客搭建完成，可以在git shell中切换到hexo文件夹，仍然执行<code>hexo g</code>和<code>hexo d</code>命令，也可以使用组合命令<code>hexo d -g</code>。然后到浏览器中输入rhwayfun.com（ps：DNSPod的设置不一定立即生效，需要等待一段时间）。如出现下面的界面，恭喜你博客搭建成功，请尽情享受你的博客网站吧！</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/rhwayfun.jpg" alt="rhwayfun"></p>
+<p>本文关于hexo框架博客网站的搭建，不是最详细的，当然如果您根据我的文章一步步折腾下来还成功的的话，说明我们都是一路人————爱折腾。或许这也是程序员的一个特质吧。文章中任何有瑕疵的地方，欢迎不吝赐教！</p>
+<hr>
+<h2 id="参考资料">参考资料</h2><p>1、 <a href="http://cnfeat.com/2014/05/10/2014-05-11-how-to-build-a-blog/" target="_blank" rel="external">如何搭建一个独立博客——简明Github Pages与Hexo教程</a> （推荐）<br>2、 <a href="http://wsgzao.github.io/post/hexo-jacman/#主题yml" target="_blank" rel="external">Jacman基于Pacman修改的Hexo主题</a>（推荐）<br>3、 <a href="http://wowubuntu.com/markdown/" target="_blank" rel="external">Markdown语法说明</a><br>4、 <a href="http://feedback.livereload.com/knowledgebase/articles/67441-how-do-i-start-using-livereload-" target="_blank" rel="external">How do I start using LiveReload?</a><br>5、 <a href="http://www.jianshu.com/p/72408c410904" target="_blank" rel="external">Hexo站点中添加文章目录以及归档</a><br>6、 <a href="http://www.jerryfu.net/post/search-engine-for-hexo-with-swiftype.html" target="_blank" rel="external">利用swiftype为hexo添加站内搜索</a><br>7、 <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a><br>8、 <a href="http://lukang.me/2014/optimization-of-hexo.html" target="_blank" rel="external">Hexo优化与定制（一）</a>（推荐）<br>9、 <a href="http://ibruce.info/2013/11/22/hexo-your-blog/" target="_blank" rel="external">hexo你的博客</a>（推荐）<br>10、 <a href="http://blog.xiazhiri.com/hexo-add-duoshuo.html" target="_blank" rel="external">为hexo添加多说评论</a><br>11、 <a href="http://dev.duoshuo.com/docs/" target="_blank" rel="external">多说 API</a><br>12、 <a href="https://swiftype.com/" target="_blank" rel="external">swiftype</a><br>13、 <a href="http://tongji.baidu.com/web/welcome/login" target="_blank" rel="external">百度统计</a><br>14、 <a href="https://portal.qiniu.com/signin" target="_blank" rel="external">七牛</a><br>15、 <a href="http://beiyuu.com/github-pages/" target="_blank" rel="external">使用Github Pages建独立博客</a><br>16、 <a href="http://kuangqi.me/tricks/add-weibo-show-in-hexo/" target="_blank" rel="external">为Hexo添加新浪微博秀</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Hexo/">Hexo</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Hexo/">Hexo</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/first-blog/" data-title="利用Hexo搭建博客 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/db-design-things-1/" title="MySQL开发那些事（一）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  MySQL开发那些事（一）</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/first-blog/" data-title="利用Hexo搭建博客" data-url="http://rhwayfun.com/post/first-blog/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装软件"><span class="toc-number">2.</span> <span class="toc-text">安装软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么选择Hexo与github_pages？"><span class="toc-number">3.</span> <span class="toc-text">为什么选择Hexo与github pages？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo是什么？"><span class="toc-number">4.</span> <span class="toc-text">Hexo是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo快速入门"><span class="toc-number">5.</span> <span class="toc-text">Hexo快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Hexo"><span class="toc-number">5.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署Hexo"><span class="toc-number">5.2.</span> <span class="toc-text">部署Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署hexo遇到的问题"><span class="toc-number">5.3.</span> <span class="toc-text">部署hexo遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改默认主题"><span class="toc-number">5.4.</span> <span class="toc-text">修改默认主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启用调试"><span class="toc-number">5.5.</span> <span class="toc-text">启用调试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github_pages是什么？"><span class="toc-number">6.</span> <span class="toc-text">github pages是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github_pages快速入门"><span class="toc-number">7.</span> <span class="toc-text">github pages快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注册github"><span class="toc-number">7.1.</span> <span class="toc-text">注册github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置SSH密匙"><span class="toc-number">7.2.</span> <span class="toc-text">配置SSH密匙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Github_pages"><span class="toc-number">7.3.</span> <span class="toc-text">使用Github pages</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github_pages进阶篇"><span class="toc-number">8.</span> <span class="toc-text">Github pages进阶篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注册域名"><span class="toc-number">8.1.</span> <span class="toc-text">注册域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置域名"><span class="toc-number">8.2.</span> <span class="toc-text">设置域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改DNS设置"><span class="toc-number">8.3.</span> <span class="toc-text">修改DNS设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Github_pages的设置"><span class="toc-number">8.4.</span> <span class="toc-text">Github pages的设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

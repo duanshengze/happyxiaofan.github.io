@@ -1,0 +1,949 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java笔试面试题解析（二） | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="今天继续JavaSE面试题的解析，由于线程这块知识还是比较繁杂的，lz最精也在研究并发编程，所以不敢随便把一些浅显的认知写出来。那么，这篇博客增加了对Web部分面试题，还有其他一些知识点。如果遇到了，会及时在博客中更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java笔试面试题解析（二）">
+<meta property="og:url" content="http://rhwayfun.com/post/java-questions-todo/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="今天继续JavaSE面试题的解析，由于线程这块知识还是比较繁杂的，lz最精也在研究并发编程，所以不敢随便把一些浅显的认知写出来。那么，这篇博客增加了对Web部分面试题，还有其他一些知识点。如果遇到了，会及时在博客中更新。">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/负载均衡下的URL请求过程.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.722Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java笔试面试题解析（二）">
+<meta name="twitter:description" content="今天继续JavaSE面试题的解析，由于线程这块知识还是比较繁杂的，lz最精也在研究并发编程，所以不敢随便把一些浅显的认知写出来。那么，这篇博客增加了对Web部分面试题，还有其他一些知识点。如果遇到了，会及时在博客中更新。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/java-questions-todo/" title="Java笔试面试题解析（二）" itemprop="url">Java笔试面试题解析（二）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-29T10:39:09.000Z" itemprop="datePublished"> 发表于 2015-09-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>今天继续JavaSE面试题的解析，由于线程这块知识还是比较繁杂的，lz最精也在研究并发编程，所以不敢随便把一些浅显的认知写出来。那么，这篇博客增加了对Web部分面试题，还有其他一些知识点。如果遇到了，会及时在博客中更新。<br><a id="more"></a><br>ok，进入正题：</p>
+<p>1、递归读取文件夹下的文件，代码怎么实现<br>直接上代码：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">void</span> readFile(<span class="keyword">File</span> filePath,<span class="keyword">int</span> level){
+    <span class="comment">/**
+     * 示例：A
+     *          B
+     *              b1.txt
+     *      1.html
+     * @param filePath 要递归的文件目录
+     * @param level 每次递归的层级，多一个层级就多打印一个空格
+     */</span>
+    <span class="keyword">File</span>[] files = filePath.listFiles();
+    <span class="keyword">for</span> (<span class="keyword">File</span> <span class="keyword">file</span> : files) {
+        <span class="keyword">if</span>(<span class="keyword">file</span>.isDirectory()){<span class="comment">//是目录</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; level; i++) {
+                System.out.<span class="keyword">print</span>(<span class="string">" "</span>);
+            }
+            System.out.<span class="keyword">println</span>(<span class="keyword">file</span>.getName());
+            readFile(<span class="keyword">file</span>,++level);
+        }<span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">file</span>.isFile()){<span class="comment">//是文件</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; level; i++) {
+                System.out.<span class="keyword">print</span>(<span class="string">" "</span>);
+            }
+            System.out.<span class="keyword">println</span>(<span class="keyword">file</span>.getName());
+        }
+    }
+}
+</code></pre><p>2、对线程安全的理解<br>先说概念：线程安全是指当多个线程在程序中运行的时候，其运行结果与单线程的运行结果一致；再说实现线程安全的原因：线程的安全性问题主要是由于<code>全局变量</code>以及<code>静态变量</code>引起的，要注意的是当只对全局变量以及静态变量只有只读操作时，是不存在线程安全问题的，但是如果还涉及写操作，那么线程安全就要被考虑。那么怎么实现线程安全呢？</p>
+<ul>
+<li>synchronized关键字</li>
+<li>加锁</li>
+<li>阻塞队列</li>
+</ul>
+<p>再说一下线程安全的级别：不可变、线程安全、有条件的、线程兼容、线程对立。</p>
+<p>不可变：就是其状态始终不会改变，永远也不需要进行额外的同步。不可变的对象一定是线程安全的。Java中的String、Integer就是一个体现<br>线程安全：这里的定义与上述的线程安全概念一致，当被多个线程访问时不需要额外的同步仍然可以实现线程安全。<br>有条件的：有条件的线程安全对于单独的操作是线程安全的，但是对于某些操作却需要额外的同步才能保证线程安全。Java中的Hashtable以及Vector使用迭代器进行遍历的时候，由于快速失败机制，并发修改会导致ConcurrentModifyException，这主要是由于Hashtable以及Vector假定遍历的时候不会修改集合的结构而导致的。那么为了保证多线程的并发修改，就需要使用额外的同步操作。<br>线程兼容：线程兼容不是线程安全的，但是可以通过正确使用同步方法保证线程安全。有可能是使用synchronized对方法加锁，也有可能是对某些操作语句进行加锁。Java中的ArrayList、HashMap就是一个体现<br>线程对立：线程对立类是指即使用了同步方法也不能保证线程安全。线程对立发生在一个类对静态数据进行修改，而其他线程正在使用未被修改的静态数据，这就导致了线程对立。</p>
+<p>3、为什么要用struts做mvc<br>struts是mvc开发模式的经典应用，使用struts进行web开发可以大大提高开发效率，同时具有mvc固有的几大优点：</p>
+<ul>
+<li>低耦合</li>
+<li>高可重用性与可适用性</li>
+<li>易维护</li>
+</ul>
+<p>另外，struts对mvc的每个组件都进行了对应的封装，在实际开发过程可以直接使用，非常方便。比如controller，struts使用ActionServlet以及ActionMapping实现，核心的是Servlet类型的ActionServlet。ActionServlet的主要作用是接收客户端的请求。ActionMapping主要作用是把具体的请求与进行业务处理的model和Action进行映射；再比如model，struts中使用了Action和ActionForm对象来处理，Action是具体的业务处理流程，并把处理结果返回给view层，而ActionForm组件则对客户端的表单对象进行了属性的映射与支持，这样Action获取客户端的数据就不需要request了，直接使用ActionForm组件就可以获取值了。从这个意义讲，ActionForm具有View层以及Model的良好交互支持；再比如View层，struts使用jsp技术实现，不同于普通的jsp页面技术，struts支持自定义标签库，使用标签库创建的jsp表单与ActionForm的表单映射的内容保持一致，从而完成对用户数据的封装。</p>
+<p>总结一下，就是struts良好的体现了mvc的设计思想，简单的web组件大大提高了开发效率。</p>
+<p>4、http和https的区别<br>先说下https：https可以简单地理解为http的安全版，https全称是安全超文本传输协议，使用了安全套接字层传输协议SSL进行加密传输</p>
+<p>再具体说区别：<br>第1点：http是明文传输，而https则是加密传输<br>第2点：使用https协议需要到CA申请证书<br>第3点：http默认传输端口是80，而https的默认传输端口是443<br>第4点：https比http安全（在于SSL协议的使用）</p>
+<p>https主要用于解决：</p>
+<ul>
+<li>信任主机的问题</li>
+<li>通讯过程的数据泄漏与修改</li>
+</ul>
+<p>5、get提交和post提交的区别<br>第1点：get是向服务器获取数据，post是向服务器发送数据<br>第2点：get方式的提交参数会出现在URL中，而post则是把参数信息放在request的body中，参数信息不会出现在URL中<br>第3点：服务端获取参数信息的方式不同，get方式使用request.queryString()获取，post方式使用request.form()获取<br>第4点：post比get安全<br>第5点：get方式由于会把参数信息以URL参数提交给服务器，所以其传输的数据量大小有限制，一般不大于2kb，而post默认是没有限制的。</p>
+<p>6、怎么解决中文乱码问题<br>这个问题我觉得应该分类讨论：<br>第1类：jsp页面的中文乱码</p>
+<pre><code><span class="tag">&lt;<span class="title">%@page</span> <span class="attribute">language</span>=<span class="value">"java"</span> <span class="attribute">contentType</span>=<span class="value">"text/html;charset=utf-8"</span><span class="value">%</span>&gt;</span>
+</code></pre><p>第2类：jsp页面的响应结果乱码</p>
+<pre><code>response.setCharacterEncoding<span class="params">(<span class="string">"utf-8"</span>)</span>;
+</code></pre><p>第3类：页面传输出现乱码<br>可以使用过滤器，代码如下：</p>
+<pre><code><span class="comment">&lt;!-- 配置过滤器 --&gt;</span>
+<span class="tag">&lt;<span class="title">filter</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>EncodingFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">filter-class</span>&gt;</span>com.stumis.acco.filter.EncodingFilter<span class="tag">&lt;/<span class="title">filter-class</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">filter</span>&gt;</span>
+<span class="tag">&lt;<span class="title">filter-mapping</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>EncodingFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">filter-mapping</span>&gt;</span>
+</code></pre><p>第4类：后台获取的参数中文乱码<br>在Servlet中使用如下方式获取：</p>
+<pre><code>String param = new <span class="function"><span class="title">String</span><span class="params">(request.getParameter(<span class="string">"param"</span>)</span></span>.<span class="function"><span class="title">getBytes</span><span class="params">(<span class="string">"ISO-8859-1"</span>,<span class="string">"utf-8"</span>)</span></span>)
+</code></pre><p>也可以在Tomcat服务器的server.xml配置文件中修改如下配置：</p>
+<pre><code><span class="comment">&lt;!-- 添加URIEncoding="UTF-8"这一项 --&gt;</span>
+<span class="tag">&lt;<span class="title">Connector</span> <span class="attribute">port</span>=<span class="value">"8088"</span> <span class="attribute">protocol</span>=<span class="value">"HTTP/1.1"</span> 
+           <span class="attribute">connectionTimeout</span>=<span class="value">"20000"</span> 
+           <span class="attribute">redirectPort</span>=<span class="value">"8443"</span> 
+           <span class="attribute">URIEncoding</span>=<span class="value">"UTF-8"</span>/&gt;</span>
+</code></pre><p>7、对MVC的理解<br>先解释概念：mvc是模型（Model）- 视图（View）- 控制器（Controller）的缩写，MVC最早应用于桌面开发，MVC的核心是数据处理与表现分离，降低程序之间的耦合度，包括后来的struts、spring都是mvc设计思想的体现<br>再说一下mvc的好处：</p>
+<ul>
+<li>低耦合</li>
+<li>高可重用性与可适用性</li>
+<li>易维护</li>
+</ul>
+<p>8、XML和JSON的区别<br><code>可读性</code>：xml的可读性强于json<br><code>是否易于在服务端创建数据</code>：两者都有不同的lib去解析，xml可以通过dom4j、jdom等的方式解析xml，而json可以通过json-lib、gson来解析json数据<br><code>是否易于在客户端处理数据</code>：在客户端可以使用XMLHttpRequest对象处理json数据，只要使用javaScript的eval()函数就可以把json数据转换为javaScript对象，应该算是json最优雅的方式了，而要在客户端解析xml格式的数据是一件很费力的事，故在这点上json由于xml<br><code>扩展性</code>：在扩展性上json优于xml<br><code>重量级</code>：xml是重量级的，json是轻量级的，这点主要体现在对xml的解析上，对xml文件的解析包括dom、sax两种方式。dom解析是把整个文件读到内存中，这点与json是一样的，区别在与json不需要关心父节点与子节点，所以这点在解析较少数据量的文件时json具有优势。sax解析则是逐步解析，可以随时终止解析，所以sax解析适用于大规模数据的解析。综合来看，在解析较少数据量的时候json具有优势，而在大规模数据的解析上则是xml占据优势。<br><code>使用场景</code>：xml使用于标记文档，json适用于数据交换处理</p>
+<p>9、继承和组合区别<br>第1点：继承是一种“is-a”的关系，组合：组合是指在一个类中包含另一个类的实例，是一种“has-a”的关系<br>第2点：继承会覆盖父类的实现，是一种紧耦合的关系，而组合则是复用外部类的功能，不会覆盖，是一种松耦合的关系<br>第3点：组合强调的更多是一种整体与部分的关系，比如电脑就复用了CPU、主板、内存等。而继承更多是一种可以回溯的父子关系，比如父类引用指向子类对象<br>第4点：继承违背了封装原则，子类的重写机制会覆盖父类的实现，同时子类依赖父类的实现，而组合则是彼此独立<br>第5点：如果一个类要向另一个类暴露所有的接口，那么应该使用继承；如果一个类仅仅是复用另一个类的方法，即存在“has-a”关系的时候则应该考虑组合</p>
+<p>10、Servlet生命周期<br>总体说来Servlet的生命周期分为三个阶段：</p>
+<ul>
+<li>初始化阶段</li>
+<li>请求响应阶段</li>
+<li>终止阶段</li>
+</ul>
+<p>初始化阶段：Servelt会调用init()方法完成初始化，Servlet容器会在以下三种情况装载Servlet<br>1）在web.xml中配置了<code>&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</code>的时候，Servlet容器启动时会装载该Servlet实例<br>2）Servlet容器启动后，客户端首次发起请求<br>3）当Servlet文件被修改后<br>要注意的是，整个生命周期，Servlet实例只会被创建一次。</p>
+<p>请求响应阶段：在这个阶段Servlet实例会调用service()方法，根据get或者post请求调用doGet或者doPost方法处理请求。Servlet收到客户端的请求的时候，会创建特定于这个请求的ServletRequest对象处理请求和创建ServletResponse对象对请求做出响应。</p>
+<p>终止阶段：Servlet容器会调用destroy方法释放Servlet资源，在下面的三种情况会执行：</p>
+<ul>
+<li>web应用终止</li>
+<li>Servlet容器关闭</li>
+<li>Servlet类被修改，Servlet容器会首先调用destroy方法释放原来的Servlet实例，再重新装载新的Servlet实例</li>
+</ul>
+<p>11、osi七层模型以及tcp/ip四层模型<br>OSI七层模型包括：应用层、表示层、会话层、传输层、网络层、数据链路层、物理层<br>TCP/IP四层模型：应用层、传输层、网络层、物理链路层<br>TCP属于其中的传输层，IP属于其中的网络层</p>
+<p>12、数据库事务隔离机制及特点<br>数据库事务隔离机制（ACID）：<br>1）原子性：事务的所有操作是一个整体<br>2）一致性：事务内有一个操作失败后会回滚<br>3）持久性：事务完成后，对系统的影响是永久性的<br>4）隔离性：事务查看数据所处的状态要么是另一个并发事务修改前的状态，要么是另一个事务commit之后的状态事务是不能查看中间状态的数据的。</p>
+<p>13、html访问全过程<br>如果不考虑负载均衡，完整的请求过程是这样的：<br>1）输入一个正确的网址<br>2）把输入的网址进行DNS解析，得到请求的IP地址<br>3）向服务器发送一个请求<br>4）服务器返回一个永久重定向响应，状态码是301，这样浏览器就知道要请求的正确的网址了<br>5）向服务器发送一个请求<br>6）服务器返回一个html响应<br>7）浏览器渲染引擎解析html文件，显示内容<br>8）发送请求获取嵌入在html中的对象，比如css、js、图片等静态资源<br>9）如果存在异步请求，浏览器会发送异步AJAX请求，继续保持着与服务器的连接<br>而如果考虑负载均衡，则详细的请求过程是这样的：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/负载均衡下的URL请求过程.jpg" alt="负载均衡下的URL请求过程"></p>
+<p>14、IP地址的分类<br>可以分为A-E类<br>A类：在IP地址的4段中，第一段用来表示网络号，剩余3段用来表示主机号，A类地址的IP地址的范围是：0.0.0.0-127.255.255.255<br>B类：使用IP地址的前两段作为网络号，后两段作为主机号，B类地址表示的IP范围是：128.0.0.0-191.255.255.255<br>C类：使用前3段作为网络号，最后一段作为主机号，C类地址的范围是：192.0.0.0-223.255.255.255<br>D类：D类IP地址在历史上被叫做多播地址(multicast address)，即组播地址。在以太网中，多播地址命名了一组应该在这个网络中应用接收到一个分组的站点。多播地址的最高位必须是“1110”，范围从224.0.0.0到239.255.255.255<br>E类：特殊的IP</p>
+<blockquote>
+<p>每一个字节都为0的地址（“0.0.0.0”）对应于当前主机；<br>IP地址中的每一个字节都为1的IP地址（“255．255．255．255”）是当前子网的广播地址；<br>IP地址中凡是以“11110”开头的E类IP地址都保留用于将来和实验使用。<br>IP地址中不能以十进制“127”作为开头，该类地址中数字127．0．0．1到127．255．255．255用于回路测试，如：127.0.0.1可以代表本机IP地址，用”127.0.0.1”表示本机地址<br>网络ID的第一个8位组也不能全置为“0”，全“0”表示本地网络。</p>
+</blockquote>
+<p>15、进程与线程的区别<br>第1点：进程与线程是操作系统管理资源的不同方式，一个进程有独立的地址空间，而线程没有独立的地址空间，但是每个线程有自己的堆栈以及局部变量，多线程共享内存<br>第2点：一个程序至少有一个进程，一个进程至少有一个线程<br>第3点：执行过程的区别，每个线程都有一个程序的入口，操作序列和程序出口，但是线程不能单独运行，多线程必须依附于应用程序<br>第4点：多线程可以有多个部分同时执行，但操作系统仍然当做一个应用程序进行系统资源的调度</p>
+<p>16、ThreadLocal的设计理念与作用<br>ThreadLocal的字面意思就是线程局部变量，那么说就是一个变量，那么这个变量与普通的变量有什么不同呢？这个线程局部变量用于在线程内部传递，由于不涉及数据共享，所以无关线程安全，就是说ThreadLocal本质上不是为了解决线程安全问题的，而是为了隔离多个线程的数据共享的。</p>
+<p>先说一下ThreadLocal的作用：ThreadLocal就是为每个使用该变量的线程提供一个变量值的副本，这样每一个线程都可以改变副本的值，而不会与其他线程的副本值产生冲突。所以从线程的角度看，就好像每一个线程都具有该变量一样</p>
+<p>接下来说说ThreadLocal的设计理念：在ThreadLocal类中有一个使用了线程兼容级别的Map，这个Map是干嘛的呢？用来存放每个线程的变量副本，每一个Thread都具有对该变量副本的隐含引用，这样，当线程运行结束时，该变量副本就会被垃圾回收器回收。</p>
+<p>那么ThreadLocal与同步机制有什么优势呢？我们知道，ThreadLocal与同步机制都是为了解决对同一个变量的共享访问的问题，同步机制使用的加锁策略，实现了多线程的数据通信，而ThreadLocal反其道而行之，直接让每一个线程拥有改变量的副本值，这样多线程之间无法进行数据通信，所以ThreadLocal本质上不是为了多线程并发访问的线程安全问题的。最后，从使用场景角度看，如果需要进行多线程之间的数据通信，就使用同步机制，如果是需要隔离数据直接的通信，那么就是用ThreadLocal。</p>
+<p>17、ThreadPool用法与优势<br>先说优势，ThreadPool也就是线程池，线程池中存放了一定数量的Thread实例，这样当需要的时候可以不用等待线程创建之后才能使用，那么具体说来使用线程池具有以下优势：</p>
+<ul>
+<li>降低资源消耗，可以重复利用已创建好的线程实例会节省资源开销</li>
+<li>提高响应速度，需要的时候直接从线程池中取就可以了，不用等待创建好线程实例再使用</li>
+<li>线程池可以对线程实例进行统一管理</li>
+</ul>
+<p>线程池怎么使用呢？一般来讲，需要做如下的事：<br>1）调用Executors类中静态方法newCachedThreadPool或者newFixedThreadPool<br>2）调用submit提交Runnable或Callable对象<br>3）如果想要取消一个任务，或如果提交Callable对象，那就要保存返回的Future对象昂<br>4）当不再提交任何任务的时候，关闭线程池，调用shutdown方法</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/笔试面试/">笔试面试</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JavaSE/">JavaSE</a><a href="/tags/笔试面试/">笔试面试</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/java-questions-todo/" data-title="Java笔试面试题解析（二） | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/http-protocol-notes/" title="HTTP协议必知必会">
+  <strong>上一篇：</strong><br/>
+  <span>
+  HTTP协议必知必会</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/tcp-ip-notes/"  title="TCP/IP必知必会">
+ <strong>下一篇：</strong><br/> 
+ <span>TCP/IP必知必会
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/java-questions-todo/" data-title="Java笔试面试题解析（二）" data-url="http://rhwayfun.com/post/java-questions-todo/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

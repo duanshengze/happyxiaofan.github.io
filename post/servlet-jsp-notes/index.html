@@ -1,0 +1,910 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>《Servlet与JSP核心编程》读书笔记 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="虽然Servlet和JSP学习也使用了挺长时间了，但是最近读了下《Servlet和JSP核心编程》这本书，虽然是熟悉的知识，但是仍然有些因为过长时间没使用而忘记了，记下这篇读书笔记，就当是对Servlet和JSP涉及的核心知识点进行一个整理与回顾吧。书中对Servlet与JSP进行了完整的介绍，总体上还是非常基础的，如果是初学者，或者有了一定开发经验的开发人员，都能从书中得到收获。
+下面的条目是我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Servlet与JSP核心编程》读书笔记">
+<meta property="og:url" content="http://rhwayfun.com/post/servlet-jsp-notes/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="虽然Servlet和JSP学习也使用了挺长时间了，但是最近读了下《Servlet和JSP核心编程》这本书，虽然是熟悉的知识，但是仍然有些因为过长时间没使用而忘记了，记下这篇读书笔记，就当是对Servlet和JSP涉及的核心知识点进行一个整理与回顾吧。书中对Servlet与JSP进行了完整的介绍，总体上还是非常基础的，如果是初学者，或者有了一定开发经验的开发人员，都能从书中得到收获。
+下面的条目是我">
+<meta property="og:updated_time" content="2016-04-15T07:51:16.881Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Servlet与JSP核心编程》读书笔记">
+<meta name="twitter:description" content="虽然Servlet和JSP学习也使用了挺长时间了，但是最近读了下《Servlet和JSP核心编程》这本书，虽然是熟悉的知识，但是仍然有些因为过长时间没使用而忘记了，记下这篇读书笔记，就当是对Servlet和JSP涉及的核心知识点进行一个整理与回顾吧。书中对Servlet与JSP进行了完整的介绍，总体上还是非常基础的，如果是初学者，或者有了一定开发经验的开发人员，都能从书中得到收获。
+下面的条目是我">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/servlet-jsp-notes/" title="《Servlet与JSP核心编程》读书笔记" itemprop="url">《Servlet与JSP核心编程》读书笔记</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-15T07:50:04.000Z" itemprop="datePublished"> 发表于 2016-04-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>虽然Servlet和JSP学习也使用了挺长时间了，但是最近读了下《Servlet和JSP核心编程》这本书，虽然是熟悉的知识，但是仍然有些因为过长时间没使用而忘记了，记下这篇读书笔记，就当是对Servlet和JSP涉及的核心知识点进行一个整理与回顾吧。书中对Servlet与JSP进行了完整的介绍，总体上还是非常基础的，如果是初学者，或者有了一定开发经验的开发人员，都能从书中得到收获。</p>
+<p>下面的条目是我在阅读过程中记下的笔记，调理也许不是那么清晰，但是对于自己在需要的时候复习还是很有帮助的。</p>
+<p><strong>1、应该尽可能覆盖doGet()和doPost()方法，不要为了省事直接覆盖service()方法。</strong></p>
+<p>原因由两个：一是丧失想要覆盖其他doXXX()方法的可能性，不排除以后需要覆盖这些方法的可能性；二是无法实现getLastModified方法，该字段可以得到请求最后修改的时间，如果请求的资源没有发生修改，那么服务端将返回304状态码，表示请求的资源已经是最新的，上次请求的资源可以继续使用。</p>
+<p><strong>getLastModified扩展</strong>：如果方法返回的是整数，并且客户端请求头没有包含If-Modified-Since字段或者已经包含If-Modified-Since字段，但是返回值比If-Modified-Since指定的时间更新的话，会调用doGet方法请求最新的资源，并返回包含Last-Modified头字段的响应信息。如果返回值比If-Modified-Since字段指定的时间小的话（发生在之前），那么服务端可以做出判断上次响应给客户端的资源仍然可用，于是返回304状态码，告诉客户端你上次请求的这个资源可以继续使用。</p>
+<p><strong>2、不要为了阻止并发访问Servlet实例而去实现SingleThreadModel接口，原因有二：</strong></p>
+<p>1) 由于实现SingleThreadModel接口就相当于对Servlet实例进行了同步，表面上不用担心因为多线程并发访问的问题造成数据的安全性和一致性，但是如果servlet被频繁地访问，那么同步对性能造成的影响是巨大的。比如在servlet等待IO任务的时候，servlet不能处理其他的请求</p>
+<p>2) servlet规范允许服务器使用多个实例处理请求，来替代对单个实例的请求进行排队的方案。当然我们并不希望使用多个实例，因为多个servlet实例都拥有变量的单独副本，从而造成数据不能正确共享，在servlet之间传递消息也有困难。</p>
+<p>注：SingleThreadModel在servlet规范2.4中明确反对使用这种方式。为了实现同步，使用synchronized往往是更好的选择。</p>
+<p>3、如果需要读取请求参数，为了防止跨站脚本攻击（XSS），必须过滤出特殊的HTML字符。这种过滤方式的问题可能导致输出部分缺失。比如将’&lt;’替换成’&lt;’,’&gt;’替换成’&gt;’,’”‘替换成’&quot;’,’&amp;’替换成’&amp;’。</p>
+<p><strong>4、使用Servlet构建Excel电子表格</strong></p>
+<p>设置响应头：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(&#34;application/vnd.ms-excel&#34;);&#10;&#9;&#9;PrintWriter out = response.getWriter();</span><br></pre></td></tr></table></figure></p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App1 extends HttpServlet&#123;&#10;&#9;&#9;&#9;public void doGet(HttpServletRequest req,HttpServletResponse res)&#123;&#10;&#9;&#9;&#9;&#9;response.setContentType(&#34;application/vnd.ms-excel&#34;);&#10;&#9;&#9;&#9;&#9;PrintWriter out = response.getWriter();&#10;&#9;&#9;&#9;&#9;out.println(\tQ1\tQ2\tQ3\tQ4\tTotal);&#10;&#9;&#9;&#9;&#9;out.println(&#34;Apples\t78\t87\t92\t29\t=SUM(B2:E2)&#34;);&#10;&#9;&#9;&#9;&#9;out.println(&#34;Oranges\t78\t87\t92\t29\t=SUM(B3:E3)&#34;);&#10;&#9;&#9;&#9;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>5、使用Servlet生成JPEG图像</strong></p>
+<p>第一步：创建一个BufferedImage</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int width = 100px;&#10;&#9;&#9;int height = 100px;&#10;&#9;&#9;BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);</span><br></pre></td></tr></table></figure>
+<p>第二步：在BufferedImage绘制图像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Graphics2D g = (Graphics2D)image.getGraphics();&#10;&#9;&#9;g.setXXX();&#10;&#9;&#9;g.fill();&#10;&#9;&#9;g.draw();</span><br></pre></td></tr></table></figure>
+<p>第三步：设置Content-Type响应头</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(&#34;image/jpeg&#34;);</span><br></pre></td></tr></table></figure>
+<p>第四步：获取输出流</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream out = response.getOutputStream();</span><br></pre></td></tr></table></figure>
+<p>第五步：以JPEG格式将图像发送到输出流</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImageIO.write(image,&#34;jpg&#34;,out);</span><br></pre></td></tr></table></figure>
+<p><strong>6、使用Cookie记录偏好</strong><br>form.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;form action=&#34;/register&#34; method=&#34;post&#34;&#62;&#10;&#9;firstName:&#60;input name=&#34;firstName&#34;/&#62;&#60;br&#62;&#10;&#9;lastName:&#60;input name=&#34;lastName&#34;/&#62;&#60;br&#62;&#10;&#9;&#60;input type=&#34;submit&#34;/&#62;&#10;&#60;/form&#62;</span><br></pre></td></tr></table></figure></p>
+<p>RegisterServlet.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@WebServlet(&#34;/register&#34;);&#10;public class RegisterServlet extends HttpServlet&#123;&#10;&#9;public void doGet(...)&#123;&#10;&#9;&#9;response.setContentType(&#34;text/html&#34;);&#10;&#9;&#9;String firstName = request.getParameter(&#34;firstName&#34;);&#10;&#9;&#9;String lastName = request.getParameter(&#34;lastName&#34;);&#10;&#9;&#9;Cookie c1 = new Cookie(&#34;firstName&#34;,firstName);&#10;&#9;&#9;response.addCookie(c1);&#10;&#9;&#9;Cookie c2 = new Cookie(&#34;lastName&#34;.lastName);&#10;&#9;&#9;response.addCookie(c2);&#10;&#9;&#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>7、对发往客户端的URL进行编码</strong></p>
+<p>如果使用URL重写进行会话跟踪，大部分页面或者全部页面都必须动态生成，站点的任何静态HTML文档都不能指向站点的动态页面的链接</p>
+<p>情况一：在servlet生成的Web页面中含有嵌入的URL，应该调用response的encodeURL，确定当前是否在使用URL重写，仅在必须时附加回话信息；否则不做任何修改直接返回传入的URL。</p>
+<p>情况二：在sendRedirect调用中，应该调用encodeRedirectURL<br>    如果最终可能使用URL重写替代Cookie，那么使用URL编码是最好的选择</p>
+<p><strong>8、JSP的好处</strong><br>    1) 易于编写HTML并维护<br>    2) 可以使用标准的开发工具开发<br>    3) 开发人员可以集中精力在表示上<br>    4) JSP擅长生成结构化的HTML页面，Servlet擅长业务的处理，可以生成二进制的数据 </p>
+<p><strong>9、JSP脚本、表达式编译成的Servlet</strong><br>    Foo.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;h2&#62;foo&#60;/h2&#62;&#10;&#9;&#9;&#60;!-- JSP&#34920;&#36798;&#24335;&#65292;&#35843;&#29992;&#21518;&#20250;&#26174;&#31034;bar&#26041;&#27861;&#25191;&#34892;&#36820;&#22238;&#30340;&#32467;&#26524;&#65292;&#32467;&#23614;&#19981;&#38656;&#35201;&#20998;&#21495; --&#62;&#10;&#9;&#9;&#60;%= bar() %&#62;&#10;&#9;&#9;&#60;!-- JSP scriplet&#65292;&#30452;&#25509;&#35843;&#29992;bar()&#65292;&#32467;&#23614;&#38656;&#35201;&#20998;&#21495; --&#62;&#10;&#9;&#9;&#60;% bar(); %&#62;</span><br></pre></td></tr></table></figure></p>
+<p>Foo_jsp.java，之后被编译成Foo_jsp.class<br>        public void _jspInit(){ ..}     — 当JSP网页一开始执行时，最先执行此方法，执行初始化工作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void _jspDestory()&#123;...&#125; &#8211; JSP&#32593;&#39029;&#26368;&#21518;&#25191;&#34892;&#30340;&#26041;&#27861;&#10;&#10;&#9;&#9;public void _jspService(HttpServletRequest request, HttpServletResponse response)&#10;        throws java.io.IOException, ServletException &#123;&#10;        &#9;HttpSession session = request.getSession();&#10;        &#9;JspWriter out = response.getWriter();&#10;        &#9;out.println(&#60;h2&#62;Foo&#60;/h2&#62;);&#10;        &#9;out.println(bar());&#10;        &#9;bar();&#10;        &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>10、对于JSP的初始化和清理工作，可以使用JSP声明覆盖jspInit()和jspDestroy()方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSP&#22768;&#26126;&#26684;&#24335;&#10;&#60;%! &#21464;&#37327;&#25110;&#32773;&#26041;&#27861; %&#62;&#10;&#29616;&#32771;&#34385;&#22914;&#19979;JSP&#22768;&#26126;&#65306;&#10;&#60;%! private int accessCount = 0;%&#62;&#10;&#60;%= ++accessCount%&#62;</span><br></pre></td></tr></table></figure>
+<p>不同的客户端得到的技术不是唯一的，也就是由于多个请求共享accessCount变量，该代码不是线程安全的。但是在服务器重新启动之前，所有用户看到的都是同样的结果</p>
+<p><strong>11、session属性</strong></p>
+<p>使用形式：&lt;%@ page session = “true” %&gt;&lt;%— default —%&gt;</p>
+<p>session属性属于jsp的page指令。可以控制是否参与会话，<br>true表示如果存在会话，则绑定到现有的会话中，如果没有则创建一个新的session会话（session的类型是HttpSession）；</p>
+<p>值为false，表示不会自动创建会话，在将jsp转为servlet时，对变量session的访问会导致出错。但是false也不是无之地，对于高流量的网站，使用false可以节省大量的服务器内存。但是使用false并不表示会禁用会话跟踪，而且会话只是针对用户，并不针对页面，所以关闭页面的会话跟踪没有任何益处</p>
+<p><strong>12、isELIgnored属性</strong></p>
+<p>默认为false，表示对JSP表达式进行正常的求值，为true则忽略表达式语言。也就是在JSP页面${expression}得到的就是表达式。</p>
+<p>在JSP1.2之前（包括JSP1.2）该属性的值都是true，只有在Servlet2.4之后（JSP2.0）该值的默认属性为false。所以如果在访问JSP的时候出现直接输出JSP表达式的情况，需要检查一下你的Servlet版本是否在2.4之前，如果不想更换版本，只需要在JSP页面只能中直接添加该属性为false即可</p>
+<p><strong>13、jsp:include动作与include指令</strong></p>
+<p>前者会对被包含的JSP的页面在请求时进行处理，后者在页面转换期间就被处理。而且前者会生产两个Servlet文件，后者只会产生一个。</p>
+<p>在维护和能力两方面造成jsp:include动作优于include指令。</p>
+<p>由于jsp:include动作会会产生两个Servlet而后者则有两个，那么如果通过include指令被包含的页面发生了修改，那么所有包含该页面的jsp文件都需要重新转换成新的Servlet，不然下次请求访问的仍然是修改之前的Servlet。</p>
+<blockquote>
+<p>对于文件包含应该尽可能用jsp:include动作，仅在所包含的文件中定义了主页面需要用到的字段或者方法，或者在所包含的文件中设置了主页面的响应头的时候，才应该使用include指令。</p>
+</blockquote>
+<p>然而，不能因为在所包含的页面定义了主页面的需要的字段或者方法就认为必须应该使用include指令。对此合理的解释是，如果使用jsp:include动作，那么针对类似访问计数功能的页面来说，所有使用该页面的主jsp页面都将显示相同的计数。核心就是产生了两个Servlet，而这两个Servlet之间是无法共享计数值的。</p>
+<p><strong>14、基于请求的共享</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class NumberBean&#123;&#10;&#9;&#9;private int num;&#10;&#9;&#9;...&#10;&#9;&#125;&#10;&#9;public class NumberServlet extends HttpServlet&#123;&#10;&#9;&#9;... doGet(...)&#123;&#10;&#9;&#9;&#9;NumberBean number = new NumberBean(new Random().nextInt(Integer.MAX_VALUE));&#10;&#9;&#9;&#9;request.setAttribute(&#34;number&#34;,number);&#10;&#9;&#9;&#9;String addr = &#34;/WEB-INF/view/number.jsp&#34;;&#10;&#9;&#9;&#9;request.getRequestDispatcher(addr).forward(request,response);&#10;&#9;&#9;&#9;&#125;&#10;&#9;&#125;&#10;&#9;number.jsp&#10;&#9;...&#10;&#9;&#60;jsp:useBean id = &#34;number&#34; type=&#34;servlet.NumberServlet&#34; scope=&#34;request&#34;/&#62;&#10;&#9;Your number is: &#10;&#9;&#60;jsp:getProperty name=&#34;number&#34; property=&#34;num&#34;&#62;</span><br></pre></td></tr></table></figure>
+<p>以上这种组合方式只能访问简单类型的属性，对于包装的POJO的属性则需要复杂的语法才能实现，在现在主流的MVC框架中（包括Struts2和Spring Web MVC）都对这点进行了封装，让用户可以像访问简单POJO的属性一样访问包装类型的POJO的属性。</p>
+<p><strong>15、EL</strong><br>    <code>&amp;#36;{bash}</code><br>    输出<br>    ${bash}</p>
+<p><code>\${1+1} is ${1+1}</code><br>    输出<br>${1+1} is 2</p>
+<p>${name}</p>
+<p>作用域访问次序：PageContext—&gt;HttpServletRequest—&gt;HttpSession—&gt;ServletContext</p>
+<p>等同于调用JSP表达式：&lt;%= pageContext.findAttribute(“name”)%&gt;<br>等同于：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;jsp:useBean id=&#34;name&#34; type=&#34;somePackage.someClass&#34; scope=&#34;...&#34;&#62;&#10;&#9;&#9;&#60;%= name%&#62;</span><br></pre></td></tr></table></figure></p>
+<p><strong>返回某个作用域变量的某个属性</strong></p>
+<p>${customer.fistName}等同于${customer[“fistName”]}(这种方式很少使用，不推荐使用)</p>
+<p>等同于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page import=&#34;bean.Customer&#34;%&#62;&#10;&#9;&#9;&#60;% Customer customer = (Customer)pageContext.findAttribute(&#34;customer&#34;); %&#62;&#10;&#9;&#9;&#60;%= customer.getFistName() %&#62;</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;jsp:useBean id=&#34;customer&#34; type=&#34;bean.Customer&#34; scope=&#34;request,session, or application&#34; /&#62;&#10;&#9;&#9;&#60;jsp:getProperty name=&#34;customer&#34; property=&#34;fistName&#34; /&#62;</span><br></pre></td></tr></table></figure>
+<p>但是对于类似${customer.address.zipCode}，使用<jsp:usebean>和<jsp:getproperty>则不能完成相同的获取属性的工作</jsp:getproperty></jsp:usebean></p>
+<p><strong>访问集合</strong><br>    ${attributeName[entryName]}</p>
+<p>对于JSP2.0，Servlet2.4以上（包含）的版本，还规定了以下的隐式对象：</p>
+<p><strong>pageContext</strong>:一次拥有request、response、session、out和servletContext属性。获取会话ID可以用${pageContext.session.id}<br><strong>param</strong>和<strong>paramValues</strong>:允许访问基本的参数值和请求参数值数组<br><strong>header</strong>和<strong>headerValues</strong>：访问HTTP请求报头的主要值和全部值<br><strong>cookie</strong>:<br><strong>initParam</strong>:<br><strong>pageScope</strong>，<strong>requestScope</strong>，<strong>sessionScope</strong>和<strong>applicationScope</strong>：</p>
+<p>算数运算符：+，-，*,/(div)<br>关系运算符：==和eq（比较两个参数是否相等）、！=和ne（比较两个参数是否不等）、&lt;和lt、&gt;和gt、&lt;=和le、&gt;=和ge<br>逻辑运算符：&amp;&amp;、and、or、||、!、not<br>空运算符：empty</p>
+<p><strong>16、JDBC</strong></p>
+<p><strong>使用JDBC连接数据库：</strong><br>1) 载入JDBC连接数据库的驱动文件<br>            Class.forName(“com.mysql.jdbc.Driver”);</p>
+<p>2) 定义要打开的连接<br>            String url = “jdbc:mysql://localhost:3306/test”;</p>
+<p>3) 建立连接<br>            String username = “root”;<br>            String password = 1234;<br>            Connection connection = DriverManager.getConnection(url,username,password);<br>4) 创建Statement对象<br>            Statement statement = connection.createStatement();<br>5) 执行查询<br>            String sql = “select * from user where user_id = 3”;<br>            ResultSet rs = statement.executeQuery(sql);<br>6) 结果处理<br>            ResultSet的第一行的索引是1<br>            while(rs.next()){<br>                rs.getString(COLUMN_NAME);<br>            }<br>7) 关闭连接<br>            connection.close();</p>
+<p><strong>调用数据库的存储过程：</strong><br>1) 定义对数据库存储过程的调用<br>            ？ = call procedure_name(?,?..?);</p>
+<p>2) 准备CallableStatement<br>            String procedure = {? = call procedure_name(?..?)}<br>            CallableStatement statement = connection.prepareCall(procedure); </p>
+<p>3) 注册输出参数的类型<br>            statement.registerOutParameters(n,type);<br>            n是输出参数的索引（第一个的索引是1），type是java.sql.Types定义的常量</p>
+<p>4) 提供输入值<br>            statement.setInt(2,12);<br>            statement.setString(3,”name”);<br>将第一个输入参数设为12，将第二个输入参数设为name，输入参数的索引从第一个输出参数开始计起</p>
+<p>5) 执行存储过程<br>            statement.execute();</p>
+<p>6) 访问返回的输出参数<br>            int res = statement.getInt(1);</p>
+<p>这里返回的是第一个输出参数，如果是第二个参数则将参数1变为2，其他以此类推</p>
+<p><strong>事务管理模板：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection connection = DriverManager.getConnection(url.username,password);&#10;boolean autoCommit = connection.getAutoCommit();&#10;try&#123;&#10;&#9;connection.setAutoCommit(fasle);&#10;&#9;Statement st = connection.createStatement();&#10;&#9;//&#25191;&#34892;&#20107;&#21153;&#21333;&#20803;&#10;&#9;...&#10;&#9;st.close();&#10;&#125;catch(SQLException e)&#123;&#10;&#9;connection.rollBack();&#10;&#9;throw new Throwable(e.getCause());&#10;&#125;finally&#123;&#10;&#9;connection.commit();&#10;&#9;connection.setAutoCommit(autoCommit);&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>mysql用户授权</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on database_name.* to USER_NAME@&#34;%&#34; identified by &#39;PASSWORD&#39;</span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Web技术/">Web技术</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JSP/">JSP</a><a href="/tags/Servlet/">Servlet</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/servlet-jsp-notes/" data-title="《Servlet与JSP核心编程》读书笔记 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/post/nodejs-hexo-backup/"  title="node.js+hexo博客多机备份与同步">
+ <strong>下一篇：</strong><br/> 
+ <span>node.js+hexo博客多机备份与同步
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/servlet-jsp-notes/" data-title="《Servlet与JSP核心编程》读书笔记" data-url="http://rhwayfun.com/post/servlet-jsp-notes/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

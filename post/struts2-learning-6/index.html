@@ -1,0 +1,908 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Struts2框架学习之六：通用标签详解 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+Struts2框架为我们提供了很多标签，这些标签总体上可以分为两类：通用标签和UI标签。而较常使用的又是通用标签，所以文章的内容也是围绕通用标签展开的。通用标签分为两类：数据标签和控制标签。数据标签用于访问值栈中数据，控制标签用于控制呈现页面时数据执行流程。如果需要使用Struts 2框架的标签库，需要在页面的首部引入以下代码：&amp;lt;%@ taglib uri=&amp;quot;/struts-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Struts2框架学习之六：通用标签详解">
+<meta property="og:url" content="http://rhwayfun.com/post/struts2-learning-6/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+Struts2框架为我们提供了很多标签，这些标签总体上可以分为两类：通用标签和UI标签。而较常使用的又是通用标签，所以文章的内容也是围绕通用标签展开的。通用标签分为两类：数据标签和控制标签。数据标签用于访问值栈中数据，控制标签用于控制呈现页面时数据执行流程。如果需要使用Struts 2框架的标签库，需要在页面的首部引入以下代码：&amp;lt;%@ taglib uri=&amp;quot;/struts-">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213143941883">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213152548079">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.777Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Struts2框架学习之六：通用标签详解">
+<meta name="twitter:description" content="前言
+Struts2框架为我们提供了很多标签，这些标签总体上可以分为两类：通用标签和UI标签。而较常使用的又是通用标签，所以文章的内容也是围绕通用标签展开的。通用标签分为两类：数据标签和控制标签。数据标签用于访问值栈中数据，控制标签用于控制呈现页面时数据执行流程。如果需要使用Struts 2框架的标签库，需要在页面的首部引入以下代码：&amp;lt;%@ taglib uri=&amp;quot;/struts-">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/struts2-learning-6/" title="Struts2框架学习之六：通用标签详解" itemprop="url">Struts2框架学习之六：通用标签详解</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-13T15:31:32.000Z" itemprop="datePublished"> 发表于 2015-12-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>Struts2框架为我们提供了很多标签，这些标签总体上可以分为两类：通用标签和UI标签。而较常使用的又是通用标签，所以文章的内容也是围绕通用标签展开的。通用标签分为两类：数据标签和控制标签。数据标签用于访问值栈中数据，控制标签用于控制呈现页面时数据执行流程。如果需要使用Struts 2框架的标签库，需要在页面的首部引入以下代码：<code>&lt;%@ taglib uri=&quot;/struts-tags&quot; prefix=&quot;s&quot;%&gt;</code>下面将分别对这两种标签进行说明。</p>
+<a id="more"></a>
+<p><strong>数据标签</strong></p>
+<p>数据标签主要用于访问ActionContext和值栈中数据，数据标签包括：</p>
+<ul>
+<li>property</li>
+<li>set</li>
+<li>push</li>
+<li>param</li>
+<li>bean</li>
+<li>action</li>
+<li>include</li>
+<li>url</li>
+<li>a</li>
+<li>i18n</li>
+<li>text</li>
+<li>date</li>
+<li>debug</li>
+</ul>
+<p><strong>1、property标签</strong></p>
+<p>property标签用于输出值栈中对象的属性值，value属性就是要输出的值。如果没有执行value属性，那么默认就会输出栈顶对象</p>
+<p>property标签的属性包括：<br>|名称|是否必需|说明|<br>|—-|—-|—-|<br>|default|否|如果value属性是null，则输出default的值|<br>|value|否|进行求值的表达式|</p>
+<p><strong>2、set标签</strong></p>
+<p>set标签是将一个值赋给指定范围的变量。如下前面的OGNL表达式<a href="http://blog.csdn.net/u011116672/article/details/50269113" target="_blank" rel="external">文章</a>中就多次使用了set标签。set标签的属性包括：<br>|名称|是否必需|说明|<br>|—-|—-|—-|<br>|name|是|变量的名字|<br>|value|否|指定一个表达式，将计算的结果赋给变量。如果没有执行value属性，默认将栈顶对象赋给变量|<br>|scope|否|变量的范围，有application、session、request、page和action（默认值）|</p>
+<p>注意的是，在使用默认scope的值，即action范围的时候，value属性值会保存在request和OgnlContext（OGNL上下文）中。比如下面的例子：</p>
+<p>action：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.struts2.action;&#10;&#10;import com.rhwayfun.struts2.bean.User;&#10;&#10;public class SetTagAction &#123;&#10;&#10;    private User user;&#10;    public String execute()&#123;&#10;        user = new User();&#10;        user.setName(&#34;&#21016;&#22791;&#34;);&#10;        return &#34;success&#34;;&#10;    &#125;&#10;    &#10;    public User getUser() &#123;&#10;        return user;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>jsp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;set&#26631;&#31614;&#27979;&#35797;&#60;/title&#62;&#10;    &#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&#62;    &#10;  &#60;/head&#62;&#10;  &#10;  &#60;body&#62;&#10;    &#60;p&#62;action&#33539;&#22260;&#20013;&#33719;&#21462;&#20540;&#60;/p&#62;&#10;    &#60;p&#62;&#10;        &#60;s:set name=&#34;name&#34; value=&#34;user.name&#34;&#62;&#60;/s:set&#62;&#10;        &#60;s:property value=&#34;#name&#34;/&#62;&#10;    &#60;/p&#62;&#10;    &#60;p&#62;request&#33539;&#22260;&#20013;&#33719;&#21462;&#60;/p&#62;&#10;    &#60;p&#62;&#10;        &#60;s:property value=&#34;#request.name&#34;/&#62;&#10;    &#60;/p&#62;&#10;    &#60;p&#62;session&#33539;&#22260;&#20013;&#33719;&#21462;&#60;/p&#62;&#10;    &#60;p&#62;&#10;        &#60;s:set name=&#34;name&#34; value=&#34;user.name&#34; scope=&#34;session&#34;&#62;&#60;/s:set&#62;&#10;        &#60;s:property value=&#34;#session.name&#34;/&#62;&#10;    &#60;/p&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>最后的测试结果：<br><img src="http://img.blog.csdn.net/20151213143941883" alt="结果"></p>
+<p><strong>3、push标签</strong></p>
+<p>push标签的作用是将一个对象放入值栈中，所以push对象位于栈顶，但是push标签结束之后，栈顶的元素将会被删除，因此需要访问push的对象需要在push标签的内部访问。push标签只有属性value，这也是一个必需提供的属性。那么具体在开发中push标签有什么作用呢？答案是<strong>简化对属性的访问</strong>。比如需要访问一个User对象的name属性和age属性，正常在jsp页面使用Struts 2标签库进行访问的方式是<code>#request.user.name</code>和<code>#request.user.age</code>（假设是request范围），而使用push标签，访问name属性的方式是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;s:push value=&#34;#request.user&#34;&#62;&#10;    &#22995;&#21517;&#65306;&#60;s:property value=&#34;name&#34;/&#62;&#10;    &#24180;&#40836;&#65306;&#60;s:property value=&#34;age&#34;/&#62;&#10;&#60;/s:push&#62;</span><br></pre></td></tr></table></figure>
+<p><strong>4、param标签</strong></p>
+<p>param标签通常是作为其他标签的子标签，用于为其他标签提供参数。param标签有两个非必需属性name和value。其中的name属性是要设置参数的名字，value则是该参数的值。使用param标签有两种方式：<code>&lt;param name=&quot;username&quot; value=&quot;zhangsan&quot;/&gt;</code>和<code>&lt;param name=&quot;username&quot;&gt;zhangsan&lt;/param&gt;</code>。在第一种方式中，value属性并不会作为name属性的值，而是表达式对待，因此如果zhangsan属性是空的话，将得到null ，所以需要把value改成<code>%{&#39;zhangsan&#39;}</code>。第二种访问方式是没有什么问题的。所以这种方式也是推荐的写法。</p>
+<p><strong>5、bean标签</strong></p>
+<p>bean标签相当于jsp中的useBean标签，bean标签通常用于实例化一个JavaBean对象，一个bean标签内部可以有多个param标签，用于为bean实例设置属性值（要求有set方法）。bean标签有两个属性：name和id。其中的name属性是要实例化的bean的完整类名，id用于指定一个名字，用于引用放入OgnlContext中的JavaBean对象。这里需要注意的是，出了bean标签，放入栈顶的实例（用bean标签创建的JavaBean对象会放入栈顶）会被移除。但是如果指定了id属性，在bean标签的外部就可以访问了。此时需要使用#符号。因此如果需要创建在bean实例可以在bean标签的外部也可以访问到，就需要指定id属性。</p>
+<p><strong>6、action标签</strong></p>
+<p>通过指定action的名字和可选的命名空间，action标签允许在jsp页面直接访问action。如果将action标签的executeResult属性设置为true，那么action对应的输出结果也会包含在本页面中。由于这种方式并不常用，而且在实际开发中使用的场合比较少，这里就不详细说明了。</p>
+<p><strong>7、include标签</strong></p>
+<p>该标签类似于jsp中<code>&lt;jsp:include&gt;&lt;/jsp:include&gt;</code>标签。在标签的内部可以包含多个param标签，用于向被包含的页面传递参数。include标签只有一个value属性，用于指定被包含的jsp或者Servlet。比如下面的代码：</p>
+<p>includeTag.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;include&#26631;&#31614;&#27979;&#35797;&#60;/title&#62;&#10;    &#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&#62;    &#10;  &#60;/head&#62;&#10;  &#10;  &#60;body&#62;&#10;    &#60;p&#62;&#20351;&#29992;include&#26631;&#31614;&#21253;&#21547;&#21478;&#19968;&#20010;&#39029;&#38754;&#65292;&#24182;&#20256;&#36882;&#21442;&#25968;&#60;/p&#62;&#10;    &#60;p&#62;&#10;        &#60;s:include value=&#34;includeJsp.jsp&#34;&#62;&#10;            &#60;s:param name=&#34;username&#34;&#62;&#21016;&#22791;&#60;/s:param&#62;&#10;            &#60;s:param name=&#34;age&#34;&#62;52&#60;/s:param&#62;&#10;        &#60;/s:include&#62;&#10;    &#60;/p&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure></p>
+<p>includeJsp.jsp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;includeJsp.jsp&#60;/title&#62;&#10;    &#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&#62;    &#10;  &#60;/head&#62;&#10;  &#10;  &#60;body&#62;&#10;    &#22995;&#21517;&#65306;$&#123;param.username &#125;&#60;br&#62;&#10;   &#24180;&#40836;&#65306;$&#123;param.age &#125;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>最后的访问includeTag.jsp，可以看到如下的结果：</p>
+<p><img src="http://img.blog.csdn.net/20151213152548079" alt="结果"></p>
+<p><strong>8、其他标签</strong></p>
+<p>其中的url标签用于创建一个url，在标签内部可以提供url附加的参数信息。i18n标签和text标签主要用于国际化的支持。i18n标签把一个资源包放入值栈中，text标签用于从资源包中获取消息。date标签主要用于格式化日期的输出。</p>
+<p><strong>控制标签</strong></p>
+<p>控制标签用于在呈现页面的时候控制程序的执行流程。常用的控制标签包括：</p>
+<ul>
+<li>if/elseif/else</li>
+<li>iterator</li>
+<li>generator</li>
+</ul>
+<p><strong>1、if/elseif/else 标签</strong></p>
+<p>下面是这个标签使用的一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#10;    &#60;title&#62;if/elseif/else&#26631;&#31614;&#60;/title&#62;&#10;    &#10;    &#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&#62;    &#10;  &#60;/head&#62;&#10;  &#10;  &#60;body&#62;&#10;    &#60;s:set name=&#34;score&#34; value=&#34;75&#34;&#62;&#60;/s:set&#62;&#10;        &#25104;&#32489;&#31561;&#32423;&#65306;&#10;    &#60;s:if test=&#34;#score &#60; 60&#34;&#62;&#19981;&#21450;&#26684;&#60;/s:if&#62;&#10;    &#60;s:elseif test=&#34;#score &#60; 80&#34;&#62;&#33391;&#22909;&#60;/s:elseif&#62;&#10;    &#60;s:else&#62;&#20248;&#31168;&#60;/s:else&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p><strong>2、iterator标签</strong></p>
+<p>iterator标签用于迭代一个集合的元素，在迭代的过程中，会暂时把迭代的对象压入栈顶，这样在标签的内部可以访问对象的属性值了。访问结束之后，会把栈顶的迭代对象移除，并把下一次迭代的对象压入栈顶。这样一直到所有的对象迭代完毕。iterator标签有三个属性：id、value和status。id属性几乎不使用，value属性用于指定迭代的集合，status属性可以获取迭代中的一个状态信息（比如索引值、是否是奇数、偶数等），其所有的方法如下：</p>
+<ul>
+<li>public int getCount()：得到迭代元素的总数</li>
+<li>public int getIndex()：得到当前迭代元素的索引</li>
+<li>public boolean isEven()：判断当前迭代的元素的顺序是否是偶数</li>
+<li>public boolean isOdd()：判断当前迭代的元素的顺序是否是奇数</li>
+<li>public boolean isFirst()：判断当前迭代的元素是否是第一个元素</li>
+<li>public boolean isLast()：判断当前迭代的元素是否是最后一个元素</li>
+</ul>
+<p>比如下面的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;iterator&#26631;&#31614;&#27979;&#35797;&#60;/title&#62;&#10;    &#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&#62;    &#10;&#10;  &#60;/head&#62;&#10;  &#10;  &#60;body&#62;&#10;    &#60;s:iterator value=&#34;&#123;&#39;&#21016;&#22791;&#39;,&#39;&#24352;&#39134;&#39;,&#39;&#20851;&#32701;&#39;&#125;&#34; status=&#34;s&#34;&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#65306;&#60;s:property /&#62;&#60;/p&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#24635;&#25968;&#65306;&#60;s:property value=&#34;#s.count&#34;/&#62;&#60;/p&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#32034;&#24341;&#65306;&#60;s:property value=&#34;#s.index&#34;/&#62;&#60;/p&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#26159;&#21542;&#20026;&#20598;&#25968;&#65306;&#60;s:property value=&#34;#s.even&#34;/&#62;&#60;/p&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#26159;&#21542;&#26159;&#22855;&#25968;&#65306;&#60;s:property value=&#34;#s.odd&#34;/&#62;&#60;/p&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#26159;&#21542;&#26159;&#31532;&#19968;&#20010;&#25968;&#65306;&#60;s:property value=&#34;#s.first&#34;/&#62;&#60;/p&#62;&#10;        &#60;p&#62;&#24403;&#21069;&#20803;&#32032;&#26159;&#21542;&#26159;&#26368;&#21518;&#19968;&#20010;&#25968;&#65306;&#60;s:property value=&#34;#s.last&#34;/&#62;&#60;/p&#62;&#10;        &#60;hr&#62;&#10;    &#60;/s:iterator&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p><strong>3、generator标签</strong></p>
+<p> generator标签主要是根绝分隔符对元素进行处理，该标签一般和iterator标签使用，在generator标签的内部可以使用iterator标签对处理之后的元素进行迭代，下面是一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;UTF-8&#34;%&#62;&#10;&#60;%@ taglib uri=&#34;/struts-tags&#34; prefix=&#34;s&#34; %&#62;&#10;&#60;%&#10;String path = request.getContextPath();&#10;String basePath = request.getScheme()+&#34;://&#34;+request.getServerName()+&#34;:&#34;+request.getServerPort()+path+&#34;/&#34;;&#10;%&#62;&#10;&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;    &#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;    &#60;title&#62;generator&#26631;&#31614;&#60;/title&#62;&#10;    &#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;    &#60;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&#62;    &#10;    &#60;meta http-equiv=&#34;keywords&#34; content=&#34;keyword1,keyword2,keyword3&#34;&#62;&#10;  &#60;/head&#62;&#10;  &#10;  &#60;body&#62;&#10;    &#60;s:generator separator=&#34;,&#34; val=&#34;&#39;&#21016;&#22791;,&#24352;&#39134;,&#20851;&#32701;&#39;&#34;&#62;&#10;        &#60;s:iterator&#62;&#10;            &#60;s:property/&#62;&#10;        &#60;/s:iterator&#62;&#10;    &#60;/s:generator&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<p>generator标签中上述的separator属性和val属性是必需的，如果指定了id属性，那么将以id属性的值作为key，将生成的迭代器保存在pageContext对象中。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/SSH/">SSH</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Struts2/">Struts2</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/struts2-learning-6/" data-title="Struts2框架学习之六：通用标签详解 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/oj-offer-38/" title="剑指offer系列之三十八：判断是否是平衡二叉树">
+  <strong>上一篇：</strong><br/>
+  <span>
+  剑指offer系列之三十八：判断是否是平衡二叉树</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/oj-offer-37/"  title="剑指offer系列之三十七：二叉树的深度">
+ <strong>下一篇：</strong><br/> 
+ <span>剑指offer系列之三十七：二叉树的深度
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/struts2-learning-6/" data-title="Struts2框架学习之六：通用标签详解" data-url="http://rhwayfun.com/post/struts2-learning-6/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

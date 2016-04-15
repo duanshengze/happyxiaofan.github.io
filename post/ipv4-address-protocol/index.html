@@ -1,0 +1,872 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>【TCP/IP协议族】IPv4地址协议 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="这篇博客主要对IP协议中一些基础知识点加以总结，并将书中一些晦涩难懂的部分去除了。IP地址协议是网络层中最重要的协议，IP地址协议可以对因特网上的所有设备进行唯一标识，也正因为有了IP协议，我们的计算机才能实现与全球任意一台设备进行通信。 同时这也是网络层存在的意义，我将对部分的内容分为两个部分加以总结：一、首先对IP协议部分的知识加以总结；二、对网络层其他的协议加以总结，包括ICMP、IGMP、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【TCP/IP协议族】IPv4地址协议">
+<meta property="og:url" content="http://rhwayfun.com/post/ipv4-address-protocol/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="这篇博客主要对IP协议中一些基础知识点加以总结，并将书中一些晦涩难懂的部分去除了。IP地址协议是网络层中最重要的协议，IP地址协议可以对因特网上的所有设备进行唯一标识，也正因为有了IP协议，我们的计算机才能实现与全球任意一台设备进行通信。 同时这也是网络层存在的意义，我将对部分的内容分为两个部分加以总结：一、首先对IP协议部分的知识加以总结；二、对网络层其他的协议加以总结，包括ICMP、IGMP、">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/辨认IP地址类别.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/IP数据报首部.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.719Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【TCP/IP协议族】IPv4地址协议">
+<meta name="twitter:description" content="这篇博客主要对IP协议中一些基础知识点加以总结，并将书中一些晦涩难懂的部分去除了。IP地址协议是网络层中最重要的协议，IP地址协议可以对因特网上的所有设备进行唯一标识，也正因为有了IP协议，我们的计算机才能实现与全球任意一台设备进行通信。 同时这也是网络层存在的意义，我将对部分的内容分为两个部分加以总结：一、首先对IP协议部分的知识加以总结；二、对网络层其他的协议加以总结，包括ICMP、IGMP、">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/ipv4-address-protocol/" title="【TCP/IP协议族】IPv4地址协议" itemprop="url">【TCP/IP协议族】IPv4地址协议</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-04T06:37:03.000Z" itemprop="datePublished"> 发表于 2015-10-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IP协议基础篇"><span class="toc-number">1.</span> <span class="toc-text">IP协议基础篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#地址空间"><span class="toc-number">1.1.</span> <span class="toc-text">地址空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#记法"><span class="toc-number">1.2.</span> <span class="toc-text">记法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分类编址"><span class="toc-number">1.3.</span> <span class="toc-text">分类编址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#认识编址"><span class="toc-number">1.3.1.</span> <span class="toc-text">认识编址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#举例说明"><span class="toc-number">1.3.2.</span> <span class="toc-text">举例说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无分类编址"><span class="toc-number">1.4.</span> <span class="toc-text">无分类编址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">1.4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两级编址"><span class="toc-number">1.4.2.</span> <span class="toc-text">两级编址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子网划分"><span class="toc-number">1.4.3.</span> <span class="toc-text">子网划分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊地址"><span class="toc-number">1.5.</span> <span class="toc-text">特殊地址</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP协议高级篇"><span class="toc-number">2.</span> <span class="toc-text">IP协议高级篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IP协议在TCP/IP模型中的位置"><span class="toc-number">2.1.</span> <span class="toc-text">IP协议在TCP/IP模型中的位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP数据报"><span class="toc-number">2.2.</span> <span class="toc-text">IP数据报</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP分片"><span class="toc-number">2.3.</span> <span class="toc-text">IP分片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标识"><span class="toc-number">2.3.1.</span> <span class="toc-text">标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标志"><span class="toc-number">2.3.2.</span> <span class="toc-text">标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分片偏移"><span class="toc-number">2.3.3.</span> <span class="toc-text">分片偏移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选项"><span class="toc-number">2.4.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#校验和"><span class="toc-number">2.5.</span> <span class="toc-text">校验和</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>这篇博客主要对IP协议中一些基础知识点加以总结，并将书中一些晦涩难懂的部分去除了。IP地址协议是网络层中最重要的协议，IP地址协议可以对因特网上的所有设备进行唯一标识，也正因为有了IP协议，我们的计算机才能实现与全球任意一台设备进行通信。 同时这也是网络层存在的意义，我将对部分的内容分为两个部分加以总结：一、首先对IP协议部分的知识加以总结；二、对网络层其他的协议加以总结，包括ICMP、IGMP、ARP等协议。<br><a id="more"></a></p>
+<h1 id="IP协议基础篇">IP协议基础篇</h1><hr>
+<h2 id="地址空间">地址空间</h2><p>这个概念很好理解，如果一个协议用a位（a个bit）表示，那么其地址空间就是2^a。我们要讲的IPv4地址协议（简称IP协议）使用32位表示一个地址，所以其地址空间是2^32(超过40亿)</p>
+<h2 id="记法">记法</h2><p>在IP协议中，有三种记法表示一个IP地址：</p>
+<ul>
+<li>基2（二进制表示法）</li>
+<li>基16（16进制表示法）</li>
+<li>基256（10进制表示法）</li>
+</ul>
+<p>基256：也叫点分十进制记法，也是最常用的记法，在每8个字节用<code>点</code>隔开，共有4个十进制数<br>基16：一个16进制等于4位二进制数。而一个IP地址有32个二进制数，所以使用基16进制表示的时候有8个二进制数<br>基2：采用01串的方式表示</p>
+<h2 id="分类编址">分类编址</h2><hr>
+<h3 id="认识编址">认识编址</h3><p>分类编址是最早出现的编址体系，在分类编址中一共分为五类：A、B、C、D、E。每一类占用地址空间的一部分。其中A类地址有2^31个地址，占50%，B类有2^30个地址，占25%，C类有2^29个地址，占12.5%，D类和E类各有2^28个地址，各占6.25%。那么如何辨别这5类地址呢？<br>如果是使用点分十进制记法，只要看左边第一个数，如果小于128，那么就是A类，如果小于192，那么就是B类，如果小于224，那么就是C类，如果小于240，那么就是D类，如果不在上面的范围，那么就是E类。</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/辨认IP地址类别.jpg" alt="辨认IP地址类别"></p>
+<h3 id="举例说明">举例说明</h3><p>一个IP地址包含了网络号和主机号（网络号标识了设备处于哪个网络下，主机号标识了该网络下的哪台设备），对于上述A、B、C类地址，分别用前一个字节、两个字节、三个字节表示网络号，后面的字节表示主机号。D类和E类地址不划分网络号和主机号，因为D类用来多播、E类地址被设计为保留地址。这种编址方法也称为两级编址方法，如果某一类地址中使用了n位表示网络号，那么便有32-n位表示主机号。在A、B、C类地址中，n的值分别等于8、16、24。那么了解了这点后，我们可以根据任意一个IP地址得到至少三个信息：<code>地址数</code>、<code>首地址</code>、<code>末地址</code>。<br>如果给定了n，那么<br>1）地址数N=2^32-n<br>2）首地址：保持最左边n位不变，并将右边32-n位置为0<br>3）末地址：保持最左边n位不变，并将右边32-n位置为1</p>
+<p>例如对于IP地址73.22.17.25，其地址数N=2^32-8=2^24，首地址为73.0.0.0，末地址为73.255.255.255</p>
+<p>通过IP地址，我们与另外一台计算机的通信需要到达其所在的网络，才找到该网络下的特定的主机。随着计算机设备的增多，32位的IP地址几乎被分配完毕，后来出现把一个网络划分为一个个子网络的思想，这样每个子网都有自己的网络地址（被划分的网络是拥有原来A类或者B类地址的网络）。那么问题来了，划分的子网的网络地址怎么表示呢？这里使用了<code>子网掩码</code>来解决这个问题，子网掩码是左边n位全为1，右边32-n位为0的IP地址，那么把原IP地址与子网掩码进行与运算就可以得到子网地址</p>
+<h2 id="无分类编址">无分类编址</h2><h3 id="简介">简介</h3><p>无分类编址使用可变长度的地址块，这些地址块不属于任何类，不过规定每个地址块中的地址数必须是2的乘方。要注意的是在无分类编址中，使用的仍然是两级编址，使用左边n位（也叫<code>前缀长度</code>）标识网络，右边32-n位（也叫<code>后缀长度</code>）标识主机号。前缀长度可以在1~32之间。同时，在无分类编址中会使用<code>斜线记法</code>来表示IP地址，如230.8.24.56/12。</p>
+<h3 id="两级编址">两级编址</h3><p>通过斜线记法表示的地址，我们可以得到该地址块表示的地址数、首地址和末地址。这点和分类编址是一样的。可以发现，当n分别等于8、16和24的时候刚好就是分类编址的情况，所以分类编址是无分类编址的一个特例。在无分类编址中，计算上述三个信息有一点点出入，看计算方法：</p>
+<p>1）地址数N=2^32-n<br>2）首地址= (任意地址) and (子网掩码)<br>3）末地址= (任意地址) OR (NOT (子网掩码))</p>
+<p>例如对于17.63.110.114/24，子网掩码为255.255.255.0。<br>地址数N=2^32-24=16，<br>地址：    17.63.110.114<br>子网掩码：255.255.255.0<br>首地址：  17.63.110.0</p>
+<p>地址：          17.63.110.114<br>NOT 子网掩码：   0.0.0.255<br>末地址：        17.63.110.255</p>
+<h3 id="子网划分">子网划分</h3><p>在无分类编址中，最常见的应用就是子网划分了。子网划分就是把ISP分配的一个地址块进一步划分为若干子网，每个子网还可以继续划分为子网的子网，没有任何限制。如果有一个地址块的地址数是N，前缀长度为n，要划分为s个子网，每个子网的前缀长度是n2，每个子网的可用地址数是N2。那么有如下计算公式：</p>
+<pre><code>n2 = n + <span class="function"><span class="title">log2</span><span class="params">(N/N2)</span></span>
+</code></pre><p>比如某组织的可用地址块为130.34.12.64/26，需要划分为4个子网，每个子网的地址数相同，则每个子网的信息可以如下求得：</p>
+<p>1) 可用的地址数N=2^32-26=64<br>2) 首地址=130.34.12.64/26，末地址=130.34.12.127/26<br>3) 每个子网的地址数N2=64/4=16<br>4) n2 = 26 + log2(64/16) = 28</p>
+<h2 id="特殊地址">特殊地址</h2><p>1）全0地址<br>即0.0.0.0/32，该地址被保留用于主机发送一个分组而又不知道自己地址的情况下<br>2）全1地址<br>即255.255.255.255/32，被设计为当前网络的受限广播地址，一个主机如果想把报文发给网络上的所有主机，就可以把这个地址作为目的地址</p>
+<h1 id="IP协议高级篇">IP协议高级篇</h1><hr>
+<h2 id="IP协议在TCP/IP模型中的位置">IP协议在TCP/IP模型中的位置</h2><p>在这部分的内容中，将对IP报文的格式做一个详细的了解，同时为学习TCP传输层做铺垫。</p>
+<p>有一点很重要，<strong>IP协议是不可靠的无连接数据报协议————一种尽最大努力交付的服务。就是说IP协议不保证数据的完整性和安全性，数据报有可能丢失、乱序、损坏或者延迟到达</strong></p>
+<h2 id="IP数据报">IP数据报</h2><p>网络层的分组称为数据报，，也可以简单理解为网络中传输的数据<br>下图是一个完整的IP数据报格式：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/IP数据报首部.jpg" alt="IP数据报"></p>
+<p>IP数据报由两部分组成：首部和数据。首部长度可以是20~60字节。下面对IP数据报中的各个字段加以说明：</p>
+<p><code>版本(VER)</code>：这个4位版本定义了IP协议的版本，目前的版本是4（IPv4）<br><code>首部长度(HLEN)</code>：定义了IP数据报首部的长度，以4字节的字为单位计算，若为20字节，则值为5<br><code>服务类型(TOS)</code>：指明了如何处理数据报，了解即可<br><code>总长度</code>：定义了包括首部在内的数据报总长度<br><code>标识</code>：分片时有用<br><code>标志</code>：分片时有用<br><code>分片偏移</code>：分片时有用<br><code>生存时间(TTL)</code>：指明数据报的生存时间<br><code>协议</code>：定义了使用IP层服务的高层协议<br><code>源地址</code>：发送主机的IP地址<br><code>目的地址</code>：接收主机的IP地址</p>
+<h2 id="IP分片">IP分片</h2><p>所谓IP分片就是把数据量过大的数据拆分成较小的数据报进行传输，这里涉及一个概念：<code>MTU</code>(最大传输单元)，这个字段的意思就是拆分后的数据报的长度不能超过这个值，对于以太网来说，这个字段的值是1500字节。</p>
+<p>IP分片要修改IP数据报中的标志、分片偏移和总长度的值，其他的不变。注意：分片的只是数据报中的数据，首部并不会被分片</p>
+<p>下面我们来看看分片的时候，上述三个字段（总长度需要根据分片的数据长度确定，再加上首部长度）发生了什么变化：</p>
+<h3 id="标识">标识</h3><p>此字段虽然没有改变，每个分片要复制这个字段的值。这个字段与源主机的IP唯一确定一个数据报。当目的主机收到所有分片后，可以根据这个标识重装数据报，因为目的主机认为标识号相同的是属于同一个数据报的。</p>
+<h3 id="标志">标志</h3><p>这是一个3位的字段，第1位保留不用，第2位称为<code>不分片</code>位，就是说当其值是1的时候，不会对数据报进行分片。第3位是<code>还有分片</code>位，就是说如果其值是1就说明这个分片后面还有分片，如果是0，则说明是最后一个分片或者第一个分片（因为当只有一个分片的时候，第一个也是最后一个）</p>
+<h3 id="分片偏移">分片偏移</h3><p>这个字段表示的是分片在正个数据报中的相对位置，以8字节为单位。通过这个字段，目的主机可以根据分片偏移的值从第一个分片开始组装到最后一个分片，直至形成一个完整的IP数据报。那么目的主机是如何重装分片的呢？<br>1) 分片偏移为0的分片是第一个分片<br>2) 把第一个分片的长度除以8得到第二个分片的偏移值，于是目的主机从接收到的分片中寻找该分片偏移值的分片，组装第二个分片<br>3) 把第一个分片和第二个分片的长度除以8得到第三个分片的偏移值，于是目的主机从接收到的分片中找到该分片，这样就把前三个分片组装好了<br>4) 继续以上过程，直到最后的一个分片的<code>还有分片</code>的值为0</p>
+<h2 id="选项">选项</h2><p>选项字段主要用于网络测试与排错，前面提到IP数据报首部的长度是20字节~60字节。其中20字节是固定部分，剩余的字节数是选项部分多出来的。<br>选项部分的格式可分为：一个字节的类型字段、一个字节的长度字段以及可变长度的值的字段。其中选项的类型可以分为六种：无操作、选项结束、记录路由、严格的源路由、不严格的源路由、时间戳。前两种是单字节的，后四种是多字节的</p>
+<h2 id="校验和">校验和</h2><p>绝大多数TCP/IP协议采用差错控制的方法称为校验和。校验和能够防止分组在传输期间出现损坏。下面说一下IP分组中的校验和：<br>首先把校验和字段置为0，然后把整个首部划分为16位的段，再将各段相加，把结果取反码插入到校验和字段中。要注意的是，IP分组中校验和只覆盖首部，不包括数据。这个字段了解即可</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java网络编程/">Java网络编程</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java网络编程，TCP-IP/">Java网络编程，TCP/IP</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/ipv4-address-protocol/" data-title="【TCP/IP协议族】IPv4地址协议 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/igmp-icmp-arp-protocol/" title="【TCP/IP协议族】IGMP、ICMP和ARP协议">
+  <strong>上一篇：</strong><br/>
+  <span>
+  【TCP/IP协议族】IGMP、ICMP和ARP协议</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/abstract-factory-mode/"  title="【设计模式】抽象工厂模式">
+ <strong>下一篇：</strong><br/> 
+ <span>【设计模式】抽象工厂模式
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/ipv4-address-protocol/" data-title="【TCP/IP协议族】IPv4地址协议" data-url="http://rhwayfun.com/post/ipv4-address-protocol/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IP协议基础篇"><span class="toc-number">1.</span> <span class="toc-text">IP协议基础篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#地址空间"><span class="toc-number">1.1.</span> <span class="toc-text">地址空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#记法"><span class="toc-number">1.2.</span> <span class="toc-text">记法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分类编址"><span class="toc-number">1.3.</span> <span class="toc-text">分类编址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#认识编址"><span class="toc-number">1.3.1.</span> <span class="toc-text">认识编址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#举例说明"><span class="toc-number">1.3.2.</span> <span class="toc-text">举例说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无分类编址"><span class="toc-number">1.4.</span> <span class="toc-text">无分类编址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">1.4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两级编址"><span class="toc-number">1.4.2.</span> <span class="toc-text">两级编址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子网划分"><span class="toc-number">1.4.3.</span> <span class="toc-text">子网划分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊地址"><span class="toc-number">1.5.</span> <span class="toc-text">特殊地址</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP协议高级篇"><span class="toc-number">2.</span> <span class="toc-text">IP协议高级篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IP协议在TCP/IP模型中的位置"><span class="toc-number">2.1.</span> <span class="toc-text">IP协议在TCP/IP模型中的位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP数据报"><span class="toc-number">2.2.</span> <span class="toc-text">IP数据报</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP分片"><span class="toc-number">2.3.</span> <span class="toc-text">IP分片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标识"><span class="toc-number">2.3.1.</span> <span class="toc-text">标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标志"><span class="toc-number">2.3.2.</span> <span class="toc-text">标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分片偏移"><span class="toc-number">2.3.3.</span> <span class="toc-text">分片偏移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选项"><span class="toc-number">2.4.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#校验和"><span class="toc-number">2.5.</span> <span class="toc-text">校验和</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

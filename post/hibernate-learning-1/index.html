@@ -1,0 +1,873 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Hibernate框架学习之一：Hello World程序 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+对一个框架的直观认识，往往是从一个Hello World程序开始。Hibernate是一个ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了Hibernate框架的作用是在Java对象与关系数据库中做了一个映射，使得程序员不用再使用各种SQL了。所以总结Hiberna">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate框架学习之一：Hello World程序">
+<meta property="og:url" content="http://rhwayfun.com/post/hibernate-learning-1/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+对一个框架的直观认识，往往是从一个Hello World程序开始。Hibernate是一个ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了Hibernate框架的作用是在Java对象与关系数据库中做了一个映射，使得程序员不用再使用各种SQL了。所以总结Hiberna">
+<meta property="og:image" content="http://img.blog.csdn.net/20151212152647164">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.709Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hibernate框架学习之一：Hello World程序">
+<meta name="twitter:description" content="前言
+对一个框架的直观认识，往往是从一个Hello World程序开始。Hibernate是一个ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了Hibernate框架的作用是在Java对象与关系数据库中做了一个映射，使得程序员不用再使用各种SQL了。所以总结Hiberna">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/hibernate-learning-1/" title="Hibernate框架学习之一：Hello World程序" itemprop="url">Hibernate框架学习之一：Hello World程序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-12T14:41:46.000Z" itemprop="datePublished"> 发表于 2015-12-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>对一个框架的直观认识，往往是从一个Hello World程序开始。Hibernate是一个ORM（Object Relationship Mapping）对象映射框架。实现了JDBC轻量级的封装，使得在进行JDBC开发的时候可以直接使用面向对象的思维进行开发，说白了Hibernate框架的作用是在Java对象与关系数据库中做了一个映射，使得程序员不用再使用各种SQL了。所以总结Hibernate以下几点：</p>
+<p>1、完成了对JDBC的封装，不用再与各种Connection打交道了<br>2、在业务体系中是一个持久层框架（除了持久层还有业务层，主要使用Struts2或者SpringMVC完成，还有视图层，就是诸如jsp、freemarker啦这些显示信息的技术），对持久层的解释，我摘抄了官方的一句话：<br><a id="more"></a></p>
+<blockquote>
+<p>Persistence simply means that we would like our application’s data to outlive the applications process. In Java terms, we would like the state of (some of) our objects to live beyond the scope of the JVM so that the same state is available later.</p>
+</blockquote>
+<p>3、是一个ORM框架，不用与各种SQL打交道</p>
+<p><strong>Hibernate 入门程序：XML版</strong></p>
+<p>第一步：在myeclipse中创建一个web项目，取名为hibernate<br>第二步：在项目中添加使用Hibernate框架必须的jar包：如下图：</p>
+<p><img src="http://img.blog.csdn.net/20151212152647164" alt="jar"></p>
+<p>第三步：编写hibernate.cfg.xml配置文件，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?&#62;&#10;&#60;!DOCTYPE hibernate-configuration PUBLIC&#10;        &#34;-//Hibernate/Hibernate Configuration DTD 3.0//EN&#34;&#10;        &#34;http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd&#34;&#62;&#10;&#10;&#60;hibernate-configuration&#62;&#10;&#10;    &#60;session-factory&#62;&#10;&#10;        &#60;!-- &#25968;&#25454;&#24211;&#36830;&#25509;&#37197;&#32622; --&#62;&#10;        &#60;property name=&#34;connection.driver_class&#34;&#62;com.mysql.jdbc.Driver&#60;/property&#62;&#10;        &#60;property name=&#34;connection.url&#34;&#62;jdbc:mysql://localhost/test&#60;/property&#62;&#10;        &#60;property name=&#34;connection.username&#34;&#62;root&#60;/property&#62;&#10;        &#60;property name=&#34;connection.password&#34;&#62;1234&#60;/property&#62;&#10;&#10;        &#60;!-- JDBC &#36830;&#25509;&#27744; --&#62;&#10;        &#60;property name=&#34;connection.pool_size&#34;&#62;1&#60;/property&#62;&#10;&#10;        &#60;!-- SQL &#26041;&#35328; --&#62;&#10;        &#60;property name=&#34;dialect&#34;&#62;org.hibernate.dialect.MySQLDialect&#60;/property&#62;&#10;&#10;        &#60;!-- Enable Hibernate&#39;s automatic session context management --&#62;&#10;        &#60;property name=&#34;current_session_context_class&#34;&#62;thread&#60;/property&#62;&#10;&#10;        &#60;!-- &#31105;&#29992;&#20108;&#32423;&#32531;&#23384;  --&#62;&#10;        &#60;property name=&#34;cache.provider_class&#34;&#62;org.hibernate.cache.NoCacheProvider&#60;/property&#62;&#10;&#10;        &#60;!-- &#26159;&#21542;&#26174;&#31034;&#25191;&#34892;&#30340;SQL&#35821;&#21477; --&#62;&#10;        &#60;property name=&#34;show_sql&#34;&#62;true&#60;/property&#62;&#10;&#10;        &#60;!-- &#21024;&#38500;&#24182;&#37325;&#24314;&#25968;&#25454;&#24211; --&#62;&#10;        &#60;property name=&#34;hbm2ddl.auto&#34;&#62;update&#60;/property&#62;&#10;        &#60;!-- &#24341;&#20837;&#22806;&#37096;&#26144;&#23556;&#25991;&#20214; --&#62;&#10;        &#60;mapping resource=&#34;bean/Person.hbm.xml&#34;/&#62;&#10;&#10;    &#60;/session-factory&#62;&#10;&#10;&#60;/hibernate-configuration&#62;</span><br></pre></td></tr></table></figure>
+<p>上面的配置文件指明了一些必要的数据库连接属性，通过这些属性，Hibernate可以连接上数据库。可以配置各种不同的数据库，其中sql 方言属性指明了使用你所配置的数据库的sql语法（比如Oracle与MySQL中一些语法还是存在很大不同的）。</p>
+<p>第四步：创建bean对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package bean;&#10;&#10;public class Person &#123;&#10;&#10;    private int id;&#10;    private String sname;&#10;    private int age;&#10;    private float salary;&#10;&#10;    //&#26080;&#21442;&#26500;&#36896;&#26041;&#27861;&#65292;&#20294;&#26159;&#22914;&#26524;&#19981;&#20889;&#30340;&#35805;&#12290;Person&#31867;&#24050;&#32463;&#26377;&#19968;&#20010;&#40664;&#35748;&#30340;&#26500;&#36896;&#26041;&#27861;&#65292;&#37027;&#23601;&#26159;&#26080;&#21442;&#26500;&#36896;&#26041;&#27861;&#10;    public Person()&#123;&#125;&#10;    //&#30465;&#30053;get&#21644;set&#26041;&#27861;&#65292;&#36825;&#37324;&#25226;id&#30340;set&#26041;&#27861;&#35774;&#20026;private&#10;    private void setId(int id)&#123;&#10;        this.id = id;&#10;    &#125;&#10;    @Override&#10;    public String toString() &#123;&#10;        return &#34;Person [id=&#34; + id + &#34;, sname=&#34; + sname + &#34;, age=&#34; + age&#10;                + &#34;, salary=&#34; + salary + &#34;]&#34;;&#10;    &#125;&#10;    &#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个标准JavaBean对象，Hibernate也建议我们这么写。但是在编写这个JavaBean的时候，有几点需要注意：一是对象的id属性，另一个是id属性的set方法。在Hibernate框架中，使用一个id为标识一个对象，所以在JavaBean中为一个对象添加id属性是必要的，因为在使用Hibernate框架时候，只有Hibernate才可以为一个对象分配id值（你可以试试在没有添加id属性的时候会出现什么异常）。另外，由于id是一个对象的标示符，所以我们一般禁止其他对象对这个属性进行随意的修改，所以将其set访问设为private也是出于这个层面的考虑。</p>
+<p>第五步：编写Person.hbmxml映射文件，该文件的作用是把Java中的Bean对象与数据库中（确切说是RDBMS，关系数据库）中一条记录做了一个映射（这里就是ORM的关键），代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&#62;  &#10;&#60;!DOCTYPE hibernate-mapping PUBLIC  &#10;        &#39;-//Hibernate/Hibernate Mapping DTD 3.0//EN&#39;  &#10;        &#39;http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd&#39;&#62;  &#10;&#60;hibernate-mapping package=&#34;bean&#34;&#62;&#10;    &#60;class name=&#34;Person&#34; table=&#34;PERSON&#34;&#62;&#10;        &#60;!--id&#23601;&#26159;&#25351;&#26126;&#23545;&#35937;&#26631;&#35782;&#31526; name&#23646;&#24615;&#23545;&#24212;Person&#23545;&#35937;id&#23646;&#24615;&#10;            column&#34920;&#31034;&#35813;&#23646;&#24615;&#26144;&#23556;&#21040;&#25968;&#25454;&#34920;&#30340;&#21738;&#20010;&#23383;&#27573;&#10;        --&#62;&#10;        &#60;id name=&#34;id&#34; column=&#34;PERSON_ID&#34;&#62;&#10;            &#60;!-- &#20027;&#38190;&#29983;&#25104;&#31574;&#30053;&#65292;native&#34920;&#31034;&#20351;&#29992;&#26412;&#22320;&#25968;&#25454;&#24211;&#30340;&#29983;&#25104;&#31574;&#30053;&#10;                &#27604;&#22914;&#36825;&#37324;&#20351;&#29992;&#30340;&#26159;MySQL&#65292;&#37027;&#20040;&#20351;&#29992;&#30340;&#20027;&#38190;&#31574;&#30053;&#23601;&#26159;MySQL&#30340;&#33258;&#21160;&#22686;&#38271;&#31574;&#30053;&#10;             --&#62;&#10;            &#60;generator class=&#34;native&#34;/&#62;&#10;        &#60;/id&#62;&#10;        &#60;!-- &#26222;&#36890;&#23646;&#24615;name&#23646;&#24615;&#34920;&#31034;Person&#23545;&#35937;&#20013;&#30340;&#23383;&#27573;&#65292;type&#23646;&#24615;&#34920;&#31034;&#35813;&#23646;&#24615;&#30340;&#31867;&#22411;&#10;            &#24403;&#28982;&#20063;&#21487;&#20197;&#25351;&#26126;column&#23646;&#24615;&#65292;&#22914;&#26524;&#19981;&#30693;&#21517;&#65292;&#25968;&#25454;&#34920;&#20013;&#30340;&#23383;&#27573;&#19982;&#23646;&#24615;&#21517;&#31216;&#26159;&#19968;&#33268;&#30340;&#10;         --&#62;&#10;        &#60;property name=&#34;sname&#34; type=&#34;java.lang.String&#34;/&#62;&#10;        &#60;property name=&#34;age&#34;/&#62;&#10;        &#60;property name=&#34;salary&#34;/&#62;&#10;    &#60;/class&#62;&#10;&#60;/hibernate-mapping&#62;</span><br></pre></td></tr></table></figure>
+<p>创建JavaBean之后，就是上面的映射文件了，上面的文件名以及文件内容可能有一些难以理解的地方。首先我们得知道，一个映射文件（后缀hbm也正是hibernate映射文件的意思）的作用是什么？前面提到了Hibernate是一个对象映射框架，对象映射到哪里去了呢？当然是数据库中数据表的一条记录（一个对象映射到了数据库表的一条记录，就这么理解）了。那么这个映射的过程的实现就是通过上面的映射文件了。映射文件告诉Hibernate怎么样去加载和存储持久化类的对象，映射文件告诉Hibernate去数据库中的那张表寻找以及应该使用表中的哪些字段。</p>
+<p>除此之外，我们注意到，有一些属性并没有指定type属性，有一些却指定了，那么什么类型属性需要指定，什么类型又不需要呢？对于一些常见的类型（</p>
+<p>第六步：编写测试程序实现CRUD操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package manager;&#10;&#10;import java.util.List;&#10;&#10;import org.hibernate.Query;&#10;import org.hibernate.Session;&#10;import org.hibernate.SessionFactory;&#10;import org.hibernate.Transaction;&#10;&#10;import utils.HibernateUtils;&#10;import bean.Person;&#10;&#10;public class PersonManager &#123;&#10;&#10;    public static void main(String[] args) &#123;&#10;        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();&#10;        Session session = sessionFactory.openSession();&#10;        Transaction t = session.beginTransaction();&#10;        // &#21019;&#24314;&#19968;&#20010;Person&#23545;&#35937;&#24182;&#20445;&#23384;&#21040;&#25968;&#25454;&#24211;&#20013;&#10;        /*Person p = new Person();&#10;        p.setSname(&#34;&#36213;&#20113;&#34;);&#10;        p.setAge(23);&#10;        p.setSalary(10000);&#10;&#10;        session.save(p);&#10;        // &#24320;&#21551;&#20107;&#21153;&#24182;&#25552;&#20132;&#10;        t.commit();&#10;&#10;        // &#26597;&#35810;&#10;        List list = session.createCriteria(Person.class).list();&#10;        for (Object object : list) &#123;&#10;            Person pe = (Person) object;&#10;            System.out.println(pe);&#10;        &#125;&#10;&#10;        // &#26356;&#26032;&#10;        Person p2 = (Person) session.load(Person.class, new Integer(1));&#10;        p2.setSname(&#34;&#40644;&#24544;&#34;);&#10;        session.save(p2);&#10;        t.commit();&#10;        &#10;        // &#26597;&#35810;&#10;        List list2 = session.createCriteria(Person.class).list();&#10;        for (Object object : list2) &#123;&#10;            Person pe = (Person) object;&#10;            System.out.println(pe);&#10;        &#125;*/&#10;        &#10;        //&#21024;&#38500;&#10;        Person p3 = (Person) session.get(Person.class, 2);&#10;        session.delete(p3);&#10;        t.commit();&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在测试的时候，为了对每个操作是否成功进行测试，可以把其他程序注释。其中涉及了Hibernate一些核心类：SessionFactory、Session和Transaction。</p>
+<p><strong>1、SessionFactory</strong></p>
+<p>熟悉设计模式的小伙伴应该知道，这是典型的工厂模式，一个org.hibernate.SessionFactory工厂对象就是生成org.hibernate.Session实例的。在整个应用程序总一个org.hibernate.SessionFactory应该只被初始化一次，并且应该是线程安全的。所以上面的代码使用HibernateUtils类封装了SessionFactory实例，从而保证了整个应用期间，只有一个SessionFactory实例。这也是设计模式的一种——单例模式。对SessionFactory的解释我引用官方的一句话：</p>
+<blockquote>
+<p>A threadsafe, immutable cache of compiled mappings for a single database. A factory for Session and a client of ConnectionProvider, SessionFactory can hold an optional (second-level) cache of data that is reusable between transactions at a process, or cluster, level.</p>
+</blockquote>
+<p>下面是HibernateUtils.java的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package utils;&#10;&#10;import org.hibernate.SessionFactory;&#10;import org.hibernate.cfg.Configuration;&#10;&#10;public class HibernateUtils &#123;&#10;&#10;    // &#21019;&#24314;&#20840;&#23616;&#21333;&#19968;sessionFactory&#23545;&#35937;&#10;    private static final SessionFactory sessionFacoty = buildSessionFactory();&#10;&#10;    private static SessionFactory buildSessionFactory() &#123;&#10;        try &#123;&#10;            return new Configuration().configure().buildSessionFactory();&#10;        &#125; catch (Throwable ex) &#123;&#10;            System.err.println(&#34;Initial SessionFactory creation failed.&#34; + ex);&#10;            throw new ExceptionInInitializerError(ex);&#10;        &#125;&#10;    &#125;&#10;    &#10;    public static SessionFactory getSessionFactory()&#123;&#10;        return sessionFacoty;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2、Session</strong></p>
+<p>Session代表了一个工作单元，一个Session的产生往往是在事务开始的时候创建的，比如在调用getCurrentSession方法的时候，一个事务就开始了。通过这种方式获取的Session与openSession方法的不同在于前者在事务结束的时候就会自动关闭，所以在一个事务commit或者rollback的时候，该session对象就已经关闭了。而后者则可以一直生效，每次得到的Session都是一个新的对象。</p>
+<blockquote>
+<p>Session is a single-threaded, short-lived object representing a conversation between the application and the persistent store. It wraps a JDBC connection and is a factory for Transaction. Session holds a mandatory first-level cache of persistent objects that are used when navigating the object graph or looking up objects by identifier.</p>
+</blockquote>
+<p><strong>3、Transaction</strong></p>
+<p>数据库中事务的概念是指访问并且可能更新数据项的程序执行单元，在sql编程中，一个事务可能是一条SQL查询语句。在Hibernate中，事务是与Session相关的。对此官方解释如下：</p>
+<blockquote>
+<p>(Optional) A single-threaded, short-lived object used by the application to specify atomic units of work. It abstracts the application from the underlying JDBC, JTA or CORBA transaction. A Session might span several Transactions in some cases. However, transaction demarcation, either using the underlying API or Transaction, is never optional.</p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/SSH/">SSH</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Hibernate/">Hibernate</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/hibernate-learning-1/" data-title="Hibernate框架学习之一：Hello World程序 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/oj-offer-34/" title="剑指offer系列之三十四：数组中的逆序对">
+  <strong>上一篇：</strong><br/>
+  <span>
+  剑指offer系列之三十四：数组中的逆序对</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/struts2-learning-5/"  title="Struts2框架学习之五：OGNL表达式">
+ <strong>下一篇：</strong><br/> 
+ <span>Struts2框架学习之五：OGNL表达式
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/hibernate-learning-1/" data-title="Hibernate框架学习之一：Hello World程序" data-url="http://rhwayfun.com/post/hibernate-learning-1/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,871 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>TCP拥塞控制、流量控制和差错控制 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="TCP属于传输层的协议，TCP传输协议是一种面向连接、可靠的协议。TCP协议的通信采用全双工通信模式，即双方可以同时发送与接收数据。TCP协议发送端有一个发送缓存，这个发送缓存就是用于从发送进程中接收要发送的数据用的，同理，接收方也有一个接收缓存，这个接收缓存把发送端的数据接收完毕后，完整按序把数据交付给接收进程。当有多个进程都需要发送数据的时候，TCP发送端会采用复用的方式（就是一个发送缓存接收">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP拥塞控制、流量控制和差错控制">
+<meta property="og:url" content="http://rhwayfun.com/post/congestion-flow-error-control/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="TCP属于传输层的协议，TCP传输协议是一种面向连接、可靠的协议。TCP协议的通信采用全双工通信模式，即双方可以同时发送与接收数据。TCP协议发送端有一个发送缓存，这个发送缓存就是用于从发送进程中接收要发送的数据用的，同理，接收方也有一个接收缓存，这个接收缓存把发送端的数据接收完毕后，完整按序把数据交付给接收进程。当有多个进程都需要发送数据的时候，TCP发送端会采用复用的方式（就是一个发送缓存接收">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/快重传.JPG">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.679Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP拥塞控制、流量控制和差错控制">
+<meta name="twitter:description" content="TCP属于传输层的协议，TCP传输协议是一种面向连接、可靠的协议。TCP协议的通信采用全双工通信模式，即双方可以同时发送与接收数据。TCP协议发送端有一个发送缓存，这个发送缓存就是用于从发送进程中接收要发送的数据用的，同理，接收方也有一个接收缓存，这个接收缓存把发送端的数据接收完毕后，完整按序把数据交付给接收进程。当有多个进程都需要发送数据的时候，TCP发送端会采用复用的方式（就是一个发送缓存接收">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/congestion-flow-error-control/" title="TCP拥塞控制、流量控制和差错控制" itemprop="url">TCP拥塞控制、流量控制和差错控制</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-08T08:20:08.000Z" itemprop="datePublished"> 发表于 2015-10-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>TCP属于传输层的协议，TCP传输协议是一种面向连接、可靠的协议。TCP协议的通信采用全双工通信模式，即双方可以同时发送与接收数据。TCP协议发送端有一个发送缓存，这个发送缓存就是用于从发送进程中接收要发送的数据用的，同理，接收方也有一个接收缓存，这个接收缓存把发送端的数据接收完毕后，完整按序把数据交付给接收进程。当有多个进程都需要发送数据的时候，TCP发送端会采用复用的方式（就是一个发送缓存接收多个发送进程要发送的数据，这里是多个发送进程对应一个发送缓存，所以是多对一的关系），当接收缓存接收到发送端的数据的时候就把分发给不同的接收进程，这里是一个接收缓存对应多个接收进程，是一对多的关系，这叫分用。<br><a id="more"></a></p>
+<p>TCP协议还有一套自己的编号系统，TCP的数据传输是基于字节的，所以发送缓存以及接收缓存的数据都是以字节为单位的。既然TCP协议是可靠安全的，那么TCP是怎么样来保证这点呢？首先TCP会对发送缓存中的数据的每个字节进行编号，编号是从一个随机的数开始的。在TCP报文段中的序号字段的值指的就是待发送数据的第一个字节的编号，在TCP报文中还有一个确认号字段，这个确认号字段是接收端下一个要接收的字节的编号。那么回到刚才哪个问题，TCP主要使用拥塞控制、流量控制以及差错控制来保证TCP传输的可靠。</p>
+<p>拥塞控制就是让发送端在网络拥塞的情况下逐渐减少发送的数据，直到网络恢复正常。流量控制就是TCP接收端对发送端发送多少字节的数据进行控制，防止接收端处理不及而丢失数据。差错控制就是保证接收端接收的数据是完整未受损伤的，是可靠性的重要保证。</p>
+<p>这里以TCP连接的建立过程说明流量控制，则流量控制的过程如下：</p>
+<ol>
+<li>TCP发送端向接收端发送一个SYN=1、seqNo=100的连接请求。这里的SYN=1表示一个建立连接的标志位，seqNo表示发送端发送数据的起始字节的编号是100</li>
+<li>接收端收到SYN=1、seqNo=100的报文后，给客户端发送ACK=1、seqNo=1000、ackNo=101、rwnd=800的响应报文，告诉发送端，我如果向你发送数据则我这边的数据的字节起始编号是1000，而且你刚才发送的连接请求我已经收到了，我下一个希望接收编号是101的字节，还告诉发送端发送窗口是800，并且接收端的接收窗口也是800字节</li>
+<li>发送端收到后，发送端的连接就建立了，于是给接收端发送ackNo=1001、ACK=1的报文，接收端收到后知道发送端已经收到刚才自己发的报文，所以接收端的连接也建立了。</li>
+<li>当两边的连接建立后就可以发送数据了，首先发送端发送seqNo=101，Data=200bytes的数据。</li>
+<li>接收端收到这200字节的数据后，接收窗口由800变为600（因为窗口缓存是800字节），并向发送端发送ACK=1、seqNo=301、rwnd=600的报文，告诉发送端你发送的200字节我已经收到了，下次发送的字节的起始编号是301，你的发送窗口要变为600了</li>
+<li>发送端收到后，知道刚才发送的200字节一杯确认了，于是把发送窗口向右移动200字节，这样发送窗口就变为600字节了。之后，发送继续向接收端发送数据，发送seqNo=301，Data=300bytes的报文，向接收端发送起始编号为301且长度是300的数据</li>
+<li>接收端收到后，把窗口减小为300字节，这时接收进程从接受缓存中拉取了100字节的数据，于是接收窗口的大小重新变为400字节，于是向发送端发送ACK=1、ackNo=601、rwnd=400的报文，告诉发送端你刚才发送的300字节数据我已经收到了，我下次希望接收的字节起始编号是601，你要把发送窗口继续减小为400字节</li>
+<li>发送端收到后，知道刚才发送的300字节被确认了，于是把发送窗口向右移动，并不得不继续较小发送窗口为400字节</li>
+<li>一会后，接收进程从接收缓存中拉取了200字节的数据，接收窗口变为600字节，于是接收端向发送端发送ACK=1、ackNo=601、rwnd=600的报文，告诉发送端窗口可以增大为600字节了</li>
+<li>后面的过程与此类似，以此类推</li>
+</ol>
+<p>从这个过程中，可以发现，发送窗口的大小是受到接收窗口的控制的。发送窗口必须根据接收端的大小及时调整发送窗口的大小，这个机制保证了每次TCP传输的数据量都是接收端可以及时处理的。不过这个过程中可能存在一个特例，就是当发送端每次只发送一个字节的数据的时候后者接收端处理数据的速度每一次只有一个1字节或者两者都有的时候，每次发送的报文段都很短，就会导致低效率，以发送端每次发送1字节为例，数据1字节、TCP首部20字节、IP首部20字节，这样为了发送1字节需要使用41字节发送浪费率达到40/41,加上数据链路层以及物理层的开销，可能这个数值还更大。这个问题有一个术语叫<strong>糊涂窗口综合征</strong>。有兴趣可以自己了解一下</p>
+<p>TCP的差错控制主要使用<code>校验和</code>、<code>确认</code>、<code>超时重传</code>这三个工具进行差错控制。校验和主要用来检验数据报文是否受到损伤。如果校验和无效，报文就会在终点被丢弃。确认是接收端用来证实确实收到了报文，在TCP中，使用的是累计确认，接收端会告诉发送端其下一个希望接收的字节编号。超时重传是差错控制的核心。实际上当发送端发送一段字节的数据后，会把这个报文段保存在一个队列中，并启动一个计时器，这个计时器也叫<strong>RTO(重传计时器)</strong>，若计时器超时发送端还没有收到接收端的ACK确认，那么发送端会把队列中的首部报文重新发送。当然RTO的值是动态的，与RTT有关，RTT是一个报文自发送到接收端返回确认的时间。如果RTO的值不是很大。使用简单的超时重传也就够了，但是如果RTO的值足够大，再使用超时重传就不太切实际了。TCP是这样处理的：如果发送端连续收到三个重复的超时重传ACK，那么发送端可以不必等待计时器到达而选择马上重传报文段，这种机制也称为<code>快重传</code>。还有一点要注意的是：接收端接收的数据可能不是按序到达的，当接收到不是按序到达的数据的时候，接收端不会丢弃该数据，而是先保存起来，并立即发送一个ACK，当其他失序的报文都到达后才把数据交付给接收进程。由于当RTO的值比较大的时候，TCP会采用快重传机制重传丢失的报文段，所以当发送完一个报文段后，如果发送端连续接收到3个重复的ACK确认的时候就会马上重传报文段，即使RTO计时器还没有超时。下图是快重传的一个流程图：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/快重传.JPG" alt="快重传"></p>
+<p>针对这个流程图说明快重传的机制：</p>
+<ol>
+<li>当发送端收到接收端ackNo=301的报文的时候，继续传输起始编号为301长度为100字节的数据，但是这个报文段丢失了，而发送端继续传输了字节编号从401到500的字节，接收端于是收到了失序但无差错的报文段，接收端把这段报文保存起来，并在接收窗口隔一个空隙，表示还有失序的报文没有到达，并给发送端发送ackNo=301的报文，表示起始编号为301的字节数据我这边还没有收到，你那边注意一下，准备重传吧</li>
+<li>发送端收到这个报文后，仍然继续传输起始编号为501到600的字节，接收端接收到后保存起来，并重新发送ackNo=301的报文</li>
+<li>发送端继续发送起始编号为601到700的字节，接收端收到后保存起来，并再次发送ackNo=301得的报文，由于这已经是第四次收到重复的ACK确认了，虽然这时RTO计时器还没有到达，但是发送端立即发送起始编号为301的字节数据。</li>
+</ol>
+<p>拥塞控制也是TCP传输中很重要的一环，TCP拥塞控制使用一个拥塞窗口以及拥塞策略来进行拥塞控制。在前面的流量控制中提到发送端的发送窗口取决于接收窗口，<strong>实际上，发送方的窗口大小是接收窗口与拥塞窗口中的较小值。拥塞窗口的大小又取决于网络的拥塞状况</strong>。而具体确定拥塞窗口大小则需要拥塞策略来决定。</p>
+<p>拥塞策略包括<code>慢开始</code>、<code>拥塞避免</code>、<code>拥塞检测</code>。TCP的一般是从一个比较小的传输速率开始，然后迅速增大到阈值，到达阈值后以一个比较小的速率继续传输，如果传输过程中遇到了网络拥塞就执行拥塞避免或者拥塞检测算法传输数据，直到网络恢复正常。</p>
+<p>慢开始算法<br>TCP从一个MSS(最大报文长度)报文开始，每次收到接收端的一个ACK后，就在原来MSS的基础上增加一个MSS（拥塞窗口cwnd变为2），这样当返回一个ACK的时候变为2个MSS长度的报文了，这两个报文发送出去后如果再收到一个ACK，每个MSS报文又变为2个MSS的报文（拥塞窗口cwnd变为4）。所以经过两次确认后，发送端可发送的报文为4个。以此类推，可以发现，可发送报文的长度是按照指数增长的。</p>
+<p>拥塞避免<br>拥塞避免是一种按照加法增大的算法，如果一直采用慢开始算法，那么很快就会到达阈值，为了在网络发生拥塞之前避免它，可以采用加法增大的算法，即每次cwnd只在原来的基础增加1，直到网络发生拥塞为止。</p>
+<p>拥塞检测<br>既然叫检测，那么就是要让发送方知道网络发生了拥塞，那么如何让发送方知道网络发生了拥塞呢？TCP中使用重传机制让发送方知道网络发生了拥塞。而在TCP中发生重传有两种情况：RTO超时或者发送方连续收到三个重复的ACK确认。不管哪种情况，在拥塞检测算法中，当传输速率到达ssthresh阈值的时候，都会把阈值较小为原来的一半，所以也叫乘法减小算法。<br>对于RTO超时，可以认为有比较大可能网络发生了拥塞，所以早RTO超时的情况下，TCP采用的策略如下：</p>
+<ol>
+<li>ssthresh减小为原来的一半</li>
+<li>把cwnd重新设为一个报文段大小</li>
+<li>执行慢开始算法</li>
+</ol>
+<p>对于收到三次重复的ACK确认，TCP认为发生拥塞的可能性不是特别大，于是采用如下策略：</p>
+<ol>
+<li>ssthresh减小为原来的一半</li>
+<li>把cwnd的值设为ssthresh的值</li>
+<li>执行拥塞避免算法</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java网络编程/">Java网络编程</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java网络编程/">Java网络编程</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/congestion-flow-error-control/" data-title="TCP拥塞控制、流量控制和差错控制 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/observer-mode/" title="【设计模式】观察者模式">
+  <strong>上一篇：</strong><br/>
+  <span>
+  【设计模式】观察者模式</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/igmp-icmp-arp-protocol/"  title="【TCP/IP协议族】IGMP、ICMP和ARP协议">
+ <strong>下一篇：</strong><br/> 
+ <span>【TCP/IP协议族】IGMP、ICMP和ARP协议
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/congestion-flow-error-control/" data-title="TCP拥塞控制、流量控制和差错控制" data-url="http://rhwayfun.com/post/congestion-flow-error-control/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

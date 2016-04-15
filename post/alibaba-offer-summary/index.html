@@ -1,0 +1,942 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>阿里2016实习offer经验与总结 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="前言
+目前楼主已经拿到阿里实习offer，一共经历了5次面试，其中4轮技术面，1轮HR面试。在这里分享一下自己的面试经验和学习总结。写这篇面经主要是希望能够帮助更多的小伙伴。我本科毕业于中南大学信管专业，真正开始学习Java是在大三下学期，研究生就读北航的移动云计算专业。刚开始也是小白，也是一步步成成起来的。希望能够给与我有相同经历的亲们一个参考。需要提的一点是，你将来是需要靠这个吃饭的，所以请对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里2016实习offer经验与总结">
+<meta property="og:url" content="http://rhwayfun.com/post/alibaba-offer-summary/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="前言
+目前楼主已经拿到阿里实习offer，一共经历了5次面试，其中4轮技术面，1轮HR面试。在这里分享一下自己的面试经验和学习总结。写这篇面经主要是希望能够帮助更多的小伙伴。我本科毕业于中南大学信管专业，真正开始学习Java是在大三下学期，研究生就读北航的移动云计算专业。刚开始也是小白，也是一步步成成起来的。希望能够给与我有相同经历的亲们一个参考。需要提的一点是，你将来是需要靠这个吃饭的，所以请对">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.673Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里2016实习offer经验与总结">
+<meta name="twitter:description" content="前言
+目前楼主已经拿到阿里实习offer，一共经历了5次面试，其中4轮技术面，1轮HR面试。在这里分享一下自己的面试经验和学习总结。写这篇面经主要是希望能够帮助更多的小伙伴。我本科毕业于中南大学信管专业，真正开始学习Java是在大三下学期，研究生就读北航的移动云计算专业。刚开始也是小白，也是一步步成成起来的。希望能够给与我有相同经历的亲们一个参考。需要提的一点是，你将来是需要靠这个吃饭的，所以请对">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/alibaba-offer-summary/" title="阿里2016实习offer经验与总结" itemprop="url">阿里2016实习offer经验与总结</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-09T07:25:42.000Z" itemprop="datePublished"> 发表于 2016-04-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p><strong>前言</strong></p>
+<p>目前楼主已经拿到阿里实习offer，一共经历了5次面试，其中4轮技术面，1轮HR面试。在这里分享一下自己的面试经验和学习总结。写这篇面经主要是希望能够帮助更多的小伙伴。我本科毕业于中南大学信管专业，真正开始学习Java是在大三下学期，研究生就读北航的移动云计算专业。刚开始也是小白，也是一步步成成起来的。希望能够给与我有相同经历的亲们一个参考。需要提的一点是，你将来是需要靠这个吃饭的，所以请对找工作保持十二分的热情，而且越早准备越好，摆正心态和位置，那么就开始努力吧！！</p>
+<p><strong>阿里一面</strong><br>    一面是在上午9点多接到支付宝的面试电话的，因为很期望能够尽快接到阿里的电话，所以非常兴奋。电话接通之后还是非常紧张的，毕竟是第一次这样的面试。中间面的问题有些记不清了，下面列出了一面问到的问题：</p>
+<ol>
+<li>自我介绍下自己，不超过3分钟（实际上我的自我介绍不到一分钟）</li>
+<li>你感觉比本科阶段自己进步了多少，有哪些进步</li>
+<li>研究生期间最大的进步是什么</li>
+<li>你觉得你适合从事哪个方向的开发</li>
+<li>synchronized与lock的区别，使用场景。看过synchronized的源码没</li>
+<li>JVM自动内存管理，Minor GC与Full GC的触发机制</li>
+<li>了解过JVM调优没，基本思路是什么</li>
+<li>如何设计存储海量数据的存储系统</li>
+<li>缓存的实现原理，设计缓存要注意什么</li>
+<li>淘宝热门商品信息在JVM哪个内存区域</li>
+<li>操作系统的页式存储</li>
+<li>volatile关键字的如何保证内存可见性</li>
+<li>happen-before原则</li>
+<li>Lucene全文搜索的原理</li>
+<li>你觉得自己适合哪方面的开发，为什么</li>
+<li>想去哪里实习，杭州？</li>
+<li>评价一下我的这次面试表现</li>
+<li>应该在我的技术栈中增加什么</li>
+<li>有机会下次面试吗</li>
+</ol>
+<p><strong>一面总结</strong>： 一面大概面了50多分钟，从面试官口中得知他是一个老员工，比我大不了多少，总体上还是聊得蛮投机的。最后的三个问题是我问面试官的，在回答我是否还有机会下次面试的时候说：竞争很激烈，不过机会还是有的。听到这才松了口气，在挂完电话后赶紧区官网查看自己的状态，刚开始出现了结果将在xxx后公布，那叫一个紧张啊，等了几分钟后，简历状态显示在面试中，这才松了口气。</p>
+<p>可以看出一面的问题不是很难，但是要得到面试官比较高的评价（后面听我同学说，我的面试表现是A），还是需要一定的表达能力和对技术比较本质的认识的，如果在回答问题的时候能够做一些适当的扩展，自然会让面试官对你有不一样的评价。我回答问题的遵循一定的步骤：先回答问题本质，在回答具体细节，最后做一些平时编程中的扩展。这样，会让面试官觉得你确实是在这个技术上面下过功夫的。</p>
+<p><strong>阿里二面</strong><br>    等了将近6天（还以为被刷了呢）终于在第二周的周四接到阿里面试电话，那叫一个激动啊。赶紧找了一个安静的地方，准备好后开始正式面试。二面的面试官是一个部门主管，自然还是有点小紧张的。这次面试官上来就直接问，没有一面的面试官那么好说话，下面是面试过程中的问题：</p>
+<ol>
+<li>自我介绍下自己，不超过3分钟（我的自我介绍仍然不超过1分钟，呵呵了）</li>
+<li>你说你熟悉并发编程，那么你说说Java锁有哪些种类，以及区别（果然深度不一样）</li>
+<li>如何保证内存可见性</li>
+<li>Http请求的过程与原理</li>
+<li>TCP连接的特点</li>
+<li>TCP连接如何保证安全可靠的</li>
+<li>为什么TCP连接需要三次握手，两次不可以吗，为什么</li>
+<li>AOP的原理</li>
+<li>动态代理与cglib实现的区别（这个，醉得很厉害）</li>
+<li>那么你说说代理的实现原理呗</li>
+<li>看过Spring源码没，说说Ioc容器的加载过程吧</li>
+<li>了解过字节码的编译过程吗（这个还真不知道）</li>
+<li>可以来杭州实习吗</li>
+<li>评价一下我的面试表现</li>
+<li>有机会下次面试吗</li>
+<li>您觉得我的技术栈应该补充什么，有哪些方面还需要提高</li>
+</ol>
+<p><strong>二面总结</strong>： 二面面试官问的问题都比较直接，答案也是知道就知道，不知道就不知道。这些问题一部分是基础一部分是根据你的专业技能的来提问的。面完后面试官对我的评价是：中规中矩，有机会下次面试。虽说是中规中矩，但听到面试官说有机会下次面试就感觉这次面试应该过了。挂完电话后赶紧登陆查看我的简历状态，刚开始仍然显示在面试中，但是有一点困惑的是：为什么这次没有出现结果待公布的页面呢？又一阵担心，上课也心不在焉，终于在晚上7点多的时候显示了结果待公布的页面，然后心跳又开始开速，过了几分钟看到终于显示在面试中才放松一点。</p>
+<p>虽说这次面试过了，但是我在思考的是为什么面试官对我的表现是中规中矩。后面我知道我的回答虽然答到了点子上，但是扩展程度不够，对一些问题的理解缺乏足够的实践经验。面试官告诉我，有时间可以去研究字节码的编译过程，以及JVM调优方面的知识（特别强调这个很重要）。针对自己的不足，面完后又投入疯狂的看书写代码的生活中。虽然在面试中有一些回答不出来很正常，但是如果能够做到出乎面试官的意料，也是面试官对你很重要的加分项。</p>
+<p><strong>阿里三面（总监面）</strong><br>    三面与二面隔了5天（不知道是不是因为二面面试官对我的评价是中规中矩的缘故，中间一直担心自己被刷了），仍然在下午4点多接到的电话，一看显示来电归属地是阿里巴巴集团，兴奋得不行，找了一个安静的地方开始面试。据说总监面会问项目多一点，所以在等待的这几天中给项目增加了几个比较肉的点，好在能够面试官耍耍（现在想来只能说：too young too simple）。总监刚上来非常不客气，最尴尬的是总监那边老感觉有回声，因为不好意思提就忍了。下面是三面遇到的问题：</p>
+<ol>
+<li>自我介绍，不超过3分钟（这次好像时间更久了，也就2分钟多点）</li>
+<li>说一下你对哪个项目比较熟悉</li>
+<li>为什么做这个项目</li>
+<li>项目采用了什么架构，数据库如何设计的</li>
+<li>数据库由哪些表，为什么有这些表</li>
+<li>主要有哪些核心模块，模块之间如何通信的</li>
+<li>session放在哪里</li>
+<li>如何保存会话状态，有哪些方式、区别如何</li>
+<li>分布式session如何管理，你有哪些方案</li>
+<li>学过数据结构和算法吗（当然），你说说二分搜索的过程</li>
+<li>说一下快排的过程，写一下伪代码</li>
+<li>了解哪设计模式，举例说说在jdk源码哪些用到了你说的设计模式</li>
+<li>你有什么问我吗（仍然上面三个问题）</li>
+</ol>
+<p><strong>三面总结</strong>：本以为三面是交叉面，没想到是阿里的总监面试。由于具体的技术问题在前两轮面试中已经问过了，所以三面后不会有具体的技术问题，总结来看，对自己做过的项目一定要深入，包括使用使用到的技术原理、为什么要使用这些技术。针对项目，面试官关注的无非以下几点：<br>项目中某个比较重要的点是如何实现的（需要深入技术的原理）<br>遇到的最大困难是什么（有哪些），你怎么解决的？<br>如果需要扩展某个功能，如何降低系统的耦合度<br>如果针对某个功能进行优化，你会怎么设计和优化</p>
+<p> 对于写在简历上面的项目，自己对照上面四个问题进行思考，才会在面试中游刃有余。因为任何在简历中作假的行为，面试官只要详细问你就露馅了。在听到面试官说有机会下次面试的时候，心中自然是非常高兴的。挂完电话后区官网查看自己的简历状态，经过几分钟的煎熬后终于仍然显示是面试中才稍稍放松一些。本以为这次总监面试后直接就是HR面了，奈何在晚上阿里打电话说明天部门总监还需要进行一次面试，让我做好准备。我也是醉了，不是已经总监面了吗。虽然存有疑虑，但不管如何还是好好准备。</p>
+<p><strong>阿里四面 （总监面）</strong><br>    果然，在第二天下午四点多接到了部门总监的电话，简单沟通后开始了面试。这次面试感觉是最放松的，没有什么高深的技术问题，感觉就像和朋友聊天的感觉，真的很感谢这位面试官。下面是面试中的问到的问题：</p>
+<ol>
+<li>来个自我介绍呗，不超过3分钟（这次终于由三分钟了，⊙﹏⊙b汗）</li>
+<li>介绍下你最熟悉的项目</li>
+<li>项目使用了什么架构，亮点是什么</li>
+<li>平时主要学习什么课程</li>
+<li>你目前的研究方向是什么</li>
+<li>家是哪的</li>
+<li>喜欢看什么书</li>
+<li>大概什么时候能来实习呢</li>
+<li>你有什么想要问我吗（仍然上面三个问题）</li>
+</ol>
+<p><strong>四面总结</strong>： 虽然这面比较轻松，也没有什么具体的技术问题，但对项目仍然是面试官关注的，后面了解到总监面除了看你的基础，主要看你的潜力（就是有没有培养的价值），这个东西看起来挺虚的，但是从你平时的学习中仍然是可以看得出来的。所以，作为一名开发人员，平时对技术的研究也是很重要的。在听到面试官说让我好好等HR通知的时候可开心了，感觉饭都吃得更香了。</p>
+<p><strong>阿里五面（HR面）</strong><br>    在隔了4天左右，终于接到了HR的电话，那叫一个激动啊。感觉离阿里offer已经不远了，于是振奋精神，聊得还不错。下面是HR问我的问题：</p>
+<ol>
+<li>自我介绍下吧</li>
+<li>做了哪些项目</li>
+<li>看你在问题中说你在杭州看到很多商贩使用付款二维码，你对支付宝怎么看</li>
+<li>你看吧，每天有那么多人使用支付宝，这些数据如果给你存储，你会怎么设计呢（不是说HR不问技术问题吗？不愧是阿里的HR）</li>
+<li>为什么想来支付宝实习呢</li>
+<li>你身边同学如何评价你、老师呢</li>
+<li>如果与同事发生了意见的不一致，你会如何解决呢</li>
+<li>我什么时候能够得到通知呢</li>
+<li>评价下我的面试表现（听到这个问题，HR居然笑了！）</li>
+<li>阿里如何对实习生进行培训</li>
+</ol>
+<p><strong>五面总结</strong>： 虽然之前就听说阿里HR很犀利，不过我感觉一点都不会啊。难道是我的错觉？不得不说的是这个HR的声音真的很好听诶。</p>
+<p><strong>关于HR面试</strong></p>
+<p>其实早就听说把面试的最终的录取结果具有一票否决权，在面完前面的技术面试之后，还是很担心的。所以咨询了师兄以及网上找了阿里HR面试的资料，大概得到以下结论：</p>
+<ol>
+<li>诚信至上，所以在简历中不要存在任何虚假信息，企图通过虚假信息得到面试机会的后果得不偿失</li>
+<li>HR更关注你的表达能力、与同事相处的能力以及对工作的态度</li>
+<li>对自己的是否一个明确的职业规划（前提是首先得对自己有一个清晰的定位）</li>
+<li>关于待遇的问题（由于面的实习岗位，所以这个没有提，但是就我而言，能力才是最重要的，能力上来了待遇自然就水涨船高）</li>
+</ol>
+<p><strong>关于面试的心态</strong></p>
+<p>在自己拿到阿里offer之前，一直都在想一个问题：我到底该如何做才能离阿里更近？一年的成长与思考让我认清了这点，虽然中间也遇到过很多坑，但却真正让我对自己有了一个清晰的定位，也有了比较明确的目标。正因为如此，我每天所学习的都给我莫大的动力，让我不断进步，并最终实现自己的目标。所以迷茫才是最可怕的，只有摆正心态，对找工作保持十二分的热情，勤奋努力，才能离目标更近一步。</p>
+<p>但是有了目标和努力外，不一定就能实现目标，说到底还有一个运气的成分在里面，只能说你找到心仪的工作概率更大而已。遇到一个好的面试官绝对赚了。这四位阿里的面试官我感觉都挺好的，没有因为他们资历深就为难我，所以还是非常感谢这四位技术面试官的。</p>
+<p><strong>一点总结</strong></p>
+<p>由于本科是非科班出身，也仅仅是接触过Java而已，在大三的时候对自己的未来的发展道路很迷茫，不知道何去何从，感觉自己就是一个loser。那会考完研后有幸进入了金蝶实习，也就是那段时间让我认清了自己的短板，自己欠缺的是什么，那段时间也是我确立自己目标的过程。读研后疯狂看书、写代码、写博客、做项目，每天都在对自己进行总结和反思，正是这样一个不断的自我反思与努力的过程中，我得到了真正的成长与进步。也是这段经历让我能够面对阿里技术面试官的提问应答自如，从而顺利拿到阿里的offer。</p>
+<p>最后，想送给自己两句话以鞭策自己：</p>
+<ul>
+<li><strong>越努力，越幸运！</strong></li>
+<li><strong>以现在大多数人的努力程度之低，根本轮不到可以拼天赋。</strong></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT杂谈/">IT杂谈</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/阿里巴巴/">阿里巴巴</a><a href="/tags/面试/">面试</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/alibaba-offer-summary/" data-title="阿里2016实习offer经验与总结 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/deep-in-copyonwritearraylist/" title="CopyOnWriteArrayList源码剖析">
+  <strong>上一篇：</strong><br/>
+  <span>
+  CopyOnWriteArrayList源码剖析</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/dev-in-java/"  title="Java成神之路">
+ <strong>下一篇：</strong><br/> 
+ <span>Java成神之路
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/alibaba-offer-summary/" data-title="阿里2016实习offer经验与总结" data-url="http://rhwayfun.com/post/alibaba-offer-summary/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

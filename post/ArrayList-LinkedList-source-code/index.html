@@ -1,0 +1,1034 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>ArrayList与LinkedList源码分析 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="近来在牛客网混迹，看了许多面经和一些的大牛的学习分享，真的受益匪浅。在此表示感谢。Java集合框架部分是平时编程使用频率最高的，于最近研究了集合框架下常用类的源码，在此分享出来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ArrayList与LinkedList源码分析">
+<meta property="og:url" content="http://rhwayfun.com/post/ArrayList-LinkedList-source-code/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="近来在牛客网混迹，看了许多面经和一些的大牛的学习分享，真的受益匪浅。在此表示感谢。Java集合框架部分是平时编程使用频率最高的，于最近研究了集合框架下常用类的源码，在此分享出来。">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.612Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ArrayList与LinkedList源码分析">
+<meta name="twitter:description" content="近来在牛客网混迹，看了许多面经和一些的大牛的学习分享，真的受益匪浅。在此表示感谢。Java集合框架部分是平时编程使用频率最高的，于最近研究了集合框架下常用类的源码，在此分享出来。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/ArrayList-LinkedList-source-code/" title="ArrayList与LinkedList源码分析" itemprop="url">ArrayList与LinkedList源码分析</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-12T05:12:31.000Z" itemprop="datePublished"> 发表于 2015-09-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList"><span class="toc-number">1.</span> <span class="toc-text">ArrayList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList工作原理"><span class="toc-number">1.1.</span> <span class="toc-text">ArrayList工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析"><span class="toc-number">1.2.</span> <span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#add方法"><span class="toc-number">1.2.1.</span> <span class="toc-text">add方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get方法"><span class="toc-number">1.2.2.</span> <span class="toc-text">get方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remove方法"><span class="toc-number">1.2.3.</span> <span class="toc-text">remove方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList小结"><span class="toc-number">1.3.</span> <span class="toc-text">ArrayList小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LinkedList"><span class="toc-number">2.</span> <span class="toc-text">LinkedList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LinkedList原理"><span class="toc-number">2.1.</span> <span class="toc-text">LinkedList原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析-1"><span class="toc-number">2.2.</span> <span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#add"><span class="toc-number">2.2.1.</span> <span class="toc-text">add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get"><span class="toc-number">2.2.2.</span> <span class="toc-text">get</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remove"><span class="toc-number">2.2.3.</span> <span class="toc-text">remove</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LinkedList小结"><span class="toc-number">2.3.</span> <span class="toc-text">LinkedList小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList与LinekdList的区别"><span class="toc-number">3.</span> <span class="toc-text">ArrayList与LinekdList的区别</span></a></li></ol>
+		
+		</div>
+		
+		<p>近来在<a href="www.nowcoder.com">牛客网</a>混迹，看了许多面经和一些的大牛的学习分享，真的受益匪浅。在此表示感谢。Java集合框架部分是平时编程使用频率最高的，于最近研究了集合框架下常用类的源码，在此分享出来。<br><a id="more"></a></p>
+<h1 id="ArrayList">ArrayList</h1><p>也叫数组列表，底层使用的数组实现的，严格来说是动态数组。为了简化，我将从以下几个方面对ArrayList进行分析，目录结构如下：</p>
+<ul>
+<li>ArrayList的原理</li>
+<li>源码分析</li>
+</ul>
+<h2 id="ArrayList工作原理">ArrayList工作原理</h2><p>ArrayList工作原理其实很简单，底层是动态数组，每次创建一个ArrayList实例时会分配一个初始容量（如果指定了初始容量的话），以add方法为例，如果没有指定初始容量，当执行add方法，先判断当前数组是否为空，如果为空则给保存对象的数组分配一个最小容量，这里为10。当添加大容量元素额时候，会先增加数组的大小，以提高添加的效率。</p>
+<blockquote>
+<p>把ArrayList理解为一个数组就好了</p>
+</blockquote>
+<h2 id="源码分析">源码分析</h2><p>由于ArrayList方法较多，对源码的分析不能一一到位，所以选取了我们平时最常用的add、get和remove方法来分析。</p>
+<h3 id="add方法">add方法</h3><p>add方法重载了多个实现，包括add(E e)和add(int index,E e)，由于没有指定插入的位置，每次插入操作会把元素放到数组的末尾，而这个过程只需要保证容量够用就行，先来看看add(E e)方法：</p>
+<pre><code><span class="keyword">public</span> <span class="built_in">boolean</span> <span class="built_in">add</span>(E e) {
+    <span class="comment">//保证数组的容量始终够用</span>
+    ensureCapacityInternal(<span class="built_in">size</span> + <span class="number">1</span>);
+    <span class="comment">//size是elementData数组中元组的个数，初始为0</span>
+    elementData[<span class="built_in">size</span>++] = e;
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+<span class="keyword">private</span> <span class="keyword">void</span> ensureCapacityInternal(<span class="built_in">int</span> minCapacity) {
+    <span class="comment">//如果数组没有元素，给数组一个默认大小，会选择实例化时的值与默认大小中较大值</span>
+    <span class="keyword">if</span> (elementData == EMPTY_ELEMENTDATA) {
+        minCapacity = Math.<span class="built_in">max</span>(DEFAULT_CAPACITY, minCapacity);
+    }
+    <span class="comment">//保证容量够用</span>
+    ensureExplicitCapacity(minCapacity);
+}
+<span class="keyword">private</span> <span class="keyword">void</span> ensureExplicitCapacity(<span class="built_in">int</span> minCapacity) {
+    <span class="comment">//modCount是数组发生size更改的次数</span>
+    modCount++;
+    <span class="comment">// 如果数组长度小于默认的容量10，则调用扩大数组大小的方法</span>
+    <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)
+        grow(minCapacity);
+}
+</code></pre><p>下面看看add(int index,E e):</p>
+<pre><code><span class="keyword">public</span> void add(<span class="built_in">int</span> <span class="built_in">index</span>, E element) {
+    //判断<span class="built_in">index</span>的值是否合法，如果大于<span class="built_in">size</span>或者小于<span class="number">0</span>则将抛出异常
+    rangeCheckForAdd(<span class="built_in">index</span>);
+    //保证容量够用，并修改modCount的值
+    ensureCapacityInternal(<span class="built_in">size</span> + <span class="number">1</span>); 
+    //从第<span class="built_in">index</span>位置开始，将元素往后移动一个位置
+    System.arraycopy(elementData, <span class="built_in">index</span>, elementData, <span class="built_in">index</span> + <span class="number">1</span>,
+                     <span class="built_in">size</span> - <span class="built_in">index</span>);
+    //把要插入的元素e放在第<span class="built_in">index</span>位置
+    elementData[<span class="built_in">index</span>] = element;
+    //数组元素的个数增加<span class="number">1</span>
+    <span class="built_in">size</span>++;
+}
+</code></pre><h3 id="get方法">get方法</h3><p>get方法最简单，首先判断该位置是否合法，如果合法则直接返回该位置的元素</p>
+<pre><code><span class="keyword">public</span> E get(<span class="keyword">int</span> <span class="keyword">index</span>) {
+    rangeCheck(<span class="keyword">index</span>);
+    <span class="keyword">return</span> elementData(<span class="keyword">index</span>);
+}
+</code></pre><h3 id="remove方法">remove方法</h3><p>由于删除操作会改变size，所以每次删除都需要把元素向前移动一个位置，然后把原来最后一个位置的元素设置为null，一次删除操作完成。下面看看源码：</p>
+<pre><code><span class="keyword">public</span> E remove(<span class="keyword">int</span> <span class="keyword">index</span>) {
+    <span class="comment">//判断index是否合法</span>
+    rangeCheck(<span class="keyword">index</span>);
+    <span class="comment">//remove操作会改变size，所以modCount加1</span>
+    modCount++;
+    <span class="comment">//保存待删除位置的元素</span>
+    E oldValue = elementData(<span class="keyword">index</span>);
+    <span class="comment">//要移动的元素个数</span>
+    <span class="keyword">int</span> numMoved = size - <span class="keyword">index</span> - <span class="number">1</span>;
+    <span class="comment">//如果index不是最后一个元素，则从第index+1到最后一个位置，依次向前移动一个位置</span>
+    <span class="keyword">if</span> (numMoved &gt; <span class="number">0</span>)
+        System.arraycopy(elementData, <span class="keyword">index</span>+<span class="number">1</span>, elementData, <span class="keyword">index</span>,
+                         numMoved);
+    <span class="comment">//元素的size减少1，并把原来末尾位置元素的值设置为null</span>
+    elementData[--size] = <span class="keyword">null</span>; 
+    <span class="comment">//返回index位置的值</span>
+    <span class="keyword">return</span> oldValue;
+}
+</code></pre><p>可以注意到源码调用了System.arraycopy方法，该方法是native的，即该代码是其他语言编写，但Java允许与其进行交互（详情请搜索JNI），那么该方法是如何让实现的呢？</p>
+<pre><code><span class="comment">//add方法的System.arraycopy()</span>
+<span class="comment">//把从第i位置的元素开始到最后一个元素，都往后移动一个位置</span>
+<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="keyword">size</span> - <span class="number">1</span>; j &gt; i; j--){
+    elements[j] = elements[j-<span class="number">1</span>];
+}
+<span class="comment">//把第i位置的值改为e</span>
+elements[i] = e;
+
+<span class="comment">//remove方法的System.arraycopy()方法</span>
+<span class="comment">//把从第i位置到最后一个位置，都向前移动一个位置</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; <span class="keyword">size</span> - <span class="number">1</span>; j++) {
+    elements[j] = elements[j + <span class="number">1</span>];
+}
+<span class="comment">//把数组的元素个数减少1</span>
+elements[--<span class="keyword">size</span>] = <span class="keyword">null</span>;
+</code></pre><h2 id="ArrayList小结">ArrayList小结</h2><p>通过以上代码的分析，可以总结以下几点：</p>
+<ul>
+<li>get方法的时间复杂度为O(1)，add和remove操作的时间复杂度为O(n)</li>
+<li>在ArrayList中查找元素很方便，但插入以及删除元素效率就很低，移动元素对性能的开销很大</li>
+<li>ArrayList是非同步的</li>
+<li>ArrayList一般应用于查询较多但插入以及删除较少情况，如果插入以及从删除较多则建议使用LinkedList</li>
+</ul>
+<h1 id="LinkedList">LinkedList</h1><h2 id="LinkedList原理">LinkedList原理</h2><p>LinkedList底层使用的双端链表，即每个节点既包含指向其后继的引用也包括指向其前驱的引用，LinkedList实现了List接口，继承了AbstractSequentialList类，在频繁进行插入以及删除的情况下效率较高。</p>
+<h2 id="源码分析-1">源码分析</h2><p>LinkedList使用较多哦也是add、get和remove，源码的分析也将对这三个方法进行分析</p>
+<h3 id="add">add</h3><p>先看add方法：</p>
+<pre><code>public boolean add(<span class="keyword">E</span> <span class="keyword">e</span>) {
+    <span class="comment">//把e放在链表的最后一个位置</span>
+    linkLast(<span class="keyword">e</span>);
+    <span class="keyword">return</span> true;
+}
+void linkLast(<span class="keyword">E</span> <span class="keyword">e</span>) {
+    <span class="comment">//last是链表最后一个节点的引用，现在l也指向最后一个节点</span>
+    final Node&lt;<span class="keyword">E</span>&gt; <span class="keyword">l</span> = last;
+    <span class="comment">//调用Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next)构造方法</span>
+    final Node&lt;<span class="keyword">E</span>&gt; newNode = new Node&lt;&gt;(<span class="keyword">l</span>, <span class="keyword">e</span>, null);
+    <span class="comment">//last节点指向newNode</span>
+    last = newNode;
+    <span class="comment">//如果l为空，则链表为空，直接把newNode链接在首节点后面即可，否则把newNode链接//在l节点的后面</span>
+    <span class="keyword">if</span> (<span class="keyword">l</span> == null)
+        first = newNode;
+    <span class="keyword">else</span>
+        <span class="keyword">l</span>.next = newNode;
+    <span class="comment">//链表的元素个数增加1</span>
+    size++;
+    <span class="comment">//modCount是链表发生结构性修改的次数（结构性修改是指发生添加或者删除操作）</span>
+    modCount++;
+}
+</code></pre><p>可以看出，插入一个节点非常快，直接找到该位置的节点，修改节点的前驱以及后继的引用即可</p>
+<h3 id="get">get</h3><p>下面看看get方法：</p>
+<pre><code><span class="keyword">public</span> E get(<span class="keyword">int</span> <span class="keyword">index</span>) {
+    <span class="comment">//检查index是否合法</span>
+    checkElementIndex(<span class="keyword">index</span>);
+    <span class="comment">//如果合法就返回该节点位置的值</span>
+    <span class="keyword">return</span> node(<span class="keyword">index</span>).item;
+}
+<span class="comment">//获取index位置上的节点</span>
+Node&lt;E&gt; node(<span class="keyword">int</span> <span class="keyword">index</span>) {
+    <span class="comment">//断言index在链表中</span>
+    <span class="comment">// assert isElementIndex(index);</span>
+    <span class="comment">//从第一个节点开始寻找直到index位置，然后返回index//位置的节点</span>
+    <span class="keyword">if</span> (<span class="keyword">index</span> &lt; (size &gt;&gt; <span class="number">1</span>)) {
+        Node&lt;E&gt; x = first;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">index</span>; i++)
+            x = x.next;
+        <span class="keyword">return</span> x;
+    } <span class="keyword">else</span> {<span class="comment">//从最后一个节点开始往前寻找节点</span>
+        Node&lt;E&gt; x = last;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = size - <span class="number">1</span>; i &gt; <span class="keyword">index</span>; i--)
+            x = x.prev;
+        <span class="keyword">return</span> x;
+    }
+}
+<span class="comment">//检查index值的合法性</span>
+<span class="keyword">private</span> <span class="keyword">void</span> checkElementIndex(<span class="keyword">int</span> <span class="keyword">index</span>) {
+    <span class="keyword">if</span> (!isElementIndex(<span class="keyword">index</span>))
+        <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(outOfBoundsMsg(<span class="keyword">index</span>));
+}
+<span class="comment">//判断index是否存在于链表中</span>
+<span class="keyword">private</span> <span class="keyword">boolean</span> isElementIndex(<span class="keyword">int</span> <span class="keyword">index</span>) {
+    <span class="keyword">return</span> <span class="keyword">index</span> &gt;= <span class="number">0</span> &amp;&amp; <span class="keyword">index</span> &lt; size;
+}
+</code></pre><p>可以看出获取index节点的值要从头或尾遍历链表，当数据量很大的时候，效率无疑是低下的</p>
+<h3 id="remove">remove</h3><p>最后看看remove操作：</p>
+<pre><code><span class="keyword">public</span> E remove(<span class="keyword">int</span> index) {
+    checkElementIndex(index);
+    <span class="keyword">return</span> unlink(node(index));
+}
+E unlink(Node&lt;E&gt; x) {
+    <span class="comment">// assert x != null;</span>
+    <span class="comment">//保存x节点的值</span>
+    <span class="keyword">final</span> E element = x.item;
+    <span class="comment">//保存x节点的后继</span>
+    <span class="keyword">final</span> Node&lt;E&gt; <span class="keyword">next</span> = x.<span class="keyword">next</span>;
+    <span class="comment">//保存x节点的前驱</span>
+    <span class="keyword">final</span> Node&lt;E&gt; prev = x.prev;
+    <span class="comment">//如果前驱为null，说明要移除的是第一个节点，把First指向下一个节点就行</span>
+    <span class="keyword">if</span> (prev == <span class="keyword">null</span>) {
+        first = <span class="keyword">next</span>;
+    } <span class="keyword">else</span> {<span class="comment">//否则，把x节点前驱的后继指向x的后继，并把x的前驱设置为null</span>
+        prev.<span class="keyword">next</span> = <span class="keyword">next</span>;
+        x.prev = <span class="keyword">null</span>;
+    }
+    <span class="comment">//如果后继为null则要移除的是最后一个节点，则把last的引用指向x节点的前驱就ok</span>
+    <span class="keyword">if</span> (<span class="keyword">next</span> == <span class="keyword">null</span>) {
+        last = prev;
+    } <span class="keyword">else</span> {<span class="comment">//否则，把x节点的后继的前驱设置为x节点的前驱，并x节点的后继设为null</span>
+        <span class="keyword">next</span>.prev = prev;
+        x.<span class="keyword">next</span> = <span class="keyword">null</span>;
+    }
+    <span class="comment">//把x节点的值设为null，这样x就没有任何引用了，gc处理</span>
+    x.item = <span class="keyword">null</span>;
+    <span class="comment">//把链表的size减少1</span>
+    <span class="keyword">size</span>--;
+    <span class="comment">//结构性修改的次数增加1</span>
+    modCount++;
+    <span class="comment">//返回x节点的值，在移除之前已经保存在element中了</span>
+    <span class="keyword">return</span> element;
+}
+</code></pre><h2 id="LinkedList小结">LinkedList小结</h2><p>通过以上源码的分析，可以总结如下几点：</p>
+<ul>
+<li>get方法的时间复杂度为O(n),add和remove的时间复杂度为O(1)，因为只需要修改节点的前驱以及后继就可以</li>
+<li>LinkedList是非同步的，如果要考虑并发，则需要使用外部同步</li>
+<li>LinkedList一般应用于增删较多而查找较少的情况，从时间复杂度上便可以看出来</li>
+</ul>
+<h1 id="ArrayList与LinekdList的区别">ArrayList与LinekdList的区别</h1><p>简单来讲，可以概括为以下几点：</p>
+<ul>
+<li>ArrayList底层使用的数据结构是数组而LinekdList底层使用的是双端链表</li>
+<li>ArrayList查询效率较高而LinkedList增删效率较高</li>
+<li>ArrayList应用于查找操作较多的场景中而LinkedList应用于增删较多的场景中</li>
+<li>对于随机访问get和set还是ArrayList更好</li>
+<li>ArrayList对空间的开销主要体现在总要给尾部预留一定的空间，而LinkedList的开销主要体现在要为每个元素占用较多空间</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java集合框架/">Java集合框架</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/集合/">集合</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/ArrayList-LinkedList-source-code/" data-title="ArrayList与LinkedList源码分析 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/PriorityQueue-source-code/" title="PriorityQueue类源码分析">
+  <strong>上一篇：</strong><br/>
+  <span>
+  PriorityQueue类源码分析</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/HashMap-Hashtable-ConcurrentHashMap-Analysis/"  title="浅析HashMap与ConcurrentHashMap的线程安全性">
+ <strong>下一篇：</strong><br/> 
+ <span>浅析HashMap与ConcurrentHashMap的线程安全性
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/ArrayList-LinkedList-source-code/" data-title="ArrayList与LinkedList源码分析" data-url="http://rhwayfun.com/post/ArrayList-LinkedList-source-code/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList"><span class="toc-number">1.</span> <span class="toc-text">ArrayList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList工作原理"><span class="toc-number">1.1.</span> <span class="toc-text">ArrayList工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析"><span class="toc-number">1.2.</span> <span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#add方法"><span class="toc-number">1.2.1.</span> <span class="toc-text">add方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get方法"><span class="toc-number">1.2.2.</span> <span class="toc-text">get方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remove方法"><span class="toc-number">1.2.3.</span> <span class="toc-text">remove方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList小结"><span class="toc-number">1.3.</span> <span class="toc-text">ArrayList小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LinkedList"><span class="toc-number">2.</span> <span class="toc-text">LinkedList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LinkedList原理"><span class="toc-number">2.1.</span> <span class="toc-text">LinkedList原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析-1"><span class="toc-number">2.2.</span> <span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#add"><span class="toc-number">2.2.1.</span> <span class="toc-text">add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get"><span class="toc-number">2.2.2.</span> <span class="toc-text">get</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remove"><span class="toc-number">2.2.3.</span> <span class="toc-text">remove</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LinkedList小结"><span class="toc-number">2.3.</span> <span class="toc-text">LinkedList小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList与LinekdList的区别"><span class="toc-number">3.</span> <span class="toc-text">ArrayList与LinekdList的区别</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

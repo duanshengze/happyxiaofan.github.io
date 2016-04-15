@@ -1,0 +1,1092 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>深入理解Tomcat之Servlet工作原理 | rhwayfun的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="rhwayfun">
+    
+
+    
+    <meta name="description" content="Servlet是Web开发中的核心技术，作为一名合格的开发人员，就必须清楚Servlet的工作原理。本章没有对Servlet技术本身进行详细的说明，只是针对开发过程中一次Servlet的请求的处理过程进行分析的。Servlet实际上就是一个java类，只不过可以和浏览器进行一些数据的交换。有Servlet类就有管理Servlet的容器，种类有很多，这里主要针对Tomcat对Servlet的工作原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Tomcat之Servlet工作原理">
+<meta property="og:url" content="http://rhwayfun.com/post/tomcat-servlet-principle/index.html">
+<meta property="og:site_name" content="rhwayfun的博客">
+<meta property="og:description" content="Servlet是Web开发中的核心技术，作为一名合格的开发人员，就必须清楚Servlet的工作原理。本章没有对Servlet技术本身进行详细的说明，只是针对开发过程中一次Servlet的请求的处理过程进行分析的。Servlet实际上就是一个java类，只不过可以和浏览器进行一些数据的交换。有Servlet类就有管理Servlet的容器，种类有很多，这里主要针对Tomcat对Servlet的工作原理">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/Tomcat启动.jpg">
+<meta property="og:updated_time" content="2016-04-15T07:01:12.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Tomcat之Servlet工作原理">
+<meta name="twitter:description" content="Servlet是Web开发中的核心技术，作为一名合格的开发人员，就必须清楚Servlet的工作原理。本章没有对Servlet技术本身进行详细的说明，只是针对开发过程中一次Servlet的请求的处理过程进行分析的。Servlet实际上就是一个java类，只不过可以和浏览器进行一些数据的交换。有Servlet类就有管理Servlet的容器，种类有很多，这里主要针对Tomcat对Servlet的工作原理">
+
+    
+    <link rel="alternative" href="/atom.xml" title="rhwayfun的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="rhwayfun的博客" title="rhwayfun的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="rhwayfun的博客">rhwayfun的博客</a></h1>
+				<h2 class="blog-motto">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/books">我的书单</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li> <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+	function c() {
+		var e = document.createElement("link");
+		e.setAttribute("type", "text/css");
+		e.setAttribute("rel", "stylesheet");
+		e.setAttribute("href", f);
+		e.setAttribute("class", l);
+		document.body.appendChild(e)
+	}
+ 
+	function h() {
+		var e = document.getElementsByClassName(l);
+		for (var t = 0; t < e.length; t++) {
+			document.body.removeChild(e[t])
+		}
+	}
+ 
+	function p() {
+		var e = document.createElement("div");
+		e.setAttribute("class", a);
+		document.body.appendChild(e);
+		setTimeout(function() {
+			document.body.removeChild(e)
+		}, 100)
+	}
+ 
+	function d(e) {
+		return {
+			height : e.offsetHeight,
+			width : e.offsetWidth
+		}
+	}
+ 
+	function v(i) {
+		var s = d(i);
+		return s.height > e && s.height < n && s.width > t && s.width < r
+	}
+ 
+	function m(e) {
+		var t = e;
+		var n = 0;
+		while (!!t) {
+			n += t.offsetTop;
+			t = t.offsetParent
+		}
+		return n
+	}
+ 
+	function g() {
+		var e = document.documentElement;
+		if (!!window.innerWidth) {
+			return window.innerHeight
+		} else if (e && !isNaN(e.clientHeight)) {
+			return e.clientHeight
+		}
+		return 0
+	}
+ 
+	function y() {
+		if (window.pageYOffset) {
+			return window.pageYOffset
+		}
+		return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+	}
+ 
+	function E(e) {
+		var t = m(e);
+		return t >= w && t <= b + w
+	}
+ 
+	function S() {
+		var e = document.createElement("audio");
+		e.setAttribute("class", l);
+		e.src = i;
+		e.loop = false;
+		e.addEventListener("canplay", function() {
+			setTimeout(function() {
+				x(k)
+			}, 500);
+			setTimeout(function() {
+				N();
+				p();
+				for (var e = 0; e < O.length; e++) {
+					T(O[e])
+				}
+			}, 15500)
+		}, true);
+		e.addEventListener("ended", function() {
+			N();
+			h()
+		}, true);
+		e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+		document.body.appendChild(e);
+		e.play()
+	}
+ 
+	function x(e) {
+		e.className += " " + s + " " + o
+	}
+ 
+	function T(e) {
+		e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+	}
+ 
+	function N() {
+		var e = document.getElementsByClassName(s);
+		var t = new RegExp("\\b" + s + "\\b");
+		for (var n = 0; n < e.length; ) {
+			e[n].className = e[n].className.replace(t, "")
+		}
+	}
+ 
+	var e = 30;
+	var t = 30;
+	var n = 350;
+	var r = 350;
+	var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+	var s = "mw-harlem_shake_me";
+	var o = "im_first";
+	var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+	var a = "mw-strobe_light";
+	var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+	var l = "mw_added_css";
+	var b = g();
+	var w = y();
+	var C = document.getElementsByTagName("*");
+	var k = null;
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			if (E(A)) {
+				k = A;
+				break
+			}
+		}
+	}
+	if (A === null) {
+		console.warn("Could not find a node of the right size. Please try a different page.");
+		return
+	}
+	c();
+	S();
+	var O = [];
+	for (var L = 0; L < C.length; L++) {
+		var A = C[L];
+		if (v(A)) {
+			O.push(A)
+		}
+	}
+})()    '>High一下</a> </li>
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:rhwayfun.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/post/tomcat-servlet-principle/" title="深入理解Tomcat之Servlet工作原理" itemprop="url">深入理解Tomcat之Servlet工作原理</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="rhwayfun" target="_blank" itemprop="author">rhwayfun</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-22T12:04:02.000Z" itemprop="datePublished"> 发表于 2015-10-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>Servlet是Web开发中的核心技术，作为一名合格的开发人员，就必须清楚Servlet的工作原理。本章没有对Servlet技术本身进行详细的说明，只是针对开发过程中一次Servlet的请求的处理过程进行分析的。Servlet实际上就是一个java类，只不过可以和浏览器进行一些数据的交换。有Servlet类就有管理Servlet的容器，种类有很多，这里主要针对Tomcat对Servlet的工作原理进行说明。为了说清楚Servlet工作原理，需要知道Servlet的工作过程大致可以分为以下几个阶段：<br><a id="more"></a></p>
+<ol>
+<li>启动Tomcat容器</li>
+<li>Web应用初始化</li>
+<li>创建Servlet实例</li>
+<li>初始化Servlet</li>
+<li>执行Servlet的service方法</li>
+</ol>
+<p><strong>Tomcat的启动过程</strong></p>
+<p>这部分可以用下图进行简化：</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/Tomcat启动.jpg" alt="Tomcat容器启动序列图"></p>
+<p><strong>Web应用初始化</strong></p>
+<p>下面分析Web应用的初始化，初始化工作是由ContextConfig类的configureStart方法完成的，该方法的主要任务是完成web.xml配置文件的解析。下面解析的关键代码：</p>
+<p>代码清单5-1：</p>
+<pre><code>Set&lt;WebXml&gt; defaults = new HashSet&lt;WebXml&gt;<span class="params">()</span>;
+    defaults.add<span class="params">(getDefaultWebXmlFragment<span class="params">()</span>)</span>;
+    WebXml webXml = createWebXml<span class="params">()</span>;
+    <span class="comment">// Parse context level web.xml</span>
+    InputSource contextWebXml = getContextWebXmlSource<span class="params">()</span>;
+    parseWebXml<span class="params">(contextWebXml, webXml, <span class="literal">false</span>)</span>;
+    ServletContext sContext = context.getServletContext<span class="params">()</span>;
+    <span class="comment">// Ordering is important here</span>
+    <span class="comment">// Step 1. Identify all the JARs packaged with the application</span>
+    <span class="comment">// If the JARs have a web-fragment.xml it will be parsed at this</span>
+    <span class="comment">// point.</span>
+    Map&lt;String,WebXml&gt; fragments = processJarsForWebFragments<span class="params">(webXml)</span>;
+    <span class="comment">// Step 2. Order the fragments.</span>
+    Set&lt;WebXml&gt; orderedFragments = null;
+    orderedFragments =
+            WebXml.orderWebFragments<span class="params">(webXml, fragments, sContext)</span>;
+    <span class="comment">// Step 3. Look for ServletContainerInitializer implementations</span>
+    <span class="keyword">if</span> <span class="params">(ok)</span> {
+        processServletContainerInitializers<span class="params">(context.getServletContext<span class="params">()</span>)</span>;
+    }
+    <span class="keyword">if</span>  <span class="params">(!webXml.isMetadataComplete<span class="params">()</span> || typeInitializerMap.size<span class="params">()</span> &gt; <span class="number">0</span>)</span> {
+        <span class="comment">// Step 4. Process /WEB-INF/classes for annotations</span>
+        <span class="keyword">if</span> <span class="params">(ok)</span> {
+            <span class="comment">// Hack required by Eclipse's "serve modules without</span>
+            <span class="comment">// publishing" feature since this backs WEB-INF/classes by</span>
+            <span class="comment">// multiple locations rather than one.</span>
+            NamingEnumeration&lt;Binding&gt; listBindings = null;
+            try {
+                try {
+                    listBindings = context.getResources<span class="params">()</span>.listBindings<span class="params">(
+                            <span class="string">"/WEB-INF/classes"</span>)</span>;
+                } catch <span class="params">(NameNotFoundException ignore)</span> {
+                    <span class="comment">// Safe to ignore</span>
+                }
+                while <span class="params">(listBindings != null &amp;&amp;
+                        listBindings.hasMoreElements<span class="params">()</span>)</span> {
+                    Binding binding = listBindings.nextElement<span class="params">()</span>;
+                    <span class="keyword">if</span> <span class="params">(binding.getObject<span class="params">()</span> instanceof FileDirContext)</span> {
+                        File webInfClassDir = new File<span class="params">(
+                                <span class="params">(<span class="params">(FileDirContext)</span> binding.getObject<span class="params">()</span>)</span>.getDocBase<span class="params">()</span>)</span>;
+                        processAnnotationsFile<span class="params">(webInfClassDir, webXml,
+                                webXml.isMetadataComplete<span class="params">()</span>)</span>;
+                    } <span class="keyword">else</span> {
+                        String resource =
+                                <span class="string">"/WEB-INF/classes/"</span> + binding.getName<span class="params">()</span>;
+                        try {
+                            URL url = sContext.getResource<span class="params">(resource)</span>;
+                            processAnnotationsUrl<span class="params">(url, webXml,
+                                    webXml.isMetadataComplete<span class="params">()</span>)</span>;
+                        } catch <span class="params">(MalformedURLException e)</span> {
+                            <span class="built_in">log</span>.error<span class="params">(sm.getString<span class="params">(
+                                    <span class="string">"contextConfig.webinfClassesUrl"</span>,
+                                    resource)</span>, e)</span>;
+                        }
+                    }
+                }
+            } catch <span class="params">(NamingException e)</span> {
+                <span class="built_in">log</span>.error<span class="params">(sm.getString<span class="params">(
+                        <span class="string">"contextConfig.webinfClassesUrl"</span>,
+                        <span class="string">"/WEB-INF/classes"</span>)</span>, e)</span>;
+            }
+        }
+        <span class="comment">// Step 5. Process JARs for annotations - only need to process</span>
+        <span class="comment">// those fragments we are going to use</span>
+        <span class="keyword">if</span> <span class="params">(ok)</span> {
+            processAnnotations<span class="params">(
+                    orderedFragments, webXml.isMetadataComplete<span class="params">()</span>)</span>;
+        }
+        <span class="comment">// Cache, if used, is no longer required so clear it</span>
+        javaClassCache.clear<span class="params">()</span>;
+    }
+    <span class="keyword">if</span> <span class="params">(!webXml.isMetadataComplete<span class="params">()</span>)</span> {
+        <span class="comment">// Step 6. Merge web-fragment.xml files into the main web.xml</span>
+        <span class="comment">// file.</span>
+        <span class="keyword">if</span> <span class="params">(ok)</span> {
+            ok = webXml.merge<span class="params">(orderedFragments)</span>;
+        }
+        <span class="comment">// Step 7. Apply global defaults</span>
+        <span class="comment">// Have to merge defaults before JSP conversion since defaults</span>
+        <span class="comment">// provide JSP servlet definition.</span>
+        webXml.merge<span class="params">(defaults)</span>;
+        <span class="comment">// Step 8. Convert explicitly mentioned jsps to servlets</span>
+        <span class="keyword">if</span> <span class="params">(ok)</span> {
+            convertJsps<span class="params">(webXml)</span>;
+        }
+        <span class="comment">// Step 9. Apply merged web.xml to Context</span>
+        <span class="keyword">if</span> <span class="params">(ok)</span> {
+            webXml.configureContext<span class="params">(context)</span>;
+        }
+    } <span class="keyword">else</span> {
+        webXml.merge<span class="params">(defaults)</span>;
+        convertJsps<span class="params">(webXml)</span>;
+        webXml.configureContext<span class="params">(context)</span>;
+    }
+    <span class="comment">// Step 9a. Make the merged web.xml available to other</span>
+    <span class="comment">// components, specifically Jasper, to save those components</span>
+    <span class="comment">// from having to re-generate it.</span>
+    <span class="comment">// <span class="doctag">TODO</span> Use a ServletContainerInitializer for Jasper</span>
+    String mergedWebXml = webXml.toXml<span class="params">()</span>;
+    sContext.setAttribute<span class="params">(
+           org.apache.tomcat.util.scan.Constants.MERGED_WEB_XML,
+           mergedWebXml)</span>;
+    <span class="keyword">if</span> <span class="params">(context.getLogEffectiveWebXml<span class="params">()</span>)</span> {
+        <span class="built_in">log</span>.info<span class="params">(<span class="string">"web.xml:\n"</span> + mergedWebXml)</span>;
+    }
+    <span class="comment">// Always need to look for static resources</span>
+    <span class="comment">// Step 10. Look for static resources packaged in JARs</span>
+    <span class="keyword">if</span> <span class="params">(ok)</span> {
+        <span class="comment">// Spec does not define an order.</span>
+        <span class="comment">// Use ordered JARs followed by remaining JARs</span>
+        Set&lt;WebXml&gt; resourceJars = new LinkedHashSet&lt;WebXml&gt;<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(orderedFragments != null)</span> {
+            <span class="keyword">for</span> <span class="params">(WebXml fragment : orderedFragments)</span> {
+                resourceJars.add<span class="params">(fragment)</span>;
+            }
+        }
+        <span class="keyword">for</span> <span class="params">(WebXml fragment : fragments.values<span class="params">()</span>)</span> {
+            <span class="keyword">if</span> <span class="params">(!resourceJars.contains<span class="params">(fragment)</span>)</span> {
+                resourceJars.add<span class="params">(fragment)</span>;
+            }
+        }
+        processResourceJARs<span class="params">(resourceJars)</span>;
+        <span class="comment">// See also StandardContext.resourcesStart() for</span>
+        <span class="comment">// WEB-INF/classes/META-INF/resources configuration</span>
+    }
+    <span class="comment">// Step 11. Apply the ServletContainerInitializer config to the</span>
+    <span class="comment">// context</span>
+    <span class="keyword">if</span> <span class="params">(ok)</span> {
+        <span class="keyword">for</span> <span class="params">(Map.Entry&lt;ServletContainerInitializer,
+                Set&lt;Class&lt;?&gt;&gt;&gt; entry :
+                    initializerClassMap.entrySet<span class="params">()</span>)</span> {
+            <span class="keyword">if</span> <span class="params">(entry.getValue<span class="params">()</span>.isEmpty<span class="params">()</span>)</span> {
+                context.addServletContainerInitializer<span class="params">(
+                        entry.getKey<span class="params">()</span>, null)</span>;
+            } <span class="keyword">else</span> {
+                context.addServletContainerInitializer<span class="params">(
+                        entry.getKey<span class="params">()</span>, entry.getValue<span class="params">()</span>)</span>;
+            }
+        }
+    }
+</code></pre><p>在代码已经清晰地说明了Web应用的初始化过程，由于在Tomcat7中增加了对注解(annotation)的支持，所以会对Servlet中的注解进行解析。首先查找jar包中的web-fragment.xml，并对其进行解析，接下来将对/WEB-INF/classes目录下的class进行注解的解析。之后，把web-fragment.xml文件合并到web.xml中，被解析后的web.xml文件的配置项将保存到WebXml对象中，然后把WebXml对象中的属性设置到Context容器中，这个过程是由configureContext方法来完成的。下面是其部分源码——完成Servlet的解析：</p>
+<p>代码清单5-2：</p>
+<pre><code><span class="keyword">for</span> <span class="params">(ServletDef servlet : servlets.values<span class="params">()</span>)</span> {
+        Wrapper wrapper = context.createWrapper<span class="params">()</span>;
+        <span class="comment">// Description is ignored</span>
+        <span class="comment">// Display name is ignored</span>
+        <span class="comment">// Icons are ignored</span>
+        <span class="comment">// jsp-file gets passed to the JSP Servlet as an init-param</span>
+        <span class="keyword">if</span> <span class="params">(servlet.getLoadOnStartup<span class="params">()</span> != null)</span> {
+            wrapper.setLoadOnStartup<span class="params">(servlet.getLoadOnStartup<span class="params">()</span>.intValue<span class="params">()</span>)</span>;
+        }
+        <span class="keyword">if</span> <span class="params">(servlet.getEnabled<span class="params">()</span> != null)</span> {
+            wrapper.setEnabled<span class="params">(servlet.getEnabled<span class="params">()</span>.booleanValue<span class="params">()</span>)</span>;
+        }
+        wrapper.setName<span class="params">(servlet.getServletName<span class="params">()</span>)</span>;
+        Map&lt;String,String&gt; params = servlet.getParameterMap<span class="params">()</span>;
+        <span class="keyword">for</span> <span class="params">(Entry&lt;String, String&gt; entry : params.entrySet<span class="params">()</span>)</span> {
+            wrapper.addInitParameter<span class="params">(entry.getKey<span class="params">()</span>, entry.getValue<span class="params">()</span>)</span>;
+        }
+        wrapper.setRunAs<span class="params">(servlet.getRunAs<span class="params">()</span>)</span>;
+        Set&lt;SecurityRoleRef&gt; roleRefs = servlet.getSecurityRoleRefs<span class="params">()</span>;
+        <span class="keyword">for</span> <span class="params">(SecurityRoleRef roleRef : roleRefs)</span> {
+            wrapper.addSecurityReference<span class="params">(
+                    roleRef.getName<span class="params">()</span>, roleRef.getLink<span class="params">()</span>)</span>;
+        }
+        wrapper.setServletClass<span class="params">(servlet.getServletClass<span class="params">()</span>)</span>;
+        MultipartDef multipartdef = servlet.getMultipartDef<span class="params">()</span>;
+        <span class="keyword">if</span> <span class="params">(multipartdef != null)</span> {
+            <span class="keyword">if</span> <span class="params">(multipartdef.getMaxFileSize<span class="params">()</span> != null &amp;&amp;
+                    multipartdef.getMaxRequestSize<span class="params">()</span>!= null &amp;&amp;
+                    multipartdef.getFileSizeThreshold<span class="params">()</span> != null)</span> {
+                wrapper.setMultipartConfigElement<span class="params">(new MultipartConfigElement<span class="params">(
+                        multipartdef.getLocation<span class="params">()</span>,
+                        Long.parseLong<span class="params">(multipartdef.getMaxFileSize<span class="params">()</span>)</span>,
+                        Long.parseLong<span class="params">(multipartdef.getMaxRequestSize<span class="params">()</span>)</span>,
+                        Integer.parseInt<span class="params">(
+                                multipartdef.getFileSizeThreshold<span class="params">()</span>)</span>)</span>)</span>;
+            } <span class="keyword">else</span> {
+                wrapper.setMultipartConfigElement<span class="params">(new MultipartConfigElement<span class="params">(
+                        multipartdef.getLocation<span class="params">()</span>)</span>)</span>;
+            }
+        }
+        <span class="keyword">if</span> <span class="params">(servlet.getAsyncSupported<span class="params">()</span> != null)</span> {
+            wrapper.setAsyncSupported<span class="params">(
+                    servlet.getAsyncSupported<span class="params">()</span>.booleanValue<span class="params">()</span>)</span>;
+        }
+        wrapper.setOverridable<span class="params">(servlet.isOverridable<span class="params">()</span>)</span>;
+        context.addChild<span class="params">(wrapper)</span>;
+    }
+</code></pre><p>这段代码说明了把Servlet包装成StandardWrapper的过程，并把这个Wrapper实例设置到Context容器中。之所以要把Servlet封装成一个Wrapper，主要为了解耦，因为Wrapper是一个容器而Servlet是一个具体的类。</p>
+<p>到目前为止，已经完成了web应用的初始化，其中将web.xml进行了解析并完成了注解的解析，还把配置的Servlet类封装成了一个Wrapper容器，接下来就是根据这个Wrapper创建Servlet实例了。</p>
+<p><strong>创建Servlet实例</strong><br>创建Servlet实例要回到我们分析Wrapper容器中提到的loadServlet方法了，这个方法是由Wrapper容器的标准实现类StandardWrapper完成的，通过loadServlet方法获取servletClass，然后把这个servletClass交给实例管理器(InstanceManager)完成servletClass.class的对象创建。</p>
+<p><strong>初始化Servlet</strong><br>初始化的工作是由StandardWrapper的initServlet方法完成的，这个方法主要就是调用Servlet的init方法，然后把包装了StandardWrapper的StandardWrapperFacade交给Servlet。下面是这个方法的源码：</p>
+<p>代码清单5-3：</p>
+<pre><code>private synchronized void initServlet<span class="params">(Servlet servlet)</span>
+        throws ServletException {
+
+    <span class="keyword">if</span> <span class="params">(instanceInitialized &amp;&amp; !singleThreadModel)</span> return;
+    <span class="comment">// Call the initialization method of this servlet</span>
+    try {
+        instanceSupport.fireInstanceEvent<span class="params">(InstanceEvent.BEFORE_INIT_EVENT,
+                                          servlet)</span>;
+        <span class="keyword">if</span><span class="params">( Globals.IS_SECURITY_ENABLED)</span> {
+            boolean success = <span class="literal">false</span>;
+            try {
+                Object[] args = new Object[] { facade };
+                SecurityUtil.doAsPrivilege<span class="params">(<span class="string">"init"</span>,
+                                           servlet,
+                                           classType,
+                                           args)</span>;
+                success = <span class="literal">true</span>;
+            } finally {
+                <span class="keyword">if</span> <span class="params">(!success)</span> {
+                    <span class="comment">// destroy() will not be called, thus clear the reference now</span>
+                    SecurityUtil.remove<span class="params">(servlet)</span>;
+                }
+            }
+        } <span class="keyword">else</span> {
+            servlet.init<span class="params">(facade)</span>;
+        }
+        instanceInitialized = <span class="literal">true</span>;
+        instanceSupport.fireInstanceEvent<span class="params">(InstanceEvent.AFTER_INIT_EVENT,
+                                          servlet)</span>;
+    } catch <span class="params">(UnavailableException f)</span> {
+        instanceSupport.fireInstanceEvent<span class="params">(InstanceEvent.AFTER_INIT_EVENT,
+                                          servlet, f)</span>;
+        unavailable<span class="params">(f)</span>;
+        throw f;
+    } catch <span class="params">(ServletException f)</span> {
+        instanceSupport.fireInstanceEvent<span class="params">(InstanceEvent.AFTER_INIT_EVENT,
+                                          servlet, f)</span>;
+        <span class="comment">// If the servlet wanted to be unavailable it would have</span>
+        <span class="comment">// said so, so do not call unavailable(null).</span>
+        throw f;
+    } catch <span class="params">(Throwable f)</span> {
+        ExceptionUtils.handleThrowable<span class="params">(f)</span>;
+        getServletContext<span class="params">()</span>.<span class="built_in">log</span><span class="params">(<span class="string">"StandardWrapper.Throwable"</span>, f )</span>;
+        instanceSupport.fireInstanceEvent<span class="params">(InstanceEvent.AFTER_INIT_EVENT,
+                                          servlet, f)</span>;
+        <span class="comment">// If the servlet wanted to be unavailable it would have</span>
+        <span class="comment">// said so, so do not call unavailable(null).</span>
+        throw new ServletException
+            <span class="params">(sm.getString<span class="params">(<span class="string">"standardWrapper.initException"</span>, getName<span class="params">()</span>)</span>, f)</span>;
+    }
+}
+</code></pre><p>这样就完成了Servlet的初始化，下面就是执行Servlet的service方法了。</p>
+<p><strong>执行service方法</strong></p>
+<p>在分析Wrapper方法中提到，StandardWrapper会调用allocate方法从实例池栈中弹出一个Servlet处理请求，这个Servlet实例在完成初始化后，并经过一系列过滤器的过滤后就到达Servlet实例的service方法，这个过程就是过滤器执行的过程。这样Servlet实例就顺利调用到了service方法，之后发生的过程就是我们熟悉的request获取参数并用response进行响应的过程了。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Tomcat/">Tomcat</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Tomcat/">Tomcat</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://rhwayfun.com/post/tomcat-servlet-principle/" data-title="深入理解Tomcat之Servlet工作原理 | rhwayfun的博客" data-tsina="2784776270" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/post/tomcat-request-example/" title="深入理解Tomcat之URL请求实例">
+  <strong>上一篇：</strong><br/>
+  <span>
+  深入理解Tomcat之URL请求实例</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/post/tomcat-context-wrapper/"  title="深入理解Tomcat之Context容器和Wrapper容器">
+ <strong>下一篇：</strong><br/> 
+ <span>深入理解Tomcat之Context容器和Wrapper容器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="post/tomcat-servlet-principle/" data-title="深入理解Tomcat之Servlet工作原理" data-url="http://rhwayfun.com/post/tomcat-servlet-principle/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="happyxiaofan" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT杂谈/" title="IT杂谈">IT杂谈<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java并发编程/" title="Java并发编程">Java并发编程<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java网络编程/" title="Java网络编程">Java网络编程<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java虚拟机/" title="Java虚拟机">Java虚拟机<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java集合框架/" title="Java集合框架">Java集合框架<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SSH/" title="SSH">SSH<sup>15</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Struts2/" title="Struts2">Struts2<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Tomcat/" title="Tomcat">Tomcat<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web技术/" title="Web技术">Web技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/感受Java/" title="感受Java">感受Java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法与数据结构/" title="算法与数据结构">算法与数据结构<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/剑指offer/" title="剑指offer">剑指offer<sup>65</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Tomcat/" title="Tomcat">Tomcat<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Struts2/" title="Struts2">Struts2<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaEE/" title="JavaEE">JavaEE<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/集合/" title="集合">集合<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/二叉树遍历/" title="二叉树遍历">二叉树遍历<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络编程/" title="网络编程">网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/J2EE/" title="J2EE">J2EE<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrent/" title="Concurrent">Concurrent<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java网络编程/" title="Java网络编程">Java网络编程<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JavaSE/" title="JavaSE">JavaSE<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络协议/" title="网络协议">网络协议<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/笔试面试/" title="笔试面试">笔试面试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/图/" title="图">图<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mybatis/" title="Mybatis">Mybatis<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/TCP-IP/" title="TCP/IP">TCP/IP<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+    <h3 class="asidetitle">微博</h3>
+    <div class="widget-weibo">
+      <iframe width="100%" height="500" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=2&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2784776270&verifier=8c3b9a87&colors=dddddd,dddddd,4473924,0069a4,dddddd&dpc=1"></iframe>
+    </div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/u011116672" target="_blank" title="CSDN博客">CSDN博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ifeve.com" target="_blank" title="并发编程网">并发编程网</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay Foolish, Stay Hungry <br/>
+			The more harder you are, the more fortunate you are!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2784776270" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/happyxiaofan" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/rhwayfun" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-sa.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="/about" target="_blank" title="作者">rhwayfun</a> © 2016 
+		<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rhwayfun"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7f10cfbefe1d22997aa0dcb64b6fa286";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
