@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="algorithm," />
+  <meta name="keywords" content="hexo," />
 
 
 
@@ -82,19 +82,31 @@
 
 
 
-<meta name="description" content="前言
-归并排序是所有常用内部排序算法中稳定性最好的，无论是平均时间复杂度、最坏时间复杂度还是最好时间复杂度，其时间复杂度都是O(nlogn)。由于这个特性，在需要考虑排序稳定性的情况下，归并排序是所有优化算法（直接插入排序、冒泡排序和简单选择排序）使用最多的。其实归并排序算法的思想很简单：假设初始序列含有n个记录，则可以看成是n个有序的子序列，每一个子序列的长度都是1，然后把这些子序列两两归并，得">
+<meta name="description" content="最近把博客做了一些修改和优化，将做的一些修改记录如下：
+
+把侧边栏头像变成圆形，并且鼠标停留在上面发生旋转效果。
+
+修改主题文件d:hexo\next\source\css\_common\components\sidebar\sidebar-author.styl中的内容如下
+12345678910111213141516171819202122232425262728.site-author-">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常用内部排序算法之一：归并排序">
-<meta property="og:url" content="http://rhwayfun.com/post/sort-algorithm-merge/index.html">
+<meta property="og:title" content="hexo博客优化">
+<meta property="og:url" content="http://rhwayfun.com/post/hexo-blog-optimize/index.html">
 <meta property="og:site_name" content="rhwayfun的博客">
-<meta property="og:description" content="前言
-归并排序是所有常用内部排序算法中稳定性最好的，无论是平均时间复杂度、最坏时间复杂度还是最好时间复杂度，其时间复杂度都是O(nlogn)。由于这个特性，在需要考虑排序稳定性的情况下，归并排序是所有优化算法（直接插入排序、冒泡排序和简单选择排序）使用最多的。其实归并排序算法的思想很简单：假设初始序列含有n个记录，则可以看成是n个有序的子序列，每一个子序列的长度都是1，然后把这些子序列两两归并，得">
-<meta property="og:updated_time" content="2016-04-15T07:01:12.766Z">
+<meta property="og:description" content="最近把博客做了一些修改和优化，将做的一些修改记录如下：
+
+把侧边栏头像变成圆形，并且鼠标停留在上面发生旋转效果。
+
+修改主题文件d:hexo\next\source\css\_common\components\sidebar\sidebar-author.styl中的内容如下
+12345678910111213141516171819202122232425262728.site-author-">
+<meta property="og:updated_time" content="2016-04-16T13:07:41.722Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常用内部排序算法之一：归并排序">
-<meta name="twitter:description" content="前言
-归并排序是所有常用内部排序算法中稳定性最好的，无论是平均时间复杂度、最坏时间复杂度还是最好时间复杂度，其时间复杂度都是O(nlogn)。由于这个特性，在需要考虑排序稳定性的情况下，归并排序是所有优化算法（直接插入排序、冒泡排序和简单选择排序）使用最多的。其实归并排序算法的思想很简单：假设初始序列含有n个记录，则可以看成是n个有序的子序列，每一个子序列的长度都是1，然后把这些子序列两两归并，得">
+<meta name="twitter:title" content="hexo博客优化">
+<meta name="twitter:description" content="最近把博客做了一些修改和优化，将做的一些修改记录如下：
+
+把侧边栏头像变成圆形，并且鼠标停留在上面发生旋转效果。
+
+修改主题文件d:hexo\next\source\css\_common\components\sidebar\sidebar-author.styl中的内容如下
+12345678910111213141516171819202122232425262728.site-author-">
 
 
 
@@ -112,7 +124,7 @@
   };
 </script>
 
-  <title> 常用内部排序算法之一：归并排序 | rhwayfun的博客 </title>
+  <title> hexo博客优化 | rhwayfun的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -288,7 +300,7 @@
             
             
               
-                常用内部排序算法之一：归并排序
+                hexo博客优化
               
             
           </h1>
@@ -300,8 +312,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-11-30T23:56:37+08:00" content="2015-11-30">
-              2015-11-30
+            <time itemprop="dateCreated" datetime="2016-04-16T21:06:55+08:00" content="2016-04-16">
+              2016-04-16
             </time>
           </span>
 
@@ -314,8 +326,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
                   </a>
                 </span>
 
@@ -334,8 +346,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/post/sort-algorithm-merge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="post/sort-algorithm-merge/" itemprop="commentsCount"></span>
+                <a href="/post/hexo-blog-optimize/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="post/hexo-blog-optimize/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -363,21 +375,33 @@
       
 
       
-        <p><strong>前言</strong></p>
-<p>归并排序是所有常用内部排序算法中稳定性最好的，无论是平均时间复杂度、最坏时间复杂度还是最好时间复杂度，其时间复杂度都是O(nlogn)。由于这个特性，在需要考虑排序稳定性的情况下，归并排序是所有优化算法（直接插入排序、冒泡排序和简单选择排序）使用最多的。其实归并排序算法的思想很简单：假设初始序列含有n个记录，则可以看成是n个有序的子序列，每一个子序列的长度都是1，然后把这些子序列两两归并，得到$\lceil n/2 \rceil$（$\lceil x \rceil$表示不小于$x$的最小整数）个长度为2或者1的有序子序列；再两两归并，……，如此重复，直至得到一个长度为n的有序序列为止。这种方法也被称为2路归并排序。<br><a id="more"></a></p>
-<p>首先看代码的实现过程：</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 归并排序</span><br><span class="line"> * @author Administrator</span><br><span class="line"> *</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MergeSort2</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mergeSort</span>(<span class="params"><span class="keyword">int</span>[] a</span>)</span>&#123;</span><br><span class="line">        mSort(a,a,<span class="number">0</span>,a.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.<span class="keyword">out</span>.println(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mSort</span>(<span class="params"><span class="keyword">int</span>[] b, <span class="keyword">int</span>[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> j</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] c = <span class="keyword">new</span> <span class="keyword">int</span>[a.length];</span><br><span class="line">        <span class="keyword">if</span>(i == j)&#123;<span class="comment">//递归终止条件</span></span><br><span class="line">            a[i] = b[i];</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            m = (i + j)/<span class="number">2</span>;</span><br><span class="line">            <span class="comment">//将数组a分为a[i...m]并进行排序</span></span><br><span class="line">            mSort(b,c,i,m);</span><br><span class="line">            <span class="comment">//数组a[m+1...j]部分进行排序</span></span><br><span class="line">            mSort(b, c, m + <span class="number">1</span>, j);</span><br><span class="line">            <span class="comment">//将a[i...m]部分和a[m+1...j]部分的排序结果归并到a</span></span><br><span class="line">            merge(c,a,i,m,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">merge</span>(<span class="params"><span class="keyword">int</span>[] b, <span class="keyword">int</span>[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> m, <span class="keyword">int</span> t</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>,k = <span class="number">0</span>,l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = m+<span class="number">1</span>,k = i;i &lt;= m &amp;&amp; j&lt;=t;k++)&#123;</span><br><span class="line">            <span class="comment">//将b中记录由小到大归并到a中</span></span><br><span class="line">            <span class="keyword">if</span>(b[i] &lt; b[j])&#123;</span><br><span class="line">                a[k] = b[i++];</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                a[k] = b[j++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将剩余b[i...m]复制到a中</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=m)&#123;</span><br><span class="line">            <span class="keyword">for</span>(l=<span class="number">0</span>;l&lt;=m-i;l++)&#123;</span><br><span class="line">                a[k+l]=b[i+l];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将剩余b[m+1...t]复制到数组a中</span></span><br><span class="line">        <span class="keyword">if</span>(j&lt;=t)&#123;</span><br><span class="line">            <span class="keyword">for</span>(l=<span class="number">0</span>;l&lt;=t-j;l++)&#123;</span><br><span class="line">                a[k+l]=b[j+l];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> MergeSort2().mergeSort(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">50</span>,<span class="number">10</span>,<span class="number">90</span>,<span class="number">30</span>,<span class="number">70</span>,<span class="number">40</span>,<span class="number">80</span>,<span class="number">60</span>,<span class="number">20</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面以序列{50,10,90,30,70,40,80,60,20}为例，说明归并排序的具体过程：</p>
-<ol>
-<li>初始时刻，mSort方法中的数组b和数组a都是{50,10,90,30,70,40,80,60,20}</li>
-<li>i = 0，j = 9,显然两者不相等，将数组b分为b[i…m]和b[m+1…j]，此时m = 5，也就是数组b 正中间下标</li>
-<li>然后递归调用mSort函数，继续将b[0…5]和b[6…9]拆成两组，直到每组只有一个元素</li>
-<li>两次递归调用mSort函数之后，b[0…5]和b[6…9]已经排好序了，最后将这两组排好序的数组继续归并成最终排好序的数组，这个过程调用的是merge函数，该函数的主要目的就是将最好的两组进行归并排序</li>
-<li>将排好序的数组返回给原数组a，排序结束</li>
-</ol>
-<p><strong>归并排序小结</strong></p>
-<p>由于归并排序在归并过程中需要与原始记录序列同样数量的存储空间存放归并结果以及递归时深度为$log_2n$的栈空间，因此归并排序的空间复杂度是$O(n+logn)$。</p>
-<p>归并排序的总的时间复杂度是$O(nlogn)$，同时这也是最好、最坏、平均的时间复杂度。需要注意的是，归并排序的是一种稳定的排序算法，但是归并排序是比较占用内存的。</p>
+        <p>最近把博客做了一些修改和优化，将做的一些修改记录如下：</p>
+<ul>
+<li><strong>把侧边栏头像变成圆形，并且鼠标停留在上面发生旋转效果</strong>。</li>
+</ul>
+<p>修改主题文件<code>d:hexo\next\source\css\_common\components\sidebar\sidebar-author.styl</code>中的内容如下</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.site-author-image</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">display</span>:<span class="value"> block</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">margin</span>:<span class="value"> <span class="number">0</span> auto</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">max-width</span>:<span class="value"> <span class="number">96px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> auto</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">2px</span> solid <span class="hexcolor">#333</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">2px</span></span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* start*/</span></span><br><span class="line">  <span class="rule"><span class="attribute">border-radius</span>:<span class="value"> <span class="number">50%</span></span><br><span class="line">  webkit-transition: <span class="number">1.4s</span> all</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">moz-transition</span>:<span class="value"> <span class="number">1.4s</span> all</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">ms-transition</span>:<span class="value"> <span class="number">1.4s</span> all</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">transition</span>:<span class="value"> <span class="number">1.4s</span> all</span></span>;</span><br><span class="line">  <span class="comment">/* end */</span></span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* start/</span><br><span class="line">.site-author-image:hover &#123; </span><br><span class="line">  background-color: #55DAE1;</span><br><span class="line">  webkit-transform: rotate(360deg) scale(1.1);</span><br><span class="line">  moz-transform: rotate(360deg) scale(1.1);</span><br><span class="line">  ms-transform: rotate(360deg) scale(1.1);</span><br><span class="line">  transform: rotate(360deg) scale(1.1);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* end */</span></span><br><span class="line"></span><br><span class="line">//下面的文件保持原样</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>修改字体</strong></li>
+</ul>
+<p>修改<code>themes\next\source\css\_variable\custome.styl</code>文件如下：</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 标题，修改成你期望的字体族</span></span><br><span class="line"><span class="variable">$font</span>-family-headings = Georgia, sans</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改成你期望的字体族</span></span><br><span class="line"><span class="variable">$font</span>-family-base = <span class="string">"Microsoft YaHei"</span>, Verdana, sans-serif</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代码字体</span></span><br><span class="line"><span class="variable">$code</span>-font-family = <span class="string">"Input Mono"</span>, <span class="string">"PT Mono"</span>, Consolas, Monaco, Menlo, monospace</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正文字体的大小</span></span><br><span class="line"><span class="variable">$font</span>-<span class="keyword">size</span>-base = <span class="number">16</span>px</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代码字体的大小</span></span><br><span class="line"><span class="variable">$code</span>-font-<span class="keyword">size</span> = <span class="number">14</span>px</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>修改代码块中字体大小</strong></li>
+</ul>
+<p>找到<code>\themes\next\source\css\_common\components\highlight\highlight.styl</code> ，修改font-size属性即可</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$code</span>-block</span><br><span class="line">  <span class="attribute">background</span>: highlight-<span class="attribute">background</span></span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">20px</span> <span class="number">0</span></span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">15px</span></span><br><span class="line">  <span class="attribute">overflow</span>: <span class="attribute">auto</span></span><br><span class="line">  <span class="comment">//修改代码字体大小</span></span><br><span class="line">  <span class="attribute">font-size</span> <span class="number">14px</span></span><br><span class="line">  <span class="attribute">color</span>: highlight-foreground</span><br><span class="line">  <span class="attribute">line-height</span>:  <span class="variable">$line</span>-<span class="attribute">height</span>-code-block</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改顶部菜单的字体大小</li>
+</ul>
+<p>修改<code>\themes\next\source\css\_common\components\header\menu.styl</code>文件的font-size属性即可</p>
+<ul>
+<li>添加文章热度的请看<a href="http://prozhuchen.github.io/2015/10/01/Hexo%E5%8D%9A%E5%AE%A2%E7%AC%AC%E4%B8%89%E7%AB%99/" target="_blank" rel="external">这里</a></li>
+<li>为博客创建留言功能，请看<a href="http://www.arao.me/2015/hexo-next-theme-optimize-base/" target="_blank" rel="external">这里</a></li>
+<li>设置社交连接，参考<a href="http://isnow.space/2016/01/29/Next%E4%B8%BB%E9%A2%98%E5%92%8CHexo%E6%9B%B4%E6%90%AD%E9%85%8D%E5%93%A6/" target="_blank" rel="external">这里</a></li>
+<li>文章开启打赏功能，看<a href="http://theme-next.iissnan.com/theme-settings.html#reward" target="_blank" rel="external">这里</a></li>
+<li><a href="http://theme-next.iissnan.com/" target="_blank" rel="external">next主题官方指南</a></li>
+</ul>
 
       
     </div>
@@ -414,7 +438,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/algorithm/" rel="tag">#algorithm</a>
+            <a href="/tags/hexo/" rel="tag">#hexo</a>
           
         </div>
       
@@ -423,17 +447,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/jvm-assignment/" rel="next" title="深入理解JVM之静态分派与动态分派">
-                <i class="fa fa-chevron-left"></i> 深入理解JVM之静态分派与动态分派
+              <a href="/post/servlet-jsp-notes/" rel="next" title="《Servlet与JSP核心编程》读书笔记">
+                <i class="fa fa-chevron-left"></i> 《Servlet与JSP核心编程》读书笔记
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/sort-algorithm-quick/" rel="prev" title="常用内部排序算法之二：快速排序">
-                常用内部排序算法之二：快速排序 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -448,10 +468,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="post/sort-algorithm-merge/"
-     data-title="常用内部排序算法之一：归并排序"
+        <div class="ds-share flat" data-thread-key="post/hexo-blog-optimize/"
+     data-title="hexo博客优化"
      data-content=""
-     data-url="http://rhwayfun.com/post/sort-algorithm-merge/">
+     data-url="http://rhwayfun.com/post/hexo-blog-optimize/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -478,8 +498,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="post/sort-algorithm-merge/"
-           data-title="常用内部排序算法之一：归并排序" data-url="http://rhwayfun.com/post/sort-algorithm-merge/">
+      <div class="ds-thread" data-thread-key="post/hexo-blog-optimize/"
+           data-title="hexo博客优化" data-url="http://rhwayfun.com/post/hexo-blog-optimize/">
       </div>
     
   </div>
