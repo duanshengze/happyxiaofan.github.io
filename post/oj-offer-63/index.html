@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -326,7 +366,7 @@
         <p>题目描述</p>
 <p>给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}； 针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个： {[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}， {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}， {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。</p>
 <p>这实际上可以看成是TCP/IP中差错控制中滑动窗口的算法实现了。由于每次窗口大小是固定的，所以可以创建一个指针用于指向当前窗口的第一个值，而且位置该值是当前窗口的最大值的下标。这么做的好处在于每次窗口移动只需要从第一个位置取值就可以，时间复杂度是O(1)。那么具体需要在获取每个窗口的值得时候与队列中（需要创建一个队列用于保存每个窗口最大值的下标）的队尾指针的元素进行比较，如果比当前遍历到的元素小的话，需要把队尾元素移除，因为我们需要获得的是最大值。这样一直遍历到最后一个元素，就把每个窗口的最大值获取到了。下面是具体的实现代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayDeque;&#10;import java.util.ArrayList;&#10;&#10;public class MaxNumInWindow &#123;&#10;&#10;    public ArrayList&#60;Integer&#62; maxInWindows(int[] num, int size) &#123;&#10;        ArrayList&#60;Integer&#62; maxList = new ArrayList&#60;Integer&#62;();&#10;        if(size &#60;= 0) return maxList;&#10;        //&#21019;&#24314;&#19968;&#20010;&#21452;&#31471;&#38431;&#21015;&#20445;&#23384;&#27599;&#20010;&#28369;&#21160;&#31383;&#21475;&#30340;&#26368;&#22823;&#20540;&#24471;&#19979;&#26631;&#10;        ArrayDeque&#60;Integer&#62; queue = new ArrayDeque&#60;Integer&#62;();&#10;        //&#21019;&#24314;&#19968;&#20010;&#21464;&#37327;start&#29992;&#20110;&#35760;&#24405;&#24403;&#21069;&#28369;&#21160;&#31383;&#21475;&#30340;&#26368;&#22823;&#20540;&#30340;&#19979;&#26631;&#10;        int start = 0;&#10;        for (int i = 0; i &#60; num.length; i++) &#123;&#10;            start = i + 1 - size;//&#24403;start&#22823;&#20110;&#30340;&#26102;&#20505;&#34920;&#31034;&#31532;&#19968;&#20010;&#31383;&#21475;&#24050;&#32463;&#19981;&#33021;&#20877;&#31227;&#21160;&#20102;&#10;            if(queue.isEmpty())&#123;&#10;                queue.add(i);&#10;            &#125;else if(start &#62; queue.peekFirst())&#123;//&#36825;&#20010;&#26465;&#20214;&#34920;&#31034;&#24403;&#21069;&#31383;&#21475;start&#30340;&#20540;&#27604;&#19978;&#19968;&#20010;&#31383;&#21475;&#30340;start&#26356;&#22823;&#10;                queue.pollFirst();&#10;            &#125;&#10;            &#10;            while(!queue.isEmpty() &#38;&#38; num[queue.peekLast()] &#60;= num[i])&#123;&#10;                //&#36825;&#31181;&#24773;&#20917;&#34920;&#31034;&#65292;&#38431;&#21015;&#38431;&#23614;&#20301;&#32622;&#23545;&#24212;&#30340;&#20803;&#32032;&#27604;&#24403;&#21069;&#20803;&#32032;&#26356;&#23567;&#65292;&#23601;&#31227;&#38500;&#20182;&#65292;&#22240;&#20026;&#38656;&#35201;&#24471;&#21040;&#30340;&#26159;&#31383;&#21475;&#26368;&#22823;&#20540;&#10;                queue.pollLast();&#10;            &#125;&#10;            queue.add(i);&#10;            if(start &#62;= 0)&#123;&#10;                //&#23454;&#38469;&#19978;&#24403;start=0&#30340;&#26102;&#20505;&#31532;&#31532;&#19968;&#20010;&#28369;&#21160;&#31383;&#21475;&#65292;&#36825;&#26102;&#38431;&#21015;&#20013;&#20445;&#23384;&#30340;&#26159;&#31532;&#19968;&#20010;&#28369;&#21160;&#31383;&#21475;&#26368;&#22823;&#20540;&#30340;&#19979;&#26631;&#65292;&#30452;&#25509;&#28155;&#21152;&#23601;&#34892;&#10;                maxList.add(num[queue.peekFirst()]);&#10;            &#125;&#10;        &#125;&#10;        return maxList;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] num = &#123;2,3,4,2,6,2,5,1&#125;;&#10;        ArrayList&#60;Integer&#62; list = new MaxNumInWindow().maxInWindows(num, 3);&#10;        System.out.println(list);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayDeque;</span><br><span class="line">import java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MaxNumInWindow &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; maxInWindows(<span class="keyword">int</span>[] num, <span class="keyword">int</span> size) &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; maxList = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span>(size &lt;= <span class="number">0</span>) <span class="keyword">return</span> maxList;</span><br><span class="line">        <span class="comment">//创建一个双端队列保存每个滑动窗口的最大值得下标</span></span><br><span class="line">        ArrayDeque&lt;Integer&gt; <span class="built_in">queue</span> = <span class="keyword">new</span> ArrayDeque&lt;Integer&gt;();</span><br><span class="line">        <span class="comment">//创建一个变量start用于记录当前滑动窗口的最大值的下标</span></span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num.length; i++) &#123;</span><br><span class="line">            start = i + <span class="number">1</span> - size;<span class="comment">//当start大于的时候表示第一个窗口已经不能再移动了</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">queue</span>.isEmpty())&#123;</span><br><span class="line">                <span class="built_in">queue</span>.add(i);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(start &gt; <span class="built_in">queue</span>.peekFirst())&#123;<span class="comment">//这个条件表示当前窗口start的值比上一个窗口的start更大</span></span><br><span class="line">                <span class="built_in">queue</span>.pollFirst();</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span>(!<span class="built_in">queue</span>.isEmpty() &amp;&amp; num[<span class="built_in">queue</span>.peekLast()] &lt;= num[i])&#123;</span><br><span class="line">                <span class="comment">//这种情况表示，队列队尾位置对应的元素比当前元素更小，就移除他，因为需要得到的是窗口最大值</span></span><br><span class="line">                <span class="built_in">queue</span>.pollLast();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">queue</span>.add(i);</span><br><span class="line">            <span class="keyword">if</span>(start &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="comment">//实际上当start=0的时候第第一个滑动窗口，这时队列中保存的是第一个滑动窗口最大值的下标，直接添加就行</span></span><br><span class="line">                maxList.add(num[<span class="built_in">queue</span>.peekFirst()]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxList;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] num = &#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">1</span>&#125;;</span><br><span class="line">        ArrayList&lt;Integer&gt; <span class="built_in">list</span> = <span class="keyword">new</span> MaxNumInWindow().maxInWindows(num, <span class="number">3</span>);</span><br><span class="line">        System.out.println(<span class="built_in">list</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -339,6 +379,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -451,7 +507,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -472,10 +528,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -533,6 +589,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

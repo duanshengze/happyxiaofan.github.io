@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -184,17 +184,21 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -204,9 +208,15 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -214,17 +224,43 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -296,6 +332,10 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -334,13 +374,13 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
 <p><strong>结果映射</strong></p>
 <p>result有两个属性可以配置：name属性和type属性。其中的name属性主要用来指定资源的逻辑名称，实际名称在标签内部指定。type属性就是result的返回类型。要注意的是，这两个属性都不是必须的，当我们没有配置这两个属性的时候，实际上框架为我们指定了默认值，其中name属性的默认值是success，type属性的默认值是dispatcher（转发）。正因为框架为我们设定了默认值才可以不用配置。<br><a id="more"></a></p>
 <p>我们之前的配置都是使用result直接配置，实际上result标签还有一个子标签<code>param</code>，该标签可以为result指定实际资源的位置，其有有一个必需的属性name，实际上就是之前文章中result的配置的资源。比如下面的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;action name=&#34;login&#34; class=&#34;action.LoginAction&#34;&#62;&#10;            &#60;result&#62;&#10;                &#60;!-- param&#30340;location&#29992;&#20110;&#25351;&#31034;&#36164;&#28304;&#30340;&#20301;&#32622;&#65292;&#26631;&#31614;&#30340;&#20869;&#23481;&#26159;&#21442;&#25968;&#30340;&#20540; --&#62;&#10;                &#60;param name=&#34;location&#34;&#62;/success.jsp&#60;/param&#62;&#10;            &#60;/result&#62;&#10;            &#60;result name=&#34;error&#34;&#62;/error.jsp&#60;/result&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;action name=<span class="string">"login"</span> class=<span class="string">"action.LoginAction"</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span>&gt;</span><br><span class="line">                &lt;!-- param的location用于指示资源的位置，标签的内容是参数的值 --&gt;</span><br><span class="line">                &lt;param name=<span class="string">"location"</span>&gt;/success.jsp&lt;/param&gt;</span><br><span class="line">            &lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"error"</span>&gt;/error.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">        &lt;/action&gt;</span><br></pre></td></tr></table></figure>
 <p>这里指示资源的实际位置使用param标签，但是如果result的type属性是dispatcher的时候，上面的param标签是可以直接省略的，这也是前面没有写param标签也没有报错的原因。</p>
 <p><strong>结果类型</strong></p>
 <p>结果类型中常用的有四种：dispatcher、redirect、redirectAction和chain。其中dispatcher已经说过相当转发，redirect相当于重定向，redirecAction也是重定向，只不过使用该结果类型的时候，一般是重定向到某个action，最后一种主要用于action的链式处理。其他的还有plainText（用于显示页面的原始内容，比如Servlet或者jsp的源代码）、xslt等。</p>
 <p><strong>第1种：dispatcher</strong></p>
 <p>dispatcher也是框架默认的结果类型，其实现类是org.apache.struts2.dispatcher.ServletDispatcherResult，该类中有两个属性：location和parse。它们也可以在struts.xml文件中直接配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;result type=&#34;dispatcher&#34;&#62;&#10;                &#60;!-- param&#30340;location&#29992;&#20110;&#25351;&#31034;&#36164;&#28304;&#30340;&#20301;&#32622;&#65292;&#26631;&#31614;&#30340;&#20869;&#23481;&#26159;&#21442;&#25968;&#30340;&#20540; --&#62;&#10;                &#60;param name=&#34;location&#34;&#62;/success.jsp&#60;/param&#62;&#10;                &#60;param name=&#34;parse&#34;&#62;true&#60;/param&#62;&#10;            &#60;/result&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="literal">result</span> <span class="keyword">type</span>=<span class="string">"dispatcher"</span>&gt;</span><br><span class="line">                &lt;!-- param的location用于指示资源的位置，标签的内容是参数的值 --&gt;</span><br><span class="line">                &lt;param name=<span class="string">"location"</span>&gt;/success.jsp&lt;/param&gt;</span><br><span class="line">                &lt;param name=<span class="string">"parse"</span>&gt;<span class="literal">true</span>&lt;/param&gt;</span><br><span class="line">            &lt;/<span class="literal">result</span>&gt;</span><br></pre></td></tr></table></figure>
 <p>其中的location参数用于指定资源的实际位置，该参数也是框架默认添加的；parse参数是一个布尔变量，当为true的时候，表示将解析location参数中的OGNL表达式（后面还会介绍）。框架中parse参数的默认值也是true。</p>
 <p><strong>第2种：redirect</strong></p>
 <p>当使用该结果类型的时候，框架后台会使用response对象的sendRedirect方法进行重定向，重定向与转发还是不同的，具体体现在以下几个方面：</p>
@@ -351,16 +391,16 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
 <li>由于重定向是两次请求，所以第二次请求会话保存的信息是无效的，而转发的时候，会话仍然有效，因为仍然是原来的请求。</li>
 </ol>
 <p>如果需要在重定向的时候把原来的有关信息发送到重定向后的页面中，则需要使用OGNL表达式${username}（比如在登录成功后重定向到欢迎页面，在欢迎页面就可以使用OGNL表达式把用户名传递过去），比如下面的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#30331;&#24405;Action --&#62;&#10;        &#60;action name=&#34;login&#34; class=&#34;action.LoginAction&#34;&#62;&#10;            &#60;result type=&#34;redirect&#34;&#62;/success.jsp?user.username=$&#123;user.username&#125;&#60;/result&#62;&#10;            &#60;result name=&#34;error&#34;&#62;/error.jsp&#60;/result&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 登录<span class="type">Action</span> --&gt;</span><br><span class="line">        &lt;action name=<span class="string">"login"</span> class=<span class="string">"action.LoginAction"</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> <span class="keyword">type</span>=<span class="string">"redirect"</span>&gt;/success.jsp?user.username=$&#123;user.username&#125;&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"error"</span>&gt;/error.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">        &lt;/action&gt;</span><br></pre></td></tr></table></figure>
 <p>在登录成功之后重定向到success.jsp页面的时候，可以观察到浏览器的地址栏把用户名作为参数传递到success.jsp页面。</p>
 <p><strong>第3种：redirectAction</strong></p>
 <p>此种结果类型与redirect一样，底层都是调用Response对象的sendRedirect方法进行重定向的，这两者的区别是redirect结果类型一般是针对视图的，而redirectAction则是重定向到某个action，所以如果在action处理之后还要交给另一个action继续处理，那么使用redirecAction结果类型。</p>
 <p>redirecAction结果类型有两个参数：actionName（指定需要重定向的action）和namespace（指定action所在的命名空间，如果没有指定该参数，框架会从默认的namespace中去寻找）。比如下面的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- HelloWorld&#28436;&#31034;&#31243;&#24207; --&#62;&#10;        &#60;action name=&#34;hello&#34; class=&#34;example.HelloWorld&#34;&#62;&#10;            &#60;!-- &#37325;&#23450;&#21521;&#21040;/user&#21629;&#21517;&#31354;&#38388;&#19979;&#30340;UserAction --&#62;&#10;            &#60;result type=&#34;redirectAction&#34;&#62;&#10;                &#60;!-- &#25351;&#23450;&#38656;&#35201;&#37325;&#23450;&#21521;&#30340;action&#30340;name&#23646;&#24615; --&#62;&#10;                &#60;param name=&#34;actionName&#34;&#62;userAction&#60;/param&#62;&#10;                &#60;!-- &#25351;&#23450;&#37325;&#23450;&#21521;&#30340;action&#25152;&#22312;&#30340;namespace --&#62;&#10;                &#60;param name=&#34;namespace&#34;&#62;/user&#60;/param&#62;&#10;            &#60;/result&#62;&#10;        &#60;/action&#62;&#10;        &#10;        &#60;!-- &#30331;&#24405;Action --&#62;&#10;        &#60;action name=&#34;login&#34; class=&#34;action.LoginAction&#34;&#62;&#10;            &#60;result type=&#34;redirect&#34;&#62;/success.jsp?user.username=$&#123;user.username&#125;&#60;/result&#62;&#10;            &#60;!-- &#37325;&#23450;&#21521;&#21040;&#21516;&#19968;namespace&#19979;&#30340;name&#23646;&#24615;&#20026;error&#30340;action --&#62;&#10;            &#60;result type=&#34;redirectAction&#34;&#62;&#10;                &#60;!-- &#21516;&#19968;namespace&#19979;&#30340;action&#19981;&#38656;&#35201;&#25351;&#23450;namespace&#21442;&#25968; --&#62;&#10;                &#60;param name=&#34;actionName&#34;&#62;error&#60;/param&#62;&#10;            &#60;/result&#62;&#10;        &#60;/action&#62;&#10;        &#10;        &#60;action name=&#34;error&#34;&#62;&#10;            &#60;result&#62;/error.jsp&#60;/result&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- HelloWorld演示程序 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">action</span> <span class="attribute">name</span>=<span class="value">"hello"</span> <span class="attribute">class</span>=<span class="value">"example.HelloWorld"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 重定向到/user命名空间下的UserAction --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">result</span> <span class="attribute">type</span>=<span class="value">"redirectAction"</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 指定需要重定向的action的name属性 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"actionName"</span>&gt;</span>userAction<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 指定重定向的action所在的namespace --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"namespace"</span>&gt;</span>/user<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">result</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">action</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&lt;!-- 登录Action --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">action</span> <span class="attribute">name</span>=<span class="value">"login"</span> <span class="attribute">class</span>=<span class="value">"action.LoginAction"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">result</span> <span class="attribute">type</span>=<span class="value">"redirect"</span>&gt;</span>/success.jsp?user.username=$&#123;user.username&#125;<span class="tag">&lt;/<span class="title">result</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 重定向到同一namespace下的name属性为error的action --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">result</span> <span class="attribute">type</span>=<span class="value">"redirectAction"</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 同一namespace下的action不需要指定namespace参数 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"actionName"</span>&gt;</span>error<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">result</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">action</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="title">action</span> <span class="attribute">name</span>=<span class="value">"error"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">result</span>&gt;</span>/error.jsp<span class="tag">&lt;/<span class="title">result</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">action</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p><strong>全局结果</strong></p>
 <p>全局结果的的主要作用是，在有多个action都需要返回到某个页面的时候，就可以全局结果。比如在电商网站购物的时候，查看订单，添加商品到购物车都需要先登录，那么就可以把登录作为一个全局结果。全局结果是在包中定义的，这样该包下的所有action都可以共享该全局结果了。</p>
 <p>配置全局结果的方式与在action中直接配置result不太一样，全局结果是在global-results标签中定义的。比如下面的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#20840;&#23616;&#32467;&#26524;&#37197;&#32622; --&#62;&#10;        &#60;global-results&#62;&#10;            &#60;result name=&#34;error&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result name=&#34;login&#34; type=&#34;redirectAction&#34;&#62;login!login&#60;/result&#62;&#10;        &#60;/global-results&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 全局结果配置 --&gt;</span><br><span class="line">        &lt;global-results&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"error"</span>&gt;/error.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"login"</span> <span class="keyword">type</span>=<span class="string">"redirectAction"</span>&gt;login!login&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">        &lt;/global-results&gt;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -374,6 +414,22 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -486,7 +542,7 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -507,10 +563,10 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -568,6 +624,12 @@ result有两个属性可以配置：name属性和type属性。其中的name属�
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -326,7 +366,7 @@
         <p>题目描述</p>
 <p>请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，向下移动一个格子。如果一条路径经过了矩阵中的某一个格子，则该路径不能再进入该格子。 例如 a b c e s f c s a d e e 矩阵中包含一条字符串”bcced”的路径，但是矩阵中不包含”abcb”路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。</p>
 <p>这实际上是回溯法的一个应用。所谓回溯法就是按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择。具体到这道题目就是对于每个字符，如果在矩阵中找到了其在矩阵中的位置，进行下一次寻找的时候，可以从上、下、左、右四个方向（边界元素除外）进行递归寻找，如果找到了则继续寻找下一个字符；如果没有找到的话，则回到上一个字符重新寻找。直到找到全部字符在矩阵中对应的位置。下面是具体实现的代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class HasPath &#123;&#10;&#10;    /**&#10;     * &#22522;&#26412;&#24605;&#36335;&#26159;&#21019;&#24314;&#19968;&#20010;&#24067;&#23572;&#25968;&#32452;&#65292;&#29992;&#20110;&#35760;&#24405;&#30697;&#38453;&#20013;&#24050;&#32463;&#35775;&#38382;&#36807;&#30340;&#26631;&#35760;&#12290; &#23545;&#20110;&#36335;&#24452;&#20013;&#30340;&#31532;i&#20010;&#23383;&#31526;&#65292;&#38500;&#20102;&#36793;&#30028;&#30340;&#20803;&#32032;&#22806;&#65292;&#20854;&#20182;&#20301;&#32622;&#30340;&#20803;&#32032;&#37117;&#10;     * &#26377;&#19978;&#12289;&#19979;&#12289;&#24038;&#12289;&#21491;&#22235;&#20010;&#30456;&#37051;&#30340;&#20301;&#32622;&#12290;&#37027;&#20040;&#36335;&#24452;&#20013;&#30340;&#31532;i+1&#20010;&#23383;&#31526;&#21487; &#20197;&#20174;&#36825;&#22235;&#20010;&#20301;&#32622;&#20013;&#23547;&#25214;&#24471;&#21040;&#12290;&#20381;&#27492;&#36827;&#34892;&#36882;&#24402;&#65292;&#30452;&#21040;&#25214;&#21040;&#26368;&#21518;&#19968;&#20010;&#23383;&#31526; &#22312;&#30697;&#38453;&#20013;&#30340;&#20301;&#32622;&#20026;&#27490;&#12290;&#10;     * &#10;     * @Description: TODO&#10;     * @param @param matrix&#10;     * @param @param rows&#10;     * @param @param cols&#10;     * @param @param str&#10;     * @param @return&#10;     * @return boolean&#10;     * @throws&#10;     * @author rhwayfun&#10;     * @date Dec 21, 2015&#10;     */&#10;    public boolean hasPath(char[] matrix, int rows, int cols, char[] str) &#123;&#10;        // &#21019;&#24314;&#19968;&#20010;&#24067;&#23572;&#25968;&#32452;&#10;        boolean[] visited = new boolean[matrix.length];&#10;        for (int i = 0; i &#60; rows; i++) &#123;&#10;            for (int j = 0; j &#60; cols; j++) &#123;&#10;                if (hasPathCore(matrix, rows, cols, i, j, 0, str, visited)) &#123;&#10;                    return true;&#10;                &#125;&#10;            &#125;&#10;        &#125;&#10;        return false;&#10;    &#125;&#10;&#10;    private boolean hasPathCore(char[] matrix, int rows, int cols, int i,&#10;            int j, int k, char[] str, boolean[] visited) &#123;&#10;        // &#23545;&#20110;&#32473;&#23450;&#34892;&#25968;&#21644;&#21015;&#25968;&#24471;&#21040;&#20854;&#22312;&#30697;&#38453;&#20013;&#30340;&#19979;&#26631;&#10;        int index = i * cols + j;&#10;        if (i &#60; 0 || i &#62;= rows || j &#60; 0 || j &#62;= cols || matrix[index] != str[k]&#10;                || visited[index])&#10;            return false;&#10;        visited[index] = true;&#10;        // &#22914;&#26524;&#36882;&#24402;&#21040;&#26368;&#21518;&#19968;&#20010;&#20301;&#32622;&#30340;&#23383;&#31526;&#65292;&#21017;&#34920;&#26126;&#21069;&#38754;&#20301;&#32622;&#30340;&#23383;&#31526;&#37117;&#22312;&#30697;&#38453;&#20013;&#25214;&#21040;&#20102;&#23545;&#24212;&#30340;&#20301;&#32622;&#10;        if (k == str.length - 1)&#10;            return true;&#10;        // &#22914;&#26524;&#27809;&#26377;&#36882;&#24402;&#21040;&#26368;&#21518;&#19968;&#20010;&#20301;&#32622;&#30340;&#23383;&#31526;&#65292;&#21017;&#32487;&#32493;&#36882;&#24402;,k+1&#34920;&#31034;&#32487;&#32493;&#22312;&#30697;&#38453;&#20013;&#23547;&#25214;str&#25968;&#32452;&#20013;&#19979;&#19968;&#20010;&#20301;&#32622;&#30340;&#23383;&#31526;&#22312;&#30697;&#38453;&#20013;&#30340;&#20301;&#32622;&#10;        if (hasPathCore(matrix, rows, cols, i - 1, j, k + 1, str, visited)&#10;                || hasPathCore(matrix, rows, cols, i + 1, j, k + 1, str, visited)&#10;                || hasPathCore(matrix, rows, cols, i, j - 1, k + 1, str, visited)&#10;                || hasPathCore(matrix, rows, cols, i, j + 1, k + 1, str, visited)) &#123;&#10;            return true;&#10;        &#125;else&#123;&#10;            //&#22914;&#26524;&#30456;&#37051;&#26684;&#23376;&#30340;&#23383;&#31526;&#37117;&#27809;&#26377;&#21305;&#37197;&#21040;&#19979;&#19968;&#20010;&#23383;&#31526;&#65292;&#21017;&#38656;&#35201;&#22238;&#21040;&#21069;&#19968;&#20010;&#26684;&#23376;&#65292;&#20174;&#32780;&#38656;&#35201;&#25226;&#25226;&#20301;&#32622;&#30340;&#29366;&#24577;&#37325;&#26032;&#35774;&#23450;&#20026;&#26410;&#35775;&#38382;&#10;            k--;&#10;            visited[index] = false;&#10;        &#125;&#10;        return false;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        String s= &#34;abcesfcsadee&#34;;&#10;        String s2 = &#34;abcb&#34;;&#10;        char[] matrix = s.toCharArray();&#10;        char[] str = s2.toCharArray();&#10;        boolean b = new HasPath().hasPath(matrix, 3, 4, str);&#10;        System.out.println(b);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HasPath</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 基本思路是创建一个布尔数组，用于记录矩阵中已经访问过的标记。 对于路径中的第i个字符，除了边界的元素外，其他位置的元素都</span><br><span class="line">     * 有上、下、左、右四个相邻的位置。那么路径中的第i+1个字符可 以从这四个位置中寻找得到。依此进行递归，直到找到最后一个字符 在矩阵中的位置为止。</span><br><span class="line">     * </span><br><span class="line">     * <span class="doctag">@Description</span>: <span class="doctag"><span class="keyword">TODO</span></span></span><br><span class="line">     * <span class="doctag">@param</span> <span class="doctag">@param</span> matrix</span><br><span class="line">     * <span class="doctag">@param</span> <span class="doctag">@param</span> rows</span><br><span class="line">     * <span class="doctag">@param</span> <span class="doctag">@param</span> cols</span><br><span class="line">     * <span class="doctag">@param</span> <span class="doctag">@param</span> str</span><br><span class="line">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span><br><span class="line">     * <span class="doctag">@return</span> boolean</span><br><span class="line">     * <span class="doctag">@throws</span></span><br><span class="line">     * <span class="doctag">@author</span> rhwayfun</span><br><span class="line">     * <span class="doctag">@date</span> Dec 21, 2015</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasPath</span><span class="params">(<span class="keyword">char</span>[] matrix, <span class="keyword">int</span> rows, <span class="keyword">int</span> cols, <span class="keyword">char</span>[] str)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 创建一个布尔数组</span></span><br><span class="line">        <span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[matrix.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cols; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (hasPathCore(matrix, rows, cols, i, j, <span class="number">0</span>, str, visited)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">hasPathCore</span><span class="params">(<span class="keyword">char</span>[] matrix, <span class="keyword">int</span> rows, <span class="keyword">int</span> cols, <span class="keyword">int</span> i,</span><br><span class="line">            <span class="keyword">int</span> j, <span class="keyword">int</span> k, <span class="keyword">char</span>[] str, <span class="keyword">boolean</span>[] visited)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 对于给定行数和列数得到其在矩阵中的下标</span></span><br><span class="line">        <span class="keyword">int</span> index = i * cols + j;</span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt;= rows || j &lt; <span class="number">0</span> || j &gt;= cols || matrix[index] != str[k]</span><br><span class="line">                || visited[index])</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        visited[index] = <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">// 如果递归到最后一个位置的字符，则表明前面位置的字符都在矩阵中找到了对应的位置</span></span><br><span class="line">        <span class="keyword">if</span> (k == str.length - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">// 如果没有递归到最后一个位置的字符，则继续递归,k+1表示继续在矩阵中寻找str数组中下一个位置的字符在矩阵中的位置</span></span><br><span class="line">        <span class="keyword">if</span> (hasPathCore(matrix, rows, cols, i - <span class="number">1</span>, j, k + <span class="number">1</span>, str, visited)</span><br><span class="line">                || hasPathCore(matrix, rows, cols, i + <span class="number">1</span>, j, k + <span class="number">1</span>, str, visited)</span><br><span class="line">                || hasPathCore(matrix, rows, cols, i, j - <span class="number">1</span>, k + <span class="number">1</span>, str, visited)</span><br><span class="line">                || hasPathCore(matrix, rows, cols, i, j + <span class="number">1</span>, k + <span class="number">1</span>, str, visited)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//如果相邻格子的字符都没有匹配到下一个字符，则需要回到前一个格子，从而需要把把位置的状态重新设定为未访问</span></span><br><span class="line">            k--;</span><br><span class="line">            visited[index] = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String s= <span class="string">"abcesfcsadee"</span>;</span><br><span class="line">        String s2 = <span class="string">"abcb"</span>;</span><br><span class="line">        <span class="keyword">char</span>[] matrix = s.toCharArray();</span><br><span class="line">        <span class="keyword">char</span>[] str = s2.toCharArray();</span><br><span class="line">        <span class="keyword">boolean</span> b = <span class="keyword">new</span> HasPath().hasPath(matrix, <span class="number">3</span>, <span class="number">4</span>, str);</span><br><span class="line">        System.out.println(b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -339,6 +379,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -451,7 +507,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -472,10 +528,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -533,6 +589,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

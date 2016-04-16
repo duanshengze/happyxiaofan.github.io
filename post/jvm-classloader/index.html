@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -177,17 +177,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -197,9 +201,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -207,17 +217,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -288,6 +324,10 @@
               
             </span>
           
+
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
 
           
             
@@ -406,9 +446,9 @@
 <li>如果最终返回了这个字段的直接引用，就进行权限验证，如果发现不具备对字段的访问权限，将抛出java.lang.IllegalAccessError异常</li>
 </ul>
 <p>经过这些步骤后，对一个字段的解析就到此为止，这里有一个经典的问题：就是父类与子类构造方法调用的问题，比如下面这段代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class Test&#123;&#10;    public static void main(String[] args)&#123;&#10;        new C();&#10;    &#125;&#10;&#125;&#10;&#10;class A&#123;&#10;    public A(String name)&#123;&#10;        System.out.println(name + &#34; A constructor&#34;);&#10;    &#125;&#10;&#125;&#10;&#10;class B&#123;&#10;    private A = new A(&#34;b&#34;);&#10;    public B()&#123;&#10;        System.out.println(&#34;B constructor&#34;);&#10;    &#125;&#10;&#125;&#10;&#10;class C extends B&#123;&#10;    private A = new A(&#34;c&#34;);&#10;    public C()&#123;&#10;        System.out.println(&#34;C constructor&#34;);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Test</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">new</span> C();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">A</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span>(<span class="params">String name</span>)</span>&#123;</span><br><span class="line">        System.<span class="keyword">out</span>.println(name + <span class="string">" A constructor"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">B</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> A = <span class="keyword">new</span> A(<span class="string">"b"</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">B</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">"B constructor"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">C</span> <span class="title">extends</span> <span class="title">B</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> A = <span class="keyword">new</span> A(<span class="string">"c"</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">C</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">"C constructor"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>最后的输出结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b A constructor&#10;B constructor&#10;c A constructor&#10;C constructor</span><br></pre></td></tr></table></figure>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b A <span class="function"><span class="keyword">constructor</span></span><br><span class="line"><span class="title">B</span> <span class="title">constructor</span></span><br><span class="line"><span class="title">c</span> <span class="title">A</span> <span class="title">constructor</span></span><br><span class="line"><span class="title">C</span> <span class="title">constructor</span></span></span><br></pre></td></tr></table></figure>
 <p>通过这个例子以及字段解析的过程，我们可以更深刻理解为什么在具有继承关系的类中，为什么总是先加载父类的构造方法以及初始化，然后才调用子类的构造方法以及初始化。</p>
 <h4 id="4-3_类方法的解析">4.3 类方法的解析</h4><p>进行类方法的解析仍然需要先解析此类方法的类，在正确解析之后需要进行如下的步骤：</p>
 <ul>
@@ -433,7 +473,7 @@
 <li><code>&lt;clinit&gt;</code> () 方法与类的构造器方法不同，因为前者不需要显式调用父类构造器，因为虚拟机会保证在子类的<code>&lt;clinit&gt;</code>() 方法执行之前，父类的<code>&lt;clinit&gt;</code> 方法已经执行完毕</li>
 <li>由于父类的<code>&lt;clinit&gt;</code> 方法会先执行，所以就表示父类的static方法会先于子类的<code>&lt;clinit&gt;</code> 方法执行。这点也可以通过下面的代码得到体现：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static class A&#123;&#10;    public static int a = 1;&#10;    static&#123;&#10;        a = 2;&#10;    &#125;&#10;&#125;&#10;&#10;static class B extends A&#123;&#10;    public static int b = a;&#10;&#125;&#10;&#10;public static void main(String[] args)&#123;&#10;    System.out.println(B.b);&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        a = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> b = a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    System.out.println(B.b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>得到的结果是2而不是1，这就验证了父类的静态方法会先于子类的static方法执行。</p>
 
       
@@ -448,6 +488,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -560,7 +616,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -581,10 +637,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -642,6 +698,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

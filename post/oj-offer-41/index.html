@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -184,17 +184,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -204,9 +208,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -214,17 +224,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -296,6 +332,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -333,7 +373,7 @@
 <p>输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。<br>输出描述:</p>
 <p>对应每个测试案例，输出两个数，小的先输出。</p>
 <p>有了上一题的基础，解决这题应该不难，思路与上一题差不多，不过这里只需要要求两个数字即可。所以可以设定两个指针，第一个指针指向数组的第一个元素，第二个指针指向最后一个元素，不断改变第一个指针的位置就可以确定和为S的两个数字。这里还有一个要求是这两个数字的乘积最小，实际上由于数组是递增排序的，所以第一个找到的两个数字就是乘积最小的两个数字，相反如果要求是乘积最大的呢？当然是中间位置找到的那两个数字了。这是数学上的知识了，不再赘述。所以虽然有了乘积最小的要求，实际上是形同虚设的，这里实现的代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;&#10;public class FindTwoNumberSum &#123;&#10;&#10;    public ArrayList&#60;Integer&#62; FindNumbersWithSum(int[] array, int sum) &#123;&#10;        ArrayList&#60;Integer&#62; list = new ArrayList&#60;Integer&#62;();&#10;        if(array == null || array.length &#60; 1) return list;&#10;        int low = 0;&#10;        int high = array.length - 1;&#10;        while(low &#60; high)&#123;&#10;            int curSum = array[low] + array[high];&#10;            if(curSum == sum)&#123;&#10;                //&#30001;&#20110;&#25968;&#32452;&#26159;&#36882;&#22686;&#25490;&#24207;&#30340;&#65292;&#25152;&#20197;&#31532;&#19968;&#20010;&#25214;&#21040;&#30340;&#25968;&#23545;&#32943;&#23450;&#26159;&#20056;&#31215;&#26368;&#23567;&#30340;&#12290;&#10;                //&#27604;&#22914;&#65292;1+4=2+3&#65292;&#22914;&#26524;&#20174;&#31532;&#19968;&#20010;&#20301;&#32622;&#24320;&#22987;&#25214;&#30340;&#35805;&#65292;&#26174;&#28982;1&#19982;4&#30340;&#20056;&#31215;&#26159;&#26368;&#23567;&#30340;&#10;                list.add(array[low]);&#10;                list.add(array[high]);&#10;                break;&#10;            &#125;else if(curSum &#62; sum)&#123;&#10;                high--;&#10;            &#125;else&#123;&#10;                low++;&#10;            &#125;&#10;        &#125;&#10;        return list;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] array = new int[]&#123;1,2,7,8,13,15&#125;;&#10;        ArrayList&#60;Integer&#62; list = new FindTwoNumberSum().FindNumbersWithSum(array, 15);&#10;        System.out.println(list);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> FindTwoNumberSum &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; FindNumbersWithSum(<span class="keyword">int</span>[] <span class="built_in">array</span>, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; <span class="built_in">list</span> = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">array</span> == null || <span class="built_in">array</span>.length &lt; <span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">list</span>;</span><br><span class="line">        <span class="keyword">int</span> low = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> high = <span class="built_in">array</span>.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(low &lt; high)&#123;</span><br><span class="line">            <span class="keyword">int</span> curSum = <span class="built_in">array</span>[low] + <span class="built_in">array</span>[high];</span><br><span class="line">            <span class="keyword">if</span>(curSum == sum)&#123;</span><br><span class="line">                <span class="comment">//由于数组是递增排序的，所以第一个找到的数对肯定是乘积最小的。</span></span><br><span class="line">                <span class="comment">//比如，1+4=2+3，如果从第一个位置开始找的话，显然1与4的乘积是最小的</span></span><br><span class="line">                <span class="built_in">list</span>.add(<span class="built_in">array</span>[low]);</span><br><span class="line">                <span class="built_in">list</span>.add(<span class="built_in">array</span>[high]);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(curSum &gt; sum)&#123;</span><br><span class="line">                high--;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                low++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">list</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">13</span>,<span class="number">15</span>&#125;;</span><br><span class="line">        ArrayList&lt;Integer&gt; <span class="built_in">list</span> = <span class="keyword">new</span> FindTwoNumberSum().FindNumbersWithSum(<span class="built_in">array</span>, <span class="number">15</span>);</span><br><span class="line">        System.out.println(<span class="built_in">list</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -346,6 +386,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -458,7 +514,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -479,10 +535,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -540,6 +596,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

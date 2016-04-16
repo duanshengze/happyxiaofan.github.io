@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -326,9 +366,9 @@
         <p>题目描述</p>
 <p>每年六一儿童节,NowCoder都会准备一些小礼物去看望孤儿院的小朋友,今年亦是如此。HF作为NowCoder的资深元老,自然也准备了一些小游戏。其中,有个游戏是这样的:首先,让小朋友们围成一个大圈。然后,他随机指定一个数m,让编号为0的小朋友开始报数。每次喊到m的那个小朋友要出列唱首歌,然后可以在礼品箱中任意的挑选礼物,并且不再回到圈中,从他的下一个小朋友开始,继续0…m-1报数….这样下去….直到剩下最后一个小朋友,可以不用表演,并且拿到NowCoder名贵的“名侦探柯南”典藏版(名额有限哦!!^_^)。请你试着想下,哪个小朋友会得到这份礼品呢？</p>
 <p>比较普遍的思路是把这n个整数做成一个环，当数到哪个数的时候就把那个数移除，并从下一个数重新开始数。所已基本思路是：使用数组模拟环，当当前的元素的值n相等的时候，就回到第一个位置重新遍历，每次当前元素的移动都伴随计步器的增加（每次增加1），当步数等于m的时候，则把当前元素的设为-1，表示已被删除，并重新设置计步器的值为0，还需要把n的值减小1，表示数组中的元素被移除了一个。下面是基于这种思路的实现代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;&#10;public class LastRemainingNumber &#123;&#10;&#10;&#10;    public int LastRemaining_Solution2(int n, int m) &#123;&#10;        if (n &#60; 1 || m &#60; 1)&#10;            return -1;&#10;        int[] a = new int[n];&#10;        //&#24403;&#21069;&#36935;&#21040;&#30340;&#23545;&#35937;&#10;        int cur = -1;&#10;        //&#35745;&#27493;&#22120;&#10;        int count = 0;&#10;        int num = n;&#10;        while (num &#62; 0) &#123;&#10;            //&#31227;&#21160;&#21040;&#19978;&#27425;&#34987;&#21024;&#38500;&#20803;&#32032;&#30340;&#19979;&#19968;&#20010;&#20803;&#32032;&#10;            cur++;&#10;            //&#24403;&#36935;&#21040;&#26368;&#21518;&#19968;&#20010;&#25968;&#30340;&#26102;&#20505;&#65292;&#20174;&#24320;&#22836;&#37325;&#26032;&#35745;&#31639;&#10;            if(cur == n) cur = 0;&#10;            //&#22914;&#26524;&#36935;&#21040;&#20102;&#19978;&#27425;&#34987;&#21024;&#38500;&#30340;&#23545;&#35937;&#65292;&#21017;&#36339;&#36807;&#35813;&#23545;&#35937;&#10;            if(a[cur] == -1)&#10;                continue;&#10;            //&#35745;&#27493;&#22120;&#21152;1&#10;            count++;&#10;            if(count == m)&#123;&#10;                //&#25226;&#24403;&#21069;&#20803;&#32032;&#26631;&#35760;&#20026;&#24050;&#21024;&#38500;&#10;                a[cur] = -1;&#10;                //&#35745;&#27493;&#22120;&#37325;&#26032;&#22797;&#20301;&#10;                count = 0;&#10;                num--;&#10;            &#125;&#10;        &#125;&#10;        return cur;&#10;    &#125;&#10;&#10;    public static void main(String[] args) &#123;&#10;        int l = new LastRemainingNumber().LastRemaining_Solution2(5, 3);&#10;        System.out.println(l);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> LastRemainingNumber &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> LastRemaining_Solution2(<span class="keyword">int</span> n, <span class="keyword">int</span> m) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n &lt; <span class="number">1</span> || m &lt; <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="comment">//当前遇到的对象</span></span><br><span class="line">        <span class="keyword">int</span> cur = -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//计步器</span></span><br><span class="line">        <span class="keyword">int</span> <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> num = n;</span><br><span class="line">        <span class="keyword">while</span> (num &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//移动到上次被删除元素的下一个元素</span></span><br><span class="line">            cur++;</span><br><span class="line">            <span class="comment">//当遇到最后一个数的时候，从开头重新计算</span></span><br><span class="line">            <span class="keyword">if</span>(cur == n) cur = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//如果遇到了上次被删除的对象，则跳过该对象</span></span><br><span class="line">            <span class="keyword">if</span>(a[cur] == -<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            <span class="comment">//计步器加1</span></span><br><span class="line">            <span class="keyword">count</span>++;</span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">count</span> == m)&#123;</span><br><span class="line">                <span class="comment">//把当前元素标记为已删除</span></span><br><span class="line">                a[cur] = -<span class="number">1</span>;</span><br><span class="line">                <span class="comment">//计步器重新复位</span></span><br><span class="line">                <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">                num--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cur;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="keyword">new</span> LastRemainingNumber().LastRemaining_Solution2(<span class="number">5</span>, <span class="number">3</span>);</span><br><span class="line">        System.out.<span class="keyword">println</span>(l);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>还有一种是根据每次删除元素的特点进行实现的，就是书上的思路：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#10;public int LastRemaining_Solution(int n, int m) &#123;&#10;    if (n &#60; 1 || m &#60; 1)&#10;        return -1;&#10;    int lastNumber = 0;&#10;    for (int i = 2; i &#60;= n; i++)&#10;        lastNumber = (lastNumber + m) % i;&#10;    return lastNumber;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="aspectj"><span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">LastRemaining_Solution</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">1</span> || m &lt; <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> lastNumber = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)</span><br><span class="line">        lastNumber = (lastNumber + m) % i;</span><br><span class="line">    <span class="keyword">return</span> lastNumber;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -341,6 +381,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -453,7 +509,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -474,10 +530,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -535,6 +591,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

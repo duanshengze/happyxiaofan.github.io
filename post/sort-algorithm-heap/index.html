@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -179,17 +179,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -199,9 +203,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -209,17 +219,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -291,6 +327,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -327,7 +367,7 @@
         <p><strong>前言</strong></p>
 <p>堆排序是以堆为原型的排序。堆首先是一棵二叉树，具有以下两个性质：<strong>每个节点的值大于或者等于其左右孩子结点的值，称为大顶堆；或者每个节点的值都小于或者等于其左右孩子结点的值，称为小顶堆</strong>。从这个定义中可以发现，堆得根节点要么是最大值要么是最小值。实现堆排序的基本思想是：<strong>将待排序的序列构造成一个大顶堆或者小顶堆。此时整个堆满足根节点是最大值或者最小值。将根节点移走，并与堆数组的最后一个值进行交换，这样的话最后一个值就是最大值或者最小值了。然后将剩余n-1（假设原来总共有n个元素）未排序的序列重新构造成一个最大堆或者最小堆，再与除原来最大值之外的最后一个元素进行交换，得到次小值。如此反复进行，就得到一个排序的序列。</strong><br><a id="more"></a></p>
 <p><strong>堆排序算法的Java实现</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;&#10;&#10;public class HeapSort2 &#123;&#10;&#10;    public void heapSort(int[] a)&#123;&#10;        for(int i = a.length/2-1; i &#62;= 0; i--)&#123;&#10;            //&#24314;&#31435;&#19968;&#20010;&#26368;&#22823;&#22534;&#10;            heapAdjust(a,i,a.length - 1);&#10;        &#125;&#10;        for (int i = a.length - 1; i &#62; 0; i--) &#123;&#10;            //&#23558;&#22534;&#39030;&#20803;&#32032;&#19982;&#24403;&#21069;&#26410;&#32463;&#25490;&#24207;&#30340;&#26368;&#21518;&#19968;&#20010;&#35760;&#24405;&#20132;&#25442;&#10;            swap(a,0,i);&#10;            //&#23558;&#25968;&#32452;a&#20013;&#19979;&#26631;&#20174;0&#21040;i-1&#30340;&#23376;&#24207;&#21015;&#37325;&#26032;&#35843;&#25972;&#20026;&#26368;&#22823;&#22534;&#10;            heapAdjust(a, 0, i - 1);&#10;        &#125;&#10;        &#10;        for (int i = 0; i &#60; a.length; i++) &#123;&#10;            System.out.println(a[i]);&#10;        &#125;&#10;    &#125;&#10;&#10;    private void swap(int[] a, int i, int j) &#123;&#10;        int temp = a[i];&#10;        a[i] = a[j];&#10;        a[j] = temp;&#10;    &#125;&#10;&#10;    private void heapAdjust(int[] a, int s, int m) &#123;&#10;        int temp = 0,j=0;&#10;        //&#25226;&#22534;&#39030;&#20803;&#32032;&#20445;&#23384;&#22312;&#20020;&#26102;&#21464;&#37327;&#20013;&#10;        temp = a[s];&#10;        //&#30001;&#20110;s&#21487;&#33021;&#26159;0&#65292;&#25152;&#20197;&#38656;&#35201;+1&#12290;&#27492;&#22806;&#65292;&#22914;&#26524;&#24403;&#21069;&#32467;&#28857;&#30340;&#24207;&#21495;&#26159;s&#65292;&#37027;&#20040;&#20854;&#24038;&#23401;&#23376;&#26159;2*s+1(+1&#26159;&#22240;&#20026;s&#21487;&#33021;&#26159;0)&#10;        for(j = 2*s+1; j &#60;= m; j = 2*j+1)&#123;&#10;            //&#25214;&#20986;&#24038;&#21491;&#23401;&#23376;&#36739;&#22823;&#30340;&#32467;&#28857;&#30340;&#19979;&#26631;&#10;            if(j &#60; m &#38;&#38; a[j] &#60; a[j+1])&#123;&#10;                ++j;&#10;            &#125;&#10;            if(temp &#62;= a[j])&#123;&#10;                break;&#10;            &#125;&#10;            //&#25226;&#36739;&#22823;&#30340;&#23401;&#23376;&#32467;&#28857;&#30340;&#36171;&#32473;&#24403;&#21069;&#32467;&#28857;&#10;            a[s] = a[j];&#10;            //&#25226;&#26356;&#22823;&#23401;&#23376;&#32467;&#28857;&#30340;&#19979;&#26631;&#36171;&#32473;s&#10;            s = j;&#10;        &#125;&#10;        //&#25226;&#21407;&#26469;s&#19979;&#26631;&#20301;&#32622;&#30340;&#20540;&#36171;&#32473;&#26032;&#30340;&#19979;&#26631;&#20026;s&#30340;&#20540;&#65292;&#36825;&#26679;&#23601;&#23436;&#25104;&#20102;&#24403;&#21069;&#32467;&#28857;&#19982;&#26356;&#22823;&#23401;&#23376;&#32467;&#28857;&#20540;&#30340;&#20132;&#25442;&#10;        a[s] = temp;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        new HeapSort2().heapSort(new int[]&#123;90,70,80,60,10,40,50,30,20&#125;);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HeapSort2</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">heapSort</span>(<span class="params"><span class="keyword">int</span>[] a</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = a.length/<span class="number">2</span>-<span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="comment">//建立一个最大堆</span></span><br><span class="line">            heapAdjust(a,i,a.length - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = a.length - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">//将堆顶元素与当前未经排序的最后一个记录交换</span></span><br><span class="line">            swap(a,<span class="number">0</span>,i);</span><br><span class="line">            <span class="comment">//将数组a中下标从0到i-1的子序列重新调整为最大堆</span></span><br><span class="line">            heapAdjust(a, <span class="number">0</span>, i - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.<span class="keyword">out</span>.println(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span>(<span class="params"><span class="keyword">int</span>[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> j</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = a[i];</span><br><span class="line">        a[i] = a[j];</span><br><span class="line">        a[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">heapAdjust</span>(<span class="params"><span class="keyword">int</span>[] a, <span class="keyword">int</span> s, <span class="keyword">int</span> m</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//把堆顶元素保存在临时变量中</span></span><br><span class="line">        temp = a[s];</span><br><span class="line">        <span class="comment">//由于s可能是0，所以需要+1。此外，如果当前结点的序号是s，那么其左孩子是2*s+1(+1是因为s可能是0)</span></span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">2</span>*s+<span class="number">1</span>; j &lt;= m; j = <span class="number">2</span>*j+<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">//找出左右孩子较大的结点的下标</span></span><br><span class="line">            <span class="keyword">if</span>(j &lt; m &amp;&amp; a[j] &lt; a[j+<span class="number">1</span>])&#123;</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(temp &gt;= a[j])&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//把较大的孩子结点的赋给当前结点</span></span><br><span class="line">            a[s] = a[j];</span><br><span class="line">            <span class="comment">//把更大孩子结点的下标赋给s</span></span><br><span class="line">            s = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//把原来s下标位置的值赋给新的下标为s的值，这样就完成了当前结点与更大孩子结点值的交换</span></span><br><span class="line">        a[s] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> HeapSort2().heapSort(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">90</span>,<span class="number">70</span>,<span class="number">80</span>,<span class="number">60</span>,<span class="number">10</span>,<span class="number">40</span>,<span class="number">50</span>,<span class="number">30</span>,<span class="number">20</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以发现在建立最大堆的时候，$i$是从$a.length/2$开始的，为什么要从这个位置开始呢？比如有一个数组${90,70,80,60,10,40,50,30,20}$，初始情况是这样的：</p>
 <p><img src="http://img.blog.csdn.net/20151202182743016" alt=""></p>
 <p>一共有9个元素，那么$a.length/2-1$的值是3，也就是第4个元素，执行for循环，i的值从3-&gt;2-&gt;1-&gt;0变化,可以发现这几个下标的结点都是有孩子结点的元素，所以第一个for循环就很好理解了：其实就是从下往上、从右到左，将每个非终端结点当做根节点，将其和子树调整成最大堆，所以下标3-&gt;2-&gt;1-&gt;0的变化，也就是60，80，70，90结点的调整过程。</p>
@@ -347,6 +387,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -459,7 +515,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -480,10 +536,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -541,6 +597,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

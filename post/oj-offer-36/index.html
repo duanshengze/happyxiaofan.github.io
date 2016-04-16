@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -330,7 +370,7 @@
 <p>统计一个数字在排序数组中出现的次数。</p>
 <p>因为是排序数组，自然联想到二分查找算法，这样我们在二分的时候可能会获取多个相同的数字。就是说，中间那个位置的值可能刚好是统计的那个值，假设为k。那么k还有可能在前面或者后面出现，在这个基础上继续二分当然也是可以的，如果能够在使用二分查找算法的时候统计出第一个k和最后一个k出现的位置，那么k出现的次数自然就确定了。第一个k出现的位置，可以使用二分查找算法，如果中间位置的值刚好是k，那么继续比较中间位置前面位置的值是不是也是k，如果不是那么该中间位置就是第一个k出现的位置，如果中间位置的前一个位置的值也是k，那么说明第一个k肯定出现在前半部分，继续二分即可。那么寻找最后一个k出现的位置也是一样的道理，比较中间位置后面一个位置的值是不是也是k，如果是说明最后一个k肯定出现在后半部分，继续二分即可，如果不是k的话，那么中间位置就是最后一个k出现的位置了，<strong>因为是排序数组，那么后面一个位置的值如果都不是k的话，其他位置更加不可能是k了。排序数组是一个关键</strong>。</p>
 <p>基于上述思路，实现的代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class GetCountOfK &#123;&#10;&#10;    public int GetNumberOfK(int[] array, int k) &#123;&#10;        if (array == null || array.length &#60;= 0)&#10;            return 0;&#10;        int count = 0;&#10;        int firstIndexOfK = getFirstK(array, k, 0, array.length - 1);&#10;        int lastIndexOfK = getLastK(array, k, 0, array.length - 1);&#10;        if (firstIndexOfK &#62;= 0 &#38;&#38; lastIndexOfK &#62;= 0)&#10;            count = lastIndexOfK - firstIndexOfK + 1;&#10;        return count;&#10;    &#125;&#10;&#10;    private int getLastK(int[] array, int k, int start, int end) &#123;&#10;        if (start &#62; end) return -1;&#10;        int middleIndex = (start + end) / 2;&#10;        int middleData = array[middleIndex];&#10;        if (middleData == k) &#123;&#10;            if ((middleIndex &#60; array.length - 1 &#38;&#38; array[middleIndex + 1] != k)&#10;                    || middleIndex == array.length - 1) &#123;&#10;                return middleIndex;&#10;            &#125; else &#123;&#10;                start = middleIndex + 1;&#10;            &#125;&#10;        &#125; else if (middleData &#62; k) &#123;&#10;            end = middleIndex - 1;&#10;        &#125; else &#123;&#10;            start = middleIndex + 1;&#10;        &#125;&#10;        return getLastK(array, k, start, end);&#10;    &#125;&#10;&#10;    private int getFirstK(int[] array, int k, int start, int end) &#123;&#10;        if (start &#62; end) return -1;&#10;        int middleIndex = (start + end) / 2;&#10;        int middleData = array[middleIndex];&#10;        if (middleData == k) &#123;&#10;            if ((middleIndex &#62; 0 &#38;&#38; array[middleIndex - 1] != k)&#10;                    || middleIndex == 0) &#123;&#10;                return middleIndex;&#10;            &#125; else &#123;&#10;                end = middleIndex - 1;&#10;            &#125;&#10;        &#125; else if (middleData &#62; k) &#123;&#10;            end = middleIndex - 1;&#10;        &#125; else &#123;&#10;            start = middleIndex + 1;&#10;        &#125;&#10;        return getFirstK(array, k, start, end);&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] array = new int[]&#123;1,2,3,3,3,3,4,5&#125;;&#10;        int count = new GetCountOfK().GetNumberOfK(array, 3);&#10;        System.out.println(count);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> <span class="type">GetCountOfK</span> &#123;</span><br><span class="line"></span><br><span class="line">    public <span class="built_in">int</span> <span class="type">GetNumberOfK</span>(<span class="built_in">int</span><span class="literal">[]</span> <span class="built_in">array</span>, <span class="built_in">int</span> k) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span> == null || <span class="built_in">array</span>.length &lt;= <span class="number">0</span>)</span><br><span class="line">            return <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> firstIndexOfK = getFirstK(<span class="built_in">array</span>, k, <span class="number">0</span>, <span class="built_in">array</span>.length - <span class="number">1</span>);</span><br><span class="line">        <span class="built_in">int</span> lastIndexOfK = getLastK(<span class="built_in">array</span>, k, <span class="number">0</span>, <span class="built_in">array</span>.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (firstIndexOfK &gt;= <span class="number">0</span> &amp;&amp; lastIndexOfK &gt;= <span class="number">0</span>)</span><br><span class="line">            count = lastIndexOfK - firstIndexOfK + <span class="number">1</span>;</span><br><span class="line">        return count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> getLastK(<span class="built_in">int</span><span class="literal">[]</span> <span class="built_in">array</span>, <span class="built_in">int</span> k, <span class="built_in">int</span> start, <span class="built_in">int</span> <span class="keyword">end</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (start &gt; <span class="keyword">end</span>) return -<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> middleIndex = (start + <span class="keyword">end</span>) / <span class="number">2</span>;</span><br><span class="line">        <span class="built_in">int</span> middleData = <span class="built_in">array</span>[middleIndex];</span><br><span class="line">        <span class="keyword">if</span> (middleData == k) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((middleIndex &lt; <span class="built_in">array</span>.length - <span class="number">1</span> &amp;&amp; <span class="built_in">array</span>[middleIndex + <span class="number">1</span>] != k)</span><br><span class="line">                    || middleIndex == <span class="built_in">array</span>.length - <span class="number">1</span>) &#123;</span><br><span class="line">                return middleIndex;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                start = middleIndex + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (middleData &gt; k) &#123;</span><br><span class="line">            <span class="keyword">end</span> = middleIndex - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            start = middleIndex + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        return getLastK(<span class="built_in">array</span>, k, start, <span class="keyword">end</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> getFirstK(<span class="built_in">int</span><span class="literal">[]</span> <span class="built_in">array</span>, <span class="built_in">int</span> k, <span class="built_in">int</span> start, <span class="built_in">int</span> <span class="keyword">end</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (start &gt; <span class="keyword">end</span>) return -<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> middleIndex = (start + <span class="keyword">end</span>) / <span class="number">2</span>;</span><br><span class="line">        <span class="built_in">int</span> middleData = <span class="built_in">array</span>[middleIndex];</span><br><span class="line">        <span class="keyword">if</span> (middleData == k) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((middleIndex &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">array</span>[middleIndex - <span class="number">1</span>] != k)</span><br><span class="line">                    || middleIndex == <span class="number">0</span>) &#123;</span><br><span class="line">                return middleIndex;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">end</span> = middleIndex - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (middleData &gt; k) &#123;</span><br><span class="line">            <span class="keyword">end</span> = middleIndex - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            start = middleIndex + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        return getFirstK(<span class="built_in">array</span>, k, start, <span class="keyword">end</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static void main(<span class="type">String</span><span class="literal">[]</span> args) &#123;</span><br><span class="line">        <span class="built_in">int</span><span class="literal">[]</span> <span class="built_in">array</span> = <span class="keyword">new</span> <span class="built_in">int</span><span class="literal">[]</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">        <span class="built_in">int</span> count = <span class="keyword">new</span> <span class="type">GetCountOfK</span><span class="literal">()</span>.<span class="type">GetNumberOfK</span>(<span class="built_in">array</span>, <span class="number">3</span>);</span><br><span class="line">        <span class="type">System</span>.out.println(count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -343,6 +383,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -455,7 +511,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -476,10 +532,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -537,6 +593,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

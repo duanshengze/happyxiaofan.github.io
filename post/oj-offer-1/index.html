@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -175,17 +175,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -195,9 +199,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -205,17 +215,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -287,6 +323,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -322,9 +362,9 @@
       
         <p>题目描述：<br>给定一个链表，从尾部到头部打印输出链表结点的值。看到这个题目我的基本思路是：首先遍历一遍链表，统计出结点的个数，然后进行第二次遍历把每次访问的结点的值方到一个临时数组中，遍历结束之后，该临时数组中的值与正向遍历链表的值的顺序是一样的。那么在第三次遍历的时候，把上面的临时数组拷贝到另外一个临时数组中，只不过这次拷贝是从最后一个位置的值开始拷贝的，这样第三次遍历结束之后，第二个临时数组中的值的顺序就是从尾到头遍历链表的值的顺序了。最后一次遍历就是把第二个临时数组转化为一个ArrayList对象，并返回。<br><a id="more"></a></p>
 <p>已知如下条件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class ListNode&#123;&#10;    int val;&#10;    ListNode next = null;&#10;    ListNode(int val)&#123;&#10;        this.val = val;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>&#123;</span></span><br><span class="line">    int <span class="function"><span class="keyword">val</span>;</span></span><br><span class="line">    <span class="type">ListNode</span> next = <span class="literal">null</span>;</span><br><span class="line">    <span class="type">ListNode</span>(int <span class="function"><span class="keyword">val</span>)&#123;</span></span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">val</span> = <span class="function"><span class="keyword">val</span>;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面是我未参照书上的解法自己实现的，时间复杂度也是$O(n)$。下面是在牛客OJ提交成功的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;&#10;/**&#10; * &#39064;&#30446;&#25551;&#36848;&#65306;&#20174;&#23614;&#21040;&#22836;&#25171;&#21360;&#38142;&#34920;&#10; * @author Administrator&#10; *&#10; */&#10;public class PrintLinkListFromTailToFront &#123;&#10;&#10;    static class ListNode &#123;&#10;        int val;&#10;        ListNode next = null;&#10;&#10;        ListNode(int val) &#123;&#10;            this.val = val;&#10;        &#125;&#10;    &#125;&#10;&#10;    public ArrayList&#60;Integer&#62; printListFromTailToHead(ListNode listNode) &#123;&#10;        int len = 0, i = 0;&#10;        ListNode temp = listNode;&#10;        while (listNode!= null) &#123;&#10;            ++len;&#10;            listNode = listNode.next;&#10;        &#125;&#10;        Integer[] nodes = new Integer[len];&#10;        while (temp!= null) &#123;&#10;            nodes[i++] = temp.val;&#10;            temp = temp.next;&#10;        &#125;&#10;        Integer[] nodes2 = new Integer[len];&#10;        for (int j = 0; j &#60; nodes.length; j++) &#123;&#10;            nodes2[len - 1 -j] = nodes[j];&#10;        &#125;&#10;        ArrayList&#60;Integer&#62; list = new ArrayList&#60;Integer&#62;();&#10;        for(int j = 0;j&#60;nodes.length;j++)&#123;&#10;            list.add(j, nodes2[j]);&#10;        &#125;&#10;        return list;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        ListNode root = new ListNode(1);&#10;        ListNode node1 = new ListNode(2);&#10;        ListNode node2 = new ListNode(3);&#10;        ListNode node3 = new ListNode(4);&#10;        &#10;        root.next = node1;&#10;        node1.next = node2;&#10;        node2.next = node3;&#10;        &#10;        List&#60;Integer&#62; list = new PrintLinkListFromTailToFront().printListFromTailToHead(root);&#10;        for (Integer integer : list) &#123;&#10;            System.out.print(integer + &#34;\t&#34;);&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 题目描述：从尾到头打印链表</span><br><span class="line"> * @author Administrator</span><br><span class="line"> *</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> PrintLinkListFromTailToFront &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> ListNode &#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode <span class="keyword">next</span> = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        ListNode(<span class="keyword">int</span> val) &#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; printListFromTailToHead(ListNode listNode) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>, i = <span class="number">0</span>;</span><br><span class="line">        ListNode temp = listNode;</span><br><span class="line">        <span class="keyword">while</span> (listNode!= <span class="keyword">null</span>) &#123;</span><br><span class="line">            ++len;</span><br><span class="line">            listNode = listNode.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Integer[] nodes = <span class="keyword">new</span> Integer[len];</span><br><span class="line">        <span class="keyword">while</span> (temp!= <span class="keyword">null</span>) &#123;</span><br><span class="line">            nodes[i++] = temp.val;</span><br><span class="line">            temp = temp.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Integer[] nodes2 = <span class="keyword">new</span> Integer[len];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; nodes.length; j++) &#123;</span><br><span class="line">            nodes2[len - <span class="number">1</span> -j] = nodes[j];</span><br><span class="line">        &#125;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j&lt;nodes.length;j++)&#123;</span><br><span class="line">            list.add(j, nodes2[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        ListNode root = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        ListNode node1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        ListNode node2 = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line">        ListNode node3 = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line">        </span><br><span class="line">        root.<span class="keyword">next</span> = node1;</span><br><span class="line">        node1.<span class="keyword">next</span> = node2;</span><br><span class="line">        node2.<span class="keyword">next</span> = node3;</span><br><span class="line">        </span><br><span class="line">        List&lt;Integer&gt; list = <span class="keyword">new</span> PrintLinkListFromTailToFront().printListFromTailToHead(root);</span><br><span class="line">        <span class="keyword">for</span> (Integer integer : list) &#123;</span><br><span class="line">            System.out.<span class="keyword">print</span>(integer + <span class="string">"\t"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -338,6 +378,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -450,7 +506,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -471,10 +527,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -532,6 +588,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

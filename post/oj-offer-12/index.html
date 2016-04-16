@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,10 +369,10 @@
         <p>题目描述</p>
 <p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。</p>
 <p>这道题第一思路自然是这样的：从头开始遍历这个数组，如果遇到偶数就把这个数之后的所有数往前移动一位，这样数组会留出一个空位，移动完毕之后把该偶数放到该空位即可。这样处理的话需要两次循环，一次是遍历，另一次是移位，所以时间复杂度是$O(n^2)$。下面是这种思路的实现代码（已被牛客AC）：<br><a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void reOrderArray2(int[] array) &#123;&#10;        if(array == null || array.length == 0) return;&#10;        int i,j;&#10;        for (i  = 1; i &#60; array.length; i++) &#123;&#10;            int temp = array[i];&#10;            //&#22914;&#26524;&#26159;&#22855;&#25968;&#65292;&#21069;&#38754;&#22914;&#26524;&#26377;&#20598;&#25968;&#23601;&#31227;&#20301;&#10;            if(!isEven(array[i]))&#123;&#10;                for(j = i - 1; j &#62;= 0 &#38;&#38; isEven(array[j]); j--)&#123;&#10;                    array[j + 1] = array[j];&#10;                &#125;&#10;                array[j + 1] = temp;&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;    //&#21028;&#26029;&#19968;&#20010;&#25968;&#26159;&#21542;&#26159;&#20598;&#25968;&#10;    private boolean isEven(int i) &#123;&#10;        if((i &#38; 0x1) == 0) return true;&#10;        return false;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reOrderArray2</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">array</span> == null || <span class="built_in">array</span>.length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> i,j;</span><br><span class="line">        <span class="keyword">for</span> (i  = <span class="number">1</span>; i &lt; <span class="built_in">array</span>.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> temp = <span class="built_in">array</span>[i];</span><br><span class="line">            <span class="comment">//如果是奇数，前面如果有偶数就移位</span></span><br><span class="line">            <span class="keyword">if</span>(!isEven(<span class="built_in">array</span>[i]))&#123;</span><br><span class="line">                <span class="keyword">for</span>(j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; isEven(<span class="built_in">array</span>[j]); j--)&#123;</span><br><span class="line">                    <span class="built_in">array</span>[j + <span class="number">1</span>] = <span class="built_in">array</span>[j];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">array</span>[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//判断一个数是否是偶数</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> boolean <span class="title">isEven</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((i &amp; <span class="number">0x1</span>) == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>由于题目规定不能改变原来元素的相对位置，所以只能采用这种方法。但是剑指offer原题中并没有这个要求——如果可以改变元素的相对位置的话，可以采用双指针的方法，让第一个指针指向偶数，第二个指针指向奇数，并且第一个指针在第二个指针的前面，就交换两个元素。这样，当第一个指针在第二个指针的后面的时候，就说明所有的奇数都移动到所有偶数的前面了。这时候的循环就可以结束了。</p>
 <p>实现代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void reOrderArray(int[] array) &#123;&#10;        if(array == null || array.length == 0) return;&#10;        &#10;        int evenIndex = 0;&#10;        int oddIndex = array.length - 1;&#10;        while(evenIndex &#60; oddIndex)&#123;&#10;            while(evenIndex &#60; oddIndex &#38;&#38; (array[evenIndex] &#38; 0x1) != 0)&#123;&#10;                evenIndex++;&#10;            &#125;&#10;            while(evenIndex &#60; oddIndex &#38;&#38; (array[oddIndex] &#38; 0x1) == 0)&#123;&#10;                oddIndex--;&#10;            &#125;&#10;            //&#22914;&#26524;&#25351;&#21521;&#20598;&#25968;&#30340;&#25351;&#38024;&#20173;&#20877;&#25351;&#21521;&#22855;&#25968;&#25351;&#38024;&#30340;&#21069;&#38754;&#65292;&#21017;&#20132;&#25442;&#20004;&#20010;&#25968;&#30340;&#20540;&#10;            if(evenIndex &#60; oddIndex)&#123;&#10;                swap(array,evenIndex,oddIndex);&#10;            &#125;&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reOrderArray</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">array</span> == null || <span class="built_in">array</span>.length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> evenIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> oddIndex = <span class="built_in">array</span>.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(evenIndex &lt; oddIndex)&#123;</span><br><span class="line">            <span class="keyword">while</span>(evenIndex &lt; oddIndex &amp;&amp; (<span class="built_in">array</span>[evenIndex] &amp; <span class="number">0x1</span>) != <span class="number">0</span>)&#123;</span><br><span class="line">                evenIndex++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(evenIndex &lt; oddIndex &amp;&amp; (<span class="built_in">array</span>[oddIndex] &amp; <span class="number">0x1</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">                oddIndex--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//如果指向偶数的指针仍再指向奇数指针的前面，则交换两个数的值</span></span><br><span class="line">            <span class="keyword">if</span>(evenIndex &lt; oddIndex)&#123;</span><br><span class="line">                swap(<span class="built_in">array</span>,evenIndex,oddIndex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -346,6 +386,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -458,7 +514,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -479,10 +535,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -540,6 +596,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

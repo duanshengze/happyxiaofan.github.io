@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -327,7 +367,7 @@
 <p>看到这题，我的第一思路是这样的：一组单词不是有空格嘛，所以直接使用String类的split函数直接分割为char数组不就好了，不过在这之前需要判断一下第一个位置和最后一个位置是否有空格，然后针对空格的出现情况再进行替换。发现OJ的时候，如你所猜，自然是失败的。因为我忽略一个问题，就是如果一个句子中都是空格，调用split函数之后会发生什么，会是一组空串。那么根据题目要求，应该全部替换成%20才对。所以这种思路被毙掉了。</p>
 <p>于是，我寻找下一种思路，联想到从尾部循环替换的思想（在冒泡排序算法之中也是从尾部往前进行比较然后交换的），于是形成如下的思路：首先统计出该字符串中所有的空格数量，并重新计算新串所需的char数组的长度，把旧串转化成的char数组拷贝到一个临时数组中，并同时创建一个新的char数组，该新数组的长度是计算之后的长度。从该新数组的尾部开始循环，依次往前比较，只要遇到了空格就替换为%20。如果没有遇到空格就直接复制过来就行。</p>
 <p>OK，基于以上思路，我写出了如下的代码（已被牛客OJ平台AC了）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;/**&#10; * &#39064;&#30446;&#25551;&#36848;&#10; * &#10; * &#35831;&#23454;&#29616;&#19968;&#20010;&#20989;&#25968;&#65292;&#23558;&#19968;&#20010;&#23383;&#31526;&#20018;&#20013;&#30340;&#31354;&#26684;&#26367;&#25442;&#25104;&#8220;%20&#8221;&#12290; &#20363;&#22914;&#65292;&#24403;&#23383;&#31526;&#20018;&#20026;We Are Happy.&#21017;&#32463;&#36807;&#26367;&#25442;&#20043;&#21518;&#30340;&#10; * &#23383;&#31526;&#20018;&#20026;We%20Are%20Happy&#12290;&#10; * &#10; * @author Administrator&#10; *&#10; */&#10;public class ReplaceSpace &#123;&#10;    public String replaceSpace(StringBuffer str) &#123;&#10;        String s = str.toString();&#10;        //&#32479;&#35745;&#31354;&#26684;&#25968;&#10;        int count = getBlankNum(str.toString());&#10;        //&#33719;&#21462;&#21407;&#26469;&#23383;&#31526;&#20018;&#30340;&#38271;&#24230;&#10;        int originalStrLen = s.toCharArray().length;&#10;        //&#35745;&#31639;&#26367;&#25442;&#31354;&#26684;&#20043;&#21518;&#38656;&#35201;&#30340;&#38271;&#24230;&#10;        int newStrLen = count * 2 + originalStrLen;&#10;        char[] tempArray = new char[newStrLen];&#10;        //&#25226;&#21407;&#23383;&#31526;&#20018;&#22797;&#21046;&#21040;tempArray&#25968;&#32452;&#20013;&#10;        System.arraycopy(s.toCharArray(), 0, tempArray, 0, originalStrLen);&#10;        int originalStrIndex = originalStrLen - 1;&#10;        int newStrIndex = newStrLen -1;&#10;        //&#24403;originalStrIndex == newStrIndex&#30340;&#26102;&#20505;&#26367;&#25442;&#23436;&#27605;&#10;        while(originalStrIndex &#62;= 0 &#38;&#38; originalStrIndex != newStrIndex)&#123;&#10;            if(tempArray[originalStrIndex] == &#39; &#39;)&#123;&#10;                tempArray[newStrIndex--] = &#39;0&#39;;&#10;                tempArray[newStrIndex--] = &#39;2&#39;;&#10;                tempArray[newStrIndex--] = &#39;%&#39;;&#10;            &#125;else&#123;&#10;                tempArray[newStrIndex--] = tempArray[originalStrIndex];&#10;            &#125;&#10;            originalStrIndex--;&#10;        &#125;&#10;        return new String(tempArray);&#10;    &#125;&#10;    &#10;    /**&#10;     * &#35745;&#31639;&#31354;&#26684;&#25968;&#10;     * @param string&#10;     * @return&#10;     */&#10;    private int getBlankNum(String string) &#123;&#10;        int count = 0;&#10;        for (int i = 0; i &#60; string.length(); i++) &#123;&#10;            if(string.charAt(i) == &#39; &#39;)&#123;&#10;                count++;&#10;            &#125;&#10;        &#125;&#10;        return count;&#10;    &#125;&#10;&#10;    public static void main(String[] args) &#123;&#10;        String s = new ReplaceSpace().replaceSpace(new StringBuffer(&#34;&#34;));&#10;        System.out.println(s);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 题目描述</span><br><span class="line"> * </span><br><span class="line"> * 请实现一个函数，将一个字符串中的空格替换成“%20”。 例如，当字符串为We Are Happy.则经过替换之后的</span><br><span class="line"> * 字符串为We%20Are%20Happy。</span><br><span class="line"> * </span><br><span class="line"> * @author Administrator</span><br><span class="line"> *</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> class ReplaceSpace &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">String</span> replaceSpace(StringBuffer <span class="built_in">str</span>) &#123;</span><br><span class="line">        <span class="keyword">String</span> s = <span class="built_in">str</span>.toString();</span><br><span class="line">        <span class="comment">//统计空格数</span></span><br><span class="line">        <span class="built_in">int</span> count = getBlankNum(<span class="built_in">str</span>.toString());</span><br><span class="line">        <span class="comment">//获取原来字符串的长度</span></span><br><span class="line">        <span class="built_in">int</span> originalStrLen = s.toCharArray().length;</span><br><span class="line">        <span class="comment">//计算替换空格之后需要的长度</span></span><br><span class="line">        <span class="built_in">int</span> newStrLen = count * <span class="number">2</span> + originalStrLen;</span><br><span class="line">        <span class="built_in">char</span>[] tempArray = <span class="keyword">new</span> <span class="built_in">char</span>[newStrLen];</span><br><span class="line">        <span class="comment">//把原字符串复制到tempArray数组中</span></span><br><span class="line">        System.arraycopy(s.toCharArray(), <span class="number">0</span>, tempArray, <span class="number">0</span>, originalStrLen);</span><br><span class="line">        <span class="built_in">int</span> originalStrIndex = originalStrLen - <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> newStrIndex = newStrLen -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//当originalStrIndex == newStrIndex的时候替换完毕</span></span><br><span class="line">        <span class="keyword">while</span>(originalStrIndex &gt;= <span class="number">0</span> &amp;&amp; originalStrIndex != newStrIndex)&#123;</span><br><span class="line">            <span class="keyword">if</span>(tempArray[originalStrIndex] == <span class="string">' '</span>)&#123;</span><br><span class="line">                tempArray[newStrIndex--] = <span class="string">'0'</span>;</span><br><span class="line">                tempArray[newStrIndex--] = <span class="string">'2'</span>;</span><br><span class="line">                tempArray[newStrIndex--] = <span class="string">'%'</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                tempArray[newStrIndex--] = tempArray[originalStrIndex];</span><br><span class="line">            &#125;</span><br><span class="line">            originalStrIndex--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">String</span>(tempArray);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 计算空格数</span><br><span class="line">     * @param string</span><br><span class="line">     * @return</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> getBlankNum(<span class="keyword">String</span> string) &#123;</span><br><span class="line">        <span class="built_in">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; string.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(string.charAt(i) == <span class="string">' '</span>)&#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">        <span class="keyword">String</span> s = <span class="keyword">new</span> ReplaceSpace().replaceSpace(<span class="keyword">new</span> StringBuffer(<span class="string">""</span>));</span><br><span class="line">        System.out.<span class="built_in">println</span>(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>由于只有一层循环，加上统计空格的时间开销，就是两个循环的时间开销，其他的操作都是$O(1)$的时间复杂度。所以该算法综合起来的时间复杂度是$O(n)$。</p>
 
       
@@ -342,6 +382,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -454,7 +510,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -475,10 +531,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -536,6 +592,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

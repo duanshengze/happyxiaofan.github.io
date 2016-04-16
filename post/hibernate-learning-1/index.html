@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -179,17 +179,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -199,9 +203,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -209,17 +219,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -291,6 +327,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -335,17 +375,17 @@
 <p>第一步：在myeclipse中创建一个web项目，取名为hibernate<br>第二步：在项目中添加使用Hibernate框架必须的jar包：如下图：</p>
 <p><img src="http://img.blog.csdn.net/20151212152647164" alt="jar"></p>
 <p>第三步：编写hibernate.cfg.xml配置文件，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?&#62;&#10;&#60;!DOCTYPE hibernate-configuration PUBLIC&#10;        &#34;-//Hibernate/Hibernate Configuration DTD 3.0//EN&#34;&#10;        &#34;http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd&#34;&#62;&#10;&#10;&#60;hibernate-configuration&#62;&#10;&#10;    &#60;session-factory&#62;&#10;&#10;        &#60;!-- &#25968;&#25454;&#24211;&#36830;&#25509;&#37197;&#32622; --&#62;&#10;        &#60;property name=&#34;connection.driver_class&#34;&#62;com.mysql.jdbc.Driver&#60;/property&#62;&#10;        &#60;property name=&#34;connection.url&#34;&#62;jdbc:mysql://localhost/test&#60;/property&#62;&#10;        &#60;property name=&#34;connection.username&#34;&#62;root&#60;/property&#62;&#10;        &#60;property name=&#34;connection.password&#34;&#62;1234&#60;/property&#62;&#10;&#10;        &#60;!-- JDBC &#36830;&#25509;&#27744; --&#62;&#10;        &#60;property name=&#34;connection.pool_size&#34;&#62;1&#60;/property&#62;&#10;&#10;        &#60;!-- SQL &#26041;&#35328; --&#62;&#10;        &#60;property name=&#34;dialect&#34;&#62;org.hibernate.dialect.MySQLDialect&#60;/property&#62;&#10;&#10;        &#60;!-- Enable Hibernate&#39;s automatic session context management --&#62;&#10;        &#60;property name=&#34;current_session_context_class&#34;&#62;thread&#60;/property&#62;&#10;&#10;        &#60;!-- &#31105;&#29992;&#20108;&#32423;&#32531;&#23384;  --&#62;&#10;        &#60;property name=&#34;cache.provider_class&#34;&#62;org.hibernate.cache.NoCacheProvider&#60;/property&#62;&#10;&#10;        &#60;!-- &#26159;&#21542;&#26174;&#31034;&#25191;&#34892;&#30340;SQL&#35821;&#21477; --&#62;&#10;        &#60;property name=&#34;show_sql&#34;&#62;true&#60;/property&#62;&#10;&#10;        &#60;!-- &#21024;&#38500;&#24182;&#37325;&#24314;&#25968;&#25454;&#24211; --&#62;&#10;        &#60;property name=&#34;hbm2ddl.auto&#34;&#62;update&#60;/property&#62;&#10;        &#60;!-- &#24341;&#20837;&#22806;&#37096;&#26144;&#23556;&#25991;&#20214; --&#62;&#10;        &#60;mapping resource=&#34;bean/Person.hbm.xml&#34;/&#62;&#10;&#10;    &#60;/session-factory&#62;&#10;&#10;&#60;/hibernate-configuration&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version='1.0' encoding='utf-8'?&gt;</span></span><br><span class="line"><span class="doctype">&lt;!DOCTYPE hibernate-configuration PUBLIC</span><br><span class="line">        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"</span><br><span class="line">        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">hibernate-configuration</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">session-factory</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 数据库连接配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"connection.driver_class"</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"connection.url"</span>&gt;</span>jdbc:mysql://localhost/test<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"connection.username"</span>&gt;</span>root<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"connection.password"</span>&gt;</span>1234<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- JDBC 连接池 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"connection.pool_size"</span>&gt;</span>1<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- SQL 方言 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"dialect"</span>&gt;</span>org.hibernate.dialect.MySQLDialect<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- Enable Hibernate's automatic session context management --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"current_session_context_class"</span>&gt;</span>thread<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 禁用二级缓存  --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"cache.provider_class"</span>&gt;</span>org.hibernate.cache.NoCacheProvider<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 是否显示执行的SQL语句 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"show_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 删除并重建数据库 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"hbm2ddl.auto"</span>&gt;</span>update<span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 引入外部映射文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">mapping</span> <span class="attribute">resource</span>=<span class="value">"bean/Person.hbm.xml"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="title">session-factory</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">hibernate-configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>上面的配置文件指明了一些必要的数据库连接属性，通过这些属性，Hibernate可以连接上数据库。可以配置各种不同的数据库，其中sql 方言属性指明了使用你所配置的数据库的sql语法（比如Oracle与MySQL中一些语法还是存在很大不同的）。</p>
 <p>第四步：创建bean对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package bean;&#10;&#10;public class Person &#123;&#10;&#10;    private int id;&#10;    private String sname;&#10;    private int age;&#10;    private float salary;&#10;&#10;    //&#26080;&#21442;&#26500;&#36896;&#26041;&#27861;&#65292;&#20294;&#26159;&#22914;&#26524;&#19981;&#20889;&#30340;&#35805;&#12290;Person&#31867;&#24050;&#32463;&#26377;&#19968;&#20010;&#40664;&#35748;&#30340;&#26500;&#36896;&#26041;&#27861;&#65292;&#37027;&#23601;&#26159;&#26080;&#21442;&#26500;&#36896;&#26041;&#27861;&#10;    public Person()&#123;&#125;&#10;    //&#30465;&#30053;get&#21644;set&#26041;&#27861;&#65292;&#36825;&#37324;&#25226;id&#30340;set&#26041;&#27861;&#35774;&#20026;private&#10;    private void setId(int id)&#123;&#10;        this.id = id;&#10;    &#125;&#10;    @Override&#10;    public String toString() &#123;&#10;        return &#34;Person [id=&#34; + id + &#34;, sname=&#34; + sname + &#34;, age=&#34; + age&#10;                + &#34;, salary=&#34; + salary + &#34;]&#34;;&#10;    &#125;&#10;    &#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package bean;</span><br><span class="line"></span><br><span class="line">public class <span class="keyword">Person</span> &#123;</span><br><span class="line"></span><br><span class="line">    private int id;</span><br><span class="line">    private String sname;</span><br><span class="line">    private int age;</span><br><span class="line">    private float salary;</span><br><span class="line"></span><br><span class="line">    //无参构造方法，但是如果不写的话。<span class="keyword">Person</span>类已经有一个默认的构造方法，那就是无参构造方法</span><br><span class="line">    public <span class="keyword">Person</span>()&#123;&#125;</span><br><span class="line">    //省略get和set方法，这里把id的set方法设为private</span><br><span class="line">    private void setId(int id)&#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return <span class="string">"Person <span class="subst">[id=" + id + ", sname=" + sname + ", age=" + age</span><br><span class="line">                + ", salary=" + salary + "]</span>"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是一个标准JavaBean对象，Hibernate也建议我们这么写。但是在编写这个JavaBean的时候，有几点需要注意：一是对象的id属性，另一个是id属性的set方法。在Hibernate框架中，使用一个id为标识一个对象，所以在JavaBean中为一个对象添加id属性是必要的，因为在使用Hibernate框架时候，只有Hibernate才可以为一个对象分配id值（你可以试试在没有添加id属性的时候会出现什么异常）。另外，由于id是一个对象的标示符，所以我们一般禁止其他对象对这个属性进行随意的修改，所以将其set访问设为private也是出于这个层面的考虑。</p>
 <p>第五步：编写Person.hbmxml映射文件，该文件的作用是把Java中的Bean对象与数据库中（确切说是RDBMS，关系数据库）中一条记录做了一个映射（这里就是ORM的关键），代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&#62;  &#10;&#60;!DOCTYPE hibernate-mapping PUBLIC  &#10;        &#39;-//Hibernate/Hibernate Mapping DTD 3.0//EN&#39;  &#10;        &#39;http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd&#39;&#62;  &#10;&#60;hibernate-mapping package=&#34;bean&#34;&#62;&#10;    &#60;class name=&#34;Person&#34; table=&#34;PERSON&#34;&#62;&#10;        &#60;!--id&#23601;&#26159;&#25351;&#26126;&#23545;&#35937;&#26631;&#35782;&#31526; name&#23646;&#24615;&#23545;&#24212;Person&#23545;&#35937;id&#23646;&#24615;&#10;            column&#34920;&#31034;&#35813;&#23646;&#24615;&#26144;&#23556;&#21040;&#25968;&#25454;&#34920;&#30340;&#21738;&#20010;&#23383;&#27573;&#10;        --&#62;&#10;        &#60;id name=&#34;id&#34; column=&#34;PERSON_ID&#34;&#62;&#10;            &#60;!-- &#20027;&#38190;&#29983;&#25104;&#31574;&#30053;&#65292;native&#34920;&#31034;&#20351;&#29992;&#26412;&#22320;&#25968;&#25454;&#24211;&#30340;&#29983;&#25104;&#31574;&#30053;&#10;                &#27604;&#22914;&#36825;&#37324;&#20351;&#29992;&#30340;&#26159;MySQL&#65292;&#37027;&#20040;&#20351;&#29992;&#30340;&#20027;&#38190;&#31574;&#30053;&#23601;&#26159;MySQL&#30340;&#33258;&#21160;&#22686;&#38271;&#31574;&#30053;&#10;             --&#62;&#10;            &#60;generator class=&#34;native&#34;/&#62;&#10;        &#60;/id&#62;&#10;        &#60;!-- &#26222;&#36890;&#23646;&#24615;name&#23646;&#24615;&#34920;&#31034;Person&#23545;&#35937;&#20013;&#30340;&#23383;&#27573;&#65292;type&#23646;&#24615;&#34920;&#31034;&#35813;&#23646;&#24615;&#30340;&#31867;&#22411;&#10;            &#24403;&#28982;&#20063;&#21487;&#20197;&#25351;&#26126;column&#23646;&#24615;&#65292;&#22914;&#26524;&#19981;&#30693;&#21517;&#65292;&#25968;&#25454;&#34920;&#20013;&#30340;&#23383;&#27573;&#19982;&#23646;&#24615;&#21517;&#31216;&#26159;&#19968;&#33268;&#30340;&#10;         --&#62;&#10;        &#60;property name=&#34;sname&#34; type=&#34;java.lang.String&#34;/&#62;&#10;        &#60;property name=&#34;age&#34;/&#62;&#10;        &#60;property name=&#34;salary&#34;/&#62;&#10;    &#60;/class&#62;&#10;&#60;/hibernate-mapping&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>  </span><br><span class="line"><span class="doctype">&lt;!DOCTYPE hibernate-mapping PUBLIC  </span><br><span class="line">        '-//Hibernate/Hibernate Mapping DTD 3.0//EN'  </span><br><span class="line">        'http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd'&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="title">hibernate-mapping</span> <span class="attribute">package</span>=<span class="value">"bean"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">class</span> <span class="attribute">name</span>=<span class="value">"Person"</span> <span class="attribute">table</span>=<span class="value">"PERSON"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--id就是指明对象标识符 name属性对应Person对象id属性</span><br><span class="line">            column表示该属性映射到数据表的哪个字段</span><br><span class="line">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"PERSON_ID"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 主键生成策略，native表示使用本地数据库的生成策略</span><br><span class="line">                比如这里使用的是MySQL，那么使用的主键策略就是MySQL的自动增长策略</span><br><span class="line">             --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"native"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 普通属性name属性表示Person对象中的字段，type属性表示该属性的类型</span><br><span class="line">            当然也可以指明column属性，如果不知名，数据表中的字段与属性名称是一致的</span><br><span class="line">         --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"sname"</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"age"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"salary"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">hibernate-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>创建JavaBean之后，就是上面的映射文件了，上面的文件名以及文件内容可能有一些难以理解的地方。首先我们得知道，一个映射文件（后缀hbm也正是hibernate映射文件的意思）的作用是什么？前面提到了Hibernate是一个对象映射框架，对象映射到哪里去了呢？当然是数据库中数据表的一条记录（一个对象映射到了数据库表的一条记录，就这么理解）了。那么这个映射的过程的实现就是通过上面的映射文件了。映射文件告诉Hibernate怎么样去加载和存储持久化类的对象，映射文件告诉Hibernate去数据库中的那张表寻找以及应该使用表中的哪些字段。</p>
 <p>除此之外，我们注意到，有一些属性并没有指定type属性，有一些却指定了，那么什么类型属性需要指定，什么类型又不需要呢？对于一些常见的类型（</p>
 <p>第六步：编写测试程序实现CRUD操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package manager;&#10;&#10;import java.util.List;&#10;&#10;import org.hibernate.Query;&#10;import org.hibernate.Session;&#10;import org.hibernate.SessionFactory;&#10;import org.hibernate.Transaction;&#10;&#10;import utils.HibernateUtils;&#10;import bean.Person;&#10;&#10;public class PersonManager &#123;&#10;&#10;    public static void main(String[] args) &#123;&#10;        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();&#10;        Session session = sessionFactory.openSession();&#10;        Transaction t = session.beginTransaction();&#10;        // &#21019;&#24314;&#19968;&#20010;Person&#23545;&#35937;&#24182;&#20445;&#23384;&#21040;&#25968;&#25454;&#24211;&#20013;&#10;        /*Person p = new Person();&#10;        p.setSname(&#34;&#36213;&#20113;&#34;);&#10;        p.setAge(23);&#10;        p.setSalary(10000);&#10;&#10;        session.save(p);&#10;        // &#24320;&#21551;&#20107;&#21153;&#24182;&#25552;&#20132;&#10;        t.commit();&#10;&#10;        // &#26597;&#35810;&#10;        List list = session.createCriteria(Person.class).list();&#10;        for (Object object : list) &#123;&#10;            Person pe = (Person) object;&#10;            System.out.println(pe);&#10;        &#125;&#10;&#10;        // &#26356;&#26032;&#10;        Person p2 = (Person) session.load(Person.class, new Integer(1));&#10;        p2.setSname(&#34;&#40644;&#24544;&#34;);&#10;        session.save(p2);&#10;        t.commit();&#10;        &#10;        // &#26597;&#35810;&#10;        List list2 = session.createCriteria(Person.class).list();&#10;        for (Object object : list2) &#123;&#10;            Person pe = (Person) object;&#10;            System.out.println(pe);&#10;        &#125;*/&#10;        &#10;        //&#21024;&#38500;&#10;        Person p3 = (Person) session.get(Person.class, 2);&#10;        session.delete(p3);&#10;        t.commit();&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">package manager;</span><br><span class="line"></span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">import org.hibernate.Query;</span><br><span class="line">import org.hibernate.Session;</span><br><span class="line">import org.hibernate.SessionFactory;</span><br><span class="line">import org.hibernate.Transaction;</span><br><span class="line"></span><br><span class="line">import utils.HibernateUtils;</span><br><span class="line">import bean.<span class="keyword">Person</span>;</span><br><span class="line"></span><br><span class="line">public class PersonManager &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String<span class="comment">[]</span> args) &#123;</span><br><span class="line">        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();</span><br><span class="line">        Session session = sessionFactory.openSession();</span><br><span class="line">        Transaction t = session.beginTransaction();</span><br><span class="line">        // 创建一个<span class="keyword">Person</span>对象并保存到数据库中</span><br><span class="line">        /*<span class="keyword">Person</span> p = new <span class="keyword">Person</span>();</span><br><span class="line">        p.setSname(<span class="string">"赵云"</span>);</span><br><span class="line">        p.setAge(23);</span><br><span class="line">        p.setSalary(10000);</span><br><span class="line"></span><br><span class="line">        session.save(p);</span><br><span class="line">        // 开启事务并提交</span><br><span class="line">        t.commit();</span><br><span class="line"></span><br><span class="line">        // 查询</span><br><span class="line">        List list = session.createCriteria(<span class="keyword">Person</span>.class).list();</span><br><span class="line">        for (Object object : list) &#123;</span><br><span class="line">            <span class="keyword">Person</span> pe = (<span class="keyword">Person</span>) object;</span><br><span class="line">            System.out.println(pe);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 更新</span><br><span class="line">        <span class="keyword">Person</span> p2 = (<span class="keyword">Person</span>) session.load(<span class="keyword">Person</span>.class, new Integer(1));</span><br><span class="line">        p2.setSname(<span class="string">"黄忠"</span>);</span><br><span class="line">        session.save(p2);</span><br><span class="line">        t.commit();</span><br><span class="line">        </span><br><span class="line">        // 查询</span><br><span class="line">        List list2 = session.createCriteria(<span class="keyword">Person</span>.class).list();</span><br><span class="line">        for (Object object : list2) &#123;</span><br><span class="line">            <span class="keyword">Person</span> pe = (<span class="keyword">Person</span>) object;</span><br><span class="line">            System.out.println(pe);</span><br><span class="line">        &#125;*/</span><br><span class="line">        </span><br><span class="line">        //删除</span><br><span class="line">        <span class="keyword">Person</span> p3 = (<span class="keyword">Person</span>) session.get(<span class="keyword">Person</span>.class, 2);</span><br><span class="line">        session.delete(p3);</span><br><span class="line">        t.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在测试的时候，为了对每个操作是否成功进行测试，可以把其他程序注释。其中涉及了Hibernate一些核心类：SessionFactory、Session和Transaction。</p>
 <p><strong>1、SessionFactory</strong></p>
 <p>熟悉设计模式的小伙伴应该知道，这是典型的工厂模式，一个org.hibernate.SessionFactory工厂对象就是生成org.hibernate.Session实例的。在整个应用程序总一个org.hibernate.SessionFactory应该只被初始化一次，并且应该是线程安全的。所以上面的代码使用HibernateUtils类封装了SessionFactory实例，从而保证了整个应用期间，只有一个SessionFactory实例。这也是设计模式的一种——单例模式。对SessionFactory的解释我引用官方的一句话：</p>
@@ -353,7 +393,7 @@
 <p>A threadsafe, immutable cache of compiled mappings for a single database. A factory for Session and a client of ConnectionProvider, SessionFactory can hold an optional (second-level) cache of data that is reusable between transactions at a process, or cluster, level.</p>
 </blockquote>
 <p>下面是HibernateUtils.java的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package utils;&#10;&#10;import org.hibernate.SessionFactory;&#10;import org.hibernate.cfg.Configuration;&#10;&#10;public class HibernateUtils &#123;&#10;&#10;    // &#21019;&#24314;&#20840;&#23616;&#21333;&#19968;sessionFactory&#23545;&#35937;&#10;    private static final SessionFactory sessionFacoty = buildSessionFactory();&#10;&#10;    private static SessionFactory buildSessionFactory() &#123;&#10;        try &#123;&#10;            return new Configuration().configure().buildSessionFactory();&#10;        &#125; catch (Throwable ex) &#123;&#10;            System.err.println(&#34;Initial SessionFactory creation failed.&#34; + ex);&#10;            throw new ExceptionInInitializerError(ex);&#10;        &#125;&#10;    &#125;&#10;    &#10;    public static SessionFactory getSessionFactory()&#123;&#10;        return sessionFacoty;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hibernate.SessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.cfg.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HibernateUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建全局单一sessionFactory对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SessionFactory sessionFacoty = buildSessionFactory();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> SessionFactory <span class="title">buildSessionFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">            System.err.println(<span class="string">"Initial SessionFactory creation failed."</span> + ex);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ExceptionInInitializerError(ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SessionFactory <span class="title">getSessionFactory</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sessionFacoty;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>2、Session</strong></p>
 <p>Session代表了一个工作单元，一个Session的产生往往是在事务开始的时候创建的，比如在调用getCurrentSession方法的时候，一个事务就开始了。通过这种方式获取的Session与openSession方法的不同在于前者在事务结束的时候就会自动关闭，所以在一个事务commit或者rollback的时候，该session对象就已经关闭了。而后者则可以一直生效，每次得到的Session都是一个新的对象。</p>
 <blockquote>
@@ -377,6 +417,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -489,7 +545,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -510,10 +566,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -571,6 +627,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

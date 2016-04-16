@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,15 +369,15 @@
 <p><strong>Struts2的实现方式</strong></p>
 <p>在Struts2中通过使用拦截器来实现的，机制与前言中采用令牌的方式是一样的。可以通过两种方式实现避免重复表单（实际上就是两个不同的拦截器）：token拦截器和tokenSession拦截器。由于在struts-default.xml的默认拦截器栈中并没有将这两个拦截器作为默认实现，所以需要在action中手动添加这两个拦截器。这两种方式的区别在于：使用token拦截器重复提交表单的时候，浏览器会跳转到一个错误页面，而使用更tokenSession拦截器重复提交表单的话是不会跳转的，仍然在成功之后页面。需要注意的是，使用者两个拦截器重复提交表单的时候，都只会向服务器提交一次请求，所以这种方式可以有效降低服务器的负担。</p>
 <p><strong>具体的例子</strong></p>
-<p>在使用以上拦截器进行测试的时候，需要如下步骤：<br>步骤一：编写login.jsp、success.jsp和error.jsp三个页面<br>login.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;s:form action=&#34;tokenWait&#34; namespace=&#34;/&#34; method=&#34;post&#34;&#62;&#10;        &#60;s:textfield label=&#34;&#29992;&#25143;&#21517;&#34; name=&#34;user.username&#34;&#62;&#60;/s:textfield&#62;&#10;        &#60;s:password label=&#34;&#23494;&#30721;&#34; name=&#34;user.password&#34;&#62;&#60;/s:password&#62;&#10;        &#60;!-- &#36825;&#20010;&#26631;&#31614;&#19981;&#33021;&#23569; --&#62;&#10;        &#60;%-- &#60;s:token&#62;&#60;/s:token&#62; --%&#62;&#10;        &#60;s:submit value=&#34;&#30331;&#24405;&#34;&#62;&#60;/s:submit&#62;&#10;    &#60;/s:form&#62;&#10; ...</span><br></pre></td></tr></table></figure></p>
+<p>在使用以上拦截器进行测试的时候，需要如下步骤：<br>步骤一：编写login.jsp、success.jsp和error.jsp三个页面<br>login.jsp<br><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">...</span><br><span class="line"><span class="tag">&lt;<span class="title">s:form</span> <span class="attribute">action</span>=<span class="value">"tokenWait"</span> <span class="attribute">namespace</span>=<span class="value">"/"</span> <span class="attribute">method</span>=<span class="value">"post"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">s:textfield</span> <span class="attribute">label</span>=<span class="value">"用户名"</span> <span class="attribute">name</span>=<span class="value">"user.username"</span>&gt;</span><span class="tag">&lt;/<span class="title">s:textfield</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">s:password</span> <span class="attribute">label</span>=<span class="value">"密码"</span> <span class="attribute">name</span>=<span class="value">"user.password"</span>&gt;</span><span class="tag">&lt;/<span class="title">s:password</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 这个标签不能少 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">%--</span> &lt;<span class="attribute">s:token</span>&gt;</span><span class="tag">&lt;/<span class="title">s:token</span>&gt;</span> --%&gt;</span><br><span class="line">        <span class="tag">&lt;<span class="title">s:submit</span> <span class="attribute">value</span>=<span class="value">"登录"</span>&gt;</span><span class="tag">&lt;/<span class="title">s:submit</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">s:form</span>&gt;</span></span><br><span class="line"> ...</span></span><br></pre></td></tr></table></figure></p>
 <p>success.jsp</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;s:property value=&#34;user.username&#34;/&#62;&#65292;&#60;%=new Date() %&#62;&#10;...</span><br></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">...</span></span><br><span class="line"><span class="subst">&lt;</span>s:property value<span class="subst">=</span><span class="string">"user.username"</span><span class="subst">/</span><span class="subst">&gt;</span>，<span class="subst">&lt;%=</span><span class="literal">new</span> <span class="built_in">Date</span>() <span class="subst">%&gt;</span></span><br><span class="line"><span class="attribute">...</span></span><br></pre></td></tr></table></figure>
 <p>error.jsp</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;html&#62;&#10;&#60;body&#62;&#10;    &#60;!-- &#30331;&#24405;&#22833;&#36133;&#65292;&#35831;&#37325;&#26032;&#30331;&#24405;&#10;    &#60;a href=&#34;login.jsp&#34;&#62;&#36820;&#22238;&#60;/a&#62; --&#62;&#10;    &#24744;&#24050;&#32463;&#25552;&#20132;&#36807;&#34920;&#21333;&#20102;&#65281;&#10;&#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 登录失败，请重新登录</span><br><span class="line">    &lt;a href="login.jsp"&gt;返回&lt;/a&gt; --&gt;</span></span><br><span class="line">    您已经提交过表单了！</span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>步骤二：编写action</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package action;&#10;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;&#10;import bean.User;&#10;&#10;import com.opensymphony.xwork2.ActionSupport;&#10;&#10;public class TokenAction extends ActionSupport &#123;&#10;&#10;    private static final long serialVersionUID = 1L;&#10;    private User user;&#10;    &#10;    @Override&#10;    public String execute() throws Exception &#123;&#10;        Thread.sleep(3000);&#10;        List&#60;User&#62; users = new ArrayList&#60;User&#62;();&#10;        users.add(user);&#10;        for (User user : users) &#123;&#10;            System.out.println(user);&#10;        &#125;&#10;        return SUCCESS;&#10;    &#125;&#10;&#10;    public User getUser() &#123;&#10;        return user;&#10;    &#125;&#10;&#10;    public void setUser(User user) &#123;&#10;        this.user = user;&#10;    &#125;&#10;    &#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> action;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> bean.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.opensymphony.xwork2.ActionSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TokenAction</span> <span class="keyword">extends</span> <span class="title">ActionSupport</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> User user;</span><br><span class="line">    </span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">execute</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        List&lt;User&gt; users = <span class="keyword">new</span> ArrayList&lt;User&gt;();</span><br><span class="line">        users.add(user);</span><br><span class="line">        <span class="keyword">for</span> (User user : users) &#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.user = user;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>步骤三：配置struts.xml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#36991;&#20813;&#34920;&#21333;&#37325;&#22797;&#25552;&#20132; --&#62;&#10;        &#60;action name=&#34;token&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;!-- &#37197;&#32622;Token&#25318;&#25130;&#22120; --&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;token&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;!-- &#22914;&#26524;&#37325;&#22797;&#25552;&#20132;&#65292;&#21017;&#36339;&#36716;&#21040;error.jsp --&#62;&#10;            &#60;result name=&#34;invalid.token&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;        &#60;/action&#62;&#10;        &#10;        &#60;action name=&#34;tokenSession&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;!-- &#37197;&#32622;TokenSession&#25318;&#25130;&#22120; --&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;tokenSession&#34;&#62;&#60;/interceptor-ref&#62;&#10;            &#60;!-- &#22914;&#26524;&#37325;&#22797;&#25552;&#20132;&#65292;&#21017;&#36339;&#36716;&#21040;error.jsp --&#62;&#10;            &#60;result name=&#34;invalid.token&#34;&#62;/error.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 避免表单重复提交 --&gt;</span><br><span class="line">        &lt;action name=<span class="string">"token"</span> class=<span class="string">"action.TokenAction"</span>&gt;</span><br><span class="line">            &lt;!-- 配置<span class="type">Token</span>拦截器 --&gt;</span><br><span class="line">            &lt;interceptor-<span class="keyword">ref</span> name=<span class="string">"defaultStack"</span>&gt;&lt;/interceptor-<span class="keyword">ref</span>&gt;</span><br><span class="line">            &lt;interceptor-<span class="keyword">ref</span> name=<span class="string">"token"</span>&gt;&lt;/interceptor-<span class="keyword">ref</span>&gt;</span><br><span class="line">            &lt;!-- 如果重复提交，则跳转到error.jsp --&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"invalid.token"</span>&gt;/error.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span>&gt;/success.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">        &lt;/action&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;action name=<span class="string">"tokenSession"</span> class=<span class="string">"action.TokenAction"</span>&gt;</span><br><span class="line">            &lt;!-- 配置<span class="type">TokenSession</span>拦截器 --&gt;</span><br><span class="line">            &lt;interceptor-<span class="keyword">ref</span> name=<span class="string">"defaultStack"</span>&gt;&lt;/interceptor-<span class="keyword">ref</span>&gt;</span><br><span class="line">            &lt;interceptor-<span class="keyword">ref</span> name=<span class="string">"tokenSession"</span>&gt;&lt;/interceptor-<span class="keyword">ref</span>&gt;</span><br><span class="line">            &lt;!-- 如果重复提交，则跳转到error.jsp --&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"invalid.token"</span>&gt;/error.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span>&gt;/success.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">        &lt;/action&gt;</span><br></pre></td></tr></table></figure>
 <p>这里需要提出的是，action中name属性为<code>invalid.token</code>的result是不可少的。</p>
 <p>步骤四：发布测试<br>经过测试，发现使用token拦截器在重复提交表单的时候会转到error.jsp，而使用tokenSession拦截器在重复提交表单的时候不会转到error.jsp。</p>
 <p><strong>显示等待页面</strong></p>
@@ -351,10 +391,10 @@
 <li>delaySleepInternal：指定检查后台线程是否执行完毕的时间间隔，必须和delay参数一起使用，单位是毫秒，默认是100毫秒。表示每100毫秒进行一次检查</li>
 </ul>
 <p>使用execAndWait拦截器显示等待页面，首先需要编写一个等待页面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...&#10;&#60;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&#62;&#10;&#60;html&#62;&#10;&#60;head&#62;&#10;&#60;base href=&#34;&#60;%=basePath%&#62;&#34;&#62;&#10;&#60;title&#62;&#31561;&#24453;&#39029;&#38754;&#60;/title&#62;&#10;&#60;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&#62;&#10;&#60;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&#62;&#10;&#60;meta http-equiv=&#34;refresh&#34; content=&#34;3;url=tokenWait.action&#34;&#62;&#10;&#60;/head&#62;&#10;&#10;&#60;body&#62;&#10;    &#24744;&#30340;&#35831;&#27714;&#27491;&#22312;&#22788;&#29702;&#65292;&#35831;&#31245;&#31561;&#12290;&#10;    &#60;span id=&#34;time&#34; style=&#34;font-size:30px;color:red;font-face:&#38582;&#20070;&#34;&#62;&#60;/span&#62;&#31186;&#21518;&#39029;&#38754;&#23558;&#33258;&#21160;&#36339;&#36716;&#10;    &#60;script type=&#34;text/javascript&#34;&#62;&#10;       var start = 3;&#10;       var step = -1;&#10;       function timer () &#123;&#10;         document.getElementById(&#34;time&#34;).innerHTML = start;&#10;         if(start &#62; 0)&#123;&#10;            start = start + step;&#10;         &#125;&#10;         setTimeout(&#34;timer()&#34;,1000);&#10;       &#125;&#10;       window.onload = timer;&#10;    &#60;/script&#62;&#10;&#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight erb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">...</span><br><span class="line"><span class="doctype">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">base</span> <span class="attribute">href</span>=<span class="value">"</span></span></span>&lt;%=<span class="ruby">basePath</span>%&gt;<span class="xml"><span class="tag"><span class="value">"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">title</span>&gt;</span>等待页面<span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"pragma"</span> <span class="attribute">content</span>=<span class="value">"no-cache"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"cache-control"</span> <span class="attribute">content</span>=<span class="value">"no-cache"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"refresh"</span> <span class="attribute">content</span>=<span class="value">"3;url=tokenWait.action"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">    您的请求正在处理，请稍等。</span><br><span class="line">    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"time"</span> <span class="attribute">style</span>=<span class="value">"font-size:30px;color:red;font-face:隶书"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>秒后页面将自动跳转</span><br><span class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><br><span class="line">       <span class="keyword">var</span> start = <span class="number">3</span>;</span><br><span class="line">       <span class="keyword">var</span> step = -<span class="number">1</span>;</span><br><span class="line">       <span class="function"><span class="keyword">function</span> <span class="title">timer</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">         <span class="built_in">document</span>.getElementById(<span class="string">"time"</span>).innerHTML = start;</span><br><span class="line">         <span class="keyword">if</span>(start &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            start = start + step;</span><br><span class="line">         &#125;</span><br><span class="line">         setTimeout(<span class="string">"timer()"</span>,<span class="number">1000</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in">window</span>.onload = timer;</span><br><span class="line">    </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 <p>在head 标签中需要添加自动刷新meta标签，不然是不会出发自动检查的。在这个等待页面中，表示3秒后就会跳转到成功页面。</p>
 <p>之后是添加execAndWait拦截器的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- &#26174;&#31034;&#33258;&#21160;&#31561;&#24453;&#39029;&#38754; --&#62;&#10;        &#60;action name=&#34;tokenWait&#34; class=&#34;action.TokenAction&#34;&#62;&#10;            &#60;result name=&#34;wait&#34;&#62;/wait.jsp&#60;/result&#62;&#10;            &#60;result&#62;/success.jsp&#60;/result&#62;&#10;            &#60;interceptor-ref name=&#34;defaultStack&#34;&#62;&#10;                &#60;!-- &#25226;default&#26041;&#27861;&#25490;&#24207;&#22312;&#22806;&#65292;&#34920;&#31034;&#19981;&#25318;&#25130;!default.action --&#62;&#10;                &#60;param name=&#34;excludeMethods&#34;&#62;default&#60;/param&#62;&#10;            &#60;/interceptor-ref&#62;&#10;            &#60;interceptor-ref name=&#34;execAndWait&#34;&#62;&#10;                &#60;!-- &#25226;default&#26041;&#27861;&#25490;&#24207;&#22312;&#22806;&#65292;&#34920;&#31034;&#19981;&#25318;&#25130;!default.action --&#62;&#10;                &#60;param name=&#34;excludeMethods&#34;&#62;default&#60;/param&#62;&#10;                &#60;!-- &#31561;&#24453;&#24310;&#36831;&#26102;&#38388; --&#62;&#10;                &#60;param name=&#34;delay&#34;&#62;1000&#60;/param&#62;&#10;            &#60;/interceptor-ref&#62;&#10;        &#60;/action&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 显示自动等待页面 --&gt;</span><br><span class="line">        &lt;action name=<span class="string">"tokenWait"</span> class=<span class="string">"action.TokenAction"</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span> name=<span class="string">"wait"</span>&gt;/wait.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;<span class="literal">result</span>&gt;/success.jsp&lt;/<span class="literal">result</span>&gt;</span><br><span class="line">            &lt;interceptor-<span class="keyword">ref</span> name=<span class="string">"defaultStack"</span>&gt;</span><br><span class="line">                &lt;!-- 把default方法排序在外，表示不拦截!default.action --&gt;</span><br><span class="line">                &lt;param name=<span class="string">"excludeMethods"</span>&gt;default&lt;/param&gt;</span><br><span class="line">            &lt;/interceptor-<span class="keyword">ref</span>&gt;</span><br><span class="line">            &lt;interceptor-<span class="keyword">ref</span> name=<span class="string">"execAndWait"</span>&gt;</span><br><span class="line">                &lt;!-- 把default方法排序在外，表示不拦截!default.action --&gt;</span><br><span class="line">                &lt;param name=<span class="string">"excludeMethods"</span>&gt;default&lt;/param&gt;</span><br><span class="line">                &lt;!-- 等待延迟时间 --&gt;</span><br><span class="line">                &lt;param name=<span class="string">"delay"</span>&gt;<span class="number">1000</span>&lt;/param&gt;</span><br><span class="line">            &lt;/interceptor-<span class="keyword">ref</span>&gt;</span><br><span class="line">        &lt;/action&gt;</span><br></pre></td></tr></table></figure>
 <p>注意到TokenAction类中，使用Tread.sleep(3000)，表示通过让线程休眠的方式延长action的处理时间，还有一点要注意的是struts.xml中execAndWait拦截器的delay参数的值需要小于Thread.sleep(time)的时间。这样就能保证在action处理结束之前完成显示等待页面，不然很可能会直接success.jsp页面了。</p>
 
       
@@ -369,6 +409,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -481,7 +537,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -502,10 +558,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -563,6 +619,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

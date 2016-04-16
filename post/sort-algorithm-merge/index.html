@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -326,7 +366,7 @@
         <p><strong>前言</strong></p>
 <p>归并排序是所有常用内部排序算法中稳定性最好的，无论是平均时间复杂度、最坏时间复杂度还是最好时间复杂度，其时间复杂度都是O(nlogn)。由于这个特性，在需要考虑排序稳定性的情况下，归并排序是所有优化算法（直接插入排序、冒泡排序和简单选择排序）使用最多的。其实归并排序算法的思想很简单：假设初始序列含有n个记录，则可以看成是n个有序的子序列，每一个子序列的长度都是1，然后把这些子序列两两归并，得到$\lceil n/2 \rceil$（$\lceil x \rceil$表示不小于$x$的最小整数）个长度为2或者1的有序子序列；再两两归并，……，如此重复，直至得到一个长度为n的有序序列为止。这种方法也被称为2路归并排序。<br><a id="more"></a></p>
 <p>首先看代码的实现过程：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;&#10;&#10;/**&#10; * &#24402;&#24182;&#25490;&#24207;&#10; * @author Administrator&#10; *&#10; */&#10;public class MergeSort2 &#123;&#10;&#10;    public void mergeSort(int[] a)&#123;&#10;        mSort(a,a,0,a.length - 1);&#10;        for (int i = 0; i &#60; a.length; i++) &#123;&#10;            System.out.println(a[i]);&#10;        &#125;&#10;    &#125;&#10;&#10;    private void mSort(int[] b, int[] a, int i, int j) &#123;&#10;        int m = 0;&#10;        int[] c = new int[a.length];&#10;        if(i == j)&#123;//&#36882;&#24402;&#32456;&#27490;&#26465;&#20214;&#10;            a[i] = b[i];&#10;        &#125;else &#123;&#10;            m = (i + j)/2;&#10;            //&#23558;&#25968;&#32452;a&#20998;&#20026;a[i...m]&#24182;&#36827;&#34892;&#25490;&#24207;&#10;            mSort(b,c,i,m);&#10;            //&#25968;&#32452;a[m+1...j]&#37096;&#20998;&#36827;&#34892;&#25490;&#24207;&#10;            mSort(b, c, m + 1, j);&#10;            //&#23558;a[i...m]&#37096;&#20998;&#21644;a[m+1...j]&#37096;&#20998;&#30340;&#25490;&#24207;&#32467;&#26524;&#24402;&#24182;&#21040;a&#10;            merge(c,a,i,m,j);&#10;        &#125;&#10;    &#125;&#10;&#10;    private void merge(int[] b, int[] a, int i, int m, int t) &#123;&#10;        int j = 0,k = 0,l = 0;&#10;        for(j = m+1,k = i;i &#60;= m &#38;&#38; j&#60;=t;k++)&#123;&#10;            //&#23558;b&#20013;&#35760;&#24405;&#30001;&#23567;&#21040;&#22823;&#24402;&#24182;&#21040;a&#20013;&#10;            if(b[i] &#60; b[j])&#123;&#10;                a[k] = b[i++];&#10;            &#125;else &#123;&#10;                a[k] = b[j++];&#10;            &#125;&#10;        &#125;&#10;        //&#23558;&#21097;&#20313;b[i...m]&#22797;&#21046;&#21040;a&#20013;&#10;        if(i&#60;=m)&#123;&#10;            for(l=0;l&#60;=m-i;l++)&#123;&#10;                a[k+l]=b[i+l];&#10;            &#125;&#10;        &#125;&#10;        //&#23558;&#21097;&#20313;b[m+1...t]&#22797;&#21046;&#21040;&#25968;&#32452;a&#20013;&#10;        if(j&#60;=t)&#123;&#10;            for(l=0;l&#60;=t-j;l++)&#123;&#10;                a[k+l]=b[j+l];&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        new MergeSort2().mergeSort(new int[]&#123;50,10,90,30,70,40,80,60,20&#125;);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 归并排序</span><br><span class="line"> * @author Administrator</span><br><span class="line"> *</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MergeSort2</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mergeSort</span>(<span class="params"><span class="keyword">int</span>[] a</span>)</span>&#123;</span><br><span class="line">        mSort(a,a,<span class="number">0</span>,a.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</span><br><span class="line">            System.<span class="keyword">out</span>.println(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mSort</span>(<span class="params"><span class="keyword">int</span>[] b, <span class="keyword">int</span>[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> j</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] c = <span class="keyword">new</span> <span class="keyword">int</span>[a.length];</span><br><span class="line">        <span class="keyword">if</span>(i == j)&#123;<span class="comment">//递归终止条件</span></span><br><span class="line">            a[i] = b[i];</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            m = (i + j)/<span class="number">2</span>;</span><br><span class="line">            <span class="comment">//将数组a分为a[i...m]并进行排序</span></span><br><span class="line">            mSort(b,c,i,m);</span><br><span class="line">            <span class="comment">//数组a[m+1...j]部分进行排序</span></span><br><span class="line">            mSort(b, c, m + <span class="number">1</span>, j);</span><br><span class="line">            <span class="comment">//将a[i...m]部分和a[m+1...j]部分的排序结果归并到a</span></span><br><span class="line">            merge(c,a,i,m,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">merge</span>(<span class="params"><span class="keyword">int</span>[] b, <span class="keyword">int</span>[] a, <span class="keyword">int</span> i, <span class="keyword">int</span> m, <span class="keyword">int</span> t</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>,k = <span class="number">0</span>,l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = m+<span class="number">1</span>,k = i;i &lt;= m &amp;&amp; j&lt;=t;k++)&#123;</span><br><span class="line">            <span class="comment">//将b中记录由小到大归并到a中</span></span><br><span class="line">            <span class="keyword">if</span>(b[i] &lt; b[j])&#123;</span><br><span class="line">                a[k] = b[i++];</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                a[k] = b[j++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将剩余b[i...m]复制到a中</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=m)&#123;</span><br><span class="line">            <span class="keyword">for</span>(l=<span class="number">0</span>;l&lt;=m-i;l++)&#123;</span><br><span class="line">                a[k+l]=b[i+l];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将剩余b[m+1...t]复制到数组a中</span></span><br><span class="line">        <span class="keyword">if</span>(j&lt;=t)&#123;</span><br><span class="line">            <span class="keyword">for</span>(l=<span class="number">0</span>;l&lt;=t-j;l++)&#123;</span><br><span class="line">                a[k+l]=b[j+l];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> MergeSort2().mergeSort(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">50</span>,<span class="number">10</span>,<span class="number">90</span>,<span class="number">30</span>,<span class="number">70</span>,<span class="number">40</span>,<span class="number">80</span>,<span class="number">60</span>,<span class="number">20</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面以序列{50,10,90,30,70,40,80,60,20}为例，说明归并排序的具体过程：</p>
 <ol>
 <li>初始时刻，mSort方法中的数组b和数组a都是{50,10,90,30,70,40,80,60,20}</li>
@@ -351,6 +391,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -463,7 +519,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -484,10 +540,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -545,6 +601,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

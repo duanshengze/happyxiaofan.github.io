@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -177,17 +177,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -197,9 +201,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -207,17 +217,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -289,6 +325,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -325,7 +365,7 @@
         <h3 id="前言">前言</h3><p>验证码技术被广泛运用于网站中，使用验证码可以有效防止某个黑客对某一个特定注册用户用特定程序暴力破解方式进行不断的登陆尝试，实际上是一种登录保护措施。由于验证码是动态生成的，在使用暴力破解的时候难度加大，所以验证码技术是一种常用却简单的技术。下面就介绍如何使用Java动态生成验证码。<br><a id="more"></a><br><strong>创建一个表单</strong></p>
 <p><img src="http://img.blog.csdn.net/20151126140201220" alt="登录表单"></p>
 <p><strong>实现思路</strong></p>
-<p>由于要产生随机验证码，所以有一个出现字符的范围，这里仅考虑了a-z、A-Z、0-9这个范围，然后设置随机颜色、并进行画矩形、画线、设置字体、绘制随机字符。<br>实现代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.hrms.sys.utils;&#10;&#10;import java.awt.Color;&#10;import java.awt.Font;&#10;import java.awt.Graphics;&#10;import java.awt.image.BufferedImage;&#10;import java.io.IOException;&#10;import java.util.Random;&#10;&#10;import javax.imageio.ImageIO;&#10;import javax.servlet.ServletOutputStream;&#10;import javax.servlet.http.HttpServletRequest;&#10;import javax.servlet.http.HttpServletResponse;&#10;&#10;public class VerifyCode &#123;&#10;    private static String s = &#34;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz&#34;;&#10;    private static int width = 60;&#10;    private static int height = 22;&#10;    private static int len = 30;&#10;&#10;    public static void getVerifyCode(HttpServletRequest request,&#10;            HttpServletResponse response) &#123;&#10;        //&#35774;&#32622;&#21709;&#24212;&#22836;&#26080;&#32531;&#23384;&#10;        response.setHeader(&#34;Pragma&#34;, &#34;No-cache&#34;);&#10;        response.setHeader(&#34;Cache-Control&#34;, &#34;no-cache&#34;);&#10;        response.setDateHeader(&#34;Expires&#34;, 0);&#10;        &#10;        //&#21019;&#24314;&#19968;&#20010;&#22270;&#20687;&#32531;&#20914;&#21306;&#10;        BufferedImage image = new BufferedImage(width, height,&#10;                BufferedImage.TYPE_INT_RGB);&#10;        //&#21019;&#24314;&#19968;&#20010;&#30011;&#31508;&#10;        Graphics g = image.getGraphics();&#10;        Random random = new Random();&#10;        //&#35774;&#32622;&#30011;&#31508;&#38543;&#26426;&#39068;&#33394;&#10;        g.setColor(getRandColor(220, 250));&#10;        //&#30011;&#30697;&#24418;&#10;        g.fillRect(0, 0, width, height);&#10;        //&#35774;&#32622;&#23383;&#20307;&#10;        g.setFont(new Font(&#34;Times New Roman&#34;, Font.PLAIN, 18));&#10;        g.draw3DRect(0, 0, width - 2, height - 2, true);&#10;        //&#35774;&#32622;&#30011;&#32447;&#30340;&#38543;&#26426;&#39068;&#33394;&#10;        g.setColor(getRandColor(160, 200));&#10;        //&#38543;&#26426;&#30011;30&#26465;&#32447;&#27573;&#10;        for (int i = 0; i &#60; len; i++) &#123;&#10;            int x = random.nextInt(width);&#10;            int y = random.nextInt(height);&#10;            int x1 = random.nextInt(12);&#10;            int y1 = random.nextInt(12);&#10;            g.drawLine(x, y, x + x1, y + y1);&#10;        &#125;&#10;        //&#35201;&#26174;&#31034;&#30340;&#39564;&#35777;&#30721;&#10;        String sRand = &#34;&#34;;&#10;        //&#39564;&#35777;&#30721;&#20026;4&#20010;&#38543;&#26426;&#23383;&#31526;&#10;        for (int i = 0; i &#60; 4; i++) &#123;&#10;            char rand = s.charAt(random.nextInt(s.length()));&#10;            sRand += rand;&#10;            //&#35774;&#32622;&#30011;&#38543;&#26426;&#23383;&#31526;&#30340;&#39068;&#33394;&#10;            g.setColor(new Color(20 + random.nextInt(110), random.nextInt(110),&#10;                    random.nextInt(110)));&#10;            //&#39564;&#35777;&#30721;&#30340;&#33539;&#22260;&#22312;s&#20013;&#10;            g.drawString(String.valueOf(rand), 13 * i + 6, 16);&#10;        &#125;&#10;&#10;        request.getSession().setAttribute(&#34;VerifyCode&#34;, sRand);&#10;        g.dispose();&#10;&#10;        ServletOutputStream output;&#10;        try &#123;&#10;            //&#36755;&#20986;&#26174;&#31034;&#21040;&#27983;&#35272;&#22120;&#20013;&#10;            output = response.getOutputStream();&#10;            ImageIO.write(image, &#34;JPEG&#34;, output);&#10;        &#125; catch (IOException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;    &#125;&#10;&#10;    //&#33719;&#21462;&#38543;&#26426;&#39068;&#33394;rgb&#30340;&#20540;&#10;    private static Color getRandColor(int fc, int bc) &#123;&#10;        Random random = new Random();&#10;        if (fc &#62; 255)&#10;            fc = 255;&#10;        if (bc &#62; 255)&#10;            bc = 255;&#10;        int r = fc + random.nextInt(bc - fc);&#10;        int g = fc + random.nextInt(bc - fc);&#10;        int b = fc + random.nextInt(bc - fc);&#10;        return new Color(r, g, b);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由于要产生随机验证码，所以有一个出现字符的范围，这里仅考虑了a-z、A-Z、0-9这个范围，然后设置随机颜色、并进行画矩形、画线、设置字体、绘制随机字符。<br>实现代码：<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hrms.sys.utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.awt.Color;</span><br><span class="line"><span class="keyword">import</span> java.awt.Font;</span><br><span class="line"><span class="keyword">import</span> java.awt.Graphics;</span><br><span class="line"><span class="keyword">import</span> java.awt.<span class="built_in">image</span>.BufferedImage;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.imageio.ImageIO;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletOutputStream;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class VerifyCode &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">String</span> s = <span class="string">"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="variable">width</span> = <span class="number">60</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="variable">height</span> = <span class="number">22</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> len = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> getVerifyCode(HttpServletRequest request,</span><br><span class="line">            HttpServletResponse response) &#123;</span><br><span class="line">        <span class="comment">//设置响应头无缓存</span></span><br><span class="line">        response.setHeader(<span class="string">"Pragma"</span>, <span class="string">"No-cache"</span>);</span><br><span class="line">        response.setHeader(<span class="string">"Cache-Control"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">        response.setDateHeader(<span class="string">"Expires"</span>, <span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//创建一个图像缓冲区</span></span><br><span class="line">        BufferedImage <span class="built_in">image</span> = <span class="keyword">new</span> BufferedImage(<span class="variable">width</span>, <span class="variable">height</span>,</span><br><span class="line">                BufferedImage.TYPE_INT_RGB);</span><br><span class="line">        <span class="comment">//创建一个画笔</span></span><br><span class="line">        Graphics g = <span class="built_in">image</span>.getGraphics();</span><br><span class="line">        Random <span class="built_in">random</span> = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="comment">//设置画笔随机颜色</span></span><br><span class="line">        g.setColor(getRandColor(<span class="number">220</span>, <span class="number">250</span>));</span><br><span class="line">        <span class="comment">//画矩形</span></span><br><span class="line">        g.fillRect(<span class="number">0</span>, <span class="number">0</span>, <span class="variable">width</span>, <span class="variable">height</span>);</span><br><span class="line">        <span class="comment">//设置字体</span></span><br><span class="line">        g.setFont(<span class="keyword">new</span> Font(<span class="string">"Times New Roman"</span>, Font.PLAIN, <span class="number">18</span>));</span><br><span class="line">        g.draw3DRect(<span class="number">0</span>, <span class="number">0</span>, <span class="variable">width</span> - <span class="number">2</span>, <span class="variable">height</span> - <span class="number">2</span>, <span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//设置画线的随机颜色</span></span><br><span class="line">        g.setColor(getRandColor(<span class="number">160</span>, <span class="number">200</span>));</span><br><span class="line">        <span class="comment">//随机画30条线段</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="built_in">int</span> x = <span class="built_in">random</span>.nextInt(<span class="variable">width</span>);</span><br><span class="line">            <span class="built_in">int</span> y = <span class="built_in">random</span>.nextInt(<span class="variable">height</span>);</span><br><span class="line">            <span class="built_in">int</span> x1 = <span class="built_in">random</span>.nextInt(<span class="number">12</span>);</span><br><span class="line">            <span class="built_in">int</span> y1 = <span class="built_in">random</span>.nextInt(<span class="number">12</span>);</span><br><span class="line">            g.drawLine(x, y, x + x1, y + y1);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//要显示的验证码</span></span><br><span class="line">        <span class="keyword">String</span> sRand = <span class="string">""</span>;</span><br><span class="line">        <span class="comment">//验证码为4个随机字符</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">            <span class="built_in">char</span> rand = s.charAt(<span class="built_in">random</span>.nextInt(s.length()));</span><br><span class="line">            sRand += rand;</span><br><span class="line">            <span class="comment">//设置画随机字符的颜色</span></span><br><span class="line">            g.setColor(<span class="keyword">new</span> Color(<span class="number">20</span> + <span class="built_in">random</span>.nextInt(<span class="number">110</span>), <span class="built_in">random</span>.nextInt(<span class="number">110</span>),</span><br><span class="line">                    <span class="built_in">random</span>.nextInt(<span class="number">110</span>)));</span><br><span class="line">            <span class="comment">//验证码的范围在s中</span></span><br><span class="line">            g.drawString(<span class="keyword">String</span>.valueOf(rand), <span class="number">13</span> * i + <span class="number">6</span>, <span class="number">16</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        request.getSession().setAttribute(<span class="string">"VerifyCode"</span>, sRand);</span><br><span class="line">        g.dispose();</span><br><span class="line"></span><br><span class="line">        ServletOutputStream output;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//输出显示到浏览器中</span></span><br><span class="line">            output = response.getOutputStream();</span><br><span class="line">            ImageIO.write(<span class="built_in">image</span>, <span class="string">"JPEG"</span>, output);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取随机颜色rgb的值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Color getRandColor(<span class="built_in">int</span> fc, <span class="built_in">int</span> bc) &#123;</span><br><span class="line">        Random <span class="built_in">random</span> = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">if</span> (fc &gt; <span class="number">255</span>)</span><br><span class="line">            fc = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">if</span> (bc &gt; <span class="number">255</span>)</span><br><span class="line">            bc = <span class="number">255</span>;</span><br><span class="line">        <span class="built_in">int</span> r = fc + <span class="built_in">random</span>.nextInt(bc - fc);</span><br><span class="line">        <span class="built_in">int</span> g = fc + <span class="built_in">random</span>.nextInt(bc - fc);</span><br><span class="line">        <span class="built_in">int</span> b = fc + <span class="built_in">random</span>.nextInt(bc - fc);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Color(r, g, b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>验证码优化</strong><br>上面的验证码有一个bug，就是必须每次刷新浏览器才能显示不同的验证码，那怎么才能直接点击验证码就换一张验证码呢？其实思路很简单，就是把验证码做成一个链接，每次点击验证码，就再发送一次请求即可。</p>
 <p>效果如下：<br><img src="http://img.blog.csdn.net/20151126144436398" alt=""></p>
 <p>这样就可以很方便更换验证码了。</p>
@@ -342,6 +382,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -456,7 +512,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -477,10 +533,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -538,6 +594,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

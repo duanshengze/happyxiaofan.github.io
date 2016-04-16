@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,7 +369,7 @@
         <p>题目描述</p>
 <p>在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是重复的数字2或者3。</p>
 <p>此题的思路还是比较简单的，与之前找出只出现一次的数字的题目有些类似，基本思路还是创建一个Map容器，key是出现的数字，value则是该数字出现的次数。在遍历数组的过程中，只要容器中已经出现了该数字，那么就直接返回给数组，并结束循环。看代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.HashMap;&#10;import java.util.Map;&#10;&#10;public class DuplicateNumbers &#123;&#10;&#10;    // Parameters:&#10;    //    numbers:     an array of integers&#10;    //    length:      the length of array numbers&#10;    //    duplication: (Output) the duplicated number in the array number,length of duplication array is 1,so using duplication[0] = ? in implementation;&#10;    //                  Here duplication like pointor in C/C++, duplication[0] equal *duplication in C/C++&#10;    //    &#36825;&#37324;&#35201;&#29305;&#21035;&#27880;&#24847;~&#36820;&#22238;&#20219;&#24847;&#37325;&#22797;&#30340;&#19968;&#20010;&#65292;&#36171;&#20540;duplication[0]&#10;    // Return value:       true if the input is valid, and there are some duplications in the array number&#10;    //                     otherwise false&#10;    public boolean duplicate(int numbers[],int length,int [] duplication) &#123;&#10;        //&#24322;&#24120;&#22788;&#29702;&#10;        if(numbers == null || numbers.length &#60;= 1 || length &#60;= 1) return false;&#10;        //&#21019;&#24314;&#19968;&#20010;HashMap&#20445;&#23384;&#27599;&#20010;&#25968;&#23383;&#20986;&#29616;&#30340;&#27425;&#25968;&#10;        Map&#60;Integer,Integer&#62; counter = new HashMap&#60;Integer, Integer&#62;();&#10;        for(int i = 0; i &#60; length; i++)&#123;&#10;            if(counter.containsKey(numbers[i]))&#123;&#10;                duplication[0] = numbers[i];&#10;                return true;&#10;            &#125;else&#123;&#10;                counter.put(numbers[i], new Integer(1));&#10;            &#125;&#10;        &#125;&#10;        return false;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int [] numbers = &#123;-1,4,1,0,2,5,3&#125;;&#10;        boolean f = new DuplicateNumbers().duplicate(numbers, 7, new int[1]);&#10;        System.out.println(f);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.Map;</span><br><span class="line"><span class="keyword"></span><br><span class="line">public</span> class DuplicateNumbers &#123;</span><br><span class="line"></span><br><span class="line">    // Parameters:</span><br><span class="line">    //    numbers:     an<span class="instruction"> array </span>of integers</span><br><span class="line">    //    length:      the length of<span class="instruction"> array </span>numbers</span><br><span class="line">    //    duplication:<span class="function"> (</span>Output<span class="function">)</span> the duplicated number in the<span class="instruction"> array </span>number,length of duplication<span class="instruction"> array </span>is 1,so using duplication<span class="keyword">[</span>0] = ? in implementation;</span><br><span class="line">    //                  Here duplication like pointor in C/C++, duplication<span class="keyword">[</span>0] equal *duplication in C/C++</span><br><span class="line">    //    这里要特别注意~返回任意重复的一个，赋值duplication<span class="keyword">[</span>0]</span><br><span class="line">    // Return value:       true<span class="instruction"> if </span>the input is valid,<span class="instruction"> and </span>there are some duplications in the<span class="instruction"> array </span>number</span><br><span class="line">    //                     otherwise false</span><br><span class="line">   <span class="keyword"> public</span> boolean<span class="function"> duplicate(</span>int numbers<span class="keyword">[</span>],int length,int <span class="keyword">[</span>] duplication<span class="function">)</span> &#123;</span><br><span class="line">        //异常处理</span><br><span class="line">       <span class="function"> if(</span>numbers == null || numbers.length &lt;= 1 || length &lt;= 1<span class="function">)</span><span class="instruction"> return </span>false;</span><br><span class="line">        //创建一个HashMap保存每个数字出现的次数</span><br><span class="line">        Map&lt;Integer,Integer&gt; counter =<span class="instruction"> new </span>HashMap&lt;Integer,<span class="function"> Integer&gt;(</span><span class="function">)</span>;</span><br><span class="line">       <span class="function"> for(</span>int i = 0; i &lt; length; i++<span class="function">)</span>&#123;</span><br><span class="line">           <span class="function"> if(</span>counter.containsKey(numbers<span class="keyword">[</span>i]<span class="function">)</span><span class="function">)</span>&#123;</span><br><span class="line">                duplication<span class="keyword">[</span>0] = numbers<span class="keyword">[</span>i];</span><br><span class="line">               <span class="instruction"> return </span>true;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">               <span class="function"> counter.put(</span>numbers<span class="keyword">[</span>i],<span class="instruction"> new </span>Integer(1<span class="function">)</span><span class="function">)</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">       <span class="instruction"> return </span>false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">   <span class="keyword"> public</span><span class="keyword"> static</span> void<span class="function"> main(</span>String<span class="keyword">[</span>] args<span class="function">)</span> &#123;</span><br><span class="line">       <span class="instruction"> int </span><span class="keyword">[</span>] numbers = &#123;-1,4,1,0,2,5,3&#125;;</span><br><span class="line">        boolean f =<span class="instruction"> new </span>DuplicateNumbers(<span class="function">)</span>.duplicate(numbers, 7,<span class="instruction"> new </span>int<span class="keyword">[</span>1]<span class="function">)</span>;</span><br><span class="line">       <span class="function"> System.out.println(</span>f<span class="function">)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -342,6 +382,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -454,7 +510,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -475,10 +531,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -536,6 +592,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,7 +369,7 @@
         <p>题目描述</p>
 <p>牛客最近来了一个新员工Fish，每天早晨总是会拿着一本英文杂志，写些句子在本子上。同事Cat对Fish写的内容颇感兴趣，有一天他向Fish借来翻看，但却读不懂它的意思。例如，“student. a am I”。后来才意识到，这家伙原来把句子单词的顺序翻转了，正确的句子应该是“I am a student.”。Cat对一一的翻转这些单词顺序可不在行，你能帮助他么？</p>
 <p>可以发现，要对一个句子进行翻转，可以先对整个句子进行翻转，之后再对每个单词进行翻转。而不论是返回句子还是翻转单词，都是对一个字符串进行翻转，所以可以实现一个翻转函数，对从start到end位置的字符进行翻转，直到start大于end的值。所以实现句子翻转的代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class RotateSentence &#123;&#10;&#10;    public String ReverseSentence(String str) &#123;&#10;        if(str == null) return str;&#10;        &#10;        //&#20808;&#32763;&#36716;&#25972;&#20010;&#21477;&#23376;&#10;        char[] cs = str.toCharArray();&#10;        int begin = 0;&#10;        int end = cs.length -1;&#10;        reverse(cs, begin, end);&#10;        begin = end = 0;&#10;        //&#20877;&#32763;&#36716;&#27599;&#20010;&#21333;&#35789;&#10;        while(begin &#60; cs.length)&#123;&#10;            if(cs[begin] == &#39; &#39;)&#123;//&#22914;&#26524;&#31532;&#19968;&#20010;&#20301;&#32622;&#23601;&#36935;&#21040;&#31354;&#26684;&#35828;&#26126;&#19981;&#26159;&#19968;&#20010;&#26377;&#25928;&#30340;&#21333;&#35789;&#10;                begin++;&#10;                end++;&#10;            &#125;else if(end == cs.length || cs[end] == &#39; &#39;)&#123;&#10;                //&#24403;end&#36935;&#21040;&#31354;&#26684;&#65292;&#35828;&#26126;&#19968;&#20010;&#21333;&#35789;&#30340;&#32467;&#26463;,&#32763;&#36716;&#36825;&#20010;&#21333;&#35789;&#10;                reverse(cs, begin, --end);&#10;                begin = ++end;&#10;            &#125;else&#123;&#10;                //end&#27809;&#26377;&#36935;&#21040;&#31354;&#26684;&#10;                end++;&#10;            &#125;&#10;        &#125;&#10;        return new String(cs);&#10;    &#125;&#10;    &#10;    private void reverse(char[] str, int begin,int end)&#123;&#10;        while(begin &#60;= end)&#123;&#10;            char temp = str[begin];&#10;            str[begin] = str[end];&#10;            str[end] = temp;&#10;            begin++;&#10;            end--;&#10;        &#125;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        String str = &#34;hello world&#34;;&#10;        RotateSentence r = new RotateSentence();&#10;        String s = r.ReverseSentence(str);&#10;        System.out.println(s);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class RotateSentence &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">String</span> ReverseSentence(<span class="keyword">String</span> <span class="built_in">str</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">str</span> == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="built_in">str</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//先翻转整个句子</span></span><br><span class="line">        <span class="built_in">char</span>[] cs = <span class="built_in">str</span>.toCharArray();</span><br><span class="line">        <span class="built_in">int</span> begin = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> end = cs.length -<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">reverse</span>(cs, begin, end);</span><br><span class="line">        begin = end = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//再翻转每个单词</span></span><br><span class="line">        <span class="keyword">while</span>(begin &lt; cs.length)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cs[begin] == <span class="string">' '</span>)&#123;<span class="comment">//如果第一个位置就遇到空格说明不是一个有效的单词</span></span><br><span class="line">                begin++;</span><br><span class="line">                end++;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(end == cs.length || cs[end] == <span class="string">' '</span>)&#123;</span><br><span class="line">                <span class="comment">//当end遇到空格，说明一个单词的结束,翻转这个单词</span></span><br><span class="line">                <span class="built_in">reverse</span>(cs, begin, --end);</span><br><span class="line">                begin = ++end;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">//end没有遇到空格</span></span><br><span class="line">                end++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">String</span>(cs);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="built_in">reverse</span>(<span class="built_in">char</span>[] <span class="built_in">str</span>, <span class="built_in">int</span> begin,<span class="built_in">int</span> end)&#123;</span><br><span class="line">        <span class="keyword">while</span>(begin &lt;= end)&#123;</span><br><span class="line">            <span class="built_in">char</span> temp = <span class="built_in">str</span>[begin];</span><br><span class="line">            <span class="built_in">str</span>[begin] = <span class="built_in">str</span>[end];</span><br><span class="line">            <span class="built_in">str</span>[end] = temp;</span><br><span class="line">            begin++;</span><br><span class="line">            end--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">        <span class="keyword">String</span> <span class="built_in">str</span> = <span class="string">"hello world"</span>;</span><br><span class="line">        RotateSentence r = <span class="keyword">new</span> RotateSentence();</span><br><span class="line">        <span class="keyword">String</span> s = r.ReverseSentence(<span class="built_in">str</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -342,6 +382,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -454,7 +510,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -475,10 +531,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -536,6 +592,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

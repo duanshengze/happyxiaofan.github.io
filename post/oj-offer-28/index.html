@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -330,9 +370,9 @@
 <p>输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。</p>
 <p>对于此题，我觉得使用Java实现的话（所有OJ的代码都是使用Java实现的），实在是没有什么难度，就是一个简单的Collections函数的调用嘛，然而就是这么简单的一题，我居然提交代码提交了三次才被AC，实在是郁闷啊。主要的原因在于对边界条件的处理不是很好，简单而言就是代码不够健壮。还是言归正传，说说这题的思路吧：由于是n个整数，我们完全可以使用Java API中的函数完成这一功能，首先把数组中的元素添加到list集合对象中，然后调用Collections.sort()函数，完成排序（这个过程的时间复杂度是$O(nlogn)$，因为该函数的实现采用了快速排序算法），然后把list集合中除前k个数删掉，这样就返回了最小的k个数。</p>
 <p>下面是基于这种思路代码实现（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;import java.util.Collections;&#10;&#10;public class GetLeastKNumbers &#123;&#10;    &#10;    public ArrayList&#60;Integer&#62; GetLeastNumbers_Solution(int[] input, int k) &#123;&#10;        ArrayList&#60;Integer&#62; list = new ArrayList&#60;Integer&#62;();&#10;        //&#27880;&#24847;&#36793;&#30028;&#26465;&#20214;&#30340;&#22788;&#29702;&#65292;&#24456;&#37325;&#35201;&#65281;&#10;        if(input == null || k &#60;= 0 || input.length == 0 || k &#62; input.length) return list;&#10;        for (int i = 0; i &#60; input.length; i++) &#123;&#10;            list.add(input[i]);&#10;        &#125;&#10;        //&#25490;&#24207;&#10;        Collections.sort(list);&#10;        if(k &#62;= input.length)&#123;&#10;            return list;&#10;        &#125;&#10;        //&#31227;&#38500;&#21518;&#38754;&#30340;&#20803;&#32032;&#10;        while(list.size() &#62; k)&#123;&#10;            list.remove(k);&#10;        &#125;&#10;        return list;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] input = new int[]&#123;4,5,1,6,2,7,3,8&#125;;&#10;        ArrayList&#60;Integer&#62; list = new GetLeastKNumbers().GetLeastNumbers_Solution(input, 8);&#10;        System.out.println(list);&#10;        System.out.println(0x8000000);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> GetLeastKNumbers &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(<span class="keyword">int</span>[] input, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; <span class="built_in">list</span> = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="comment">//注意边界条件的处理，很重要！</span></span><br><span class="line">        <span class="keyword">if</span>(input == null || k &lt;= <span class="number">0</span> || input.length == <span class="number">0</span> || k &gt; input.length) <span class="keyword">return</span> <span class="built_in">list</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; input.length; i++) &#123;</span><br><span class="line">            <span class="built_in">list</span>.add(input[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//排序</span></span><br><span class="line">        Collections.sort(<span class="built_in">list</span>);</span><br><span class="line">        <span class="keyword">if</span>(k &gt;= input.length)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">list</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//移除后面的元素</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="built_in">list</span>.size() &gt; k)&#123;</span><br><span class="line">            <span class="built_in">list</span>.remove(k);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">list</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">8</span>&#125;;</span><br><span class="line">        ArrayList&lt;Integer&gt; <span class="built_in">list</span> = <span class="keyword">new</span> GetLeastKNumbers().GetLeastNumbers_Solution(input, <span class="number">8</span>);</span><br><span class="line">        System.out.println(<span class="built_in">list</span>);</span><br><span class="line">        System.out.println(<span class="number">0x8000000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面介绍一种书上的第二种思路：创建一个用于保存最小k个数的容器，第一步是放入k个元素，第二步是比较容器中最大的数与当前数组遍历的那个数的大小，如果容器中最大的数比当前遍历的数大，就移除该数，并放入当前遍历的那个数。这样整个循环结束的时候，容器中就是最小的k个数了。下面是基于这种思路的实现算法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList&#60;Integer&#62; GetLeastNumbers_Solution2(int[] input, int k) &#123;&#10;        ArrayList&#60;Integer&#62; list = new ArrayList&#60;Integer&#62;();&#10;        if(input == null || k &#60;= 0 || input.length == 0 || k &#62; input.length) return list;&#10;        //&#21019;&#24314;&#19968;TreeSet&#38598;&#21512;&#65292;&#22240;&#20026;TreeSet&#40664;&#35748;&#23601;&#26159;&#20174;&#23567;&#21040;&#22823;&#25490;&#24207;&#30340;&#10;        TreeSet&#60;Integer&#62; s = new TreeSet&#60;Integer&#62;();&#10;        for (int i = 0; i &#60; input.length; i++) &#123;&#10;            if(s.size() &#60; k)&#123;&#10;                s.add(input[i]);&#10;            &#125;else&#123;&#10;                if(input[i] &#60; s.last())&#123;&#10;                    s.remove(s.last());&#10;                    s.add(input[i]);&#10;                &#125;&#10;            &#125;&#10;        &#125;&#10;        //&#24490;&#29615;&#32467;&#26463;&#65292;s&#20013;&#24050;&#32463;&#20445;&#23384;&#20102;&#21069;k&#20010;&#26368;&#23567;&#30340;&#25968;&#65292;&#21482;&#38656;&#35201;&#36845;&#20195;&#25918;&#20837;ArrayList&#20013;&#21363;&#21487;&#10;        Iterator&#60;Integer&#62; it = s.iterator();&#10;        while(it.hasNext())&#123;&#10;            list.add(it.next());&#10;        &#125;&#10;        return list;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution2<span class="params">(int[] input, int k)</span> &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;<span class="params">()</span>;</span><br><span class="line">        <span class="keyword">if</span><span class="params">(input == null || k &lt;= <span class="number">0</span> || input.length == <span class="number">0</span> || k &gt; input.length)</span> return list;</span><br><span class="line">        <span class="comment">//创建一TreeSet集合，因为TreeSet默认就是从小到大排序的</span></span><br><span class="line">        TreeSet&lt;Integer&gt; s = new TreeSet&lt;Integer&gt;<span class="params">()</span>;</span><br><span class="line">        <span class="keyword">for</span> <span class="params">(int i = <span class="number">0</span>; i &lt; input.length; i++)</span> &#123;</span><br><span class="line">            <span class="keyword">if</span><span class="params">(s.size<span class="params">()</span> &lt; k)</span>&#123;</span><br><span class="line">                s.add<span class="params">(input[i])</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span><span class="params">(input[i] &lt; s.last<span class="params">()</span>)</span>&#123;</span><br><span class="line">                    s.remove<span class="params">(s.last<span class="params">()</span>)</span>;</span><br><span class="line">                    s.add<span class="params">(input[i])</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//循环结束，s中已经保存了前k个最小的数，只需要迭代放入ArrayList中即可</span></span><br><span class="line">        Iterator&lt;Integer&gt; it = s.iterator<span class="params">()</span>;</span><br><span class="line">        while<span class="params">(it.hasNext<span class="params">()</span>)</span>&#123;</span><br><span class="line">            list.add<span class="params">(it.next<span class="params">()</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        return list;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -345,6 +385,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -457,7 +513,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -478,10 +534,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -539,6 +595,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -330,7 +370,7 @@
 <p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。</p>
 <p>思路分析：由于是一个数字，因为其次数超过1，那么其出现的出现综合肯定实际大于其他所有数字之和的。因为如此，我们可以设置一个变量用于辨识这个变量，遇到相同的数字就把次数增加1，如果没有没有遇到就把次数减少1，那么肯定次数有可能变为0，因为没有遇到相同的。因为那个数字的次数出现了超过一半，举一个极端的例子，该数字在其他数字之后连续出现，此时times变量应该是一个负值了，那么当该数字的出现次数与前面所有数字的出现次数相等的时候，times变量变为0，由于其次数超过一半，那么该变量别重新赋值为1，所以就找到了该数字。</p>
 <p>基于这种思路，实现的代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class MoreThanHalfNumber &#123;&#10;&#10;    /**&#10;     * &#24605;&#36335;&#20998;&#26512;&#65306;&#30001;&#20110;&#26377;&#19968;&#20010;&#25968;&#23383;&#30340;&#27425;&#25968;&#36229;&#36807;&#19968;&#21322;&#65292;&#25152;&#20197;&#37027;&#20010;&#25968;&#23383;&#10;     * &#32943;&#23450;&#26159;&#26368;&#21518;&#19968;&#27425;&#21543;times&#21464;&#37327;&#35774;&#20026;1&#23545;&#24212;&#30340;&#25968;&#23383;&#10;     * @param array&#10;     * @return&#10;     */&#10;    public int MoreThanHalfNum_Solution(int[] array) &#123;&#10;        if(array == null || array.length == 0) return 0;&#10;        int times = 1;&#10;        int result = array[0];&#10;        for (int i = 1; i &#60; array.length; i++) &#123;&#10;            if(times == 0)&#123;&#10;                result = array[i];&#10;                times = 1;&#10;            &#125;else if(array[i] == result)&#123;&#10;                //&#36935;&#21040;&#30456;&#21516;&#30340;&#25968;&#23383;&#27425;&#25968;&#23601;&#22686;&#21152;1&#10;                times++;&#10;            &#125;else&#123;&#10;                //&#27809;&#26377;&#36935;&#21040;&#30456;&#21516;&#30340;&#23601;&#25226;&#27425;&#25968;&#20943;&#23567;1&#10;                times--;&#10;            &#125;&#10;        &#125;&#10;        if(!checkMoreThanHalfNum(array,result)) return 0;&#10;        return result;&#10;    &#125;&#10;&#10;    /**&#10;     * &#26816;&#26597;&#35813;&#25968;&#23383;&#26159;&#21542;&#20986;&#29616;&#30340;&#27425;&#25968;&#36229;&#36807;&#19968;&#21322;&#10;     * @param array&#10;     * @param result&#10;     * @return&#10;     */&#10;    private boolean checkMoreThanHalfNum(int[] array, int result) &#123;&#10;        int times = 0;&#10;        for (int i = 0; i &#60; array.length; i++) &#123;&#10;            if(array[i] == result)&#123;&#10;                times++;&#10;            &#125;&#10;        &#125;&#10;        &#10;        boolean isMoreThanHalf = true;&#10;        if(times * 2 &#60;= array.length)&#123;&#10;            isMoreThanHalf = false;&#10;        &#125;&#10;        return isMoreThanHalf;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] array = new int[]&#123;1,2,3,2,2,2,5,4,2&#125;;&#10;        int a = new MoreThanHalfNumber().MoreThanHalfNum_Solution(null);&#10;        System.out.println(a);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line">public class <span class="type">MoreThanHalfNumber</span> &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 思路分析：由于有一个数字的次数超过一半，所以那个数字</span><br><span class="line">     * 肯定是最后一次吧times变量设为<span class="number">1</span>对应的数字</span><br><span class="line">     * @param <span class="type">array</span></span><br><span class="line">     * @<span class="keyword">return</span></span><br><span class="line">     */</span><br><span class="line">    public <span class="type">int</span> <span class="type">MoreThanHalfNum_Solution</span>(<span class="type">int</span>[] <span class="type">array</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="type">array</span> == null || <span class="type">array</span>.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> times = <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="literal">result</span> = <span class="type">array</span>[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; <span class="type">array</span>.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(times == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="literal">result</span> = <span class="type">array</span>[i];</span><br><span class="line">                times = <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="type">array</span>[i] == <span class="literal">result</span>)&#123;</span><br><span class="line">                //遇到相同的数字次数就增加<span class="number">1</span></span><br><span class="line">                times++;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                //没有遇到相同的就把次数减小<span class="number">1</span></span><br><span class="line">                times--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!checkMoreThanHalfNum(<span class="type">array</span>,<span class="literal">result</span>)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">result</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 检查该数字是否出现的次数超过一半</span><br><span class="line">     * @param <span class="type">array</span></span><br><span class="line">     * @param <span class="literal">result</span></span><br><span class="line">     * @<span class="keyword">return</span></span><br><span class="line">     */</span><br><span class="line">    private boolean checkMoreThanHalfNum(<span class="type">int</span>[] <span class="type">array</span>, <span class="type">int</span> <span class="literal">result</span>) &#123;</span><br><span class="line">        <span class="type">int</span> times = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="type">array</span>.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="type">array</span>[i] == <span class="literal">result</span>)&#123;</span><br><span class="line">                times++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        boolean isMoreThanHalf = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(times * <span class="number">2</span> &lt;= <span class="type">array</span>.length)&#123;</span><br><span class="line">            isMoreThanHalf = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> isMoreThanHalf;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public <span class="keyword">static</span> <span class="type">void</span> main(<span class="type">String</span>[] args) &#123;</span><br><span class="line">        <span class="type">int</span>[] <span class="type">array</span> = new <span class="type">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">2</span>&#125;;</span><br><span class="line">        <span class="type">int</span> a = new <span class="type">MoreThanHalfNumber</span>().<span class="type">MoreThanHalfNum_Solution</span>(null);</span><br><span class="line">        <span class="type">System</span>.<span class="keyword">out</span>.println(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -343,6 +383,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -455,7 +511,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -476,10 +532,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -537,6 +593,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

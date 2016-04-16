@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -330,7 +370,7 @@
 <p>输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。</p>
 <p>由于是从根节点开始遍历的，所以自然联想到前序遍历，但是问题并没有那么简单，在遍历的过程中需要记录遍历的所有节点值的和，当某条路径遍历完毕之后，还需要切换到另一个节点，比如从某个节点的左孩子切换到右孩子，然后需要重新计算总和，并且需要减去原来那个节点的值。大概思路是：使用前序遍历的方式，如果遍历到叶子节点，和恰好是目标值，那么就将遍历经过的所有节点放在一个集合中。如果遍历到叶子节点仍然不等于目标值，那么就切换到节点的右孩子节点重新计算（需要移除集合中添加的节点，并重新计算所有节点集合中的和）；如果没有遍历到叶子节点就从其孩子节点中继续寻找这样的路径。</p>
 <p>基于这样的思路，写出如下代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;&#10;public class FindTreePath &#123;&#10;&#10;    static class TreeNode &#123;&#10;        int val = 0;&#10;        TreeNode left = null;&#10;        TreeNode right = null;&#10;&#10;        public TreeNode(int val) &#123;&#10;            this.val = val;&#10;&#10;        &#125;&#10;&#10;    &#125;&#10;&#10;    public ArrayList&#60;ArrayList&#60;Integer&#62;&#62; FindPath(TreeNode root, int target) &#123;&#10;        int currentSum = 0;&#10;        ArrayList&#60;Integer&#62; pathNodes = new ArrayList&#60;Integer&#62;();&#10;        ArrayList&#60;ArrayList&#60;Integer&#62;&#62; pathList = new ArrayList&#60;ArrayList&#60;Integer&#62;&#62;();&#10;        if(root == null) return pathList;&#10;        return FindPath(pathList,pathNodes,root,target,currentSum);&#10;    &#125;&#10;&#10;    private ArrayList&#60;ArrayList&#60;Integer&#62;&#62; FindPath(&#10;            ArrayList&#60;ArrayList&#60;Integer&#62;&#62; pathList,&#10;            ArrayList&#60;Integer&#62; pathNodes,&#10;            TreeNode root, &#10;            int target,&#10;            int currentSum) &#123;&#10;        &#10;        currentSum += root.val;&#10;        pathNodes.add(root.val);&#10;        &#10;        //&#22914;&#26524;&#26159;&#26159;&#21494;&#23376;&#32467;&#28857;&#19988;&#21644;&#31561;&#20110;&#30446;&#26631;&#20540;&#65292;&#21017;&#25226;&#24403;&#21069;&#30340;&#36335;&#24452;&#28155;&#21152;&#21040;pathList&#20013;&#10;        boolean isLeafNode = root.left == null &#38;&#38; root.right == null;&#10;        if(currentSum == target &#38;&#38; isLeafNode)&#123;&#10;            ArrayList&#60;Integer&#62; nodes = new ArrayList&#60;Integer&#62;();&#10;            //&#36941;&#21382;pathNodes&#38598;&#21512;&#10;            for (Integer val : pathNodes) &#123;&#10;                nodes.add(val);&#10;            &#125;&#10;            pathList.add(nodes);&#10;        &#125;&#10;        &#10;        //&#22914;&#26524;&#19981;&#26159;&#21494;&#23376;&#33410;&#28857;&#65292;&#23601;&#20174;&#20854;&#23401;&#23376;&#33410;&#28857;&#23547;&#25214;&#10;        if(root.left != null)&#123;&#10;            FindPath(pathList,pathNodes, root.left, target, currentSum);&#10;        &#125;&#10;        if(root.right != null)&#123;&#10;            FindPath(pathList, pathNodes,root.right, target, currentSum);&#10;        &#125;&#10;        &#10;        //&#22312;&#36820;&#22238;&#29238;&#33410;&#28857;&#21482;&#20043;&#21069;&#65292;&#38656;&#35201;&#21024;&#38500;&#24403;&#21069;&#33410;&#28857;&#10;        Integer val = pathNodes.remove(pathNodes.size() - 1);&#10;        currentSum -= val;&#10;        return pathList;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        TreeNode root = new TreeNode(10);&#10;        TreeNode node1 = new TreeNode(5);&#10;        TreeNode node2 = new TreeNode(12);&#10;        TreeNode node3 = new TreeNode(4);&#10;        TreeNode node4 = new TreeNode(7);&#10;        &#10;        root.left = node1;&#10;        root.right = node2;&#10;        node1.left = node3;&#10;        node1.right = node4;&#10;        &#10;        ArrayList&#60;ArrayList&#60;Integer&#62;&#62; list = new FindTreePath().FindPath(null, 0);&#10;        System.out.println(&#34;&#22823;&#23567;&#65306;&#34; + list.size());&#10;        for (ArrayList&#60;Integer&#62; arrayList : list) &#123;&#10;            for (Integer integer : arrayList) &#123;&#10;                System.out.print(integer + &#34; &#34;);&#10;            &#125;&#10;            System.out.println();&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FindTreePath</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line">        TreeNode left = <span class="keyword">null</span>;</span><br><span class="line">        TreeNode right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;ArrayList&lt;Integer&gt;&gt; FindPath(TreeNode root, <span class="keyword">int</span> <span class="keyword">target</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> currentSum = <span class="number">0</span>;</span><br><span class="line">        ArrayList&lt;Integer&gt; pathNodes = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathList = <span class="keyword">new</span> ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> pathList;</span><br><span class="line">        <span class="function"><span class="keyword">return</span> <span class="title">FindPath</span><span class="params">(pathList,pathNodes,root,<span class="keyword">target</span>,currentSum)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ArrayList&lt;ArrayList&lt;Integer&gt;&gt; FindPath(</span><br><span class="line">            ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathList,</span><br><span class="line">            ArrayList&lt;Integer&gt; pathNodes,</span><br><span class="line">            TreeNode root, </span><br><span class="line">            <span class="keyword">int</span> <span class="keyword">target</span>,</span><br><span class="line">            <span class="keyword">int</span> currentSum) &#123;</span><br><span class="line">        </span><br><span class="line">        currentSum += root.val;</span><br><span class="line">        pathNodes.add(root.val);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//如果是是叶子结点且和等于目标值，则把当前的路径添加到pathList中</span></span><br><span class="line">        <span class="keyword">boolean</span> isLeafNode = root.left == <span class="keyword">null</span> &amp;&amp; root.right == <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span>(currentSum == <span class="keyword">target</span> &amp;&amp; isLeafNode)&#123;</span><br><span class="line">            ArrayList&lt;Integer&gt; nodes = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">            <span class="comment">//遍历pathNodes集合</span></span><br><span class="line">            <span class="keyword">for</span> (Integer val : pathNodes) &#123;</span><br><span class="line">                nodes.add(val);</span><br><span class="line">            &#125;</span><br><span class="line">            pathList.add(nodes);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//如果不是叶子节点，就从其孩子节点寻找</span></span><br><span class="line">        <span class="keyword">if</span>(root.left != <span class="keyword">null</span>)&#123;</span><br><span class="line">            FindPath(pathList,pathNodes, root.left, <span class="keyword">target</span>, currentSum);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">            FindPath(pathList, pathNodes,root.right, <span class="keyword">target</span>, currentSum);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//在返回父节点只之前，需要删除当前节点</span></span><br><span class="line">        Integer val = pathNodes.remove(pathNodes.size() - <span class="number">1</span>);</span><br><span class="line">        currentSum -= val;</span><br><span class="line">        <span class="keyword">return</span> pathList;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TreeNode root = <span class="keyword">new</span> TreeNode(<span class="number">10</span>);</span><br><span class="line">        TreeNode node1 = <span class="keyword">new</span> TreeNode(<span class="number">5</span>);</span><br><span class="line">        TreeNode node2 = <span class="keyword">new</span> TreeNode(<span class="number">12</span>);</span><br><span class="line">        TreeNode node3 = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">        TreeNode node4 = <span class="keyword">new</span> TreeNode(<span class="number">7</span>);</span><br><span class="line">        </span><br><span class="line">        root.left = node1;</span><br><span class="line">        root.right = node2;</span><br><span class="line">        node1.left = node3;</span><br><span class="line">        node1.right = node4;</span><br><span class="line">        </span><br><span class="line">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; list = <span class="keyword">new</span> FindTreePath().FindPath(<span class="keyword">null</span>, <span class="number">0</span>);</span><br><span class="line">        System.out.println(<span class="string">"大小："</span> + list.size());</span><br><span class="line">        <span class="keyword">for</span> (ArrayList&lt;Integer&gt; arrayList : list) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Integer integer : arrayList) &#123;</span><br><span class="line">                System.out.print(integer + <span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -343,6 +383,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -455,7 +511,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -476,10 +532,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -537,6 +593,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

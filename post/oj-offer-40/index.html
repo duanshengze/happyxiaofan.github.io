@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -331,7 +371,7 @@
 <p>输出所有和为S的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序</p>
 <p>此题的思路是：设定两个指针，一个指向第一个数，一个指向最后一个数，在此之前需要设定第一个数和最后一个数的值，由于是正数序列，所以可以把第一个数设为1，最后一个数为2（因为是要求是连续正数序列，最后不可能和第一个数重合）。下一步就是不断改变第一个数和最后一个数的值，如果从第一个数到最后一个数的和刚好是要求的和，那么把所有的数都添加到一个序列中；如果大于要求的和，则说明从第一个数到最后一个数之间的范围太大，因此减小范围，需要把第一个数的值加1，同时把当前和减去原来的第一个数的值；如果小于要求的和，说明范围太小，因此把最后一个数加1，同时把当前的和加上改变之后的最后一个数的值。这样，不断修改第一个数和最后一个数的值，就能确定所有连续正数序列的和等于S的序列了。</p>
 <p>基于上述思路，实现的代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;&#10;public class FindTotalContinuousSequence &#123;&#10;&#10;    public ArrayList&#60;ArrayList&#60;Integer&#62; &#62; FindContinuousSequence(int sum) &#123;&#10;        ArrayList&#60;ArrayList&#60;Integer&#62;&#62; sqList = new ArrayList&#60;ArrayList&#60;Integer&#62;&#62;();&#10;        if(sum &#60; 3) return sqList;&#10;        int small = 1;&#10;        int big = 2;&#10;        int curSum = small + big;&#10;        //&#35774;&#32622;middle&#21464;&#37327;&#30340;&#21407;&#22240;&#22312;&#20110;&#22914;&#26524;&#22312;&#24403;&#21069;&#24635;&#21644;&#23567;&#20110;sum&#30340;&#24773;&#20917;&#19979;&#65292;&#10;        //small&#22312;&#22686;&#21152;&#21040;sum&#30340;&#19968;&#21322;&#30340;&#36807;&#31243;&#20013;&#32943;&#23450;&#20250;&#22823;&#20110;sum&#10;        int middle = (1 + sum) / 2;&#10;        while(small &#60; middle)&#123;&#10;            ArrayList&#60;Integer&#62; sq = new ArrayList&#60;Integer&#62;();&#10;            if(curSum == sum)&#123;&#10;                for (int i = small; i &#60;= big; i++) &#123;&#10;                    sq.add(i);&#10;                &#125;&#10;            &#125;&#10;            while(curSum &#62; sum &#38;&#38; small &#60; middle)&#123;&#10;                curSum -= small;&#10;                small++;&#10;                if(curSum == sum)&#123;&#10;                    for (int i = small; i &#60;= big; i++) &#123;&#10;                        sq.add(i);&#10;                    &#125;&#10;                &#125;&#10;            &#125;&#10;            if(sq.size() &#62; 0) sqList.add(sq);;&#10;            big++;&#10;            curSum += big;&#10;        &#125;&#10;        &#10;        return sqList;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        ArrayList&#60;ArrayList&#60;Integer&#62;&#62; list = new FindTotalContinuousSequence().FindContinuousSequence(15);&#10;        for (ArrayList&#60;Integer&#62; arrayList : list) &#123;&#10;            System.out.println(arrayList);&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class FindTotalContinuousSequence &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;ArrayList&lt;Integer&gt; &gt; FindContinuousSequence(<span class="built_in">int</span> sum) &#123;</span><br><span class="line">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; sqList = <span class="keyword">new</span> ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(sum &lt; <span class="number">3</span>) <span class="keyword">return</span> sqList;</span><br><span class="line">        <span class="built_in">int</span> small = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> big = <span class="number">2</span>;</span><br><span class="line">        <span class="built_in">int</span> curSum = small + big;</span><br><span class="line">        <span class="comment">//设置middle变量的原因在于如果在当前总和小于sum的情况下，</span></span><br><span class="line">        <span class="comment">//small在增加到sum的一半的过程中肯定会大于sum</span></span><br><span class="line">        <span class="built_in">int</span> middle = (<span class="number">1</span> + sum) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span>(small &lt; middle)&#123;</span><br><span class="line">            ArrayList&lt;Integer&gt; <span class="built_in">sq</span> = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">            <span class="keyword">if</span>(curSum == sum)&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="built_in">int</span> i = small; i &lt;= big; i++) &#123;</span><br><span class="line">                    <span class="built_in">sq</span>.<span class="built_in">add</span>(i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(curSum &gt; sum &amp;&amp; small &lt; middle)&#123;</span><br><span class="line">                curSum -= small;</span><br><span class="line">                small++;</span><br><span class="line">                <span class="keyword">if</span>(curSum == sum)&#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="built_in">int</span> i = small; i &lt;= big; i++) &#123;</span><br><span class="line">                        <span class="built_in">sq</span>.<span class="built_in">add</span>(i);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">sq</span>.<span class="built_in">size</span>() &gt; <span class="number">0</span>) sqList.<span class="built_in">add</span>(<span class="built_in">sq</span>);;</span><br><span class="line">            big++;</span><br><span class="line">            curSum += big;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sqList;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; list = <span class="keyword">new</span> FindTotalContinuousSequence().FindContinuousSequence(<span class="number">15</span>);</span><br><span class="line">        <span class="keyword">for</span> (ArrayList&lt;Integer&gt; arrayList : list) &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(arrayList);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -344,6 +384,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -456,7 +512,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -477,10 +533,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -538,6 +594,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

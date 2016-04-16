@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -331,7 +371,7 @@
 <p>由于二叉搜索树的中序遍历就是排序的，如果是构造单链表，只需要一次中序遍历就可以了，但现在需要构造双链表，也就是在中序遍历的过程中需要设置每个节点的left与right指针，现在问题是如何设置这两个指针？二叉搜索树有一个特点，就是根节点的左子树上所有节点都比根节点的值小，而右子树上的所有节点的值都比根节点的值大，利用这个性质，当遍历根节点的左孩子的时候，可以继续把其当做左子树的根节点，右孩子可以当做右子树的根节点，从而使用递归完成。</p>
 <p>以左子树为例，依次访问节点的左孩子，当遍历到叶子节点的时候，递归结束，并把该叶子节点设为左子树转换的双链表的第一个节点，然后把其父节点链在其右边，设置left和right指针；如果父节点有右孩子，则继续对其右孩子继续转换，链在父节点的右边（父节点的右孩子肯定比父节点大）。这样当左右子树都转换完成后，返回双链表的第一个节点就可以了。</p>
 <p>下面是基于这种思路的Java代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;&#10;public class ConvertTreeToDLinkedList &#123;&#10;&#10;    static class TreeNode &#123;&#10;        int val = 0;&#10;        TreeNode left = null;&#10;        TreeNode right = null;&#10;&#10;        public TreeNode(int val) &#123;&#10;            this.val = val;&#10;&#10;        &#125;&#10;&#10;    &#125;&#10;    &#10;    public TreeNode Convert(TreeNode pRootOfTree) &#123;&#10;        if(pRootOfTree == null) return null;&#10;        if(pRootOfTree.left == null &#38;&#38; pRootOfTree.right == null) return pRootOfTree;&#10;        &#10;        TreeNode pLastNodeOfLeftList = Convert(pRootOfTree.left);&#10;        TreeNode p = pLastNodeOfLeftList;&#10;        &#10;        //&#23450;&#20301;&#21040;&#24038;&#23376;&#26641;&#21452;&#38142;&#34920;&#30340;&#26368;&#21518;&#19968;&#20010;&#33410;&#28857;&#10;        while(p != null &#38;&#38; p.right != null)&#123;&#10;            p = p.right;&#10;        &#125;&#10;        //&#23558;root&#33410;&#28857;&#36861;&#21152;&#21040;&#24038;&#23376;&#26641;&#21452;&#38142;&#34920;&#30340;&#26368;&#21518;&#19968;&#20010;&#33410;&#28857;&#10;        if(pLastNodeOfLeftList != null)&#123;&#10;            p.right = pRootOfTree;&#10;            pRootOfTree.left = p;&#10;        &#125;&#10;        //&#36716;&#25442;&#21491;&#23376;&#26641;&#20026;&#21452;&#38142;&#34920;&#10;        TreeNode pLastNodeOfRightList = Convert(pRootOfTree.right);;&#10;        //&#23558;root&#36861;&#21152;&#33267;&#21491;&#23376;&#26641;&#21452;&#38142;&#34920;&#30340;&#26368;&#21518;&#19968;&#20010;&#33410;&#28857;&#10;        if(pLastNodeOfRightList != null)&#123;&#10;            pLastNodeOfRightList.left = pRootOfTree;&#10;            pRootOfTree.right = pLastNodeOfRightList;&#10;        &#125;&#10;        //&#36820;&#22238;&#24038;&#23376;&#26641;&#30340;&#31532;&#19968;&#20010;&#33410;&#28857;&#10;        if(pLastNodeOfLeftList != null)&#10;            return pLastNodeOfLeftList;&#10;        return pRootOfTree;&#10;    &#125;&#10;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        TreeNode pRootOfTree = new TreeNode(10);&#10;        TreeNode node1 = new TreeNode(6);&#10;        TreeNode node2 = new TreeNode(14);&#10;        TreeNode node3 = new TreeNode(4);&#10;        TreeNode node4 = new TreeNode(8);&#10;        TreeNode node5 = new TreeNode(12);&#10;        TreeNode node6 = new TreeNode(16);&#10;        &#10;        pRootOfTree.left = node1;&#10;        pRootOfTree.right = node2;&#10;        node1.left = node3;&#10;        node1.right = node4;&#10;        node2.left = node5;&#10;        node2.right = node6;&#10;        &#10;        TreeNode node = new ConvertTreeToDLinkedList().Convert(pRootOfTree);&#10;        &#10;        while(node != null)&#123;&#10;            System.out.print(node.val + &#34; &#34;);&#10;            node = node.right;&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ConvertTreeToDLinkedList</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">TreeNode</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line">        TreeNode left = <span class="keyword">null</span>;</span><br><span class="line">        TreeNode right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span>(<span class="params"><span class="keyword">int</span> val</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">Convert</span>(<span class="params">TreeNode pRootOfTree</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(pRootOfTree == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span>(pRootOfTree.left == <span class="keyword">null</span> &amp;&amp; pRootOfTree.right == <span class="keyword">null</span>) <span class="keyword">return</span> pRootOfTree;</span><br><span class="line">        </span><br><span class="line">        TreeNode pLastNodeOfLeftList = Convert(pRootOfTree.left);</span><br><span class="line">        TreeNode p = pLastNodeOfLeftList;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//定位到左子树双链表的最后一个节点</span></span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> &amp;&amp; p.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">            p = p.right;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//将root节点追加到左子树双链表的最后一个节点</span></span><br><span class="line">        <span class="keyword">if</span>(pLastNodeOfLeftList != <span class="keyword">null</span>)&#123;</span><br><span class="line">            p.right = pRootOfTree;</span><br><span class="line">            pRootOfTree.left = p;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//转换右子树为双链表</span></span><br><span class="line">        TreeNode pLastNodeOfRightList = Convert(pRootOfTree.right);;</span><br><span class="line">        <span class="comment">//将root追加至右子树双链表的最后一个节点</span></span><br><span class="line">        <span class="keyword">if</span>(pLastNodeOfRightList != <span class="keyword">null</span>)&#123;</span><br><span class="line">            pLastNodeOfRightList.left = pRootOfTree;</span><br><span class="line">            pRootOfTree.right = pLastNodeOfRightList;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//返回左子树的第一个节点</span></span><br><span class="line">        <span class="keyword">if</span>(pLastNodeOfLeftList != <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> pLastNodeOfLeftList;</span><br><span class="line">        <span class="keyword">return</span> pRootOfTree;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">        TreeNode pRootOfTree = <span class="keyword">new</span> TreeNode(<span class="number">10</span>);</span><br><span class="line">        TreeNode node1 = <span class="keyword">new</span> TreeNode(<span class="number">6</span>);</span><br><span class="line">        TreeNode node2 = <span class="keyword">new</span> TreeNode(<span class="number">14</span>);</span><br><span class="line">        TreeNode node3 = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">        TreeNode node4 = <span class="keyword">new</span> TreeNode(<span class="number">8</span>);</span><br><span class="line">        TreeNode node5 = <span class="keyword">new</span> TreeNode(<span class="number">12</span>);</span><br><span class="line">        TreeNode node6 = <span class="keyword">new</span> TreeNode(<span class="number">16</span>);</span><br><span class="line">        </span><br><span class="line">        pRootOfTree.left = node1;</span><br><span class="line">        pRootOfTree.right = node2;</span><br><span class="line">        node1.left = node3;</span><br><span class="line">        node1.right = node4;</span><br><span class="line">        node2.left = node5;</span><br><span class="line">        node2.right = node6;</span><br><span class="line">        </span><br><span class="line">        TreeNode node = <span class="keyword">new</span> ConvertTreeToDLinkedList().Convert(pRootOfTree);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(node != <span class="keyword">null</span>)&#123;</span><br><span class="line">            System.<span class="keyword">out</span>.print(node.val + <span class="string">" "</span>);</span><br><span class="line">            node = node.right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -344,6 +384,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -456,7 +512,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -477,10 +533,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -538,6 +594,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -334,32 +374,32 @@
 <p>注：SingleThreadModel在servlet规范2.4中明确反对使用这种方式。为了实现同步，使用synchronized往往是更好的选择。</p>
 <p>3、如果需要读取请求参数，为了防止跨站脚本攻击（XSS），必须过滤出特殊的HTML字符。这种过滤方式的问题可能导致输出部分缺失。比如将’&lt;’替换成’&lt;’,’&gt;’替换成’&gt;’,’”‘替换成’&quot;’,’&amp;’替换成’&amp;’。</p>
 <p><strong>4、使用Servlet构建Excel电子表格</strong></p>
-<p>设置响应头：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(&#34;application/vnd.ms-excel&#34;);&#10;&#9;&#9;PrintWriter out = response.getWriter();</span><br></pre></td></tr></table></figure></p>
+<p>设置响应头：<br><figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType<span class="params">(<span class="string">"application/vnd.ms-excel"</span>)</span>;</span><br><span class="line">		PrintWriter out = response.getWriter<span class="params">()</span>;</span><br></pre></td></tr></table></figure></p>
 <p>例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App1 extends HttpServlet&#123;&#10;&#9;&#9;&#9;public void doGet(HttpServletRequest req,HttpServletResponse res)&#123;&#10;&#9;&#9;&#9;&#9;response.setContentType(&#34;application/vnd.ms-excel&#34;);&#10;&#9;&#9;&#9;&#9;PrintWriter out = response.getWriter();&#10;&#9;&#9;&#9;&#9;out.println(\tQ1\tQ2\tQ3\tQ4\tTotal);&#10;&#9;&#9;&#9;&#9;out.println(&#34;Apples\t78\t87\t92\t29\t=SUM(B2:E2)&#34;);&#10;&#9;&#9;&#9;&#9;out.println(&#34;Oranges\t78\t87\t92\t29\t=SUM(B3:E3)&#34;);&#10;&#9;&#9;&#9;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">App1</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">HttpServlet</span>&#123;</span></span><br><span class="line">			public void doGet(<span class="type">HttpServletRequest</span> req,<span class="type">HttpServletResponse</span> res)&#123;</span><br><span class="line">				response.setContentType(<span class="string">"application/vnd.ms-excel"</span>);</span><br><span class="line">				<span class="type">PrintWriter</span> out = response.getWriter();</span><br><span class="line">				out.println(\tQ1\tQ2\tQ3\tQ4\tTotal);</span><br><span class="line">				out.println(<span class="string">"Apples\t78\t87\t92\t29\t=SUM(B2:E2)"</span>);</span><br><span class="line">				out.println(<span class="string">"Oranges\t78\t87\t92\t29\t=SUM(B3:E3)"</span>);</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>5、使用Servlet生成JPEG图像</strong></p>
 <p>第一步：创建一个BufferedImage</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int width = 100px;&#10;&#9;&#9;int height = 100px;&#10;&#9;&#9;BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);</span><br></pre></td></tr></table></figure>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> <span class="variable">width</span> = <span class="number">100</span>px;</span><br><span class="line">		<span class="built_in">int</span> <span class="variable">height</span> = <span class="number">100</span>px;</span><br><span class="line">		BufferedImage <span class="built_in">image</span> = <span class="keyword">new</span> BufferedImage(<span class="variable">width</span>,<span class="variable">height</span>,BufferedImage.TYPE_INT_RGB);</span><br></pre></td></tr></table></figure>
 <p>第二步：在BufferedImage绘制图像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Graphics2D g = (Graphics2D)image.getGraphics();&#10;&#9;&#9;g.setXXX();&#10;&#9;&#9;g.fill();&#10;&#9;&#9;g.draw();</span><br></pre></td></tr></table></figure>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Graphics<span class="number">2</span>D g = <span class="comment">(Graphics2D)</span>image.getGraphics<span class="comment">()</span>;</span><br><span class="line">		g.setXXX<span class="comment">()</span>;</span><br><span class="line">		g.fill<span class="comment">()</span>;</span><br><span class="line">		g.draw<span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
 <p>第三步：设置Content-Type响应头</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType(&#34;image/jpeg&#34;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setContentType<span class="params">(<span class="string">"image/jpeg"</span>)</span>;</span><br></pre></td></tr></table></figure>
 <p>第四步：获取输出流</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream out = response.getOutputStream();</span><br></pre></td></tr></table></figure>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream <span class="keyword">out</span> = response.getOutputStream()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
 <p>第五步：以JPEG格式将图像发送到输出流</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImageIO.write(image,&#34;jpg&#34;,out);</span><br></pre></td></tr></table></figure>
-<p><strong>6、使用Cookie记录偏好</strong><br>form.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;form action=&#34;/register&#34; method=&#34;post&#34;&#62;&#10;&#9;firstName:&#60;input name=&#34;firstName&#34;/&#62;&#60;br&#62;&#10;&#9;lastName:&#60;input name=&#34;lastName&#34;/&#62;&#60;br&#62;&#10;&#9;&#60;input type=&#34;submit&#34;/&#62;&#10;&#60;/form&#62;</span><br></pre></td></tr></table></figure></p>
-<p>RegisterServlet.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@WebServlet(&#34;/register&#34;);&#10;public class RegisterServlet extends HttpServlet&#123;&#10;&#9;public void doGet(...)&#123;&#10;&#9;&#9;response.setContentType(&#34;text/html&#34;);&#10;&#9;&#9;String firstName = request.getParameter(&#34;firstName&#34;);&#10;&#9;&#9;String lastName = request.getParameter(&#34;lastName&#34;);&#10;&#9;&#9;Cookie c1 = new Cookie(&#34;firstName&#34;,firstName);&#10;&#9;&#9;response.addCookie(c1);&#10;&#9;&#9;Cookie c2 = new Cookie(&#34;lastName&#34;.lastName);&#10;&#9;&#9;response.addCookie(c2);&#10;&#9;&#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImageIO.<span class="command">write</span>(image,<span class="string">"jpg"</span>,out);</span><br></pre></td></tr></table></figure>
+<p><strong>6、使用Cookie记录偏好</strong><br>form.jsp<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=<span class="string">"/register"</span> <span class="keyword">method</span>=<span class="string">"post"</span>&gt;</span><br><span class="line">	firstName:&lt;input name=<span class="string">"firstName"</span>/&gt;&lt;br&gt;</span><br><span class="line">	lastName:&lt;input name=<span class="string">"lastName"</span>/&gt;&lt;br&gt;</span><br><span class="line">	&lt;input <span class="keyword">type</span>=<span class="string">"submit"</span>/&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></p>
+<p>RegisterServlet.java<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@WebServlet</span>(<span class="string">"/register"</span>);</span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">RegisterServlet</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">HttpServlet</span>&#123;</span></span><br><span class="line">	public void doGet(...)&#123;</span><br><span class="line">		response.setContentType(<span class="string">"text/html"</span>);</span><br><span class="line">		<span class="type">String</span> firstName = request.getParameter(<span class="string">"firstName"</span>);</span><br><span class="line">		<span class="type">String</span> lastName = request.getParameter(<span class="string">"lastName"</span>);</span><br><span class="line">		<span class="type">Cookie</span> c1 = <span class="keyword">new</span> <span class="type">Cookie</span>(<span class="string">"firstName"</span>,firstName);</span><br><span class="line">		response.addCookie(c1);</span><br><span class="line">		<span class="type">Cookie</span> c2 = <span class="keyword">new</span> <span class="type">Cookie</span>(<span class="string">"lastName"</span>.lastName);</span><br><span class="line">		response.addCookie(c2);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>7、对发往客户端的URL进行编码</strong></p>
 <p>如果使用URL重写进行会话跟踪，大部分页面或者全部页面都必须动态生成，站点的任何静态HTML文档都不能指向站点的动态页面的链接</p>
 <p>情况一：在servlet生成的Web页面中含有嵌入的URL，应该调用response的encodeURL，确定当前是否在使用URL重写，仅在必须时附加回话信息；否则不做任何修改直接返回传入的URL。</p>
 <p>情况二：在sendRedirect调用中，应该调用encodeRedirectURL<br>    如果最终可能使用URL重写替代Cookie，那么使用URL编码是最好的选择</p>
 <p><strong>8、JSP的好处</strong><br>    1) 易于编写HTML并维护<br>    2) 可以使用标准的开发工具开发<br>    3) 开发人员可以集中精力在表示上<br>    4) JSP擅长生成结构化的HTML页面，Servlet擅长业务的处理，可以生成二进制的数据 </p>
-<p><strong>9、JSP脚本、表达式编译成的Servlet</strong><br>    Foo.jsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;h2&#62;foo&#60;/h2&#62;&#10;&#9;&#9;&#60;!-- JSP&#34920;&#36798;&#24335;&#65292;&#35843;&#29992;&#21518;&#20250;&#26174;&#31034;bar&#26041;&#27861;&#25191;&#34892;&#36820;&#22238;&#30340;&#32467;&#26524;&#65292;&#32467;&#23614;&#19981;&#38656;&#35201;&#20998;&#21495; --&#62;&#10;&#9;&#9;&#60;%= bar() %&#62;&#10;&#9;&#9;&#60;!-- JSP scriplet&#65292;&#30452;&#25509;&#35843;&#29992;bar()&#65292;&#32467;&#23614;&#38656;&#35201;&#20998;&#21495; --&#62;&#10;&#9;&#9;&#60;% bar(); %&#62;</span><br></pre></td></tr></table></figure></p>
+<p><strong>9、JSP脚本、表达式编译成的Servlet</strong><br>    Foo.jsp<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">h2</span>&gt;</span>foo<span class="tag">&lt;/<span class="title">h2</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- JSP表达式，调用后会显示bar方法执行返回的结果，结尾不需要分号 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">%=</span> <span class="attribute">bar</span>() %&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- JSP scriplet，直接调用bar()，结尾需要分号 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">%</span> <span class="attribute">bar</span>(); %&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>Foo_jsp.java，之后被编译成Foo_jsp.class<br>        public void _jspInit(){ ..}     — 当JSP网页一开始执行时，最先执行此方法，执行初始化工作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void _jspDestory()&#123;...&#125; &#8211; JSP&#32593;&#39029;&#26368;&#21518;&#25191;&#34892;&#30340;&#26041;&#27861;&#10;&#10;&#9;&#9;public void _jspService(HttpServletRequest request, HttpServletResponse response)&#10;        throws java.io.IOException, ServletException &#123;&#10;        &#9;HttpSession session = request.getSession();&#10;        &#9;JspWriter out = response.getWriter();&#10;        &#9;out.println(&#60;h2&#62;Foo&#60;/h2&#62;);&#10;        &#9;out.println(bar());&#10;        &#9;bar();&#10;        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public <span class="type">void</span> _jspDestory()<span class="decorator">&#123;...&#125;</span> – <span class="type">JSP</span>网页最后执行的方法</span><br><span class="line"></span><br><span class="line">		public <span class="type">void</span> _jspService(<span class="type">HttpServletRequest</span> request, <span class="type">HttpServletResponse</span> response)</span><br><span class="line">        throws java.io.<span class="type">IOException</span>, <span class="type">ServletException</span> &#123;</span><br><span class="line">        	<span class="type">HttpSession</span> session = request.getSession();</span><br><span class="line">        	<span class="type">JspWriter</span> <span class="keyword">out</span> = response.getWriter();</span><br><span class="line">        	<span class="keyword">out</span>.println(&lt;h2&gt;<span class="type">Foo</span>&lt;/h2&gt;);</span><br><span class="line">        	<span class="keyword">out</span>.println(bar());</span><br><span class="line">        	bar();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p><strong>10、对于JSP的初始化和清理工作，可以使用JSP声明覆盖jspInit()和jspDestroy()方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSP&#22768;&#26126;&#26684;&#24335;&#10;&#60;%! &#21464;&#37327;&#25110;&#32773;&#26041;&#27861; %&#62;&#10;&#29616;&#32771;&#34385;&#22914;&#19979;JSP&#22768;&#26126;&#65306;&#10;&#60;%! private int accessCount = 0;%&#62;&#10;&#60;%= ++accessCount%&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JSP声明格式</span><br><span class="line">&lt;<span class="variable">%!</span> 变量或者方法 <span class="variable">%&gt;</span></span><br><span class="line">现考虑如下JSP声明：</span><br><span class="line">&lt;<span class="variable">%!</span> private <span class="keyword">int</span> accessCount = <span class="number">0</span>;<span class="variable">%&gt;</span></span><br><span class="line">&lt;<span class="variable">%=</span> ++accessCount<span class="variable">%&gt;</span></span><br></pre></td></tr></table></figure>
 <p>不同的客户端得到的技术不是唯一的，也就是由于多个请求共享accessCount变量，该代码不是线程安全的。但是在服务器重新启动之前，所有用户看到的都是同样的结果</p>
 <p><strong>11、session属性</strong></p>
 <p>使用形式：&lt;%@ page session = “true” %&gt;&lt;%— default —%&gt;</p>
@@ -377,19 +417,19 @@
 </blockquote>
 <p>然而，不能因为在所包含的页面定义了主页面的需要的字段或者方法就认为必须应该使用include指令。对此合理的解释是，如果使用jsp:include动作，那么针对类似访问计数功能的页面来说，所有使用该页面的主jsp页面都将显示相同的计数。核心就是产生了两个Servlet，而这两个Servlet之间是无法共享计数值的。</p>
 <p><strong>14、基于请求的共享</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class NumberBean&#123;&#10;&#9;&#9;private int num;&#10;&#9;&#9;...&#10;&#9;&#125;&#10;&#9;public class NumberServlet extends HttpServlet&#123;&#10;&#9;&#9;... doGet(...)&#123;&#10;&#9;&#9;&#9;NumberBean number = new NumberBean(new Random().nextInt(Integer.MAX_VALUE));&#10;&#9;&#9;&#9;request.setAttribute(&#34;number&#34;,number);&#10;&#9;&#9;&#9;String addr = &#34;/WEB-INF/view/number.jsp&#34;;&#10;&#9;&#9;&#9;request.getRequestDispatcher(addr).forward(request,response);&#10;&#9;&#9;&#9;&#125;&#10;&#9;&#125;&#10;&#9;number.jsp&#10;&#9;...&#10;&#9;&#60;jsp:useBean id = &#34;number&#34; type=&#34;servlet.NumberServlet&#34; scope=&#34;request&#34;/&#62;&#10;&#9;Your number is: &#10;&#9;&#60;jsp:getProperty name=&#34;number&#34; property=&#34;num&#34;&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">NumberBean</span>&#123;</span></span><br><span class="line">		<span class="keyword">private</span> int num;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">	public <span class="class"><span class="keyword">class</span> <span class="title">NumberServlet</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">HttpServlet</span>&#123;</span></span><br><span class="line">		... doGet(...)&#123;</span><br><span class="line">			<span class="type">NumberBean</span> number = <span class="keyword">new</span> <span class="type">NumberBean</span>(<span class="keyword">new</span> <span class="type">Random</span>().nextInt(<span class="type">Integer</span>.<span class="type">MAX_VALUE</span>));</span><br><span class="line">			request.setAttribute(<span class="string">"number"</span>,number);</span><br><span class="line">			<span class="type">String</span> addr = <span class="string">"/WEB-INF/view/number.jsp"</span>;</span><br><span class="line">			request.getRequestDispatcher(addr).forward(request,response);</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	number.jsp</span><br><span class="line">	...</span><br><span class="line">	&lt;jsp:useBean id = <span class="string">"number"</span> <span class="class"><span class="keyword">type</span>=</span><span class="string">"servlet.NumberServlet"</span> scope=<span class="string">"request"</span>/&gt;</span><br><span class="line">	<span class="type">Your</span> number is: </span><br><span class="line">	&lt;jsp:getProperty name=<span class="string">"number"</span> property=<span class="string">"num"</span>&gt;</span><br></pre></td></tr></table></figure>
 <p>以上这种组合方式只能访问简单类型的属性，对于包装的POJO的属性则需要复杂的语法才能实现，在现在主流的MVC框架中（包括Struts2和Spring Web MVC）都对这点进行了封装，让用户可以像访问简单POJO的属性一样访问包装类型的POJO的属性。</p>
 <p><strong>15、EL</strong><br>    <code>&amp;#36;{bash}</code><br>    输出<br>    ${bash}</p>
 <p><code>\${1+1} is ${1+1}</code><br>    输出<br>${1+1} is 2</p>
 <p>${name}</p>
 <p>作用域访问次序：PageContext—&gt;HttpServletRequest—&gt;HttpSession—&gt;ServletContext</p>
-<p>等同于调用JSP表达式：&lt;%= pageContext.findAttribute(“name”)%&gt;<br>等同于：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;jsp:useBean id=&#34;name&#34; type=&#34;somePackage.someClass&#34; scope=&#34;...&#34;&#62;&#10;&#9;&#9;&#60;%= name%&#62;</span><br></pre></td></tr></table></figure></p>
+<p>等同于调用JSP表达式：&lt;%= pageContext.findAttribute(“name”)%&gt;<br>等同于：<br><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:useBean <span class="variable">id=</span><span class="string">"name"</span> <span class="variable">type=</span><span class="string">"somePackage.someClass"</span> <span class="variable">scope=</span><span class="string">"..."</span>&gt;</span><br><span class="line">		&lt;%= name%&gt;</span><br></pre></td></tr></table></figure></p>
 <p><strong>返回某个作用域变量的某个属性</strong></p>
 <p>${customer.fistName}等同于${customer[“fistName”]}(这种方式很少使用，不推荐使用)</p>
 <p>等同于</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;%@ page import=&#34;bean.Customer&#34;%&#62;&#10;&#9;&#9;&#60;% Customer customer = (Customer)pageContext.findAttribute(&#34;customer&#34;); %&#62;&#10;&#9;&#9;&#60;%= customer.getFistName() %&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="variable">%@</span> page import=<span class="string">"bean.Customer"</span><span class="variable">%&gt;</span></span><br><span class="line">		&lt;% Customer customer = (Customer)pageContext.findAttribute(<span class="string">"customer"</span>); <span class="variable">%&gt;</span></span><br><span class="line">		&lt;<span class="variable">%=</span> customer.getFistName() <span class="variable">%&gt;</span></span><br></pre></td></tr></table></figure>
 <p>等同于</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;jsp:useBean id=&#34;customer&#34; type=&#34;bean.Customer&#34; scope=&#34;request,session, or application&#34; /&#62;&#10;&#9;&#9;&#60;jsp:getProperty name=&#34;customer&#34; property=&#34;fistName&#34; /&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:useBean <span class="variable">id=</span><span class="string">"customer"</span> <span class="variable">type=</span><span class="string">"bean.Customer"</span> <span class="variable">scope=</span><span class="string">"request,session, or application"</span> /&gt;</span><br><span class="line">		&lt;jsp:getProperty <span class="variable">name=</span><span class="string">"customer"</span> <span class="variable">property=</span><span class="string">"fistName"</span> /&gt;</span><br></pre></td></tr></table></figure>
 <p>但是对于类似${customer.address.zipCode}，使用<jsp:usebean>和<jsp:getproperty>则不能完成相同的获取属性的工作</jsp:getproperty></jsp:usebean></p>
 <p><strong>访问集合</strong><br>    ${attributeName[entryName]}</p>
 <p>对于JSP2.0，Servlet2.4以上（包含）的版本，还规定了以下的隐式对象：</p>
@@ -406,9 +446,9 @@
 <p>5) 执行存储过程<br>            statement.execute();</p>
 <p>6) 访问返回的输出参数<br>            int res = statement.getInt(1);</p>
 <p>这里返回的是第一个输出参数，如果是第二个参数则将参数1变为2，其他以此类推</p>
-<p><strong>事务管理模板：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection connection = DriverManager.getConnection(url.username,password);&#10;boolean autoCommit = connection.getAutoCommit();&#10;try&#123;&#10;&#9;connection.setAutoCommit(fasle);&#10;&#9;Statement st = connection.createStatement();&#10;&#9;//&#25191;&#34892;&#20107;&#21153;&#21333;&#20803;&#10;&#9;...&#10;&#9;st.close();&#10;&#125;catch(SQLException e)&#123;&#10;&#9;connection.rollBack();&#10;&#9;throw new Throwable(e.getCause());&#10;&#125;finally&#123;&#10;&#9;connection.commit();&#10;&#9;connection.setAutoCommit(autoCommit);&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>事务管理模板：</strong><br><figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Connection connection = DriverManager.getConnection<span class="params">(url.username,password)</span>;</span><br><span class="line">boolean autoCommit = connection.getAutoCommit<span class="params">()</span>;</span><br><span class="line">try&#123;</span><br><span class="line">	connection.setAutoCommit<span class="params">(fasle)</span>;</span><br><span class="line">	Statement st = connection.createStatement<span class="params">()</span>;</span><br><span class="line">	<span class="comment">//执行事务单元</span></span><br><span class="line">	...</span><br><span class="line">	st.close<span class="params">()</span>;</span><br><span class="line">&#125;catch<span class="params">(SQLException e)</span>&#123;</span><br><span class="line">	connection.rollBack<span class="params">()</span>;</span><br><span class="line">	throw new Throwable<span class="params">(e.getCause<span class="params">()</span>)</span>;</span><br><span class="line">&#125;finally&#123;</span><br><span class="line">	connection.commit<span class="params">()</span>;</span><br><span class="line">	connection.setAutoCommit<span class="params">(autoCommit)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>mysql用户授权</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on database_name.* to USER_NAME@&#34;%&#34; identified by &#39;PASSWORD&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">privileges</span> <span class="keyword">on</span> database_name.* <span class="keyword">to</span> USER_NAME@<span class="string">"%"</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'PASSWORD'</span></span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -422,6 +462,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -532,7 +588,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -553,10 +609,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -614,6 +670,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

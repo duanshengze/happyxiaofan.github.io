@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -182,17 +182,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -202,9 +206,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -212,17 +222,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -294,6 +330,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -332,7 +372,7 @@
 <p>在完成代码之前，我自己分析了一下如何根据前序遍历和中序遍历的结果构建一棵二叉树。首先，根据二叉树遍历的性质，由前序遍历的结果序列可知该二叉树的根节点是1，在根据中序遍历的结果可是根节点1的左子树包含的结点是4、7、2，右子树包含的节点是5、3、8、6。现在考虑左子树中节点4、7、2，由于这三个节点在前序遍历的结果是2、4、7，那么2必然是这三个节点组成的子树的根节点，再回到中序遍历的结果4、7、2，那么可以判断出4是2的左孩子，7是4的右孩子；同理可以对右子树进行判断。这样，画出的二叉树是这样的：<br><a id="more"></a></p>
 <p><img src="http://img.blog.csdn.net/20151203171135978" alt="构建的二叉树"></p>
 <p>自然，我们可以分析判断过程写出构建二叉树的完整代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class ConstructBinaryTree &#123;&#10;&#10;    public class TreeNode &#123;&#10;        int val;&#10;        TreeNode left;&#10;        TreeNode right;&#10;&#10;        TreeNode(int x) &#123;&#10;            val = x;&#10;        &#125;&#10;    &#125;&#10;&#10;    public TreeNode reConstructBinaryTree(int[] pre, int[] in) &#123;&#10;        return constructCore(pre,0,pre.length - 1,in,0,in.length - 1);&#10;    &#125;&#10;&#10;    private TreeNode constructCore(int[] pre,int startPreOrder, int endPreOrder, int[] in,int startInOrder, int endInOrder) &#123;&#10;        //&#26681;&#25454;&#21069;&#24207;&#36941;&#21382;&#25214;&#21040;&#26681;&#33410;&#28857;&#30340;&#20540;&#10;        int rootValue = pre[startPreOrder];&#10;        TreeNode rootNode = new TreeNode(rootValue);&#10;        rootNode.left = null;&#10;        rootNode.right = null;&#10;        &#10;        //&#21482;&#26377;&#19968;&#20010;&#32467;&#28857;&#65292;&#37027;&#20040;&#35813;&#33410;&#28857;&#23601;&#26159;&#26681;&#33410;&#28857;&#65292;&#30452;&#25509;&#36820;&#22238;&#10;        if(startPreOrder == endPreOrder)&#123;&#10;            if(startInOrder == endInOrder &#38;&#38; pre[startPreOrder] == in[startInOrder])&#123;&#10;                return rootNode;&#10;            &#125;&#10;        &#125;&#10;        &#10;        //&#26681;&#25454;&#20013;&#24207;&#36941;&#21382;&#30340;&#32467;&#26524;&#25214;&#21040;&#26681;&#33410;&#28857;&#10;        int rootOfInOrder = startInOrder;&#10;        while(rootOfInOrder &#60;= endInOrder &#38;&#38; in[rootOfInOrder] != rootValue)&#123;&#10;            rootOfInOrder++;&#10;        &#125;&#10;        &#10;        //&#24322;&#24120;&#22788;&#29702;&#10;        if(rootOfInOrder == endInOrder &#38;&#38; in[rootOfInOrder] != rootValue)&#123;&#10;            return null;&#10;        &#125;&#10;        &#10;        //&#35745;&#31639;&#24038;&#23376;&#26641;&#30340;&#38271;&#24230;&#10;        int leftSubTreeLen = rootOfInOrder - startInOrder;&#10;        //&#26681;&#25454;&#24038;&#23376;&#26641;&#30340;&#38271;&#24230;&#35745;&#31639;&#21069;&#24207;&#36941;&#21382;&#32467;&#26524;&#20013;&#24038;&#23376;&#26641;&#30340;&#26368;&#21518;&#19968;&#20010;&#32467;&#28857;&#30340;&#19979;&#26631;&#10;        int leftIndexOfPreOrderEnd = startPreOrder + leftSubTreeLen;&#10;        //&#37325;&#24314;&#24038;&#23376;&#26641;&#10;        if(leftSubTreeLen &#62; 0)&#123;&#10;            rootNode.left = constructCore(pre, startPreOrder + 1, leftIndexOfPreOrderEnd, in, startInOrder, rootOfInOrder - 1);&#10;        &#125;&#10;        //&#37325;&#24314;&#21491;&#23376;&#26641;&#10;        if(leftSubTreeLen &#60; endPreOrder - startPreOrder)&#123;&#10;            rootNode.right = constructCore(pre, leftIndexOfPreOrderEnd + 1, endPreOrder, in, rootOfInOrder + 1, endInOrder);&#10;        &#125;&#10;        return rootNode;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] pre = &#123;1,2,4,7,3,5,6,8&#125;;&#10;        int[] in = &#123;4,7,2,1,5,3,8,6&#125;;&#10;        TreeNode root = new ConstructBinaryTree().reConstructBinaryTree(pre, in);&#10;        System.out.println(root);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ConstructBinaryTree</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TreeNode</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        TreeNode left;</span><br><span class="line">        TreeNode right;</span><br><span class="line"></span><br><span class="line">        TreeNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">            val = x;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">reConstructBinaryTree</span>(<span class="params"><span class="keyword">int</span>[] pre, <span class="keyword">int</span>[] <span class="keyword">in</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> constructCore(pre,<span class="number">0</span>,pre.length - <span class="number">1</span>,<span class="keyword">in</span>,<span class="number">0</span>,<span class="keyword">in</span>.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TreeNode <span class="title">constructCore</span>(<span class="params"><span class="keyword">int</span>[] pre,<span class="keyword">int</span> startPreOrder, <span class="keyword">int</span> endPreOrder, <span class="keyword">int</span>[] <span class="keyword">in</span>,<span class="keyword">int</span> startInOrder, <span class="keyword">int</span> endInOrder</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//根据前序遍历找到根节点的值</span></span><br><span class="line">        <span class="keyword">int</span> rootValue = pre[startPreOrder];</span><br><span class="line">        TreeNode rootNode = <span class="keyword">new</span> TreeNode(rootValue);</span><br><span class="line">        rootNode.left = <span class="keyword">null</span>;</span><br><span class="line">        rootNode.right = <span class="keyword">null</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//只有一个结点，那么该节点就是根节点，直接返回</span></span><br><span class="line">        <span class="keyword">if</span>(startPreOrder == endPreOrder)&#123;</span><br><span class="line">            <span class="keyword">if</span>(startInOrder == endInOrder &amp;&amp; pre[startPreOrder] == <span class="keyword">in</span>[startInOrder])&#123;</span><br><span class="line">                <span class="keyword">return</span> rootNode;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//根据中序遍历的结果找到根节点</span></span><br><span class="line">        <span class="keyword">int</span> rootOfInOrder = startInOrder;</span><br><span class="line">        <span class="keyword">while</span>(rootOfInOrder &lt;= endInOrder &amp;&amp; <span class="keyword">in</span>[rootOfInOrder] != rootValue)&#123;</span><br><span class="line">            rootOfInOrder++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//异常处理</span></span><br><span class="line">        <span class="keyword">if</span>(rootOfInOrder == endInOrder &amp;&amp; <span class="keyword">in</span>[rootOfInOrder] != rootValue)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//计算左子树的长度</span></span><br><span class="line">        <span class="keyword">int</span> leftSubTreeLen = rootOfInOrder - startInOrder;</span><br><span class="line">        <span class="comment">//根据左子树的长度计算前序遍历结果中左子树的最后一个结点的下标</span></span><br><span class="line">        <span class="keyword">int</span> leftIndexOfPreOrderEnd = startPreOrder + leftSubTreeLen;</span><br><span class="line">        <span class="comment">//重建左子树</span></span><br><span class="line">        <span class="keyword">if</span>(leftSubTreeLen &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            rootNode.left = constructCore(pre, startPreOrder + <span class="number">1</span>, leftIndexOfPreOrderEnd, <span class="keyword">in</span>, startInOrder, rootOfInOrder - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//重建右子树</span></span><br><span class="line">        <span class="keyword">if</span>(leftSubTreeLen &lt; endPreOrder - startPreOrder)&#123;</span><br><span class="line">            rootNode.right = constructCore(pre, leftIndexOfPreOrderEnd + <span class="number">1</span>, endPreOrder, <span class="keyword">in</span>, rootOfInOrder + <span class="number">1</span>, endInOrder);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> rootNode;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] pre = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span>[] <span class="keyword">in</span> = &#123;<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">6</span>&#125;;</span><br><span class="line">        TreeNode root = <span class="keyword">new</span> ConstructBinaryTree().reConstructBinaryTree(pre, <span class="keyword">in</span>);</span><br><span class="line">        System.<span class="keyword">out</span>.println(root);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -346,6 +386,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -458,7 +514,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -479,10 +535,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -540,6 +596,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

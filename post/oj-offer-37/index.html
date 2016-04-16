@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,7 +369,7 @@
         <p>题目描述</p>
 <p>输入一棵二叉树，求该树的深度。从根结点到叶结点依次经过的结点（含根、叶结点）形成树的一条路径，最长路径的长度为树的深度。</p>
 <p>有了前面寻找二叉树路径的基础之后，解决这题应该不难。根据书上的思路，有一种更简洁的算法，思路如下：如果二叉树只有根节点那么深度就是1，如果只有左子树，那么就是左子树的深度加1就是整棵二叉树的深度；如果只有右子树，那么二叉树的深度就是右子树的深度加1；如果既有左子树又有右子树，那么二叉树的深度就是左右子树中深度更大的深度加1了。根据这个过程，自然发现，实际上只需要分别递归二叉树的左右子树并计算其深度，那么最后在其较大值中加1就是二叉树的深度了。所以，实现的代码如下（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class BTreeDepth &#123;&#10;&#10;    static class TreeNode &#123;&#10;        int val = 0;&#10;        TreeNode left = null;&#10;        TreeNode right = null;&#10;&#10;        public TreeNode(int val) &#123;&#10;            this.val = val;&#10;&#10;        &#125;&#10;&#10;    &#125;&#10;    &#10;    public int TreeDepth(TreeNode root) &#123;&#10;        if(root == null) return 0;&#10;        int leftSubTree = TreeDepth(root.left);&#10;        int rightSubTree = TreeDepth(root.right);&#10;        return leftSubTree &#62; rightSubTree ? leftSubTree + 1 : rightSubTree + 1;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        TreeNode root = new TreeNode(1);&#10;        TreeNode node1 = new TreeNode(2);&#10;        TreeNode node2 = new TreeNode(3);&#10;        TreeNode node3 = new TreeNode(4);&#10;        TreeNode node4 = new TreeNode(5);&#10;        TreeNode node5 = new TreeNode(6);&#10;        TreeNode node6 = new TreeNode(7);&#10;        &#10;        root.left = node1;&#10;        root.right = node2;&#10;        node1.left = node3;&#10;        node1.right = node4;&#10;        node2.right = node5;&#10;        node4.left = node6;&#10;        &#10;        int d = new BTreeDepth().TreeDepth(root);&#10;        System.out.println(d);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BTreeDepth</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">TreeNode</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line">        TreeNode left = <span class="keyword">null</span>;</span><br><span class="line">        TreeNode right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span>(<span class="params"><span class="keyword">int</span> val</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">TreeDepth</span>(<span class="params">TreeNode root</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> leftSubTree = TreeDepth(root.left);</span><br><span class="line">        <span class="keyword">int</span> rightSubTree = TreeDepth(root.right);</span><br><span class="line">        <span class="keyword">return</span> leftSubTree &gt; rightSubTree ? leftSubTree + <span class="number">1</span> : rightSubTree + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">        TreeNode root = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">        TreeNode node1 = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">        TreeNode node2 = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br><span class="line">        TreeNode node3 = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">        TreeNode node4 = <span class="keyword">new</span> TreeNode(<span class="number">5</span>);</span><br><span class="line">        TreeNode node5 = <span class="keyword">new</span> TreeNode(<span class="number">6</span>);</span><br><span class="line">        TreeNode node6 = <span class="keyword">new</span> TreeNode(<span class="number">7</span>);</span><br><span class="line">        </span><br><span class="line">        root.left = node1;</span><br><span class="line">        root.right = node2;</span><br><span class="line">        node1.left = node3;</span><br><span class="line">        node1.right = node4;</span><br><span class="line">        node2.right = node5;</span><br><span class="line">        node4.left = node6;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> d = <span class="keyword">new</span> BTreeDepth().TreeDepth(root);</span><br><span class="line">        System.<span class="keyword">out</span>.println(d);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -342,6 +382,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -454,7 +510,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -475,10 +531,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -536,6 +592,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

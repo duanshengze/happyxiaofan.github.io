@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,7 +369,7 @@
         <p>题目描述</p>
 <p>将一个字符串转换成一个整数，要求不能使用字符串转换整数的库函数</p>
 <p>这里的关键是要对输入的字符串进行全面的考虑。包括字符串是否有效的判断、是否是负数以及字符串表示的整数是否越界等问题。对于字符串有效性的判断主要是null以及空串的判定；负数之所以需要判断是因为在计算的时候是有用的；而是否越界的问题也是需要考虑的。因为一个越界的数是不可能计算出来的，那么这时候可以简单返回一个0，表示越界的数。这三点都考虑之后，整体代码的健壮性就比较好了。下面是这种思路的实现代码（已被牛客AC），详细的已经在代码的注释中给出了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class StringToInt &#123;&#10;&#10;    // &#35774;&#32622;&#19968;&#20010;&#25104;&#21592;&#21464;&#37327;&#34920;&#31034;&#21457;&#29983;&#28322;&#20986;&#10;    boolean isValid = true;&#10;&#10;    public int StrToInt(String str) &#123;&#10;        // &#35774;&#32622;&#19968;&#20010;&#21464;&#37327;&#26159;&#21542;&#26159;&#36127;&#25968;&#10;        boolean isNegtive = false;&#10;        long sum = 0;&#10;        // &#31532;&#19968;&#20010;&#23383;&#31526;&#30340;&#19979;&#26631;&#10;        int begin = 0;&#10;        if (str != null &#38;&#38; !str.equals(&#34;&#34;)) &#123;&#10;            // &#21028;&#26029;&#31532;&#19968;&#20010;&#23383;&#31526;&#26159;&#21542;&#26159;&#27491;&#25968;&#25110;&#32773;&#36127;&#25968;&#10;            char firstChar = str.charAt(begin);&#10;            if (firstChar == &#39;+&#39; || firstChar == &#39;-&#39;) &#123;&#10;                begin = 1;&#10;                if (firstChar == &#39;-&#39;)&#10;                    isNegtive = true;&#10;            &#125;&#10;            sum = strToIntCore(str, begin, isNegtive);&#10;        &#125;&#10;        isValid = false;&#10;        return (int) sum;&#10;    &#125;&#10;&#10;    private long strToIntCore(String str, int begin, boolean isNegtive) &#123;&#10;        int flag = isNegtive ? -1 : 1;&#10;        long sum = 0;&#10;        // &#38656;&#35201;&#36716;&#25442;&#30340;&#23383;&#31526;&#19979;&#26631;&#30340;&#36215;&#22987;&#20301;&#32622;&#10;        int index = begin;&#10;        while (index &#60; str.length()) &#123;&#10;            // &#22914;&#26524;&#23383;&#31526;&#26159;&#20174;0&#21040;9&#30340;&#35805;&#10;            char curChar = str.charAt(index);&#10;            if (curChar &#62;= &#39;0&#39; &#38;&#38; curChar &#60;= &#39;9&#39;) &#123;&#10;                sum = sum * 10 + flag * (curChar - &#39;0&#39;);&#10;                // &#32771;&#34385;&#36234;&#30028;&#30340;&#24773;&#20917;&#65292;&#30452;&#25509;&#36820;&#22238;&#26368;&#23567;&#20540;&#25110;&#32773;&#26368;&#22823;&#20540;&#10;                if ((isNegtive &#38;&#38; sum &#60; Integer.MIN_VALUE) || (!isNegtive&#10;                        &#38;&#38; sum &#62; Integer.MAX_VALUE)) &#123;&#10;                    return 0;&#10;                &#125;&#10;            &#125;else&#123;&#10;                return 0;&#10;            &#125;&#10;            index++;&#10;        &#125;&#10;        return sum;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        String str = &#34;-0&#34;;&#10;        int a = new StringToInt().StrToInt(str);&#10;        System.out.println(a);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringToInt</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置一个成员变量表示发生溢出</span></span><br><span class="line">    <span class="keyword">boolean</span> isValid = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> StrToInt(String <span class="keyword">str</span>) &#123;</span><br><span class="line">        <span class="comment">// 设置一个变量是否是负数</span></span><br><span class="line">        <span class="keyword">boolean</span> isNegtive = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">sum</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 第一个字符的下标</span></span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">str</span> != <span class="keyword">null</span> &amp;&amp; !<span class="keyword">str</span>.equals(<span class="string">""</span>)) &#123;</span><br><span class="line">            <span class="comment">// 判断第一个字符是否是正数或者负数</span></span><br><span class="line">            <span class="keyword">char</span> firstChar = <span class="keyword">str</span>.charAt(begin);</span><br><span class="line">            <span class="keyword">if</span> (firstChar == <span class="string">'+'</span> || firstChar == <span class="string">'-'</span>) &#123;</span><br><span class="line">                begin = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (firstChar == <span class="string">'-'</span>)</span><br><span class="line">                    isNegtive = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">sum</span> = strToIntCore(<span class="keyword">str</span>, begin, isNegtive);</span><br><span class="line">        &#125;</span><br><span class="line">        isValid = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) <span class="keyword">sum</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> strToIntCore(String <span class="keyword">str</span>, <span class="keyword">int</span> begin, <span class="keyword">boolean</span> isNegtive) &#123;</span><br><span class="line">        <span class="keyword">int</span> flag = isNegtive ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">sum</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 需要转换的字符下标的起始位置</span></span><br><span class="line">        <span class="keyword">int</span> <span class="keyword">index</span> = begin;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">index</span> &lt; <span class="keyword">str</span>.length()) &#123;</span><br><span class="line">            <span class="comment">// 如果字符是从0到9的话</span></span><br><span class="line">            <span class="keyword">char</span> curChar = <span class="keyword">str</span>.charAt(<span class="keyword">index</span>);</span><br><span class="line">            <span class="keyword">if</span> (curChar &gt;= <span class="string">'0'</span> &amp;&amp; curChar &lt;= <span class="string">'9'</span>) &#123;</span><br><span class="line">                <span class="keyword">sum</span> = <span class="keyword">sum</span> * <span class="number">10</span> + flag * (curChar - <span class="string">'0'</span>);</span><br><span class="line">                <span class="comment">// 考虑越界的情况，直接返回最小值或者最大值</span></span><br><span class="line">                <span class="keyword">if</span> ((isNegtive &amp;&amp; <span class="keyword">sum</span> &lt; Integer.MIN_VALUE) || (!isNegtive</span><br><span class="line">                        &amp;&amp; <span class="keyword">sum</span> &gt; Integer.MAX_VALUE)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">index</span>++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">sum</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        String <span class="keyword">str</span> = <span class="string">"-0"</span>;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="keyword">new</span> StringToInt().StrToInt(<span class="keyword">str</span>);</span><br><span class="line">        System.out.println(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -342,6 +382,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -454,7 +510,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -475,10 +531,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -536,6 +592,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +85,7 @@
 <meta name="description" content="题目描述
 输入一个链表，反转链表后，输出链表的所有元素。
 思路如下：在遍历链表上的每个节点的时候，就修改其指针，当遍历到最后一个结点的时候，整个链表就反转完成了。所以需要创建三个变量：一个是当前遍历的结点，一个是遍历结点的前一个结点，还有一个是当前遍历结点的下一个结点。基于这种思路可以写出如下的实现代码（已被牛客AC）：
-1package com.rhwayfun.offer;&amp;#10;&amp;#10;">
+12345678910111213141516171819202122232">
 <meta property="og:type" content="article">
 <meta property="og:title" content="剑指offer系列之十四：反转链表">
 <meta property="og:url" content="http://rhwayfun.com/post/oj-offer-14/index.html">
@@ -93,14 +93,14 @@
 <meta property="og:description" content="题目描述
 输入一个链表，反转链表后，输出链表的所有元素。
 思路如下：在遍历链表上的每个节点的时候，就修改其指针，当遍历到最后一个结点的时候，整个链表就反转完成了。所以需要创建三个变量：一个是当前遍历的结点，一个是遍历结点的前一个结点，还有一个是当前遍历结点的下一个结点。基于这种思路可以写出如下的实现代码（已被牛客AC）：
-1package com.rhwayfun.offer;&amp;#10;&amp;#10;">
+12345678910111213141516171819202122232">
 <meta property="og:updated_time" content="2016-04-15T07:01:12.739Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剑指offer系列之十四：反转链表">
 <meta name="twitter:description" content="题目描述
 输入一个链表，反转链表后，输出链表的所有元素。
 思路如下：在遍历链表上的每个节点的时候，就修改其指针，当遍历到最后一个结点的时候，整个链表就反转完成了。所以需要创建三个变量：一个是当前遍历的结点，一个是遍历结点的前一个结点，还有一个是当前遍历结点的下一个结点。基于这种思路可以写出如下的实现代码（已被牛客AC）：
-1package com.rhwayfun.offer;&amp;#10;&amp;#10;">
+12345678910111213141516171819202122232">
 
 
 
@@ -184,17 +184,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -204,9 +208,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -214,17 +224,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -296,6 +332,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -332,7 +372,7 @@
         <p>题目描述</p>
 <p>输入一个链表，反转链表后，输出链表的所有元素。</p>
 <p>思路如下：在遍历链表上的每个节点的时候，就修改其指针，当遍历到最后一个结点的时候，整个链表就反转完成了。所以需要创建三个变量：一个是当前遍历的结点，一个是遍历结点的前一个结点，还有一个是当前遍历结点的下一个结点。基于这种思路可以写出如下的实现代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;&#10;public class ReverseLinkedList &#123;&#10;    &#10;    public static class ListNode &#123;&#10;        int val;&#10;        ListNode next = null;&#10;&#10;        ListNode(int val) &#123;&#10;            this.val = val;&#10;        &#125;&#10;    &#125;&#10;    &#10;    public ListNode ReverseList(ListNode head) &#123;&#10;        //&#21453;&#36716;&#20043;&#21518;&#38142;&#34920;&#30340;&#22836;&#32467;&#28857;&#10;        ListNode reverseListHead = null;&#10;        //&#24403;&#21069;&#36941;&#21382;&#30340;&#32467;&#28857;&#10;        ListNode curNode = head;&#10;        //&#36941;&#21382;&#21040;&#30340;&#32467;&#28857;&#30340;&#21069;&#19968;&#20010;&#32467;&#28857;&#65292;&#35813;&#33410;&#28857;&#30340;&#20316;&#29992;&#35753;&#24403;&#21069;&#36941;&#21382;&#21040;&#30340;&#25351;&#21521;&#20854;&#21069;&#19968;&#20010;&#32467;&#28857;&#10;        ListNode preNode = null;&#10;        while(curNode != null)&#123;&#10;            //&#24403;&#21069;&#36941;&#21382;&#32467;&#28857;&#30340;&#19979;&#19968;&#20010;&#32467;&#28857;&#10;            ListNode nextNode = curNode.next;&#10;            if(nextNode == null) reverseListHead = curNode;&#10;            &#10;            curNode.next = preNode;&#10;            preNode = curNode;&#10;            curNode = nextNode;&#10;        &#125;&#10;        return reverseListHead;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        ListNode head = new ListNode(1);&#10;        ListNode node1 = new ListNode(2);&#10;        ListNode node2 = new ListNode(3);&#10;        ListNode node3 = new ListNode(4);&#10;        ListNode node4 = new ListNode(5);&#10;        &#10;        head.next = node1;&#10;        node1.next = node2;&#10;        node2.next = node3;&#10;        node3.next = node4;&#10;        &#10;        ListNode pHead = new ReverseLinkedList().ReverseList(head);&#10;        while(pHead != null)&#123;&#10;            System.out.println(pHead.val);&#10;            pHead = pHead.next;&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> ReverseLinkedList &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> ListNode &#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode <span class="keyword">next</span> = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        ListNode(<span class="keyword">int</span> val) &#123;</span><br><span class="line">            <span class="keyword">this</span>.val = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> ListNode ReverseList(ListNode head) &#123;</span><br><span class="line">        <span class="comment">//反转之后链表的头结点</span></span><br><span class="line">        ListNode reverseListHead = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//当前遍历的结点</span></span><br><span class="line">        ListNode curNode = head;</span><br><span class="line">        <span class="comment">//遍历到的结点的前一个结点，该节点的作用让当前遍历到的指向其前一个结点</span></span><br><span class="line">        ListNode preNode = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(curNode != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">//当前遍历结点的下一个结点</span></span><br><span class="line">            ListNode nextNode = curNode.<span class="keyword">next</span>;</span><br><span class="line">            <span class="keyword">if</span>(nextNode == <span class="keyword">null</span>) reverseListHead = curNode;</span><br><span class="line">            </span><br><span class="line">            curNode.<span class="keyword">next</span> = preNode;</span><br><span class="line">            preNode = curNode;</span><br><span class="line">            curNode = nextNode;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> reverseListHead;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        ListNode node1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        ListNode node2 = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line">        ListNode node3 = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line">        ListNode node4 = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        </span><br><span class="line">        head.<span class="keyword">next</span> = node1;</span><br><span class="line">        node1.<span class="keyword">next</span> = node2;</span><br><span class="line">        node2.<span class="keyword">next</span> = node3;</span><br><span class="line">        node3.<span class="keyword">next</span> = node4;</span><br><span class="line">        </span><br><span class="line">        ListNode pHead = <span class="keyword">new</span> ReverseLinkedList().ReverseList(head);</span><br><span class="line">        <span class="keyword">while</span>(pHead != <span class="keyword">null</span>)&#123;</span><br><span class="line">            System.out.<span class="keyword">println</span>(pHead.val);</span><br><span class="line">            pHead = pHead.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -345,6 +385,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -457,7 +513,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -478,10 +534,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -539,6 +595,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

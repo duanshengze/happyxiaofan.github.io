@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,10 +369,10 @@
 <p>由于希尔排序是在直接插入排序的基础上进行改进的，所以为了更好理解希尔排序，需要再次将直接插入排序请出来。我们知道直接插入排序的基本思想是<strong>将一个记录插入到有序表中，构成一个新的有序表</strong>。而且直接插入排序的使用情况是<strong>基本有序、记录少</strong>。在实际的情况中，这两个条件是有点苛刻的，很多情况下都是无序在记录数比较大。这种情况下再使用直接插入排序无疑是影响效率的。基于此，希尔提出了把大记录数的列表分割为一组组更少的记录列表，这个过程的实现采用的<strong>跳跃分割策略</strong>。所谓跳跃分割策略，就是<strong>将相距某个增量的记录组成一个子序列，这样才能保证在子序列内分别进行直接插入排序后得到的结果是基本有序而不是局部有序</strong>。</p>
 <p><strong>希尔排序的实现算法与分析</strong></p>
 <p>下面是希尔排序具体的实现代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;&#10;&#10;public class ShellSort2 &#123;&#10;&#10;    public void shellSort(int[] a) &#123;&#10;        //&#23450;&#20041;&#19968;&#20010;&#22686;&#38271;&#24207;&#21015;&#65292;&#23601;&#26159;&#20998;&#21106;&#25968;&#32452;&#30340;&#22686;&#37327;&#10;        int inc = a.length,i,j,k;&#10;        do&#123;&#10;            inc = inc / 3 + 1;&#10;            for (i = inc; i &#60; a.length; i++) &#123;&#10;                if(a[i] &#60; a[i - inc])&#123;&#10;                    //&#23558;a[i]&#25554;&#20837;&#26377;&#24207;&#34920;&#20013;&#10;                    k = a[i];&#10;                    //&#35760;&#24405;&#21518;&#31227;&#10;                    for (j = i - inc; j &#62;= 0 &#38;&#38; k &#60; a[j]; j-=inc) &#123;&#10;                        a[j + inc] = a[j];&#10;                    &#125;&#10;                    //&#25226;&#38656;&#35201;&#25554;&#20837;&#30340;&#20540;&#25554;&#20837;&#21040;&#37027;&#20010;&#20301;&#32622;&#65292;&#36825;&#37324;&#23601;&#26159;j+inc&#10;                    a[j + inc] = k;&#10;                &#125;&#10;            &#125;&#10;        &#125;while(inc &#62; 1);//&#24490;&#29615;&#30340;&#32456;&#27490;&#26465;&#20214;&#26159;&#22686;&#37327;&#21464;&#20026;1&#30340;&#26102;&#20505;&#10;        &#10;        for (i = 0;i &#60; a.length; i++) &#123;&#10;            System.out.println(a[i]);&#10;        &#125;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        new ShellSort2().shellSort(new int[]&#123;0,9,1,5,8,3,7,4,6,2&#125;);&#10;        &#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.algorithm.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> ShellSort2 <span class="comment">&#123;</span><br><span class="line"></span><br><span class="line">    public void shellSort(int[] a) &#123;</span><br><span class="line">        //定义一个增长序列，就是分割数组的增量</span><br><span class="line">        int inc = a.length,i,j,k;</span><br><span class="line">        do&#123;</span><br><span class="line">            inc = inc / 3 + 1;</span><br><span class="line">            for (i = inc; i &lt; a.length; i++) &#123;</span><br><span class="line">                if(a[i] &lt; a[i - inc])&#123;</span><br><span class="line">                    //将a[i]插入有序表中</span><br><span class="line">                    k = a[i];</span><br><span class="line">                    //记录后移</span><br><span class="line">                    for (j = i - inc; j &gt;= 0 &amp;&amp; k &lt; a[j]; j-=inc) &#123;</span><br><span class="line">                        a[j + inc] = a[j];</span><br><span class="line">                    &#125;</span></span><br><span class="line">                    <span class="comment">//把需要插入的值插入到那个位置，这里就是j+inc</span></span><br><span class="line">                    a[j + inc] = k;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">while</span>(inc &gt; <span class="number">1</span>);<span class="comment">//循环的终止条件是增量变为1的时候</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; a.length; i++) <span class="comment">&#123;</span><br><span class="line">            System.out.println(a[i]);</span><br><span class="line">        &#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(<span class="keyword">String</span>[] args) <span class="comment">&#123;</span><br><span class="line">        new ShellSort2().shellSort(new int[]&#123;0,9,1,5,8,3,7,4,6,2&#125;</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面有几个难以理解的地方。第一点是为什么增量的选取是inc=a.length/3+1。因为目前增量的选取还没有一个定论，但是有研究表明当增量序列为$dlta[k]=2^{t-k+1}-1$$（0 \lt k\lt t \lt \lfloor  log_2{(n+1)} \rfloor）$的时候，可以获得不错的效率。第二点，第二个循环是干嘛的。实际上就是把排在序列前面的更大的记录往后挪，然后循坏之后的那个赋值语句就是把要插入的那个值放入原先被移走的那个数的位置。还有一点是为什么循坏的终止条件是增量为1的时候，而不是其他值的时候呢？假设现在增量变为了1，可以发现在从增量为5到增量为1，这个过程已经基本使得整个序列是有序的，当增量变为1的时候，可交换的元素的个数大为减少，所以增量为1是循环结束的条件（其实从另一个角度看，增量必然是一个正整数，而1是最小的正整数）。</p>
 <p>然后，我们综合看一下希尔排序与直接插入排序的代码实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void insertSort(int[] a) &#123;&#10;        int i,j,temp;&#10;        for(i = 1; i &#60; a.length; i++)&#123;&#10;            if(a[i] &#60; a[i-1])&#123;&#10;                temp = a[i];&#10;                for(j = i - 1; j &#62;= 0 &#38;&#38; a[j] &#62; temp; j--)&#123;&#10;                    a[j+1] = a[j];&#10;                &#125;&#10;                a[j+1] = temp;&#10;            &#125;&#10;        &#125;&#10;        &#10;        for(i = 0;i &#60; a.length; i++)&#123;&#10;            System.out.println(a[i]);&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> void insertSort(int[] a) <span class="comment">&#123;</span><br><span class="line">        int i,j,temp;</span><br><span class="line">        for(i = 1; i &lt; a.length; i++)&#123;</span><br><span class="line">            if(a[i] &lt; a[i-1])&#123;</span><br><span class="line">                temp = a[i];</span><br><span class="line">                for(j = i - 1; j &gt;= 0 &amp;&amp; a[j] &gt; temp; j--)&#123;</span><br><span class="line">                    a[j+1] = a[j];</span><br><span class="line">                &#125;</span></span><br><span class="line">                a[j+<span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; a.length; i++)<span class="comment">&#123;</span><br><span class="line">            System.out.println(a[i]);</span><br><span class="line">        &#125;</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>可以发现大部分是相同的代码，只不过希尔排序采用了跳跃式的分割数组的策略，在i与j那里改成了增量序列，所以大大提高了排序的整体性能。那么希尔排序的时间复杂度是多少呢？答案是$O(n^{3/2})$，明显是优于$O(n^2)$的时间复杂度的，这也是希尔排序伟大的地方。</p>
 
       
@@ -347,6 +387,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -459,7 +515,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -480,10 +536,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -541,6 +597,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

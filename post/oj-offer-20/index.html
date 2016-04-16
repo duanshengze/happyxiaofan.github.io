@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -330,7 +370,7 @@
 <p>输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。</p>
 <p>要判断一个序列是不是另一个序列的弹出序列，首先我们得知道栈的特点是FIFO，其次，由于压入序列是确定的（这里指的“确定”是说相对位置是确定的），就是说压入序列之间的元素可能会经历压入后马上被弹出的情况。具体思路是：根据弹出序列的第一个值，判断在该元素之前被压入栈的所有元素，并对压入栈的栈顶元素与弹出序列的第一个值进行比较，如果相等，则继续判断下一个元素，继续判断该元素之前需要压入栈中的所有元素，仍然进行比较，如果相等，继续判断下一个元素；如果所有的元素都被压入栈中，但是两者仍然不相等，说明弹出序列不可能是原序列的弹出序列。这样一直判断直到弹出序列的最后一个元素。</p>
 <p>那么根据这种思路，可以写出如下代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.ArrayList;&#10;&#10;public class StackPushPopSequence &#123;&#10;&#10;    public boolean IsPopOrder(int[] pushA, int[] popA) &#123;&#10;        boolean possible = false;&#10;        ArrayList&#60;Integer&#62; data = new ArrayList&#60;Integer&#62;();&#10;        if (pushA.length &#62; 0 &#38;&#38; popA.length &#62; 0 &#38;&#38; pushA.length == popA.length) &#123;&#10;            int len = pushA.length;&#10;            //&#24403;&#21069;&#20803;&#32032;&#10;            int pop = 0;&#10;            //&#19979;&#19968;&#20010;&#24377;&#20986;&#30340;&#20803;&#32032;&#10;            int nextPop = 0;&#10;            &#10;            int push = 0;&#10;            //&#19979;&#19968;&#20010;&#21387;&#20837;&#30340;&#20803;&#32032;&#10;            int nextPush = 0;&#10;            &#10;            int index = -1;&#10;            while(nextPop - pop &#60; len)&#123;&#10;                //&#22914;&#26524;&#24377;&#20986;&#30340;&#20803;&#32032;&#19982;&#31532;&#19968;&#20010;&#20803;&#32032;&#19981;&#30456;&#31561;&#23601;&#19968;&#30452;&#28155;&#21152;&#20803;&#32032;&#30452;&#21040;&#30456;&#31561;&#10;                while(data.size() == 0 || data.get(index) != popA[nextPop])&#123;&#10;                    //&#24403;&#20840;&#37096;&#20803;&#32032;&#28155;&#21152;&#23436;&#27605;&#20043;&#21518;&#65292;&#32467;&#26463;&#24490;&#29615;&#10;                    if(nextPush - push == len) break;&#10;                    data.add(pushA[nextPush]);&#10;                    index++;&#10;                    nextPush++;&#10;                &#125;&#10;                &#10;                if(data.get(index) != popA[nextPop]) break;&#10;                //&#31227;&#38500;&#31532;&#19968;&#20010;&#27604;&#36739;&#30340;&#20803;&#32032;&#10;                data.remove(index--);&#10;                nextPop++;&#10;            &#125;&#10;            //&#22312;&#38598;&#21512;&#20840;&#37096;&#20803;&#32032;&#27604;&#36739;&#23436;&#27605;&#19988;&#24377;&#20986;&#24207;&#21015;&#20063;&#27604;&#36739;&#23436;&#27605;&#65292;&#36820;&#22238;true&#10;            if(data.size() == 0 &#38;&#38; nextPop - pop == len) possible = true;&#10;        &#125;&#10;        return possible;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] pushA = new int[]&#123;1,2,3,4,5&#125;;&#10;        int[] popA = new int[]&#123;4,5,3,1,2&#125;;&#10;        System.out.println(new StackPushPopSequence().IsPopOrder(pushA, popA));&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> StackPushPopSequence &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> IsPopOrder(<span class="keyword">int</span>[] pushA, <span class="keyword">int</span>[] popA) &#123;</span><br><span class="line">        <span class="keyword">boolean</span> possible = <span class="keyword">false</span>;</span><br><span class="line">        ArrayList&lt;Integer&gt; data = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span> (pushA.length &gt; <span class="number">0</span> &amp;&amp; popA.length &gt; <span class="number">0</span> &amp;&amp; pushA.length == popA.length) &#123;</span><br><span class="line">            <span class="keyword">int</span> len = pushA.length;</span><br><span class="line">            <span class="comment">//当前元素</span></span><br><span class="line">            <span class="keyword">int</span> <span class="keyword">pop</span> = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//下一个弹出的元素</span></span><br><span class="line">            <span class="keyword">int</span> nextPop = <span class="number">0</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">int</span> <span class="keyword">push</span> = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//下一个压入的元素</span></span><br><span class="line">            <span class="keyword">int</span> nextPush = <span class="number">0</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">int</span> index = -<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span>(nextPop - <span class="keyword">pop</span> &lt; len)&#123;</span><br><span class="line">                <span class="comment">//如果弹出的元素与第一个元素不相等就一直添加元素直到相等</span></span><br><span class="line">                <span class="keyword">while</span>(data.<span class="keyword">size</span>() == <span class="number">0</span> || data.get(index) != popA[nextPop])&#123;</span><br><span class="line">                    <span class="comment">//当全部元素添加完毕之后，结束循环</span></span><br><span class="line">                    <span class="keyword">if</span>(nextPush - <span class="keyword">push</span> == len) <span class="keyword">break</span>;</span><br><span class="line">                    data.add(pushA[nextPush]);</span><br><span class="line">                    index++;</span><br><span class="line">                    nextPush++;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span>(data.get(index) != popA[nextPop]) <span class="keyword">break</span>;</span><br><span class="line">                <span class="comment">//移除第一个比较的元素</span></span><br><span class="line">                data.remove(index--);</span><br><span class="line">                nextPop++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//在集合全部元素比较完毕且弹出序列也比较完毕，返回true</span></span><br><span class="line">            <span class="keyword">if</span>(data.<span class="keyword">size</span>() == <span class="number">0</span> &amp;&amp; nextPop - <span class="keyword">pop</span> == len) possible = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> possible;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] pushA = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span>[] popA = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>&#125;;</span><br><span class="line">        System.out.<span class="keyword">println</span>(<span class="keyword">new</span> StackPushPopSequence().IsPopOrder(pushA, popA));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -344,6 +384,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -456,7 +512,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -477,10 +533,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -538,6 +594,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

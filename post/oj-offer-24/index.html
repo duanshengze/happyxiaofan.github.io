@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -330,7 +370,7 @@
 <p>输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点）。</p>
 <p>下面是我第一想到的思路：因为next指针是固定的，在复制的时候这点比较好处理，由于特殊指针是任意的，可能是在节点之前，也可能在节点之后，所以必须解决这个棘手问题。不管至少，可以从链表的第一个节点开始遍历，直到该特殊指针指向的节点，并设置该节点的特殊指针。还有一种思路（也是书上的思路）：第一步，复制原来链表的节点，并设置next指针，这一步不同于简单的复制节点，而是把每个复制的节点都链在原节点的后面，相当于复制节点之间隔了一个原节点；第二步，设置复制节点的特殊指针，由于在第一步左了特殊处理，所以当一个节点R的特殊指针指向节点N的时候，复制节点R’的特殊指针则是N’，这样就可以在O(1)时间定位到R的特殊指针指向的节点；第三步，从链表中抽取出复制节点，由于复制节点是间隔相连的，所以这一步比较好处理。综合以上三个步骤，就完成了复杂链表的复制。</p>
 <p>下面是基于第二种思路的Java代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;public class CopyComplicateLinkedList &#123;&#10;&#10;    static class RandomListNode &#123;&#10;        int label;&#10;        RandomListNode next = null;&#10;        RandomListNode random = null;&#10;&#10;        RandomListNode(int label) &#123;&#10;            this.label = label;&#10;        &#125;&#10;    &#125;&#10;&#10;    public RandomListNode Clone(RandomListNode pHead) &#123;&#10;        CloneNodes(pHead);&#10;        ConnectSiblingNodes(pHead);&#10;        return ConnectFinalListNodes(pHead);&#10;    &#125;&#10;&#10;    // &#31532;&#19968;&#27493;&#65306;&#22797;&#21046;&#38142;&#34920;&#33410;&#28857;&#10;    private void CloneNodes(RandomListNode pHead) &#123;&#10;        RandomListNode node = pHead;&#10;        while (node != null) &#123;&#10;            RandomListNode cloneNode = new RandomListNode(node.label);&#10;            cloneNode.next = node.next;&#10;            cloneNode.random = null;&#10;&#10;            node.next = cloneNode;&#10;            node = cloneNode.next;&#10;        &#125;&#10;    &#125;&#10;&#10;    // &#31532;&#20108;&#27493;&#65306;&#35774;&#32622;&#27599;&#20010;&#33410;&#28857;&#30340;&#38543;&#26426;&#25351;&#38024;&#10;    private void ConnectSiblingNodes(RandomListNode pHead) &#123;&#10;        RandomListNode node = pHead;&#10;        while (node != null) &#123;&#10;            RandomListNode clone = node.next;&#10;            if (node.random != null) &#123;&#10;                clone.random = node.random.next;&#10;            &#125;&#10;            node = clone.next;&#10;        &#125;&#10;    &#125;&#10;&#10;    // &#31532;&#19977;&#27493;&#65306;&#32452;&#21512;&#22797;&#21046;&#30340;&#33410;&#28857;&#10;    private RandomListNode ConnectFinalListNodes(RandomListNode pHead) &#123;&#10;        RandomListNode node = pHead;&#10;        RandomListNode cloneHead = null;&#10;        RandomListNode cloneNode = null;&#10;&#10;        // &#35774;&#32622;&#31532;&#19968;&#20010;&#33410;&#28857;&#10;        if (node != null) &#123;&#10;            cloneHead = node.next;&#10;            cloneNode = node.next;&#10;            node.next = cloneNode.next;&#10;            node = node.next;&#10;        &#125;&#10;&#10;        while (node != null) &#123;&#10;            cloneNode.next = node.next;&#10;            cloneNode = cloneNode.next;&#10;            node.next = cloneNode.next;&#10;            node = node.next;&#10;        &#125;&#10;        return cloneHead;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        RandomListNode pHead = new RandomListNode(1);&#10;        RandomListNode node1 = new RandomListNode(2);&#10;        RandomListNode node2 = new RandomListNode(3);&#10;        RandomListNode node3 = new RandomListNode(4);&#10;        RandomListNode node4 = new RandomListNode(5);&#10;        RandomListNode node5 = new RandomListNode(6);&#10;        RandomListNode node6 = new RandomListNode(7);&#10;        RandomListNode node7 = new RandomListNode(8);&#10;        &#10;        pHead.next = node1;&#10;        node1.next = node2;&#10;        node2.next = node3;&#10;        node3.next = node4;&#10;        node4.next = node5;&#10;        node5.next = node6;&#10;        node6.next = node7;&#10;        &#10;        pHead.random = node4;&#10;        node2.random = node6;&#10;        &#10;        @SuppressWarnings(&#34;unused&#34;)&#10;        RandomListNode node = new CopyComplicateLinkedList().Clone(pHead);&#10;        System.out.println(node);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> CopyComplicateLinkedList &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> RandomListNode &#123;</span><br><span class="line">        <span class="keyword">int</span> label;</span><br><span class="line">        RandomListNode <span class="keyword">next</span> = <span class="keyword">null</span>;</span><br><span class="line">        RandomListNode random = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        RandomListNode(<span class="keyword">int</span> label) &#123;</span><br><span class="line">            <span class="keyword">this</span>.label = label;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> RandomListNode Clone(RandomListNode pHead) &#123;</span><br><span class="line">        CloneNodes(pHead);</span><br><span class="line">        ConnectSiblingNodes(pHead);</span><br><span class="line">        <span class="keyword">return</span> ConnectFinalListNodes(pHead);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第一步：复制链表节点</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> CloneNodes(RandomListNode pHead) &#123;</span><br><span class="line">        RandomListNode node = pHead;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">            RandomListNode cloneNode = <span class="keyword">new</span> RandomListNode(node.label);</span><br><span class="line">            cloneNode.<span class="keyword">next</span> = node.<span class="keyword">next</span>;</span><br><span class="line">            cloneNode.random = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">            node.<span class="keyword">next</span> = cloneNode;</span><br><span class="line">            node = cloneNode.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二步：设置每个节点的随机指针</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> ConnectSiblingNodes(RandomListNode pHead) &#123;</span><br><span class="line">        RandomListNode node = pHead;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">            RandomListNode clone = node.<span class="keyword">next</span>;</span><br><span class="line">            <span class="keyword">if</span> (node.random != <span class="keyword">null</span>) &#123;</span><br><span class="line">                clone.random = node.random.<span class="keyword">next</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            node = clone.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第三步：组合复制的节点</span></span><br><span class="line">    <span class="keyword">private</span> RandomListNode ConnectFinalListNodes(RandomListNode pHead) &#123;</span><br><span class="line">        RandomListNode node = pHead;</span><br><span class="line">        RandomListNode cloneHead = <span class="keyword">null</span>;</span><br><span class="line">        RandomListNode cloneNode = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置第一个节点</span></span><br><span class="line">        <span class="keyword">if</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">            cloneHead = node.<span class="keyword">next</span>;</span><br><span class="line">            cloneNode = node.<span class="keyword">next</span>;</span><br><span class="line">            node.<span class="keyword">next</span> = cloneNode.<span class="keyword">next</span>;</span><br><span class="line">            node = node.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">            cloneNode.<span class="keyword">next</span> = node.<span class="keyword">next</span>;</span><br><span class="line">            cloneNode = cloneNode.<span class="keyword">next</span>;</span><br><span class="line">            node.<span class="keyword">next</span> = cloneNode.<span class="keyword">next</span>;</span><br><span class="line">            node = node.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cloneHead;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        RandomListNode pHead = <span class="keyword">new</span> RandomListNode(<span class="number">1</span>);</span><br><span class="line">        RandomListNode node1 = <span class="keyword">new</span> RandomListNode(<span class="number">2</span>);</span><br><span class="line">        RandomListNode node2 = <span class="keyword">new</span> RandomListNode(<span class="number">3</span>);</span><br><span class="line">        RandomListNode node3 = <span class="keyword">new</span> RandomListNode(<span class="number">4</span>);</span><br><span class="line">        RandomListNode node4 = <span class="keyword">new</span> RandomListNode(<span class="number">5</span>);</span><br><span class="line">        RandomListNode node5 = <span class="keyword">new</span> RandomListNode(<span class="number">6</span>);</span><br><span class="line">        RandomListNode node6 = <span class="keyword">new</span> RandomListNode(<span class="number">7</span>);</span><br><span class="line">        RandomListNode node7 = <span class="keyword">new</span> RandomListNode(<span class="number">8</span>);</span><br><span class="line">        </span><br><span class="line">        pHead.<span class="keyword">next</span> = node1;</span><br><span class="line">        node1.<span class="keyword">next</span> = node2;</span><br><span class="line">        node2.<span class="keyword">next</span> = node3;</span><br><span class="line">        node3.<span class="keyword">next</span> = node4;</span><br><span class="line">        node4.<span class="keyword">next</span> = node5;</span><br><span class="line">        node5.<span class="keyword">next</span> = node6;</span><br><span class="line">        node6.<span class="keyword">next</span> = node7;</span><br><span class="line">        </span><br><span class="line">        pHead.random = node4;</span><br><span class="line">        node2.random = node6;</span><br><span class="line">        </span><br><span class="line">        @SuppressWarnings(<span class="string">"unused"</span>)</span><br><span class="line">        RandomListNode node = <span class="keyword">new</span> CopyComplicateLinkedList().Clone(pHead);</span><br><span class="line">        System.out.<span class="keyword">println</span>(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -343,6 +383,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -455,7 +511,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -476,10 +532,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -537,6 +593,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

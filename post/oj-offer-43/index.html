@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -178,17 +178,21 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -198,9 +202,15 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -208,17 +218,43 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -290,6 +326,10 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -326,7 +366,7 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
         <p>题目描述</p>
 <p>LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2个大王,2个小王(一副牌原本是54张^_^)…他随机从中抽出了5张牌,想测测自己的手气,看看能不能抽到顺子,如果抽到的话,他决定去买体育彩票,嘿嘿！！“红心A,黑桃3,小王,大王,方片5”,“Oh My God!”不是顺子…..LL不高兴了,他想了想,决定大\小 王可以看成任何数字,并且A看作1,J为11,Q为12,K为13。上面的5张牌就可以变成“1,2,3,4,5”(大小王分别看作2和4),“So Lucky!”。LL决定去买体育彩票啦。 现在,要求你使用这幅牌模拟上面的过程,然后告诉我们LL的运气如何。为了方便起见,你可以认为大小王是0。</p>
 <p>因为大小王可以当做任意数字，所以需要统计数组中0的个数，表示有多少张大小王。还需要计算两个相邻数字之间的差的绝对值，因为，如果两个数之间的差太大的话，即使有很多张大小王也无济于事。有了这两个结果之后，就可以对牌进行判断了，不过在此之前需要对牌进行一个排序，这样统计起来更方便。还有一种情况是，如果牌中出现了对子，那么肯定不可能是顺子，所以综合以上分析，可以下出如下的实现代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.offer;&#10;&#10;import java.util.Arrays;&#10;&#10;public class IsContinuousCard &#123;&#10;&#10;    public boolean isContinuous(int [] numbers) &#123;&#10;        if(numbers == null || numbers.length == 0) return false;&#10;        &#10;        //&#23545;&#25968;&#32452;&#36827;&#34892;&#25490;&#24207;&#10;        Arrays.sort(numbers);&#10;        &#10;        //&#32479;&#35745;&#22823;&#23567;&#29579;&#30340;&#24352;&#25968;&#10;        int numberOfZero = 0;&#10;        int numberOfGap = 0;&#10;        for(int i = 0; i &#60; numbers.length &#38;&#38; numbers[i] == 0; i++) numberOfZero++;&#10;        &#10;        int low = numberOfZero;&#10;        int high = low + 1;&#10;        while(high &#60; numbers.length)&#123;&#10;            //&#22914;&#26524;&#20986;&#29616;&#20102;&#23545;&#23376;&#21017;&#19981;&#21487;&#33021;&#26159;&#39034;&#23376;&#10;            if(numbers[low] == numbers[high]) return false;&#10;            //&#35745;&#31639;&#31354;&#32570;&#25968;&#10;            numberOfGap += numbers[high] - numbers[low] - 1;&#10;            low = high;&#10;            high++;&#10;        &#125;&#10;        &#10;        return numberOfGap &#60;= numberOfZero ? true : false;&#10;    &#125;&#10;    &#10;    public static void main(String[] args) &#123;&#10;        int[] numbers = &#123;1,3,2,4,5&#125;;&#10;        IsContinuousCard c = new IsContinuousCard();&#10;        boolean f = c.isContinuous(numbers);&#10;        System.out.println(f);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.offer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IsContinuousCard</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isContinuous</span><span class="params">(<span class="keyword">int</span> [] numbers)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(numbers == <span class="keyword">null</span> || numbers.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//对数组进行排序</span></span><br><span class="line">        Arrays.sort(numbers);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//统计大小王的张数</span></span><br><span class="line">        <span class="keyword">int</span> numberOfZero = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> numberOfGap = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numbers.length &amp;&amp; numbers[i] == <span class="number">0</span>; i++) numberOfZero++;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> low = numberOfZero;</span><br><span class="line">        <span class="keyword">int</span> high = low + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(high &lt; numbers.length)&#123;</span><br><span class="line">            <span class="comment">//如果出现了对子则不可能是顺子</span></span><br><span class="line">            <span class="keyword">if</span>(numbers[low] == numbers[high]) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            <span class="comment">//计算空缺数</span></span><br><span class="line">            numberOfGap += numbers[high] - numbers[low] - <span class="number">1</span>;</span><br><span class="line">            low = high;</span><br><span class="line">            high++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> numberOfGap &lt;= numberOfZero ? <span class="keyword">true</span> : <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] numbers = &#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">        IsContinuousCard c = <span class="keyword">new</span> IsContinuousCard();</span><br><span class="line">        <span class="keyword">boolean</span> f = c.isContinuous(numbers);</span><br><span class="line">        System.out.println(f);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -339,6 +379,22 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -451,7 +507,7 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -472,10 +528,10 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -533,6 +589,12 @@ LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

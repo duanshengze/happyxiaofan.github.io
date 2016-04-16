@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -179,17 +179,21 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -199,9 +203,15 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -209,17 +219,43 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -291,6 +327,10 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -328,14 +368,14 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
 <p>CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方案，CopyOnWriteArrayList在某些情况下具有更好的性能，考虑读远大于写的场景，如果把所有的读操作进行加锁，因为只有一个读线程能够获得锁，所以其他的读线程都必须等待，大大影响性能。CopyOnWriteArrayList称为“写时复制”容器，就是在多线程操作容器对象时，把容器复制一份，这样在线程内部的修改就与其他线程无关了，而且这样设计可以做到不阻塞其他的读线程。从JDK1.5开始Java并发包里提供了两个使用CopyOnWrite机制实现的并发容器，它们是CopyOnWriteArrayList和CopyOnWriteArraySet。</p>
 <p><strong>CopyOnWriteArrayList容器使用示例</strong></p>
 <p>下面的代码演示如何使用CopyOnWriteArrayList容器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.rhwayfun.patchwork.concurrency.r0408;&#10;&#10;import java.text.DateFormat;&#10;import java.text.SimpleDateFormat;&#10;import java.util.Date;&#10;import java.util.List;&#10;import java.util.concurrent.CopyOnWriteArrayList;&#10;import java.util.concurrent.ExecutorService;&#10;import java.util.concurrent.Executors;&#10;import java.util.concurrent.atomic.AtomicLong;&#10;&#10;/**&#10; * Created by rhwayfun on 16-4-8.&#10; */&#10;public class CopyOnWriteArrayListDdemo &#123;&#10;&#10;    /**&#10;     * &#20869;&#23481;&#32534;&#21495;&#10;     */&#10;    private static AtomicLong contentNum;&#10;&#10;    /**&#10;     * &#26085;&#26399;&#26684;&#24335;&#22120;&#10;     */&#10;    private static DateFormat format;&#10;&#10;    /**&#10;     * &#32447;&#31243;&#27744;&#10;     */&#10;    private final ExecutorService threadPool;&#10;&#10;    public CopyOnWriteArrayListDdemo() &#123;&#10;        contentNum = new AtomicLong();&#10;        format = new SimpleDateFormat(&#34;HH:mm:ss&#34;);&#10;        threadPool = Executors.newFixedThreadPool(10);&#10;    &#125;&#10;&#10;    public void doExec(int num) throws InterruptedException &#123;&#10;        List&#60;String&#62; list = new CopyOnWriteArrayList&#60;&#62;();&#10;        for (int i = 0; i &#60; num; i++)&#123;&#10;            list.add(i,&#34;main-content-&#34; + i);&#10;        &#125;&#10;        //5&#20010;&#20889;&#32447;&#31243;&#10;        for (int i = 0; i &#60; 5; i++)&#123;&#10;            threadPool.execute(new Writer(list,i));&#10;        &#125;&#10;        //&#21551;&#21160;10&#20010;&#35835;&#32447;&#31243;&#10;        for (int i = 0; i &#60; 10; i++)&#123;&#10;            threadPool.execute(new Reader(list));&#10;        &#125;&#10;        //&#20851;&#38381;&#32447;&#31243;&#27744;&#10;        threadPool.shutdown();&#10;    &#125;&#10;&#10;    /**&#10;     * &#20889;&#32447;&#31243;&#10;     *&#10;     * @author rhwayfun&#10;     */&#10;    static class Writer implements Runnable &#123;&#10;&#10;        private final List&#60;String&#62; copyOnWriteArrayList;&#10;        private int i;&#10;&#10;        public Writer(List&#60;String&#62; copyOnWriteArrayList,int i) &#123;&#10;            this.copyOnWriteArrayList = copyOnWriteArrayList;&#10;            this.i = i;&#10;        &#125;&#10;&#10;        @Override&#10;        public void run() &#123;&#10;            copyOnWriteArrayList.add(i,&#34;content-&#34; + contentNum.incrementAndGet());&#10;            System.out.println(Thread.currentThread().getName() + &#34;: write content-&#34; + contentNum.get()&#10;                    + &#34; &#34; +format.format(new Date()));&#10;            System.out.println(Thread.currentThread().getName() + &#34;: remove &#34; + copyOnWriteArrayList.remove(i));&#10;        &#125;&#10;    &#125;&#10;&#10;    static class Reader implements Runnable &#123;&#10;&#10;        private final List&#60;String&#62; list;&#10;&#10;        public Reader(List&#60;String&#62; list) &#123;&#10;            this.list = list;&#10;        &#125;&#10;&#10;        @Override&#10;        public void run() &#123;&#10;            for (String s : list) &#123;&#10;                System.out.println(Thread.currentThread().getName() + &#34;: read &#34; + s&#10;                        + &#34; &#34; +format.format(new Date()));&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#10;    public static void main(String[] args) throws InterruptedException &#123;&#10;        CopyOnWriteArrayListDdemo demo = new CopyOnWriteArrayListDdemo();&#10;        demo.doExec(5);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rhwayfun.patchwork.concurrency.r0408;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.DateFormat;</span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CopyOnWriteArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicLong;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Created by rhwayfun on 16-4-8.</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CopyOnWriteArrayListDdemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 内容编号</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> AtomicLong contentNum;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 日期格式器</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> DateFormat format;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 线程池</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ExecutorService threadPool;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CopyOnWriteArrayListDdemo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        contentNum = <span class="keyword">new</span> AtomicLong();</span><br><span class="line">        format = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"HH:mm:ss"</span>);</span><br><span class="line">        threadPool = Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doExec</span><span class="params">(<span class="keyword">int</span> num)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num; i++)&#123;</span><br><span class="line">            list.add(i,<span class="string">"main-content-"</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//5个写线程</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">            threadPool.execute(<span class="keyword">new</span> Writer(list,i));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//启动10个读线程</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)&#123;</span><br><span class="line">            threadPool.execute(<span class="keyword">new</span> Reader(list));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//关闭线程池</span></span><br><span class="line">        threadPool.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 写线程</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@author</span> rhwayfun</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Writer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> List&lt;String&gt; copyOnWriteArrayList;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Writer</span><span class="params">(List&lt;String&gt; copyOnWriteArrayList,<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.copyOnWriteArrayList = copyOnWriteArrayList;</span><br><span class="line">            <span class="keyword">this</span>.i = i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            copyOnWriteArrayList.add(i,<span class="string">"content-"</span> + contentNum.incrementAndGet());</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">": write content-"</span> + contentNum.get()</span><br><span class="line">                    + <span class="string">" "</span> +format.format(<span class="keyword">new</span> Date()));</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">": remove "</span> + copyOnWriteArrayList.remove(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Reader</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> List&lt;String&gt; list;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Reader</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.list = list;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (String s : list) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">": read "</span> + s</span><br><span class="line">                        + <span class="string">" "</span> +format.format(<span class="keyword">new</span> Date()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        CopyOnWriteArrayListDdemo demo = <span class="keyword">new</span> CopyOnWriteArrayListDdemo();</span><br><span class="line">        demo.doExec(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>首先启动5个写线程，再启动10个读线程，运行该程序发现并没有出现异常，所以使用写时复制容器效率很高。代码的运行结果如下：</p>
 <p><img src="http://img.blog.csdn.net/20160408160313641" alt="部分输出"></p>
 <p><strong>CopyOnWriteArrayList源码剖析</strong></p>
 <p>先说说CopyOnWriteArrayList容器的实现原理：简单地说，就是在需要对容器进行操作的时候，将容器拷贝一份，对容器的修改等操作都在容器的拷贝中进行，当操作结束，再把容器容器的拷贝指向原来的容器。这样设计的好处是实现了读写分离，并且读读不会发生阻塞。下面的源码是CopyOnWriteArrayList的add方法实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void add(int index, E element) &#123;&#10;        final ReentrantLock lock = this.lock;&#10;        lock.lock();&#10;        try &#123;&#10;            Object[] elements = getArray();&#10;            int len = elements.length;&#10;            if (index &#62; len || index &#60; 0)&#10;                throw new IndexOutOfBoundsException(&#34;Index: &#34;+index+&#10;                                                    &#34;, Size: &#34;+len);&#10;            Object[] newElements;&#10;            int numMoved = len - index;&#10;            //1&#12289;&#22797;&#21046;&#20986;&#19968;&#20010;&#26032;&#30340;&#25968;&#32452;&#10;            if (numMoved == 0)&#10;                newElements = Arrays.copyOf(elements, len + 1);&#10;            else &#123;&#10;                newElements = new Object[len + 1];&#10;                System.arraycopy(elements, 0, newElements, 0, index);&#10;                System.arraycopy(elements, index, newElements, index + 1,&#10;                                 numMoved);&#10;            &#125;&#10;            //2&#12289;&#25226;&#26032;&#20803;&#32032;&#28155;&#21152;&#21040;&#26032;&#25968;&#32452;&#20013;&#10;            newElements[index] = element;&#10;            //3&#12289;&#25226;&#25968;&#32452;&#25351;&#21521;&#21407;&#26469;&#30340;&#25968;&#32452;&#10;            setArray(newElements);&#10;        &#125; finally &#123;&#10;            lock.unlock();&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> add(<span class="keyword">int</span> <span class="keyword">index</span>, E element) &#123;</span><br><span class="line">        <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Object[] elements = getArray();</span><br><span class="line">            <span class="keyword">int</span> len = elements.length;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">index</span> &gt; len || <span class="keyword">index</span> &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Index: "</span>+<span class="keyword">index</span>+</span><br><span class="line">                                                    <span class="string">", Size: "</span>+len);</span><br><span class="line">            Object[] newElements;</span><br><span class="line">            <span class="keyword">int</span> numMoved = len - <span class="keyword">index</span>;</span><br><span class="line">            <span class="comment">//1、复制出一个新的数组</span></span><br><span class="line">            <span class="keyword">if</span> (numMoved == <span class="number">0</span>)</span><br><span class="line">                newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                newElements = <span class="keyword">new</span> Object[len + <span class="number">1</span>];</span><br><span class="line">                System.arraycopy(elements, <span class="number">0</span>, newElements, <span class="number">0</span>, <span class="keyword">index</span>);</span><br><span class="line">                System.arraycopy(elements, <span class="keyword">index</span>, newElements, <span class="keyword">index</span> + <span class="number">1</span>,</span><br><span class="line">                                 numMoved);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//2、把新元素添加到新数组中</span></span><br><span class="line">            newElements[<span class="keyword">index</span>] = element;</span><br><span class="line">            <span class="comment">//3、把数组指向原来的数组</span></span><br><span class="line">            setArray(newElements);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>上面的三个步骤实现了写时复制的思想，在读数据的时候不会锁住list，因为写操作是在原来容器的拷贝上进行的。而且，可以看到，如果对容器拷贝修改的过程中又有新的读线程进来，那么读到的还是旧的数据。读的代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;&#10;        return get(getArray(), index);&#10;    &#125;&#10;    final Object[] getArray() &#123;&#10;        return array;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="built_in">get</span>(<span class="built_in">int</span> index) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">get</span>(getArray(), index);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">Object</span>[] getArray() &#123;</span><br><span class="line">        <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>CopyOnWrite并发容器用于读多写少的并发场景。比如白名单，黑名单，商品类目的访问和更新场景。</p>
 <p><strong>CopyOnWriteArrayList的缺点</strong></p>
 <p>从CopyOnWriteArrayList的实现原理可以看到因为在需要容器对象的时候进行拷贝，所以存在两个问题：<strong>内存占用问题</strong>和<strong>数据一致性问题</strong>。</p>
@@ -363,6 +403,22 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -475,7 +531,7 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -496,10 +552,10 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -557,6 +613,12 @@ CopyOnWriteArrayList容器是Collections.synchronizedList(List list)的替代方
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

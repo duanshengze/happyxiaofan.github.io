@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -180,17 +180,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -200,9 +204,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -210,17 +220,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -292,6 +328,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,15 +369,15 @@
 <p><strong>使用Proxool连接池方式</strong><br>在官方提供的文档中，有多种使用Proxool的方式，这里只介绍两种：一种是通过配置文件的方式使用Proxool；一种是通过直接设置属性的方式使用。其中使用了Proxool连接池中的数据源。与jdbc pool一样也是通过数据源的方式进行配置<br><a id="more"></a></p>
 <p><strong>1、直接设置属性的方式</strong></p>
 <p>编写一个工具类，该类可以返回Proxool数据库连接对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package cp;&#10;&#10;import java.io.InputStream;&#10;import java.io.InputStreamReader;&#10;import java.io.Reader;&#10;import java.io.UnsupportedEncodingException;&#10;import java.sql.Connection;&#10;import java.sql.DriverManager;&#10;import java.sql.SQLException;&#10;&#10;import org.logicalcobwebs.proxool.ProxoolDataSource;&#10;import org.logicalcobwebs.proxool.ProxoolException;&#10;import org.logicalcobwebs.proxool.configuration.JAXPConfigurator;&#10;&#10;public class Proxool &#123;&#10;&#10;    private ProxoolDataSource dataSource = null;&#10;    public Proxool() &#123;&#10;        dataSource = new ProxoolDataSource();&#10;        init2();&#10;    &#125;&#10;    &#10;    public void init2()&#123;&#10;         dataSource = new ProxoolDataSource(); &#10;         dataSource.setDriver(&#34;com.mysql.jdbc.Driver&#34;); &#10;         dataSource.setDriverUrl(&#34;jdbc:mysql://localhost/test&#34;);    &#10;         dataSource.setUser(&#34;root&#34;); &#10;         dataSource.setPassword(&#34;1234&#34;); &#10;         dataSource.setAlias(&#34;mysql&#34;); &#10;         dataSource.setMaximumConnectionCount(5); &#10;         dataSource.setMinimumConnectionCount(0); &#10;         dataSource.setMaximumActiveTime(5); &#10;    &#125;&#10;&#10;    public Connection getProxoolConnection2() &#123;&#10;        Connection connection = null;&#10;        try &#123;&#10;            connection = dataSource.getConnection();&#10;        &#125; catch (SQLException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;        return connection;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight monkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">package cp;</span><br><span class="line"></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.io.InputStream;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.io.InputStreamReader;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.io.Reader;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.sql.Connection;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.sql.DriverManager;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> java.sql.SQLException;</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> org.logicalcobwebs.proxool.ProxoolDataSource;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> org.logicalcobwebs.proxool.ProxoolException;</span></span><br><span class="line"><span class="preprocessor"><span class="keyword">import</span> org.logicalcobwebs.proxool.configuration.JAXPConfigurator;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Proxool</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ProxoolDataSource dataSource = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">public</span> Proxool() &#123;</span><br><span class="line">        dataSource = <span class="keyword">new</span> ProxoolDataSource();</span><br><span class="line">        init2();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> void init2()&#123;</span><br><span class="line">         dataSource = <span class="keyword">new</span> ProxoolDataSource(); </span><br><span class="line">         dataSource.setDriver(<span class="string">"com.mysql.jdbc.Driver"</span>); </span><br><span class="line">         dataSource.setDriverUrl(<span class="string">"jdbc:mysql://localhost/test"</span>);    </span><br><span class="line">         dataSource.setUser(<span class="string">"root"</span>); </span><br><span class="line">         dataSource.setPassword(<span class="string">"1234"</span>); </span><br><span class="line">         dataSource.setAlias(<span class="string">"mysql"</span>); </span><br><span class="line">         dataSource.setMaximumConnectionCount(<span class="number">5</span>); </span><br><span class="line">         dataSource.setMinimumConnectionCount(<span class="number">0</span>); </span><br><span class="line">         dataSource.setMaximumActiveTime(<span class="number">5</span>); </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Connection getProxoolConnection2() &#123;</span><br><span class="line">        Connection connection = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            connection = dataSource.getConnection();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> connection;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后编写测试代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class TestCp &#123;&#10;    public static void main(String[] args) throws SQLException &#123;&#10;        Proxool p = new Proxool();&#10;        for (int i = 0; i &#60; 5; i++) &#123;&#10;            Connection con = p.getProxoolConnection2();&#10;            System.out.println(con);&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestCp</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) throws SQLException </span>&#123;</span><br><span class="line">        Proxool p = <span class="keyword">new</span> Proxool();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            Connection con = p.getProxoolConnection2();</span><br><span class="line">            System.<span class="keyword">out</span>.println(con);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>测试结果如下：<br><img src="http://img.blog.csdn.net/20151127165240388" alt=""><br>可以发现，返回的是不同的五个连接对象。使用这种方式的好处简单直接，缺点是不易维护，属性发生变化需要修改代码。</p>
-<p><strong>2、使用配置文件</strong><br>下面，我们看看如何以配置文件的方式使用Proxool连接池。首先，自然，需要创建一个proxool.xml配置文件，暂且先放到src根目录下。文件内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&#62;&#10;&#60;something-else-entirely&#62;&#10;    &#60;proxool&#62;&#10;        &#60;alias&#62;mysql&#60;/alias&#62;&#10;        &#60;!--&#25968;&#25454;&#28304;&#30340;&#21035;&#21517; --&#62;&#10;        &#60;driver-url&#62;jdbc:mysql://127.0.0.1/test&#60;/driver-url&#62;&#10;        &#60;!--url--&#62;&#10;        &#60;driver-class&#62;com.mysql.jdbc.Driver&#60;/driver-class&#62;&#10;        &#60;!--&#39537;&#21160;&#31867; --&#62;&#10;        &#60;driver-properties&#62;&#10;            &#60;property name=&#34;user&#34; value=&#34;root&#34; /&#62;&#10;            &#60;property name=&#34;password&#34; value=&#34;1234&#34; /&#62;&#10;        &#60;/driver-properties&#62;&#10;        &#60;!-- &#20219;&#19968;&#26102;&#21051;&#65292;&#21487;&#20197;&#65288;&#21516;&#26102;&#65289;&#24314;&#31435;&#30340;&#26368;&#22823;&#36830;&#25509;&#25968; --&#62;&#10;        &#60;simultaneous-build-throttle&#62;10&#60;/simultaneous-build-throttle&#62;&#10;        &#60;!--&#26368;&#22823;&#36830;&#25509;&#25968;(&#40664;&#35748;5&#20010;)--&#62;&#10;        &#60;maximum-connection-count&#62;100&#60;/maximum-connection-count&#62;&#10;        &#60;!--&#26368;&#23567;&#36830;&#25509;&#25968;(&#40664;&#35748;2&#20010;) --&#62;&#10;        &#60;minimum-connection-count&#62;10&#60;/minimum-connection-count&#62;&#10;        &#60;!--proxool&#33258;&#21160;&#20390;&#23519;&#21508;&#20010;&#36830;&#25509;&#29366;&#24577;&#30340;&#26102;&#38388;&#38388;&#38548;(&#27627;&#31186;)--&#62;&#10;        &#60;house-keeping-sleep-time&#62;120000&#60;/house-keeping-sleep-time&#62;&#10;        &#60;!--&#26368;&#23569;&#20445;&#25345;&#30340;&#31354;&#38386;&#36830;&#25509;&#25968; --&#62;&#10;        &#60;prototype-count&#62;10&#60;/prototype-count&#62;&#10;        &#60;!--&#22312;&#20351;&#29992;&#20043;&#21069;&#27979;&#35797; --&#62;&#10;        &#60;test-before-use&#62;true&#60;/test-before-use&#62;&#10;        &#60;!--&#29992;&#20110;&#20445;&#25345;&#36830;&#25509;&#30340;&#27979;&#35797;&#35821;&#21477; --&#62;&#10;        &#60;house-keeping-test-sql&#62;select 1&#60;/house-keeping-test-sql&#62;&#10;    &#60;/proxool&#62;&#10;&#60;/something-else-entirely&#62;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、使用配置文件</strong><br>下面，我们看看如何以配置文件的方式使用Proxool连接池。首先，自然，需要创建一个proxool.xml配置文件，暂且先放到src根目录下。文件内容如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">something-else-entirely</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">proxool</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">alias</span>&gt;</span>mysql<span class="tag">&lt;/<span class="title">alias</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--数据源的别名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">driver-url</span>&gt;</span>jdbc:mysql://127.0.0.1/test<span class="tag">&lt;/<span class="title">driver-url</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--url--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">driver-class</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="title">driver-class</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--驱动类 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">driver-properties</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"user"</span> <span class="attribute">value</span>=<span class="value">"root"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"password"</span> <span class="attribute">value</span>=<span class="value">"1234"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">driver-properties</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 任一时刻，可以（同时）建立的最大连接数 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">simultaneous-build-throttle</span>&gt;</span>10<span class="tag">&lt;/<span class="title">simultaneous-build-throttle</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--最大连接数(默认5个)--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">maximum-connection-count</span>&gt;</span>100<span class="tag">&lt;/<span class="title">maximum-connection-count</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--最小连接数(默认2个) --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">minimum-connection-count</span>&gt;</span>10<span class="tag">&lt;/<span class="title">minimum-connection-count</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--proxool自动侦察各个连接状态的时间间隔(毫秒)--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">house-keeping-sleep-time</span>&gt;</span>120000<span class="tag">&lt;/<span class="title">house-keeping-sleep-time</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--最少保持的空闲连接数 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">prototype-count</span>&gt;</span>10<span class="tag">&lt;/<span class="title">prototype-count</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--在使用之前测试 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">test-before-use</span>&gt;</span>true<span class="tag">&lt;/<span class="title">test-before-use</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--用于保持连接的测试语句 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">house-keeping-test-sql</span>&gt;</span>select 1<span class="tag">&lt;/<span class="title">house-keeping-test-sql</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">proxool</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">something-else-entirely</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>上面的这些属性也可以通过第一种方式进行设置，之后，需要编写获取连接的方法，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class Proxool &#123;&#10;    public Proxool() &#123;&#10;        dataSource = new ProxoolDataSource();&#10;        init();&#10;    &#125;&#10;&#10;    public void init() &#123;&#10;        InputStream in = Proxool.class.getResourceAsStream(&#34;/proxool.xml&#34;);&#10;        Reader reader = null;&#10;        try &#123;&#10;            reader = new InputStreamReader(in, &#34;utf-8&#34;);&#10;        &#125; catch (UnsupportedEncodingException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;        try &#123;&#10;            JAXPConfigurator.configure(reader, false);&#10;        &#125; catch (ProxoolException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;    &#125;&#10;    &#10;    public Connection getProxoolConnection() &#123;&#10;        Connection connection = null;&#10;        try &#123;&#10;            connection = DriverManager.getConnection(&#34;proxool.mysql&#34;);&#10;        &#125; catch (SQLException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;        return connection;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Proxool</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Proxool</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        dataSource = <span class="keyword">new</span> ProxoolDataSource();</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        InputStream <span class="keyword">in</span> = Proxool.class.getResourceAsStream(<span class="string">"/proxool.xml"</span>);</span><br><span class="line">        Reader reader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            reader = <span class="keyword">new</span> InputStreamReader(<span class="keyword">in</span>, <span class="string">"utf-8"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            JAXPConfigurator.configure(reader, <span class="keyword">false</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ProxoolException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Connection <span class="title">getProxoolConnection</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        Connection connection = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            connection = DriverManager.getConnection(<span class="string">"proxool.mysql"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> connection;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意两者的区别，使用这种方式需要读取proxool.xml这个配置文件（以流的方式），读取之后，调用JAXPConfigurator的configure方法就可以完成对xml文件的解析了。之后在客户端直接调用getConnection方法就能从数据库连接池中获取连接了。测试代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class TestCp &#123;&#10;&#10;    public static void main(String[] args) throws SQLException &#123;&#10;        Proxool p = new Proxool();&#10;        for (int i = 0; i &#60; 5; i++) &#123;&#10;            Connection con = p.getProxoolConnection();&#10;            System.out.println(con);&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestCp</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) throws SQLException </span>&#123;</span><br><span class="line">        Proxool p = <span class="keyword">new</span> Proxool();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            Connection con = p.getProxoolConnection();</span><br><span class="line">            System.<span class="keyword">out</span>.println(con);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>测试如下：<br><img src="http://img.blog.csdn.net/20151127165133312" alt=""></p>
 <p><strong>Proxool数据库连接池小结</strong><br>使用Proxool数据库连接池可以很好管理数据库连接，提高服务器的响应性能。总结jdbc pool数据库连接池与Proxool数据库连接池，可以发现两者存在一定的共性：都是通过数据源的方式获取连接，这点与普通jdbc操作有很大不同，Drivermanager类使用后不能及时释放资源，而且是不可重用的。而数据库连接池则管理了数据库连接池任何一个连接对象，包括其创建、释放和销毁。</p>
 <p>Proxool上述的两种方式都比较普遍，但是使用配置文件灵活性比较大，便于对代码进行维护，推荐这种使用方式。</p>
@@ -354,6 +394,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -468,7 +524,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -489,10 +545,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -550,6 +606,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

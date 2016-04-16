@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -181,17 +181,21 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -201,9 +205,15 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -211,17 +221,43 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -293,6 +329,10 @@
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -329,10 +369,10 @@
         <p>题目描述</p>
 <p>把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。</p>
 <p>因为丑数只有2、3和5这三个因子，那么如果一个是丑数的话，一定是可以被这个三个因子整除的，所以我们可以通过把一个数一直被三个因子除，这样最后如果该数变成1的话（因为第一个丑数是1），那么就验证了该数就是丑数。那么如果想找出第k个丑数的话，就可以从第一个数开始循环，对每一个数进行丑数的判断，从而找到符合要求的第k个丑数。下面是这种思路的代码实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public int GetUglyNumber_Solution2(int index) &#123;&#10;        if (index &#60;= 0)&#10;            return 0;&#10;        int number = 0;&#10;        int uglyNumCount = 0;&#10;        while (uglyNumCount &#60; index) &#123;&#10;            number++;&#10;            if (isUglyNumber(number)) &#123;&#10;                uglyNumCount++;&#10;            &#125;&#10;        &#125;&#10;        return number;&#10;    &#125;&#10;&#10;    private boolean isUglyNumber(int number) &#123;&#10;        while (number % 2 == 0)&#10;            number /= 2;&#10;        while (number % 3 == 0)&#10;            number /= 3;&#10;        while (number % 5 == 0)&#10;            number /= 5;&#10;        return (number == 1) ? true : false;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> GetUglyNumber_Solution2(<span class="built_in">int</span> <span class="built_in">index</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">index</span> &lt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> <span class="keyword">number</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> uglyNumCount = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (uglyNumCount &lt; <span class="built_in">index</span>) &#123;</span><br><span class="line">            <span class="keyword">number</span>++;</span><br><span class="line">            <span class="keyword">if</span> (isUglyNumber(<span class="keyword">number</span>)) &#123;</span><br><span class="line">                uglyNumCount++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">number</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> boolean isUglyNumber(<span class="built_in">int</span> <span class="keyword">number</span>) &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">number</span> % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">number</span> /= <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">number</span> % <span class="number">3</span> == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">number</span> /= <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">number</span> % <span class="number">5</span> == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">number</span> /= <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">number</span> == <span class="number">1</span>) ? true : false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>这种算法在我提交的时候出现了运行超时的情况，仔细分析发现，我们队每一个数都做了丑数的判断，而且判断一个丑数需要经历三个循环，这是导致性能瓶颈的关键，那么有没有可能使用其他的方法判断呢？我们可以维护一个从小到大的丑数列表，每次得到一个新的丑数之后，就更新这个列表，这个列表的更新思路是：因为丑数只有以上三个因子，所以在排序的丑数列表中，后面的某个丑数一定是前面某个丑数乘以2或3或5的结果，所以我们可以以这三个因子得到不同的丑数，然后把乘以2或3或5的得到的丑数进行排序，把最小的丑数更新到丑数列表中；如果列表的某个丑数乘以2或3或5的结果刚好是丑数中的最小值，那么就继续把该数对应的下标增加1，表示继续寻找下一个新的丑数。</p>
 <p>下面是基于这种思路的实现代码（已被牛客AC）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public int GetUglyNumber_Solution(int index) &#123;&#10;        if (index &#60;= 0)&#10;            return 0;&#10;        int[] uglyNumbers = new int[index];&#10;        uglyNumbers[0] = 1;&#10;        int nextUglyNumberIndex = 1;&#10;        int multiplyNumber2 = 0;&#10;        int multiplyNumber3 = 0;&#10;        int multiplyNumber5 = 0;&#10;        while (nextUglyNumberIndex &#60; index) &#123;&#10;            int min = min(uglyNumbers[multiplyNumber2] * 2,&#10;                    uglyNumbers[multiplyNumber3] * 3,&#10;                    uglyNumbers[multiplyNumber5] * 5);&#10;            uglyNumbers[nextUglyNumberIndex] = min;&#10;            nextUglyNumberIndex++;&#10;            if (uglyNumbers[multiplyNumber2] * 2 == min)&#10;                ++multiplyNumber2;&#10;            if (uglyNumbers[multiplyNumber3] * 3 == min)&#10;                ++multiplyNumber3;&#10;            if (uglyNumbers[multiplyNumber5] * 5 == min)&#10;                ++multiplyNumber5;&#10;&#10;        &#125;&#10;        return uglyNumbers[nextUglyNumberIndex - 1];&#10;    &#125;&#10;&#10;    private int min(int multiplyNumber2, int multiplyNumber3,&#10;            int multiplyNumber5) &#123;&#10;        int min = (multiplyNumber2 &#60; multiplyNumber3) ? multiplyNumber2&#10;                : multiplyNumber3;&#10;        return (min &#60; multiplyNumber5) ? min : multiplyNumber5;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> GetUglyNumber_Solution(<span class="built_in">int</span> <span class="built_in">index</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">index</span> &lt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span>[] uglyNumbers = new <span class="built_in">int</span>[<span class="built_in">index</span>];</span><br><span class="line">        uglyNumbers[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> nextUglyNumberIndex = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> multiplyNumber2 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> multiplyNumber3 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> multiplyNumber5 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (nextUglyNumberIndex &lt; <span class="built_in">index</span>) &#123;</span><br><span class="line">            <span class="built_in">int</span> <span class="built_in">min</span> = <span class="built_in">min</span>(uglyNumbers[multiplyNumber2] * <span class="number">2</span>,</span><br><span class="line">                    uglyNumbers[multiplyNumber3] * <span class="number">3</span>,</span><br><span class="line">                    uglyNumbers[multiplyNumber5] * <span class="number">5</span>);</span><br><span class="line">            uglyNumbers[nextUglyNumberIndex] = <span class="built_in">min</span>;</span><br><span class="line">            nextUglyNumberIndex++;</span><br><span class="line">            <span class="keyword">if</span> (uglyNumbers[multiplyNumber2] * <span class="number">2</span> == <span class="built_in">min</span>)</span><br><span class="line">                ++multiplyNumber2;</span><br><span class="line">            <span class="keyword">if</span> (uglyNumbers[multiplyNumber3] * <span class="number">3</span> == <span class="built_in">min</span>)</span><br><span class="line">                ++multiplyNumber3;</span><br><span class="line">            <span class="keyword">if</span> (uglyNumbers[multiplyNumber5] * <span class="number">5</span> == <span class="built_in">min</span>)</span><br><span class="line">                ++multiplyNumber5;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> uglyNumbers[nextUglyNumberIndex - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> <span class="built_in">min</span>(<span class="built_in">int</span> multiplyNumber2, <span class="built_in">int</span> multiplyNumber3,</span><br><span class="line">            <span class="built_in">int</span> multiplyNumber5) &#123;</span><br><span class="line">        <span class="built_in">int</span> <span class="built_in">min</span> = (multiplyNumber2 &lt; multiplyNumber3) ? multiplyNumber2</span><br><span class="line">                : multiplyNumber3;</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">min</span> &lt; multiplyNumber5) ? <span class="built_in">min</span> : multiplyNumber5;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -345,6 +385,22 @@
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -457,7 +513,7 @@
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -478,10 +534,10 @@
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -539,6 +595,12 @@
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         

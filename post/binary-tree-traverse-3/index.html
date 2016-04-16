@@ -53,7 +53,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://libs.useso.com//css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -208,17 +208,21 @@ cur节点访问之后，访问其双亲">
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+            读书
           </a>
         </li>
       
         
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
             
             分类
           </a>
@@ -228,9 +232,15 @@ cur节点访问之后，访问其双亲">
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
           </a>
         </li>
       
@@ -238,17 +248,43 @@ cur节点访问之后，访问其双亲">
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'XemytyRAZXbEjGGrpXE2','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -320,6 +356,10 @@ cur节点访问之后，访问其双亲">
             </span>
           
 
+          <span id="busuanzi_container_page_pv">
+       &nbsp; | &nbsp; 热度&nbsp; <span id="busuanzi_value_page_pv"></span>°C
+       </span>
+
           
             
               <span class="post-comments-count">
@@ -371,10 +411,10 @@ cur节点访问之后，访问其双亲">
 </ol>
 <p><img src="http://img.blog.csdn.net/20151207195951520" alt="二叉树"></p>
 <p>那么使用递归实现的代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void postOrderTraverse(TreeNode node)&#123;&#10;        if(node == null) return;&#10;        postOrderTraverse(node.left);&#10;        postOrderTraverse(node.right);&#10;        System.out.print(node.val + &#34; &#34;);&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postOrderTraverse</span>(<span class="params">TreeNode node</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(node == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">        postOrderTraverse(node.left);</span><br><span class="line">        postOrderTraverse(node.right);</span><br><span class="line">        System.<span class="keyword">out</span>.print(node.val + <span class="string">" "</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p><strong>后续遍历的非递归实现</strong></p>
 <p>后续遍历的非递归实现与前面的前序遍历和中序遍历的方式有一些不同，由于根节点是最后访问的，在访问的时候创建一个栈保存遍历的结果还不够，所以需要使用一个辅助栈来记住每个访问节点的双亲节点。先看代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void postOrderTraverse2(TreeNode node)&#123;&#10;        Stack&#60;TreeNode&#62; s1 = new Stack&#60;TreeNode&#62;();&#10;        //&#21019;&#24314;&#26632;s2&#30340;&#30446;&#30340;&#22312;&#20110;&#35760;&#20303;&#27599;&#20010;&#35775;&#38382;&#30340;&#33410;&#28857;&#10;        Stack&#60;Integer&#62; s2 = new Stack&#60;Integer&#62;();&#10;        //&#22914;&#26524;&#26632;s2&#30340;&#26632;&#39030;&#26159;1&#65292;&#26631;&#35782;&#24403;&#21069;&#35775;&#38382;&#30340;&#33410;&#28857;&#10;        Integer i = new Integer(1);&#10;        while(node != null || !s1.isEmpty())&#123;&#10;            while(node != null)&#123;&#10;                s1.push(node);&#10;                s2.push(0);&#10;                node = node.left;&#10;            &#125;&#10;            //&#36825;&#20010;&#24490;&#22351;&#30340;&#30446;&#30340;&#26159;&#23545;&#26632;s2&#26632;&#39030;&#20026;1&#26102;&#23545;&#24212;&#30340;&#26632;s1&#30340;&#26632;&#39030;&#20803;&#32032;&#36827;&#34892;&#35775;&#38382;&#10;            while(!s1.isEmpty() &#38;&#38; s2.peek().equals(i))&#123;&#10;                s2.pop();&#10;                System.out.print(s1.pop().val + &#34; &#34;);&#10;            &#125;&#10;            //&#35775;&#38382;&#24038;&#23376;&#26641;&#21040;&#22836;&#21518;&#65292;&#23601;&#21487;&#20197;&#35775;&#38382;&#20854;&#21491;&#23401;&#23376;&#20102;&#10;            if(!s1.isEmpty())&#123;&#10;                s2.pop();&#10;                s2.push(i);&#10;                node = s1.peek();&#10;                node = node.right;&#10;            &#125;&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">public</span> void postOrderTraverse2(TreeNode node)&#123;</span><br><span class="line">        Stack&lt;TreeNode&gt; <span class="literal">s1</span> = new Stack&lt;TreeNode&gt;()<span class="comment">;</span></span><br><span class="line">        //创建栈<span class="literal">s2</span>的目的在于记住每个访问的节点</span><br><span class="line">        Stack&lt;Integer&gt; <span class="literal">s2</span> = new Stack&lt;Integer&gt;()<span class="comment">;</span></span><br><span class="line">        //如果栈<span class="literal">s2</span>的栈顶是<span class="number">1</span>，标识当前访问的节点</span><br><span class="line">        Integer i = new Integer(<span class="number">1</span>)<span class="comment">;</span></span><br><span class="line">        <span class="preprocessor">while</span>(node != null <span class="title">||</span> !<span class="literal">s1</span>.isEmpty())&#123;</span><br><span class="line">            <span class="preprocessor">while</span>(node != null)&#123;</span><br><span class="line">                <span class="literal">s1</span>.<span class="keyword">push(node);</span><br><span class="line"></span>                <span class="literal">s2</span>.<span class="keyword">push(0);</span><br><span class="line"></span>                node = node.left<span class="comment">;</span></span><br><span class="line">            &#125;</span><br><span class="line">            //这个循坏的目的是对栈<span class="literal">s2</span>栈顶为<span class="number">1</span>时对应的栈<span class="literal">s1</span>的栈顶元素进行访问</span><br><span class="line">            <span class="preprocessor">while</span>(!<span class="literal">s1</span>.isEmpty() &amp;&amp; <span class="literal">s2</span>.peek().equals(i))&#123;</span><br><span class="line">                <span class="literal">s2</span>.<span class="keyword">pop();</span><br><span class="line"></span>                System.out.print(<span class="literal">s1</span>.<span class="keyword">pop().val </span>+ <span class="string">" "</span>)<span class="comment">;</span></span><br><span class="line">            &#125;</span><br><span class="line">            //访问左子树到头后，就可以访问其右孩子了</span><br><span class="line">            <span class="preprocessor">if</span>(!<span class="literal">s1</span>.isEmpty())&#123;</span><br><span class="line">                <span class="literal">s2</span>.<span class="keyword">pop();</span><br><span class="line"></span>                <span class="literal">s2</span>.<span class="keyword">push(i);</span><br><span class="line"></span>                node = <span class="literal">s1</span>.peek()<span class="comment">;</span></span><br><span class="line">                node = node.right<span class="comment">;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>下面具体说明具体的执行过程：</p>
 <ol>
 <li><p>根节点8不为空，放入栈s1中，同时往栈s2中放入0，由于8的左孩子是6不为空，所以继续放入栈s1中，同时往栈s2中放入0，直到节点15，由于其左孩子为空，所以第一个循坏结束，现在两个栈的情况是这样的：</p>
@@ -427,6 +467,22 @@ cur节点访问之后，访问其双亲">
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="rhwayfun Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
       
     </div>
 
@@ -539,7 +595,7 @@ cur节点访问之后，访问其双亲">
                src="/images/avatar.png"
                alt="rhwayfun" />
           <p class="site-author-name" itemprop="name">rhwayfun</p>
-          <p class="site-description motion-element" itemprop="description">让分享在此生根发芽</p>
+          <p class="site-description motion-element" itemprop="description">在等待的日子里，刻苦读书，谦卑做人，养得深根，日后才能枝叶茂盛！</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
@@ -560,10 +616,10 @@ cur节点访问之后，访问其双亲">
 
           
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags">
                 <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -621,6 +677,12 @@ cur节点访问之后，访问其双亲">
         </div>
 
         
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
         
 
         
